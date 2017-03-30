@@ -1,0 +1,24 @@
+/* FUENTES */
+@font-face {
+   	font-family: condensed-light;
+   	src: url('../fonts/RobotoCondensed-Light.ttf');
+}
+@font-face {
+   	font-family: condensed-regular;
+   	src: url('../fonts/RobotoCondensed-Regular.ttf');
+}
+@font-face {
+   	font-family: light;
+   	src: url('../fonts/Roboto-Light.ttf');
+}
+@font-face {
+   	font-family: regular;
+   	src: url('../fonts/Roboto-Medium.ttf');
+}
+@font-face {
+   	font-family: regular;
+   	src: url('../fonts/Roboto-Medium.ttf');
+}
+*{
+	font-family:light;
+}

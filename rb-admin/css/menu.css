@@ -1,0 +1,138 @@
+/* BOTON MENU RESPONSIVE */
+.items .show-menu {
+	font-size:1.2em;
+	display: none;
+	cursor:pointer;
+	text-align:center;
+	font-family:regular;
+	color:#fff;
+	max-width: 100px;
+}
+
+.items input[type=checkbox] {
+	display: none;
+}
+
+/* SIDEBAR MENU */
+.items{
+	background-color:#4B5260;
+	width:160px;
+	height:calc(100vh - 80px);
+	position: fixed;
+	top:52px;
+	overflow: auto;
+	/*z-index:2;*/
+}
+.selected-parent{
+	background-color:#2d323c;
+}
+.selected-parent ul{
+	display:block!important;
+}
+.bg-item-color{
+	background-color:#3A404B;
+}
+.img-icon-menu{
+	max-width:24px;
+	max-height:24px;
+	width:100%;
+}
+/* LISTA UL DENTRO LI OCULTA */
+.items li ul {
+    display: none;
+}
+
+/* ITEM DE USUARIO*/
+.item-user{
+	border-bottom:1px solid #454C5A;
+	padding:15px 5px;
+	color:#fff;
+	text-align:center;
+}
+
+.item-user a{
+	display:initial!important;
+	padding:0!important;
+
+}
+.item-user a:hover{
+	background:none!important;
+}
+.item-user span{
+	font-size:.9em;
+	color:#fff;
+	text-align:center;
+}
+.cover-prof-img{
+	width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /*background-color: #fff;*/
+  overflow: hidden;
+  margin: 0 auto;
+
+}
+/*.cover-prof-img img{
+	width:100%;
+	border:1px solid red;
+}*/
+/* ESTILOS DE LISTA PADRE */
+.items li{
+	list-style-type: none;
+	position:relative;
+}
+.items li a{
+	padding:15px 10px;
+	text-align:center;
+	display:block;
+
+}
+.items li a span{
+	display:block;
+	width:100%;
+	color:#fff;
+	text-transform:uppercase;
+	font-size:.9em;
+	font-family:condensed-regular;
+}
+.items li a:hover{
+	background-color:#3A404B
+}
+ .additem{
+	padding: 8px 0!important;
+	color: #fff;
+	font-size: .9em;
+ }
+span.noread{
+    background-color: red;
+    padding: 2px 3px;
+    display: initial!important;
+    font-weight: bold;
+}
+/* ITEMS HIJOS */
+li a.selected,
+.hidden li a.selected:hover {
+    background-color: #03A9F4;
+}
+li a.selected::after{
+	right: 0;
+    border: 8px solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-right-color: #f1f1f1;
+    top: 50%;
+    margin-top: -8px;
+}
+.hidden li a{
+	text-align:left!important;
+	padding:10px 0 10px 15px!important;
+}
+.hidden li a:hover{
+	background-color:#000;
+}
+.hidden li a span{
+	text-transform:none!important
+}

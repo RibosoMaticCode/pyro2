@@ -1,0 +1,106 @@
+@media screen and (max-width: 750px) {
+	.content-edit,
+	#sidebar{
+		width:100%;
+		float:none;
+	}
+}
+@media screen and (max-width: 500px) {
+	/* LIMPIAR ARRIBA Y ABAJO DE DIVS*/
+	.items::before{
+    	display: table;
+    	content: " ";
+	}
+	.items::after{
+		display: table;
+	    content: " ";
+		clear:both;
+	}
+	/* BARRA MENU SUPERIOR - BUSQUEDA */
+	#wrap-menu{
+		position:static;
+	}
+	.logo{
+		width:60px;
+	}
+	.bar{
+		width: calc(100% - 60px);
+	}
+	#search-form {
+	    width: 82%;
+	}
+	.title-web{
+		display: none;
+	}
+	.btnMenuOpen{
+		display:block;
+		width:26px;
+		margin:12px auto;
+	}
+	/* BARRA DE ICONOS - MENU DE MODULOS */
+	.items{
+		display:none;
+		width:60vw!important;
+		height:100vh!important;
+		position:fixed!important;
+		z-index:9999;
+		top:0!important;
+		overflow:auto;
+		min-width:150px;
+		/*max-width: 200px;*/
+	}
+	.CoverBtnMenuClose{
+		display: block;
+		z-index: 9999;
+		top:0;
+		position: fixed;
+		left: 60vw;
+	}
+	.CoverBtnMenuClose img{
+		max-width: 48px;
+	}
+	.Cover_additem{
+		display: block;
+	}
+	.btn-goto-web,
+	#modules,
+	#config{
+		display: none;
+	}
+	/* CONTENEDOR PRINCIPAL */
+	#contenedor{
+		margin-top:0;
+		width:100%!important;
+		float:none!important;
+	}
+
+	/* BARRA DE GUARDAR - MODO EDICION */
+	.fixed{
+		left: 0;
+	    top: 0;
+	    position: fixed;
+	    z-index: 2;
+	    width: 100%;
+	    border-bottom: 1px solid #E2E2E2;
+	}
+	.explorer{
+		width:90vw;
+		height:90vh;
+		left:calc(100vw - 95vw)!important;
+		top:calc(100vh - 95vh)!important;
+		margin:0;
+	}
+	/* MODO EDICION - POST */
+	.mitad{
+		width:100%!important;
+		float:none!important;
+	}
+	/* GRID DE IMAGENES */
+	.grid-1 {
+		width: calc( 33.33% * 1 );
+    	float: left;
+  }
+	#footer{
+		height:auto;
+	}
+}

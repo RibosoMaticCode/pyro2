@@ -1,0 +1,31 @@
+<FilesMatch "\.(ttf|otf|eot|woff)$">
+	<IfModule mod_headers.c>
+        	Header set Access-Control-Allow-Origin "*"
+	</IfModule>
+</FilesMatch>
+
+# 1 MES
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|js|xml|txt|css|ttf|otf|eot|woff)$">
+Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>
+
+# 1 SEMANA
+<FilesMatch "\.(html|htm|php)$">
+Header set Cache-Control "max-age=604800, public, must-revalidate"
+</FilesMatch>
+
+# Deflate Compression by FileType
+<IfModule mod_deflate.c>
+#AddOutputFilterByType DEFLATE text/plain
+#AddOutputFilterByType DEFLATE text/html
+#AddOutputFilterByType DEFLATE text/xml
+#AddOutputFilterByType DEFLATE text/css
+#AddOutputFilterByType DEFLATE text/javascript
+#AddOutputFilterByType DEFLATE application/xml
+#AddOutputFilterByType DEFLATE application/xhtml+xml
+#AddOutputFilterByType DEFLATE application/rss+xml
+#AddOutputFilterByType DEFLATE application/atom_xml
+#AddOutputFilterByType DEFLATE application/javascript
+#AddOutputFilterByType DEFLATE application/x-javascript
+#AddOutputFilterByType DEFLATE application/x-shockwave-flash
+</IfModule>

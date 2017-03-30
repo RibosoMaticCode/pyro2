@@ -1,0 +1,122 @@
+Blackpyro CMS - Gestor Basico de Contenidos
+===========================================
+Desarrollo: Jesus Liñan < jesusvld@gmail.com >
+Respaldo: Branding Emoción EIRL - Pedro Solar < psolar@emocion.pe >
+
+PHP, MySQL, JavaScript (jquery), HTML 5, CSS3
+
+Web: ribosomatic.com
+Web: emocion.pe
+
+Licencia: ../rb-admin/licencia.txt
+
+version 2.0.1 pyro2 (mar - abr 17)
+-------------------
+- date_default_timezone_set en global.php para funciones de fechas
+- fix bug al eliminar categorias de listado
+
+version 2.0.0 metro3 (mar 17)
+--------------------
+- Version mejorada para metropolitana v.3
+
+version 1.9.9 alpha (nov - 16)
+-------------------
+- Funcion rb_mailer 1.0, permite trabajar con envio de correo nativo o librerias externas (sendgrid)
+- Iniciar sesión con: nombre de usuario, correo o telefono-movil
+
+version 1.9.8 - 1.9.9 beta (intrader|aviajar|pasion - sep, oct, nov 16)
+--------------------------
+- Cambios internos, en funciones.php: Ej. Mostrar categorias y tbm subcategorias
+- Manejo de niveles en usuarios
+- Cambios en como mostrar las categorias, de acuerdo a niveles de usuarios.
+- Panel de usuario final es una modulo permanente.
+- File explorer modulo aparte
+- Gallery explorer modulo aparte.
+- Explorer Gallery/File mejora en funcionamiento.
+- Combinando mejoras de version pasion+cotizador (ojo)
+- Hook v.1.0, funcion gancho para añadir funciones adicionales en modulos, sin tocar o alterar codigo original.
+- Funcion gancho para menu de panel admin, se puede añadir item o subitems, usando funcion: rb_add_item_menu(array menu estructura)
+- Sistema de gestion de modulos externos, permite agregar funcionalidades extras al gestor sin alterar en lo posible principales funciones en el codigo.
+
+version 1.9.6beta (mima - mayo 16)
+--------------------------
+- Revision de login.php, permite trabajar respuesta de logueo con ajax tbm.
+- Permite establecer un slide principal, dependerá de la plantilla usada.
+- Registro tambien permite modo ajax.
+- Directorio base para htaccess ruteador (proceso)
+- Base para rutear articulos, categorias, busqueda y usuario
+- Url amigable para busqueda funcional
+- Permite grabar link de redes sociales
+- Logueo de usuario con nickname y/o email
+
+version 1.9.5beta (casa - abril 16)
+--------------------------
+- Permisos de usuario: Admin, Usuario Avanzado, Usuario Final
+- Permite ordenar imagenes dentro de una galería/album
+- Buscador panel administrativo funcional
+- Thumbnail PNG fondo oscuro arreglado
+- Diseño Panel responsive mejorado
+- Htaccess ruteado por php (en proceso)
+- Generador de menus simple, drag & drop
+- Cuadro de ayuda se muestra y oculta por cookies
+- Campos adicionales para redes sociales y acerca de para usuarios
+
+version 1.9.4beta (zetzun - well)
+--------------------------
+- Mejorando el gestor de menu ... en proceso
+- Pantalla de instalación del gestor usa el mismo hoja de estilo que login.php (uniformizando)
+- Campos personalizados, permite añadir tantos como desee usuario. Desde configuracion.
+- Ocultar/Mostrar ciertas secciones.
+- Ocultar/Mostrar ciertas subsecciones.
+- Plugin explorer.js jquery para mostrar explorer con imagen a escoger.
+
+version 1.9beta (nextpro - alternativa)
+--------------------------
+- Mejorando el gestor de menu
+
+version 1.8beta (bienestar)
+--------------------------
+- Permite definir alto y ancho de imagenes previas
+- Permite relacion publicacion con otras
+- Subir imagenes desde modo edicion en Publicaciones y Paginas
+
+version 1.7beta (sep-2015)
+------------------------
+- explorador de archivos (permite subir nuevas imagenes)
+- explorador de galerias (subir imagenes o elegir las que ya estan subidas)
+- editor de texto permite agregar imagenes desde el mismo explorador antes mencionado
+- ya no se usa filemanager (plugin para tinymce) gestionador de archivos
+- cambiado termino "album" de imagenes por "galería"
+- añadir campo url a imagenes tbm, para que linkeen a publicacion, categoria ó pagina especifica
+- reaparece modulo enviar comentarios
+- permite personalizar el menu principl (esta funcion en desarrollo, solo permite menus con lista-ul y aun no con div's)
+
+version 1.6beta (ago-2015)
+-------------------
+- permite agregar categoria en modo edicion
+- permite elegir con que pagina iniciar la web
+- crear directorio estructura para guardar imagenes
+- evita nombres duplicados en archivos *revision
+
+version 1.5beta ramificacion (jun-2015)
+-------------------
+- version adaptada al cliente, modulo de registro y confirmacion de citas
+
+version 1.5beta (jun-2015)
+---------------
+- permite añadir menus y personalizar sus item para linkeen a un sitio especifico
+- añadida función que crear el link dependiendo si es amigable o no
+- añadido register usuario en rb-script/
+- permite activar usuario desde panel con solo click
+
+version 1.4beta (may-2015)
+---------------
+- todas las secciones tiene nuevo diseno
+- añadido mensajes de ayuda en las distintas secciones
+- mensaje antes de salir de sistema
+- campos personalizados en edicion de publicaciones
+
+version 1.3beta
+---------------
+- campo para añadir codigo externo "addon"
+- campo para añadir imagen de perfil a usuario

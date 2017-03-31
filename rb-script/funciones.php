@@ -279,13 +279,16 @@ function rb_nums_post_by_category($category_id){
 	return mysql_num_rows( $q );
 }
 
-function rb_list_categories($order = "DESC", $access = "public", $nivel=0, $categoria_id = 0){
+function rb_list_categories($order = "DESC", $categoria_id = 0){
+  require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$objCategoria = new Categorias;
-	if($access=="public"):
-		$q = $objCategoria->Consultar("SELECT * FROM categorias WHERE acceso='public' AND categoria_id=$categoria_id ORDER BY id $order");
-	else:
-		$q = $objCategoria->Consultar("SELECT * FROM categorias WHERE (acceso='privat') AND (niveles LIKE '%$nivel%') ORDER BY id $order");
-	endif;
+  if(G_ACCESOUSUARIO==1): // login
+    $q_string = "SELECT * FROM categorias WHERE acceso='public' OR (acceso='privat' AND niveles LIKE '%".G_USERNIVELID."%') AND categoria_id=$categoria_id ORDER BY id $order";
+    $q = $objCategoria->Consultar($q_string);
+  elseif(G_ACCESOUSUARIO==0): // no login
+    $q_string = "SELECT * FROM categorias WHERE acceso='public' AND categoria_id=$categoria_id ORDER BY id $order";
+    $q = $objCategoria->Consultar($q_string);
+  endif;
 
 	$CategoriesArray = array();
 	$i=0;
@@ -297,7 +300,6 @@ function rb_list_categories($order = "DESC", $access = "public", $nivel=0, $cate
 		$CategoriesArray[$i]['descripcion'] = $Categories['descripcion'];
 		$CategoriesArray[$i]['photo_id'] = $Categories['photo_id'];
 		$CategoriesArray[$i]['url'] = rb_url_link( 'cat' , $Categories['id'] );
-		//$CategoriesArray[$i]['url_img'] = rb_get_photo_from_id( $Categories['photo_id'] );
     $photos = rb_get_photo_from_id($Categories['photo_id']);
     if($photos['src']==""):
       $CategoriesArray[$i]['url_bgimage'] = G_SERVER."/rb-script/images/gallery-default.jpg";
@@ -311,7 +313,7 @@ function rb_list_categories($order = "DESC", $access = "public", $nivel=0, $cate
 	return $CategoriesArray;
 }
 
-function rb_get_post_by_category($category_id="*", $access = "public", $nivel=0, $starred=false, $show_post=false, $num_posts=10, $regstart=0, $column, $ord ){
+function rb_get_post_by_category($category_id="*", $starred=false, $show_post=false, $num_posts=10, $regstart=0, $column, $ord ){
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-categorias.class.php");
@@ -333,18 +335,22 @@ function rb_get_post_by_category($category_id="*", $access = "public", $nivel=0,
   // todos los posts
 	if($category_id == "*"):
 		// Si es "0", seleccionamos todos los posts
-		if($access=="public"):
-			$qa  = $objArticulo->Consultar("SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
+		//if($access=="public"):
+    if(G_ACCESOUSUARIO==0): // login
+      $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
 			DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes,
 			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
 			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.acceso = 'public' ".$starred_query."
-			ORDER BY $column $ord $limit");
-		elseif($access=="privat"): //privado
-			$qa  = $objArticulo->Consultar("SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
+			ORDER BY $column $ord $limit";
+			$qa  = $objArticulo->Consultar($q_string);
+		//elseif($access=="privat"): //privado
+    elseif(G_ACCESOUSUARIO==1): // no login
+      $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
 			DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes,
 			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
-			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND (c.acceso = 'privat' AND c.niveles LIKE '%$nivel%') ".$starred_query."
-			ORDER BY $column $ord $limit");
+			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND (c.acceso = 'public' OR c.acceso = 'privat' AND c.niveles LIKE '%".G_USERNIVELID."%') ".$starred_query."
+			ORDER BY $column $ord $limit";
+			$qa  = $objArticulo->Consultar($q_string);
 		endif;
   // post por categoria
 	elseif($category_id != "" || $category_id !=0 || $category_id != "*"):
@@ -364,18 +370,20 @@ function rb_get_post_by_category($category_id="*", $access = "public", $nivel=0,
 		if($qc && $num_reg > 0 ):
 			$ra = mysql_fetch_array($qc);
 			$category_id = $ra['id'];
-      if($access=="public"):
-  			$qa  = $objArticulo->Consultar("SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
+      if(G_ACCESOUSUARIO==0): // login
+        $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
   			DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes,
   			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
-  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.acceso = 'public' AND c.id=$category_id ".$starred_query."
-  			ORDER BY $column $ord $limit");
-  		elseif($access=="privat")://privado
-  			$qa  = $objArticulo->Consultar("SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
+  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND c.acceso = 'public' ".$starred_query."
+  			ORDER BY $column $ord $limit";
+  			$qa  = $objArticulo->Consultar($q_string);
+  		elseif(G_ACCESOUSUARIO==1):// no login
+        $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
   			DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes,
   			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
-  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND (c.acceso = 'privat' AND c.niveles LIKE '%$nivel%') ".$starred_query."
-  			ORDER BY $column $ord $limit");
+  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND (c.acceso = 'public' OR c.acceso = 'privat' AND c.niveles LIKE '%".G_USERNIVELID."%') ".$starred_query."
+  			ORDER BY $column $ord $limit";
+  			$qa  = $objArticulo->Consultar($q_string);
       endif;
 		else:
 			return;
@@ -394,7 +402,7 @@ function rb_return_post_array($qa){
 	$i=0;
 	while($Posts = mysql_fetch_array($qa)):
 		$PostsArray[$i]['id'] = $Posts['id'];
-		$PostsArray[$i]['autor_id'] = $Posts['id'];
+		$PostsArray[$i]['autor_id'] = $Posts['autor_id'];
 		$PostsArray[$i]['autor_names'] = $Posts['id'];
 		$PostsArray[$i]['titulo'] = $Posts['titulo'];
 		$PostsArray[$i]['contenido'] = $Posts['contenido'];

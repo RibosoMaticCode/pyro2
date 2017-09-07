@@ -14,16 +14,16 @@ else:
 endif;
 
 if(mysql_num_rows($q)):
-?>			
+?>
 <ul class="gallery pop_library">
-	<?php						
+	<?php
 	while($r=mysql_fetch_array($q)):
 	?>
 	<li>
-		<img class="thumb" src="<?= G_SERVER ?>/rb-media/gallery/tn/<?= $r['src'] ?>" /><br />
-		<span><?= $r['src'] ?></span>
+		<img class="thumb" src="<?= G_SERVER ?>/rb-media/gallery/tn/<?= utf8_encode($r['src']) ?>" /><br />
+		<span><?= utf8_encode($r['src']) ?></span>
 	</li>
-	<?php	
+	<?php
 	endwhile;
 	?>
 </ul>

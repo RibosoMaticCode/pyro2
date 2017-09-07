@@ -79,40 +79,13 @@ margin-right:5px;
 	width:200px;
 	text-align:center;
 	border-radius: 3px;
-	/*-webkit-border-radius: 3px;
-  	-moz-border-radius: 3px;
-  	-moz-box-shadow: 0 2px 0 0 #e8e8e8;
-  	-webkit-box-shadow: 0 2px 0 0 #e8e8e8;*/
  	box-shadow: 0 2px 0 0 #e8e8e8;
  	color: #fff;
   	background: #2f8ab9;
   	border: none;
   	font-weight: bold;
   	font-size: 16px;
-  	
-  
-	/*font-family: Arial, Helvetica, sans-serif;
-	
-   
-	
-	cursor:pointer;	
-	line-height:20px;
-	height:25px;
-	margin:0 10px 10px 0;
-  display: inline-block;
-  background: #fff;
-  
-  color: #888;
-  text-decoration: none;
-  
-   
-  padding: 6px 10px 4px 10px; 
-  
-  
-  -moz-box-shadow: 0 2px 0 0 #13648d;
-  -webkit-box-shadow: 0 2px 0 0 #13648d;
-  box-shadow: 0 2px 0 0 #13648d; 
-	vertical-align:middle;  */
+		padding:4px 0;
 }
 .ajax-upload-dragdrop span{
 	display:block;
@@ -136,19 +109,20 @@ margin-right:5px;
 	background-color:#EAEAEA;
 	opacity:0.8;
 	padding:35px 0;
-	border:3px dotted #B9B9B9;
+	border:3px dashed #B9B9B9;
 	width:100%;
 	margin:0 auto;
 	color: #DADCE3;
 	text-align:left;
 	vertical-align:middle;
 	box-sizing: border-box;
+	margin-bottom: 15px;
 }
 .ajax-upload-dragdrop:hover{
 	background-color:#F1F0F0;
 }
 .loadhidden{
-	
+
 }
 .ajax-upload-label{
 	height:30px;

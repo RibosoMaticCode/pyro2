@@ -15,10 +15,3 @@
    	font-family: regular;
    	src: url('../fonts/Roboto-Medium.ttf');
 }
-@font-face {
-   	font-family: regular;
-   	src: url('../fonts/Roboto-Medium.ttf');
-}
-*{
-	font-family:light;
-}

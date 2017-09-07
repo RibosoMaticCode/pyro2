@@ -23,9 +23,9 @@ switch($sec){
 		endif;
 
 		if(G_USERTYPE == "admin"):
-			$consulta = $objArticulo->Consultar("SELECT a.portada, a.id, a.fecha_creacion, a.titulo, a.titulo_enlace, a.lecturas, a.comentarios, a.activo, a.actcom, a.autor_id, u.nickname, u.nombres FROM articulos a, usuarios u WHERE a.autor_id = u.id ORDER BY a.fecha_creacion DESC LIMIT $RegistrosAEmpezar, $regMostrar");
+			$consulta = $objArticulo->Consultar("SELECT a.portada, a.id, a.fecha_creacion, a.titulo, a.titulo_enlace, a.lecturas, a.comentarios, a.activo, a.actcom, a.autor_id, u.nickname, u.nombres FROM articulos a, usuarios u WHERE a.autor_id = u.id ORDER BY id DESC LIMIT $RegistrosAEmpezar, $regMostrar");
 		else:
-			$consulta = $objArticulo->Consultar("SELECT a.portada, a.id, a.fecha_creacion, a.titulo, a.titulo_enlace, a.lecturas, a.comentarios, a.activo, a.actcom, a.autor_id, u.nickname, u.nombres FROM articulos a, usuarios u WHERE a.autor_id = u.id AND a.autor_id = ".G_USERID." ORDER BY a.fecha_creacion DESC LIMIT $RegistrosAEmpezar, $regMostrar");
+			$consulta = $objArticulo->Consultar("SELECT a.portada, a.id, a.fecha_creacion, a.titulo, a.titulo_enlace, a.lecturas, a.comentarios, a.activo, a.actcom, a.autor_id, u.nickname, u.nombres FROM articulos a, usuarios u WHERE a.autor_id = u.id AND a.autor_id = ".G_USERID." ORDER BY id DESC LIMIT $RegistrosAEmpezar, $regMostrar");
 		endif;
 
 		$i=1;
@@ -246,7 +246,7 @@ switch($sec){
 				<div class="cover-img">
 				<?php
 					if(rb_file_type($row['type']) == "image"):
-						echo "<a class=\"fancybox\" rel=\"group\" href=\"../rb-media/gallery/".$row['src']."\"> <img src=\"../rb-media/gallery/tn/".$row['tn_src']."\" /></a>";
+						echo "<a class=\"fancybox\" rel=\"group\" href=\"../rb-media/gallery/".utf8_encode($row['src'])."\"> <img src=\"../rb-media/gallery/tn/".utf8_encode($row['tn_src'])."\" /></a>";
 					else:
 						if( rb_file_type( $row['type'] )=="pdf" ) echo "<img src=\"img/pdf.png\" alt=\"png\" />";
 						if( rb_file_type( $row['type'] )=="word" ) echo "<img src=\"img/doc.png\" alt=\"png\" />";
@@ -255,7 +255,7 @@ switch($sec){
 				?>
 					<input class="checkbox" id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
 					<span class="filename">
-						<?= $row['src'] ?>
+						<?= utf8_encode($row['src']) ?>
 					</span>
 					<span class="edit"><a href="../rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $row['id'] ?>">
 						<img src="img/edit-black-16.png" alt="icon" />
@@ -292,7 +292,7 @@ switch($sec){
 				<div class="cover-img">
 			<?php
 				if(rb_file_type($row['type']) == "image"){
-					echo "<a class=\"fancybox\" rel=\"group\" href=\"../rb-media/gallery/".$row['src']."\"> <img src=\"../rb-media/gallery/tn/".$row['tn_src']."\" /></a>";
+					echo "<a class=\"fancybox\" rel=\"group\" href=\"../rb-media/gallery/".utf8_encode($row['src'])."\"> <img src=\"../rb-media/gallery/tn/".utf8_encode($row['tn_src'])."\" /></a>";
 				}else {
 					if( rb_file_type( $row['type'] )=="pdf" ) echo "<img src=\"img/pdf.png\" alt=\"png\" />";
 					if( rb_file_type( $row['type'] )=="word" ) echo "<img src=\"img/doc.png\" alt=\"png\" />";
@@ -300,7 +300,7 @@ switch($sec){
 				}
 				echo '<input class="checkbox" id="art-'.$row['id'].'" type="checkbox" value="'.$row['id'].'" name="items" />';
 				?>
-				<span class="filename"><?= $row['src'] ?></span>
+				<span class="filename"><?= utf8_encode($row['src']) ?></span>
 				<?php
 				echo '<span class="edit"><a href="../rb-admin/index.php?pag=img&amp;opc=edt&amp;id='.$row['id'].'&amp;album_id='.$row['album_id'].'">
 					<img src="img/edit-black-16.png" alt="icon" />
@@ -535,7 +535,7 @@ switch($sec){
 			echo "	<tr>
 						<td>".$row['nombre']."</a></td>
 						<td>".$row['descripcion']."</td>
-						<td>".$row['src']."</td>";
+						<td>".utf8_encode($row['src'])."</td>";
 			echo "<td>
 					<span>
 						<a title=\"Ver Turnos\" href='../rb-admin/index.php?pag=turno&amp;opc=edt&amp;pto_id=".$row['id']."'>

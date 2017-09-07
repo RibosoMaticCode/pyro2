@@ -17,12 +17,24 @@ body{
 	width:100%;
 	max-width:340px;
 	margin:10px auto;
-	margin-top:10%;
 	padding:20px;
 	box-shadow:-1px -1px 50px #efefef;
 }
 .frminstall{
-	max-width:520px!important;
+	max-width: 520px!important;
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+.frmlogin-abs{
+	/*position: absolute;
+	width: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);*/
+	margin-top: 15%;
 }
 .frmlogin h2{
 	text-align:center;
@@ -38,9 +50,10 @@ body{
 	border:1px solid #efefef;
 	font-size:1.1em;
 	margin:15px 0;
+	background-color: #fbfbfb;
 }
 .frmlogin input[type="checkbox"]{
-	border:1px solid red;	
+	border:1px solid red;
 }
 .frmlogin button{
 	padding:10px 15px;

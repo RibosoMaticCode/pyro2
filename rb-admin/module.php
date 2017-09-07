@@ -23,7 +23,6 @@ include_once 'header.php';
 	<!--<div id="message"></div>-->
 	<div id="contenedor">
 		<h2 class="title"><?= $rb_module_title_section ?></h2>
-		<div class="page-bar"><?= $rb_module_path ?></div>
 		<?= do_action('module_content_main') ?>
 	</div>
 </section>

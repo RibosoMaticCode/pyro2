@@ -1,13 +1,13 @@
 <?php
-/* 
+/*
  * Usando $_SERVER['DOCUMENT_ROOT'] para
- * ubicarse en la raiz del sitio 
- * 
- * Alternativamente se puede usar dirname 
+ * ubicarse en la raiz del sitio
+ *
+ * Alternativamente se puede usar dirname
  * Ver el archivo files.explorer.php
- * 
+ *
  * */
- 
+
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname( dirname( dirname( dirname(__FILE__) ) ) ). '/' );
 	//define('ABSPATH', $_SERVER['DOCUMENT_ROOT']."/" );
@@ -27,17 +27,17 @@ if(mysql_num_rows($q)):
 	<?php
 	while ($row = mysql_fetch_array($q)):
 	?>
-	<li><a class="explorer-file" datafld="<?= $row['src'] ?>" datasrc="<?= $row['id'] ?>" href="#"> 
+	<li><a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">
 		<?php
 		if(rb_file_type($row['type']) == "image"):
-			echo "<img class='thumb' width=\"100\" src=\"../rb-media/gallery/tn/".$row['tn_src']."\" />";
+			echo "<img class='thumb' width=\"100\" src=\"../rb-media/gallery/tn/".utf8_encode($row['tn_src'])."\" />";
 		else:
 			if( rb_file_type( $row['type'] )=="pdf" ) echo "<img src=\"img/pdf.png\" alt=\"png\" />";
 			if( rb_file_type( $row['type'] )=="word" ) echo "<img src=\"img/doc.png\" alt=\"png\" />";
 			if( rb_file_type( $row['type'] )=="excel" ) echo "<img src=\"img/xls.png\" alt=\"png\" />";
 		endif;
 		?>
-		<span><?= $row['tn_src'] ?></span>
+		<span><?= utf8_encode($row['tn_src']) ?></span>
 	</a></li>
 	<?php
 	endwhile;

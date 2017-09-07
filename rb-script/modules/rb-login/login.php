@@ -31,7 +31,7 @@ else:
 						}
 					}
 					?>
-					<form class="frmlogin" action="<?= $rm_url ?>login.php" method="post" name="login">
+					<form class="frmlogin frmlogin-abs" action="<?= $rm_url ?>login.php" method="post" name="login">
 						<div class="cover-imagen-login" style="background:url('<?= rb_photo_login(G_LOGO) ?>') no-repeat center center;background-size:cover;"></div>
 						<h2>Acceso</h2>
 						<?php if(isset($msg)): ?><p style="text-align: center"> <?= $msg?></p> <?php endif; ?>
@@ -40,11 +40,11 @@ else:
 						else $url_redirect = "";
 						?>
 						<input type="hidden" name="redirect" value="<?= $url_redirect ?>" />
-						<input type="text" name="usuario" required placeholder="Usuario / Correo / Teléfono" />
-						<input type="password" name="contrasena" required placeholder="Contraseña" />
+						<input type="text" name="usuario" required placeholder="Usuario / Correo / Teléfono" autocomplete="off" />
+						<input type="password" name="contrasena" required placeholder="Contraseña" autocomplete="off" />
 						<div class="cols-container">
 							<label class="cols-6-md center">
-							<input type="checkbox">
+							<input type="checkbox" name="remember" <?php if(isset($_COOKIE["login_remember"])) echo ' value="1" checked '; else echo ' value="0"';?>>
 								<span>Recordar mis datos</span>
 							</label>
 							<a class="cols-6-md center" href="<?= $rm_url ?>login.php?recovery">Olvide mi password</a>
@@ -58,7 +58,9 @@ else:
 						</p>
 						<?php endif; ?>
 					</form>
-					<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+					<!--<?php if(G_ESTILO!="0"): ?>
+						<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+					<?php endif ?>-->
 			</div>
 		</div>
 	</body>

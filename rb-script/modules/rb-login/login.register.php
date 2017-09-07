@@ -33,7 +33,7 @@ else:
 		});
 		</script>
 				<?php if (isset($_COOKIE['_register2'])):?>
-					<div class="frmlogin" id="msg-ok" class="msg success">
+					<div class="frmlogin frmlogin-abs" id="msg-ok" class="msg success">
 						<p>El registro se completo con éxito!</p>
 						<p>Nuestro sistema no puede registrar una cuenta por ahora. Intentalo luego.</p>
 						<p>Saludos.</p>
@@ -63,7 +63,9 @@ else:
 					</p>
 				</form>
 				<?php endif; ?>
-				<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+				<!--<?php if(G_ESTILO!="0"): ?>
+					<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+				<?php endif ?>-->
 			</div>
 		</div>
 	</body>

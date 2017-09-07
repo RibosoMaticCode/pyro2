@@ -12,6 +12,7 @@ if(isset($_GET['type'])):
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> <!-- ! -->
 		<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/styles2.css" />
 		<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/fonts.css" />
 		<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.1.min.js"></script>
 		<script>
@@ -29,7 +30,7 @@ if(isset($_GET['type'])):
 	<body>
 		<div class="explorer-body">
 			<div id="photos">
-				<div class="wrap-home">
+				<div class="explorer-body-inner">
 					<div id="assetResults" class="flibrary">
 						<ul class="gallery pop_library">
 						<?php
@@ -41,17 +42,17 @@ if(isset($_GET['type'])):
 						while ($row = mysql_fetch_array($q)):
 							?>
 							<li>
-								<a class="explorer-file" datafld="<?= $row['src'] ?>" datasrc="<?= $row['id'] ?>" href="#">
+								<a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">
 									<?php
 									if(rb_file_type($row['type']) == "image"):
-										echo '<img class="thumb" src="'.G_SERVER.'/rb-media/gallery/tn/'.$row['tn_src'].'" data-filename="'.$row['tn_src'].'" />';
+										echo '<img class="thumb" src="'.G_SERVER.'/rb-media/gallery/tn/'.utf8_encode($row['tn_src']).'" data-filename="'.utf8_encode($row['tn_src']).'" />';
 									else:
-										if( rb_file_type( $row['type'] )=="pdf" ) echo '<img src="img/pdf.png" alt="png" data-filename="'.($row['tn_src']).'" />';
-										if( rb_file_type( $row['type'] )=="word" ) echo '<img src="img/doc.png" alt="png" data-filename="'.($row['tn_src']).'" />';
-										if( rb_file_type( $row['type'] )=="excel" ) echo '<img src="img/xls.png" alt="png" data-filename="'.($row['tn_src']).'" />';
+										if( rb_file_type( $row['type'] )=="pdf" ) echo '<img src="img/pdf.png" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
+										if( rb_file_type( $row['type'] )=="word" ) echo '<img src="img/doc.png" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
+										if( rb_file_type( $row['type'] )=="excel" ) echo '<img src="img/xls.png" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
 									endif;
 									?>
-									<span><?= $row['tn_src'] ?></span>
+									<span><?= utf8_encode($row['tn_src']) ?></span>
 								</a>
 							</li>
 						<?php

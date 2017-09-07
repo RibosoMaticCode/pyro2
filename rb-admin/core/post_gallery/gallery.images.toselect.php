@@ -19,10 +19,10 @@ while($r=mysql_fetch_array($q)):
 <li>
 	<label>
 		<input type="checkbox" name="items[]" value="<?= $r['id']?>" /> <br />
-		<img class="thumb" src="<?= G_SERVER ?>/rb-media/gallery/tn/<?= $r['src'] ?>" /><br />
-		<span><?= $r['src'] ?></span>
+		<img class="thumb" src="<?= G_SERVER ?>/rb-media/gallery/tn/<?= utf8_encode($r['src']) ?>" /><br />
+		<span><?= utf8_encode($r['src']) ?></span>
 	</label>
 </li>
-<?php	
+<?php
 endwhile;
 ?>

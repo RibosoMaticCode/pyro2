@@ -1,4 +1,4 @@
 <?php
-// Verrificar tabla si opcione existe.
+// Verificar tabla si opcione existe.
 
 ?>

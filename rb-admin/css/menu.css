@@ -14,15 +14,7 @@
 }
 
 /* SIDEBAR MENU */
-.items{
-	background-color:#4B5260;
-	width:160px;
-	height:calc(100vh - 80px);
-	position: fixed;
-	top:52px;
-	overflow: auto;
-	/*z-index:2;*/
-}
+
 .selected-parent{
 	background-color:#2d323c;
 }

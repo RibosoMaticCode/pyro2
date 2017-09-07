@@ -1,14 +1,13 @@
 <?php
-//include 'islogged.php';
+header('Content-Type: application/json');
 require_once("../rb-script/class/rb-opciones.class.php");
 
 if(!isset($_REQUEST['post_options'])) {
-	die("[!] Debe seleccionar al menos una sección ... !!!");
+	// Si no hay ninguno seleccionado, creamos un array vacio
+	$array_post_options = array();
+}else{
+	$array_post_options = $_REQUEST['post_options'];
 }
-$array_post_options = $_REQUEST['post_options'];
-		/*echo "<pre>"; // array solo con checkinput seleccionados
-		print_r($array_post_options);
-		echo "</pre>";*/
 
 // Sino existe algun modulo lo agregamos y su valor por defecto = 1
 if (!array_key_exists('gal', $array_post_options)) $array_post_options['gal'] = 0;
@@ -23,7 +22,10 @@ if (!array_key_exists('sub', $array_post_options)) $array_post_options['sub'] = 
 
 $array_post_options_json = json_encode($array_post_options);
 if($objOpcion->modificar_valor(1,'post_options',$array_post_options_json)):
-	die("1");
+
+	$json_post_options = $objOpcion->obtener_valor(1,'post_options');
+	$array_post_options = json_encode($json_post_options, true);
+	die($array_post_options);
 else:
 	die("0");
 endif;

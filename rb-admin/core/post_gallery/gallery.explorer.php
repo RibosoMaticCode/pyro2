@@ -19,7 +19,7 @@ require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 	$( ".explorer-file" ).click(function( event ) {
 		$( "#close" ).click();
 	});
-	
+
 	// Mostrar Uploader o Selector de imagenes
 	$( '#btnShowUploader' ).click(function( event ) {
 		$( "#examiner-photos" ).show();
@@ -31,16 +31,16 @@ require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 		}).done(function( msg ) {
 		    $('#imagestoselect').html(msg);
 		});
-		
+
 		$("#btnShowImages").removeClass('selected');
 		$(this).addClass('selected');
 	});
-	
+
 	// Refresca la lista de imagenes en la galeria
 	$( '#btnShowImages' ).click(function( event ) {
 		$( "#examiner-photos" ).hide();
 		$( "#photos" ).show();
-		
+
 		$.ajax({
 			method: "GET",
 			url: "<?= G_SERVER ?>/rb-admin/core/post_gallery/gallery.explorer.refresh.php?album_id=<?= $album_id ?>"
@@ -50,7 +50,7 @@ require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 		$("#btnShowUploader").removeClass('selected');
 		$(this).addClass('selected');
 	});
-	
+
 	// SUBMIT DE IMAGENES
 	$( "#formselectimgs" ).submit(function( event ) {
 		event.preventDefault();
@@ -69,7 +69,7 @@ require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 
 		   		$( "#examiner-photos" ).hide();
 				$( "#photos" ).show();
-				
+
 				$("#btnShowUploader").removeClass('selected');
 				$( '#btnShowImages' ).addClass('selected');
 		   	}
@@ -85,7 +85,7 @@ if(G_USERTYPE==1):
 else:
 	$qg = $objGaleria->Consultar("SELECT nombre FROM albums WHERE id=$album_id AND usuario_id = ".G_USERID);
 endif;
-	
+
 $rg=mysql_fetch_array($qg);
 ?>
 <div class="explorer-header">
@@ -97,9 +97,9 @@ $rg=mysql_fetch_array($qg);
 	<a href="#" id="btnShowUploader">Subir / Seleccionar imágenes</a>
 </div>
 <div class="explorer-body">
-	<!-- LISTADO DE ARCHIVOS --> 
+	<!-- LISTADO DE ARCHIVOS -->
 	<div id="photos">
-		<div class="wrap-home"> 
+		<div class="explorer-body-inner">
 			<div id="imgsingallery" class="flibrary">
 				<?php
 				require_once 'gallery.explorer.refresh.php'
@@ -109,14 +109,14 @@ $rg=mysql_fetch_array($qg);
 	</div>
 	<!-- S U B I R   I M A G E N E S  -->
 	<div id="examiner-photos" style="display:none">
-		<div class="wrap-home">
-			<h3>Subir imágenes</h3>
+		<div class="explorer-body-inner">
+			<!--<h4>Subir imágenes</h4>-->
 			<div id="mulitplefileuploader"></div>
 			<div id="status"></div>
 				<!-- Load multiples imagenes -->
 			<link href="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
 			<script src="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
-				
+
 			<script type="text/javascript">
 			$(document).ready(function(){
 				var settings = {
@@ -125,7 +125,7 @@ $rg=mysql_fetch_array($qg);
 				    fileName: "myfile",
 				    formData: {"albumid":"<?= $album_id ?>", "user_id" : "<?= G_USERID ?>"},
 				    urlimgedit: '<?= G_SERVER ?>/rb-admin/index.php?pag=img&opc=edt&album_id=<?= $album_id ?>&id=',
-				    allowedTypes:"jpg,png,gif,doc,pdf,zip",	
+				    allowedTypes:"jpg,png,gif,doc,pdf,zip",
 				    returnType:"html", //json
 					onSuccess:function(files,data,xhr){
 				       //$("#status").append("Subido con exito");
@@ -135,17 +135,17 @@ $rg=mysql_fetch_array($qg);
 				    	for(var i=0;i<data.length;i++){
 					        $.post("delete.php",{op:"delete",name:data[i]},
 					        function(resp, textStatus, jqXHR)
-					        {  
-					            $("#status").append("<div>Archivo borrado</div>");      
+					        {
+					            $("#status").append("<div>Archivo borrado</div>");
 					        });
-					     }      
+					     }
 					     pd.statusbar.hide(); //You choice to hide/not.
 					}
 				}
 				var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
 			});
 			</script>
-			<?php 
+			<?php
 			if(G_USERTYPE==1):
 				$q = $objGaleria->Consultar("SELECT * FROM photo WHERE album_id=0 AND type IN ('image/gif','image/png','image/jpeg')");
 			else:
@@ -153,7 +153,7 @@ $rg=mysql_fetch_array($qg);
 			endif;
 			if(mysql_num_rows($q)):
 			?>
-			<h3>Seleccionar imágenes de Archivos subidos</h3>
+			<h4>Imagenes sin galería</h4>
 			<div class="flibrary">
 				<form id="formselectimgs" action="save.php" method="POST" name="library">
 					<input type="hidden" name="album_id" value="<?= $album_id ?>" />

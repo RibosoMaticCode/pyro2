@@ -11,6 +11,7 @@ include 'islogged.php';
 <title><?= $rb_title ?></title>
 
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/style.css" />
+<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/styles2.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/cols.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/table.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/responsive.css" />
@@ -42,7 +43,7 @@ include 'islogged.php';
 		$(".fancybox").fancybox();
 
 		// scroll then menu top fixed
-		var num = 98; //number of pixels before modifying styles
+		var num = 64; //number of pixels before modifying styles
 		$(window).bind('scroll', function () {
 			if ($(window).scrollTop() > num) {
 				$('#toolbar').addClass('fixed');
@@ -94,8 +95,6 @@ include 'islogged.php';
 				$('.help').slideUp();
 			});
 		});
-
-
 	});
 
 	// Notificador principal
@@ -104,6 +103,25 @@ include 'islogged.php';
 		$("#message").html('<h3>'+$text+'</h3>');
 		$("#message").animate({ "top": "+=50px", "opacity" : 1 }, "slow" );
 		$("#message").delay(2000).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
+	}
+	/*var light_box = function(thisObj, msj){
+		thisObj.addClass('input_red');
+		thisObj.focus();
+		thisObj.nextAll().remove();
+		thisObj.after('<span style="color:red;font-size:.8em;">'+msj+'</span>');
+	}*/
+	var validateInputText = function(thisObj, msj){
+		if( thisObj.val() == ""){
+			thisObj.addClass('input_red');
+			thisObj.focus();
+			thisObj.nextAll().remove();
+			thisObj.after('<span style="color:red;font-size:.8em;">'+msj+'</span>');
+			//return false;
+			event.preventDefault();
+		}else{
+			thisObj.removeClass('input_red');
+			thisObj.nextAll().remove();
+		}
 	}
 </script>
 </head>
@@ -132,7 +150,9 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
     		<button class="search">B</button>
     	</form>
 			<div class="menu2">
-	    	<a class="btn-primary btn-goto-web" target="_blank" href="<?= G_SERVER ?>">Ir a la web</a>
+				<?php if(G_ESTILO!="0"): ?>
+	    		<a class="btn-primary btn-goto-web" target="_blank" href="<?= G_SERVER ?>">Ir a la web</a>
+				<?php endif ?>
 				<?php if($userType == "admin"): ?>
 	    	<a id="modules" title="Añadir funciones extras" href="modules.php">
 	    		<img src="img/plugin-icon.png" alt="Modulos">

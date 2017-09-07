@@ -12,7 +12,7 @@ else:
 					echo $msg;
 				}
 				?>
-				<form class="frmlogin" action="login.php" name="login" method="post">
+				<form class="frmlogin frmlogin-abs" action="login.php" name="login" method="post">
 					<div class="cover-imagen-login" style="background:url('<?= rb_photo_login(G_LOGO) ?>') no-repeat center center;background-size:cover;"></div>
 					<h2>Recupera tu contraseña</h2>
 					<input type="text" name="mail" placeholder="Escribe tu correo electronico" required />
@@ -24,7 +24,9 @@ else:
 						Volver a <a href="<?= $rm_url ?>login.php">Iniciar Sesión</a>
 					</p>
 				</form>
-				<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+				<!--<?php if(G_ESTILO!="0"): ?>
+					<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+				<?php endif ?>-->
 			</div>
 		</div>
 	</body>

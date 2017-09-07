@@ -34,9 +34,8 @@ $seccion = 'modules-list'; // pintar boton del menu
 				?>
 				<?php if (!in_array("module", $array_help_close)): ?>
 				<div class="help" data-name="module">
-		           	<h4>Información</h4>
-		           	<p>Los <strong>módulos</strong> proporciona funcionamientos adicionales al gestor. Aqui podrá activar ó desactivar módulos para el Gestor. Los archivos
-		           		de código de los módulos, se almacenan en: <code>/rb-script/modules/modulo-nombre</code>.</p>
+		       <h4>Información</h4>
+		       <p>Los <strong>módulos</strong> proporciona funcionamientos adicionales al gestor. Aqui podrá activar ó desactivar módulos para el Gestor. Los archivos de código de los módulos, se almacenan en: <code>/rb-script/modules/modulo-nombre</code>.</p>
 				</div>
 				<?php endif ?>
 				<div class="wrap-content-list">

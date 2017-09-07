@@ -1,10 +1,11 @@
 <?php
-include 'islogged.php';
+//include 'islogged.php';
 /*
  *
  * AGREGA UNA NUEVA GALERIA DE FOTOS AL POST ACTUAL
  *
  * */
+require_once("../global.php");
 require_once("../rb-script/funciones.php");
 require_once("../rb-script/class/rb-galerias.class.php");
 
@@ -16,7 +17,7 @@ $des="";
 $catpadre = 0;
 $nivel = 0;
 
-if($objGaleria->Insertar(array($nomVis,"",0,"NOW()",$nomOcul))){
+if($objGaleria->Insertar(array($nomVis,"",$nomOcul,"",G_USERID,0))){
 	$ultimo_id=mysql_insert_id();
 	echo "<label class=\"label_checkbox\">";
 	echo "<input type=\"checkbox\" value=\"$ultimo_id\" name=\"albums[]\" /> $nomVis (<a data-id='".$ultimo_id."' class='galleries' href='#'>Editar</a>) \n";

@@ -32,7 +32,7 @@ if(isset($_GET['pag'])){
 // Buscar item padre en el menu para pintarlo de color
 $item_parent_selected = rb_action_menu($menu_panel, $seccion );
 ?>
-<div class="items">
+<div id="bar_style" class="items">
 <ul id="menu">
 	<li class="item-user">
 		<div class="cover-prof-img" style="background:url('<?= rb_get_img_profile( G_USERID ) ?>'); background-position:center; background-size: cover;">

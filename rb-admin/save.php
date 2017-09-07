@@ -35,7 +35,7 @@ switch($operacion){
 	    }
 
 		// Tipo acceso
-		$acceso=$_POST['acceso'];
+		/*$acceso=$_POST['acceso'];
 		if($acceso=="privat"):
 			// Niveles
 			if(!isset($_REQUEST['niveles'])) {
@@ -47,7 +47,7 @@ switch($operacion){
 				$niveles .= $coma.$nivel;
 				$coma =",";
 			}
-		endif;
+		endif;*/
 
 		// Modo
 		$mode=$_POST['mode'];
@@ -141,7 +141,7 @@ switch($operacion){
 				$objArticulo->EditarPorCampo('activo','A',$ultimo_id);
 
 				// Actualizamos niveles de acceso en post
-				$objArticulo->Consultar("UPDATE articulos SET acceso = '$acceso', niveles = '$niveles' WHERE id = $ultimo_id");
+				/*$objArticulo->Consultar("UPDATE articulos SET acceso = '$acceso', niveles = '$niveles' WHERE id = $ultimo_id");*/
 
 				//grabamos a nueva tabla articulos_categorias
 				foreach($array_categorias as $categoria){
@@ -199,7 +199,7 @@ switch($operacion){
 			$objArticulo->Editar(array($tit, $tit_id, $cla, $cont,$port,$src,$actividad,$fecha,$fecmod,$video,$video_embed,$galeria),$id);
 
 			// Actualizamos niveles de acceso en post
-			$objArticulo->Consultar("UPDATE articulos SET acceso = '$acceso', niveles = '$niveles' WHERE id = $id");
+			/*$objArticulo->Consultar("UPDATE articulos SET acceso = '$acceso', niveles = '$niveles' WHERE id = $id");*/
 
 			// ejecutamos consulta
 			$objArticulo->Consultar("DELETE FROM articulos_categorias WHERE articulo_id=$id");
@@ -873,9 +873,9 @@ switch($operacion){
 			// EDITAR
 			if($objUsuario->Editar(array($nm, $ap, $cn, $cr, $tm, $tf, $mail, $di, $tipo, $sex, $photo),$id)){
 
-				/*if($change_pwd==1) $objUsuario->EditarPorCampo("password", md5(trim($pwd)),$id);
+				if($change_pwd==1) $objUsuario->EditarPorCampo("password", md5(trim($pwd)),$id);
 
-				$objUsuario->EditarPorCampo("bio", $bio, $id);
+				/*$objUsuario->EditarPorCampo("bio", $bio, $id);
 				$objUsuario->EditarPorCampo("tw", $tw, $id);
 				$objUsuario->EditarPorCampo("fb", $fb, $id);
 				$objUsuario->EditarPorCampo("gplus", $gplus, $id);*/

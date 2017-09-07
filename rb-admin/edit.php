@@ -16,618 +16,7 @@ switch($sec){
 	/* ---------------- FORMULARIO ARTICULO ------------------------ */
 	/* ------------------------------------------------------------- */
 	case "art":
-		require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
-		require_once(ABSPATH."rb-script/class/rb-categorias.class.php");
-		require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 
-		$json_post_options = $objOpcion->obtener_valor(1,'post_options');
-		$array_post_options = json_decode($json_post_options, true);
-
-		if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
-		$mode;
-		if(isset($_GET["id"])){
-			$id=$_GET["id"];
-			$cons_art = $objArticulo->Consultar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fechamod, DATE_FORMAT(fecha_creacion, '%d-%m-%Y') as fechadmY FROM articulos WHERE id=$id");
-			$row=mysql_fetch_array($cons_art);
-			$mode = "update";
-			$new_button = '<a href="../rb-admin/?pag=art&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
-		}else{
-			$mode = "new";
-			$new_button = '';
-		}
-		include_once("tinymce.module.small.php");
-	?>
-
-		<script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
-		<script>
-			$.datepicker.regional['es'] = {
-				 closeText: 'Cerrar',
-				 prevText: '<Ant',
-				 nextText: 'Sig>',
-				 currentText: 'Hoy',
-				 monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-				 monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-				 dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-				 dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-				 dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-				 weekHeader: 'Sm',
-				 dateFormat: 'dd/mm/yy',
-				 firstDay: 1,
-				 isRTL: false,
-				 showMonthAfterYear: false,
-				 yearSuffix: ''
-			 };
-			$.datepicker.setDefaults($.datepicker.regional['es']);
-
-			$(document).ready(function() {
-				$( '#edit-config' ).click(function( event ) {
-					$.post( "post.options.php?s=posts" , function( data ) {
-					 	$('.explorer').html(data);
-					 	$(".bg-opacity").show();
-				   		$(".explorer").fadeIn(500);
-					});
-				});
-			});
-		</script>
-
-		<form name="formcat" action="category.minisave.php" method="post" id="formcat"></form>
-		<form name="formgaleria" action="album.minisave.php" method="post" id="formgaleria"></form>
-
-		<form enctype="multipart/form-data" id="article-form" name="article-form" method="post" action="save.php">
-        	<div id="toolbar">
-            	<div id="toolbar-buttons">
-					<input class="submit" name="guardar" type="submit" value="Guardar" />
-					<input class="submit" name="guardar_volver" type="submit" value="Guardar y Volver" />
-                    <a href="../rb-admin/?pag=art"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
-                    <?= $new_button ?>
-                    <a id="edit-config" class="edit-config" href="#">Configurar editor</a>
-                </div>
-            </div>
-            <div>
-                <div class="content-edit">
-                	<!-- SECCION EDITOR -- POR DEFECTO VISIBLE -->
-                	<section class="seccion">
-                    <div class="seccion-body">
-                        <input autocomplete="off" placeholder="Escribe el titulo aqui" class="titulo" name="titulo" type="text" id="titulo" value="<?php if(isset($row)) echo $row['titulo'] ?>" required />
-                        <textarea class=" mceEditor" name="contenido" id="contenido" style="width:100%;"><?php if(isset($row)) echo stripslashes(htmlspecialchars($row['contenido'])); ?></textarea>
-                        <?php //if($mode == "update"):?>
-                        <script>
-                        	$(document).ready(function() {
-	                        	$('#btnshowDateTimeCover').click( function (event){
-	                        		event.preventDefault();
-	                        		$('#coverFechaPublicacion').slideDown();
-	                        	});
-	                        	$('#btnhideDateTimeCover').click( function (event){
-	                        		event.preventDefault();
-	                        		$('#coverFechaPublicacion').slideUp();
-	                        	});
-	                        });
-                        </script>
-                        	<a href="#" id="btnshowDateTimeCover">Establecer fecha de publicación</a>
-                        	<div id="coverFechaPublicacion">
-		                    <label title="Editar fecha publicacion">Fecha de Publicacion:
-		                    	<span class="info">El gestor establece la fecha y hora de publicación en el momento que se guardan los datos, si desea establecerlos manualmente, siga este formato: YYYY-MM-DD HH:MM:SS Ejemplo: <?= date("Y-m-d H:i:s") ?></span>
-		                    	<input maxlength="200"  name="fechamod" type="text" id="fechamod" value="<?php if(isset($row)) echo $row['fecha_creacion'] ?>" />
-		                    </label>
-		                    <a href="#" id="btnhideDateTimeCover">Cancelar</a>
-		                    </div>
-		                <?php //endif; ?>
-                    </div>
-                    </section>
-
-                    <!-- SECCION ENLAZAR -->
-					<?php if($array_post_options['enl']==1): ?>
-					<section class="seccion">
-						<div class="seccion-header">
-                    	<h3>Enlazar con otras Publicaciones</h3>
-                    	<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                    	</div>
-
-                    	<div class="seccion-body">
-                    	<?php if(isset($row)):?>
-                    	<table class="tsmall" id="t_atributo" width="100%">
-                    		<tr>
-                    			<th>Nombre de Atributo</th>
-                    			<th>Publicación</th>
-                    			<th></th>
-                    		</tr>
-                    		<?php
-                    		$qAll = $objArticulo->Consultar("SELECT titulo, id FROM articulos");
-
-                    		$qo = $objArticulo->Consultar("SELECT * FROM articulos_articulos WHERE articulo_id_padre =". $row['id']);
-							while($Atributo = mysql_fetch_array($qo)):
-							?>
-							<tr>
-	                    		<td><input id="input_<?= $Atributo['id']?>" type="text" name="atributo[<?= $Atributo['id']?>][nombre]" value="<?= $Atributo['nombre_atributo'] ?>" /> </td>
-	                    		<td>
-	                    			<select class="select" data-id="<?= $Atributo['id']?>" id="select_<?= $Atributo['id']?>" required name="atributo[<?= $Atributo['id']?>][id]">
-	                    			<?php
-	                    			while($Posts = mysql_fetch_array($qAll)):
-									?>
-										<option title="<?= $Posts['titulo'] ?>" value="<?= $Posts['id'] ?>" <?php if($Posts['id']==$Atributo['articulo_id_hijo']) echo " selected " ?>><?= $Posts['id'] ?>-<?= $Posts['titulo'] ?></option>
-									<?php
-									endwhile;
-									mysql_data_seek($qAll, 0)
-	                    			?>
-	                    			</select>
-	                    		</td>
-	                    		<td><a title="Borrar" class="deleteAtributo" href="#">
-	                    			<img src="img/del-red-16.png" alt="delete" />
-	                    		</a></td>
-	                    	</tr>
-                    		<?php
-							endwhile;
-                    		?>
-                    	</table>
-                    	<a class="add" id="newAtributo" href="#">Añadir atributo</a>
-                    	<?php else: ?>
-                    	<table class="tsmall" id="t_atributo" width="100%">
-                    		<tr>
-                    			<th>Nombre de Atributo</th>
-                    			<th>Publicación</th>
-                    			<th></th>
-                    		</tr>
-                    	</table>
-                    	<a class="add" id="newAtributo" href="#">Añadir atributo</a>
-                    	<?php endif; ?>
-                    	</div>
-                    </section>
-                    <?php endif ?>
-
-	                <!-- SECCIONES ADJUNTOS -->
-	                <?php if($array_post_options['adj']==1): ?>
-						<section class="seccion">
-                		<div class="seccion-header">
-                			<h3>Adjuntos</h3>
-                			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                		</div>
-                		<div class="seccion-body">
-	                    	<script>
-								$(document).ready(function() {
-									$(".explorer-file").filexplorer({
-										inputHideValue : ""
-									});
-								});
-							</script>
-							<!--
-							*************** A R C H I V O S  A D J U N T O S ***************
-							-->
-		                    <div id="featured-image">
-		                    	<!-- A C T U A L I Z A R -->
-		                    	<?php if(isset($row)):?>
-		                    		<table id="t_imagen" width="100%" cellpadding="0" cellspacing="0">
-										<tr>
-			                    			<td width="40%"><strong>Imagen de Portada</strong><br />
-			                    				<span class="info">Sirve como imagen de fondo, para slideshow, por lo general una imagen grande.</span></td>
-			                    			<td>
-			                    				<input name="portada" type="text" id="portada" class="explorer-file" readonly
-			                    				value="<?= rb_image_exists( $objArticulo->SelectObject( "portada" , $row['id'] , 'image' ) ) ? $objArticulo->SelectObject( "portada" , $row['id'] , 'image' ) : '' ?>" />
-			                    			</td>
-			                    		</tr>
-			                    		<tr>
-			                    			<td><strong>Imagen Perfil</strong> <br />
-			                    				<span class="info">Sirve como imagen que identifica a la publicación o artículo.</span>
-			                    			</td>
-			                    			<td>
-			                    				<input name="secundaria" type="text" id="logo" class="explorer-file" readonly value="<?= rb_image_exists( $objArticulo->SelectObject( "logo" , $row['id'] , 'image' ) ) ? $objArticulo->SelectObject( "logo" , $row['id'] , 'image' ) : '' ?>" />
-			                    			</td>
-			                    		</tr>
-			                    		<tr>
-			                    			<td><strong>Archivo Adjunto</strong> <br />
-			                    				<span class="info">Puede ser un archivo DOC, PDF, como información complementaria para descargar.</span></td>
-			                    			<td>
-			                    				<input name="adjunto" type="text" id="adjunto" class="explorer-file" readonly value="<?= rb_image_exists( $objArticulo->SelectObject( "adjunto" , $row['id'] , 'image' ) ) ? $objArticulo->SelectObject( "adjunto" , $row['id'] , 'image' ) : '' ?>" />
-			                    			</td>
-			                    		</tr>
-									</table>
-								<!-- N U E V O -->
-								<?php else: ?>
-			                    	<table id="t_imagen" width="100%">
-			                    		<tr>
-			                    			<td width="40%">Imagen de Portada<br />
-			                    				<span class="info">Sirve como imagen de fondo, para slideshow, por lo general una imagen grande.</span></td>
-			                    			<td>
-			                    				<input name="portada" type="text" id="portada" class="explorer-file" readonly />
-			                    			</td>
-			                    		</tr>
-			                    		<tr>
-			                    			<td>Imagen Perfil <br />
-			                    				<span class="info">Sirve como imagen que identifica a la publicación o artículo.</span>
-			                    			</td>
-			                    			<td>
-			                    				<input name="secundaria" type="text" id="secundaria" class="explorer-file" readonly />
-			                    			</td>
-			                    		</tr>
-			                    		<tr>
-			                    			<td>Archivo Adjunto <br />
-			                    				<span class="info">Puede ser un archivo DOC, PDF, como información complementaria para descargar.</span></td>
-			                    			<td>
-			                    				<input name="adjunto" type="text" id="adjunto" class="explorer-file" readonly />
-			                    			</td>
-			                    		</tr>
-			                    	</table>
-			                    <?php endif; ?>
-		                    </div>
-	                    </div>
-					</section>
-	                <?php endif ?>
-
-	                <!-- SECCIONES OTRAS OPCIONES -->
-	                <?php if($array_post_options['edi']==1): ?>
-	                <section class="seccion">
-	                	<div class="seccion-header">
-                    		<h3>Opciones de Edición</h3>
-                    		<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                    	</div>
-                    	<div class="seccion-body">
-	                        <label title="Edita enlace amigable" for="titulo-enlace">Enlace por defecto:</label>
-	                        <input maxlength="200"  name="titulo_enlace" type="text" id="titulo-enlace" value="<?php if(isset($row)) echo $row['titulo_enlace'] ?>" />
-
-	                        <label title="Edita etiquetas">Etiquetas (palabras claves relacionadas con la Publicacion. Ej. viajes, caribe, ofertas)</label>
-	                        <input maxlength="200"  name="claves" type="text" id="claves" value="<?php if(isset($row)) echo $row['tags'] ?>" />
-	                    </div>
-                    </section>
-                    <?php endif ?>
-                </div>
-                <div id="sidebar">
-                	<!-- SECCION ACCESO POR NIVELES -- POR DEFECTO VISIBLE -->
-                	<!--<section class="seccion">
-                		<div class="seccion-header">
-                			<h3>Acceso al post</h3>
-                			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                		</div>
-                		<div class="seccion-body">
-                			<label>
-                				<input type="radio" name="acceso" value="public" <?php if(isset($row) && $row['acceso']=="public"){ echo " checked "; }else{ echo " checked "; } ?> /> Publico
-                				<span class="info2">
-                					La publicación puede ser vista por cualquier persona. No necesita registrarse.
-                				</span>
-                			</label>
-                			<label>
-                				<input type="radio" name="acceso" value="privat" <?php if(isset($row) && $row['acceso']=="privat"){ echo " checked "; } ?> /> Privado por niveles
-                				<span class="info2">
-                					La publicación puede verla los usuarios registrados. También puede filtrar por niveles de usuarios que pueden ver.
-                				</span>
-                			</label>
-                			<div class="seccion-list-margin-left">
-                				<?php
-								$q = $objUsuario->Consultar("SELECT * FROM usuarios_niveles WHERE id<>1");
-								while($r = mysql_fetch_array($q)):
-								?>
-								<label>
-									<?php if($mode=="new"): ?>
-									<input checked type="checkbox" name="niveles[]" value="<?= $r['id'] ?>" /> <?= $r['nombre'] ?>
-									<?php
-									else:
-										$array_niveles = explode(',',$row['niveles']);
-
-									?>
-									<input type="checkbox" name="niveles[]" value="<?= $r['id'] ?>" <?php if(in_array($r['id'], $array_niveles)) echo " checked " ?> /> <?= $r['nombre'] ?>
-									<?php endif; ?>
-								</label>
-								<?php
-								endwhile;
-								?>
-                			</div>
-                		</div>
-                	</section>-->
-                	<!-- SECCION CATEGORIAS -- POR DEFECTO VISIBLE -->
-                	<section class="seccion">
-                		<div class="seccion-header">
-                			<h3>Categoria</h3>
-                			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                		</div>
-                		<div class="seccion-body">
-                    		<div class="post-categories">
-                    	<?php if($userType == "admin"): ?>
-                    	<a href="#" class="popup" title="Nueva Categoría">+</a>
-                    	<?php endif ?>
-                        <div class="categoria_nueva" style="display:none">
-                        	<input type="text" name="categoria_nombre" form="formcat" id="categoria_nombre" required value="" />
-                        	<input type="submit" form="formcat" value="Guardar" /> <input type="button" form="formcat" value="Cancelar" id="cancel" />
-                        </div>
-                    	<script>
-                    		$(document).ready(function() {
-	                    		$( ".popup" ).click(function( event ) {
-	                    			$( ".categoria_nueva" ).toggle();
-	                    			$( "#categoria_nombre" ).focus();
-	                    			event.preventDefault();
-	                    		});
-
-	                    		$( "#formcat" ).submit(function( event ) {
-	                    			event.preventDefault();
-								  	$.ajax({
-									  	method: "POST",
-									  	url: "category.add.post.php",
-									  	data: $( "#formcat" ).serialize()
-									}).done(function( msg ) {
-									    $('#catlist').append( msg );
-									    $( ".categoria_nueva" ).toggle();
-									    $( "#categoria_nombre" ).val("");
-									});
-								});
-
-								$( "#cancel" ).click(function( event ) {
-									$( ".categoria_nueva" ).toggle();
-									$( "#categoria_nombre" ).val("");
-								});
-	                    	});
-                    	</script>
-
-                        <div id="catlist">
-						<?php
-                            $cons_cat = $objCategoria->Consultar("SELECT * FROM categorias ORDER BY nombre ASC");
-
-                            while($row_c=mysql_fetch_array($cons_cat)){
-                                $categoria_id=$row_c['id'];
-
-                                if(isset($row)){ // si esta definida variable con datos cargados para actualizar
-									//buscar las coincidencias articulos-categorias
-									$coincidencia=mysql_num_rows($objArticulo->Consultar("SELECT * FROM articulos_categorias WHERE articulo_id=$id AND categoria_id=$categoria_id"));
-								}else{
-									$coincidencia=0;
-								}
-
-                                echo "<label class=\"label_checkbox\">";
-                                if($coincidencia>0){
-                                    echo "<input type=\"checkbox\" value=\"$row_c[id]\" checked=\"checked\" name=\"categoria[]\" /> $row_c[nombre] \n";
-                                }else{
-                                    echo "<input type=\"checkbox\" value=\"$row_c[id]\" name=\"categoria[]\" /> $row_c[nombre] \n";
-                                }
-                                echo "</label>";
-                            }
-                        ?>
-                        </div>
-                    </div>
-                    	</div>
-                    </section>
-
-                    <!-- SECCION CAMPOS ADICIONALES -->
-                    <?php if($array_post_options['adi']==1): ?>
-					<section class="seccion">
-					<div class="seccion-header">
-						<h3>Campos adicionales</h3>
-						<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-					</div>
-					<div class="seccion-body">
-					<div id="objects-extern" class="inseccion">
-						<!-- actualizar -->
-						<?php if(isset($row)):?>
-							<table class="tsmall" id="t_externo" width="100%">
-	                    		<tr>
-	                    			<th>Tipo</th>
-	                    			<th>Contenido</th>
-	                    		</tr>
-	                    		<?php
-	                    		$i=0;
-	                    		$objetos = $objOpcion->obtener_valor(1,'objetos');
-								$array = explode(",",$objetos);
-								$array_count = count($array);
-	                    		while($i<$array_count):
-	                    		?>
-	                    		<tr>
-	                    			<td>
-	                    				<input name="externo[<?= trim($array[$i]) ?>][tipo]" type="hidden" value="<?= trim($array[$i]) ?>" />
-	                    				<?php echo trim($array[$i]) ?>
-	                    			</td>
-	                    			<td>
-	                    				<input name="externo[<?= trim($array[$i]) ?>][contenido]" type="text" value="<?= $objArticulo->SelectObject(trim($array[$i]),$row['id'],'objeto') ?>"/>
-	                    			</td>
-	                    		</tr>
-	                    		<?php
-	                    		$i++;
-								endwhile;
-	                    		?>
-	                    	</table>
-						<!-- nuevo -->
-						<?php else: ?>
-							<table class="tsmall" id="t_externo" width="100%">
-	                    		<tr>
-	                    			<th>Tipo</th>
-	                    			<th>Contenido</th>
-	                    		</tr>
-	                    		<?php
-	                    		$i=0;
-	                    		$objetos = $objOpcion->obtener_valor(1,'objetos');
-								$array = explode(",",$objetos);
-								$array_count = count($array);
-	                    		while($i<$array_count):
-	                    		?>
-	                    		<tr>
-	                    			<td>
-	                    				<input name="externo[<?= trim($array[$i]) ?>][tipo]" type="hidden" value="<?= trim($array[$i]) ?>" />
-	                    				<?php echo trim($array[$i]) ?>
-	                    			</td>
-	                    			<td>
-	                    				<input name="externo[<?= trim($array[$i]) ?>][contenido]" type="text" />
-	                    			</td>
-	                    		</tr>
-	                    		<?php
-	                    		$i++;
-								endwhile;
-	                    		?>
-	                    	</table>
-	                    <?php endif; ?>
-					</div>
-					</div>
-					</section>
-					<?php endif; ?>
-                    <!-- SECCION GALERIAS / IMAGENES -->
-                    <?php if($array_post_options['gal']==1): ?>
-                    <section class="seccion">
-                    	<div class="seccion-header">
-                    		<h3>Galerías e imágenes</h3>
-                    		<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                    	</div>
-                    	<div class="seccion-body">
-                    	<!--<div class="mitad">-->
-							<div id="alblist">
-							<?php
-							if($userType == "user-panel"):
-								$cons_cat = $objCategoria->Consultar("SELECT * FROM albums WHERE usuario_id = ".G_USERID." ORDER BY nombre ASC");
-							else:
-								$cons_cat = $objCategoria->Consultar("SELECT * FROM albums ORDER BY nombre ASC");
-							endif;
-
-		                        while($row_c=mysql_fetch_array($cons_cat)){
-		                        	$album_id=$row_c['id'];
-
-		                            if(isset($row)){ // si esta definida variable con datos cargados para actualizar
-										//buscar las coincidencias articulos-categorias
-										$coincidencia=mysql_num_rows($objArticulo->Consultar("SELECT * FROM articulos_albums WHERE articulo_id=$id AND album_id=$album_id"));
-									}else{
-										$coincidencia=0;
-									}
-
-		                            echo "<label class=\"label_checkbox\">";
-		                            if($coincidencia>0){
-		                            	echo "<input type=\"checkbox\" value=\"$row_c[id]\" checked=\"checked\" name=\"albums[]\" /> $row_c[nombre]  (<a data-id='".$row_c['id']."' class='galleries' href='#'>Ver</a>) \n";
-		                            }else{
-		                                echo "<input type=\"checkbox\" value=\"$row_c[id]\" name=\"albums[]\" /> $row_c[nombre]  (<a data-id='".$row_c['id']."' class='galleries' href='#'>Ver</a>) \n";
-		                            }
-		                            echo "</label>";
-		                    	}
-							?>
-							</div>
-							<a href="#" class="popup_galeria add" title="Nueva Galería">Nueva Galería</a>
-							<!--<a class="add" href="index.php?pag=gal">Editor Avanzado</a>-->
-	                        <div class="galeria_nueva" style="display:none">
-	                        	<input type="text" name="galeria_nombre" form="formgaleria" id="galeria_nombre" required value="" />
-	                        	<input type="submit" form="formgaleria" value="Guardar" /> <input type="button" form="formgaleria" value="Cancelar" id="cancel_galeria" />
-	                        </div>
-	                    	<script>
-	                    		$(document).ready(function() {
-		                    		$( ".popup_galeria" ).click(function( event ) {
-		                    			event.preventDefault();
-		                    			$( ".galeria_nueva" ).toggle();
-		                    			$( "#galeria_nombre" ).focus();
-		                    		});
-
-		                    		$( "#formgaleria" ).submit(function( event ) {
-		                    			event.preventDefault();
-									  	$.ajax({
-										  	method: "POST",
-										  	url: "gallery.add.post.php",
-										  	data: $( "#formgaleria" ).serialize()
-										}).done(function( msg ) {
-										    $('#alblist').append( msg );
-										    $( ".galeria_nueva" ).toggle();
-										    $( "#galeria_nombre" ).val("");
-										});
-									});
-
-									$( "#cancel_galeria" ).click(function( event ) {
-										$( ".galeria_nueva" ).toggle();
-										$( "#categoria_nombre" ).val("");
-									});
-		                    	});
-	                    	</script>
-
-						<!--</div>-->
-
-	                    </div>
-	                    <div style="clear: both"></div>
-	                </section>
-	                <?php endif ?>
-
-
-                    <!-- SECCION VIDEO -->
-                    <?php if($array_post_options['vid']==1): ?>
-					<section class="seccion">
-						<div class="seccion-header">
-                    		<h3>Video</h3>
-                    		<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                    	</div>
-						<div class="seccion-body">
-							<span class="info">Puedes mostrar videos de Youtube unicamente (aparecerá luego del contenido)</span>
-							<textarea name="video_embed" placeholder="http://www.youtube.com/embed/CODIGO"><?php if(isset($row)) echo $row['video_embed'] ?></textarea>
-						</div>
-					</section>
-					<?php endif ?>
-
-					<!-- SECCION CALENDARIO -->
-					<?php if($array_post_options['cal']==1): ?>
-					<section class="seccion">
-						<div class="seccion-header">
-							<h3>Calendario</h3>
-							<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-						</div>
-						<div class="seccion-body">
-						<span class="info">Bastará con seleccionar la fecha, y esta publicación aparecera en el calendario de actividades</span>
-							<script>
-							$(document).ready(function() {
-								/* datapicker manager */
-								/* ================== */
-								$('.fecha_actividad').datepicker();
-
-								$('.fecha_actividad').datepicker('option', {
-									minDate: 0,
-									dateFormat: 'dd-mm-yy'
-								});
-
-								<?php
-								if(isset($row) && $row['actividad']=='1'):
-								?>
-								$('.fecha_actividad').datepicker('setDate', '<?= a_ddmmyyyy($row['fecha_actividad']) ?>');
-								<?php
-								endif;
-								?>
-							});
-							</script>
-						<input type="text" name="calendar" class="fecha_actividad" value="<?php if(isset($row) && $row['actividad']=='1') echo a_ddmmyyyy($row['fecha_actividad']) ?>" />
-						</div>
-					</section>
-					<?php endif ?>
-
-					<!-- SECCION OTRAS OPCIONES -->
-					<?php if($array_post_options['otr']==1): ?>
-                    <section class="seccion">
-                    	<div class="seccion-header">
-							<h3>Otras opciones</h3>
-							<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-						</div>
-						<div class="seccion-body">
-							<span class="info">Estas opciones afectan las publicaciones dependiendo de la plantilla usada.</span>
-						<label class="label_checkbox" for="featured">
-		                   	<?php $chektext = "Destacar <img src='img/star-16.png' alt='starred' />"?>
-		                   	<?php if(isset($row)):
-		                   		$check ="";
-		                   		if($row['portada']==1) $check = " checked=\"checked\" ";
-		                   	?>
-		                   	<input type="checkbox" name="featured" id="featured" value="1" <?php echo $check ?> /> <?=$chektext?>
-		                   	<?php else: ?>
-		                   	<input type="checkbox" name="featured" id="featured" value="1" /> <?=$chektext?>
-		                   	<?php endif; ?>
-						</label>
-
-						</div>
-					</section>
-					<?php endif ?>
-
-					<!-- SECCION SUBIR IMAGENES -->
-					<?php if($array_post_options['sub']==1): ?>
-					<section class="seccion">
-						<div class="seccion-header">
-							<h3>Subir imagenes</h3>
-							<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-						</div>
-						<div class="seccion-body">
-						<?php
-						include_once ABSPATH.'rb-script/modules/rb-uploadimg/mod.uploadimg.php';
-						?>
-						</div>
-					</section>
-					<?php endif ?>
-                </div>
-            </div>
-			<input name="section" value="art" type="hidden" />
-			<input name="mode" value="<?php echo $mode ?>" type="hidden" />
-			<input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
-            <input name="userid" value="<?php echo G_USERID ?>" type="hidden" />
-            <!-- url img -->
-            <input name="srcimg" value="<?php if(isset($row)) echo $row['img_portada'] ?>" type="hidden" />
-		</form>
-	<?php
 	break;
     /* ------------------------------------------------------------- */
     /* ---------------- FORMULARIO PAGINA -------------------------- */
@@ -650,7 +39,6 @@ switch($sec){
         }
 		include_once("tinymce.module.small.php");
     ?>
-
         <form id="article-form" name="article-form" method="post" action="save.php">
             <div id="toolbar">
                 <div id="toolbar-buttons">
@@ -1352,11 +740,11 @@ switch($sec){
 			$cons_art = $objCategoria->Consultar("SELECT * FROM categorias WHERE id=$id");
 			$row=mysql_fetch_array($cons_art);
 			$mode = "update";
-			$cancel ="Volver";
+			$cancel ="Cancelar";
 			$new_button = '<a href="../rb-admin/?pag=cat&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
 		}else{
 			$mode = "new";
-			$cancel ="Volver";
+			$cancel ="Cancelar";
 			$new_button = "";
 		}
 	?>
@@ -1368,57 +756,72 @@ switch($sec){
 			});
 		</script>
 		<form id="categorie-form" name="categorie-form" method="post" action="save.php">
-        	<div id="toolbar">
-            	<div id="toolbar-buttons">
-                    <span class="post-submit">
-                    <input class="submit" name="guardar" type="submit" value="Guardar" />
-                    <a href="../rb-admin/?pag=cat"><input title="Volver al listado" class="button" name="cancelar" type="button" value="<?= $cancel ?>" /></a>
-                    <?= $new_button ?>
-                    </span>
-                </div>
+      <div id="toolbar">
+        <div id="toolbar-buttons">
+          <span class="post-submit">
+            <input class="submit" name="guardar" type="submit" value="Guardar" />
+            <a href="../rb-admin/?pag=cat"><input title="Volver al listado" class="button" name="cancelar" type="button" value="<?= $cancel ?>" /></a>
+            <?= $new_button ?>
+          </span>
+        </div>
+      </div>
+			<div>
+        <div class="content-edit">
+          <section class="seccion">
+						<div class="seccion-body">
+							<?php
+							$title_category = "Categoría";
+							if($mode=="new"):
+								if(isset($_GET['catid']) && isset($_GET['niv'])):?>
+								<label>Ruta / Ubicacion:
+										<input readonly type="text" value="<?= rb_path_categories($_GET['catid']) ?>" />
+										<?php $title_category = "Subcategoria" ?>
+								</label>
+								<?php
+								endif;
+							elseif($mode=="update"):
+								if($row['nivel'] > 0 && $row['categoria_id'] > 0): ?>
+									<label>Ruta / Ubicacion:
+											<input readonly type="text" value="<?= rb_path_categories($row['categoria_id']) ?>" />
+											<?php $title_category = "Subcategoria" ?>
+									</label>
+								<?php
+								endif;
+							endif ?>
+							<label>Nombre <?= $title_category ?> <span class="required">*</span>:
+								<input required  name="nombre" type="text" value="<?php if(isset($row))echo $row['nombre'] ?>" />
+							</label>
+							<label title="Descripcion de la categoria">Descripcion: <span class="info">La descripción no es necesaria, salvo si su plantilla/diseño lo requiera.</span>
+								<textarea name="descripcion" id="descripcion" rows="4" style="width:100%; height:150px;"><?php if(isset($row))echo $row['descripcion'] ?></textarea>
+							</label>
+							<label title="Tag url" for="nombre">Enlace por defecto:
+								<input  name="nombre_enlace" type="text" value="<?php if(isset($row))echo $row['nombre_enlace'] ?>" />
+							</label>
+						</div>
+					</section>
+				</div>
+				<div id="sidebar">
+          <!-- SECCION ACCESO POR NIVELES -- POR DEFECTO VISIBLE -->
+          <section class="seccion">
+            <div class="seccion-header">
+              <h3>Acceso al categoria</h3>
+              <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
             </div>
-            <div>
-                <div class="content-edit">
-                	<section class="seccion">
-	                    <div class="seccion-body">
-	                        <label title="Nombre de la categoria" for="nombre">Nombre Categoria <span class="required">*</span>:
-	                        <input required  name="nombre" type="text" value="<?php if(isset($row))echo $row['nombre'] ?>" />
-	                        </label>
-
-
-	                        <label title="Descripcion de la categoria">Descripcion:
-	                        	<span class="info">La descripción no es necesaria, salvo si su plantilla/diseño lo requiera.</span>
-	                        <textarea name="descripcion" id="descripcion" rows="4" style="width:100%; height:150px;"><?php if(isset($row))echo $row['descripcion'] ?></textarea>
-	                        </label>
-
-	                        <label title="Tag url" for="nombre">Enlace por defecto:
-	                        <input  name="nombre_enlace" type="text" value="<?php if(isset($row))echo $row['nombre_enlace'] ?>" />
-	                        </label>
-	                    </div>
-                    </section>
-                </div>
-                <div id="sidebar">
-                	<!-- SECCION ACCESO POR NIVELES -- POR DEFECTO VISIBLE -->
-                	<section class="seccion">
-                		<div class="seccion-header">
-                			<h3>Acceso al categoria</h3>
-                			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                		</div>
-                		<div class="seccion-body">
-                			<label>
-                				<input type="radio" name="acceso" value="public" <?php if(isset($row) && $row['acceso']=="public"){ echo " checked "; }else{ echo " checked "; } ?> /> Publico
-                				<span class="info2">
-                					La categoría puede ser vista por cualquier persona. No necesita registrarse.
-                				</span>
-                			</label>
-                			<label>
-                				<input type="radio" name="acceso" value="privat" <?php if(isset($row) && $row['acceso']=="privat"){ echo " checked "; } ?> /> Privado por niveles
-                				<span class="info2">
-                					La categoría puede verla los usuarios registrados. También puede filtrar por niveles de usuarios que pueden ver.
-                				</span>
-                			</label>
-                			<div class="seccion-list-margin-left">
-                				<?php
+            <div class="seccion-body">
+              <label>
+                <input type="radio" name="acceso" value="public" <?php if(isset($row) && $row['acceso']=="public"){ echo " checked "; }else{ echo " checked "; } ?> /> Publico
+                <span class="info2">
+                	La categoría (y su contenido) puede ser vista por cualquier persona. No necesita registrarse.
+                </span>
+            	</label>
+              <label>
+                <input type="radio" name="acceso" value="privat" <?php if(isset($row) && $row['acceso']=="privat"){ echo " checked "; } ?> /> Privado por niveles
+                <span class="info2">
+                	La categoría (y su contenido) puede verla los usuarios registrados. También puede filtrar por niveles de usuarios que pueden ver.
+                </span>
+              </label>
+              <div class="seccion-list-margin-left">
+                <?php
 								$q = $objUsuario->Consultar("SELECT * FROM usuarios_niveles WHERE id<>1");
 								while($r = mysql_fetch_array($q)):
 								?>
@@ -1428,7 +831,6 @@ switch($sec){
 									<?php
 									else:
 										$array_niveles = explode(',',$row['niveles']);
-
 									?>
 									<input type="checkbox" name="niveles[]" value="<?= $r['id'] ?>" <?php if(in_array($r['id'], $array_niveles)) echo " checked " ?> /> <?= $r['nombre'] ?>
 									<?php endif; ?>
@@ -1436,26 +838,24 @@ switch($sec){
 								<?php
 								endwhile;
 								?>
-                			</div>
-                		</div>
-                	</section>
-                	<section class="seccion">
-	                    <div class="seccion-body">
-	                        <label>Seleccionar imagen:
-	                        	<span class="info">De preferencia una imagen de las misma dimensión horizontal y vertical</span>
-	                       		<input readonly name="imagen-categoria" type="text" class="explorer-file" value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" />
-	                        </label>
-	                    </div>
-                    </section>
-                	<?php ?>
-                </div>
+							</div>
+            </div>
+          </section>
+          <section class="seccion">
+						<div class="seccion-body">
+							<label>Seleccionar imagen:
+								<span class="info">De preferencia una imagen de las misma dimensión horizontal y vertical</span>
+								<input readonly name="imagen-categoria" type="text" class="explorer-file" value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" />
+							</label>
+						</div>
+          </section>
+        </div>
 			</div>
-            <input name="mode" value="<?php echo $mode; ?>" type="hidden" />
+      <input name="mode" value="<?php echo $mode; ?>" type="hidden" />
 			<input name="section" value="cat" type="hidden" />
 			<input name="id" value="<?php if(isset($row)) echo $row['id']; ?>" type="hidden" />
 			<input name="nivel" value="<?php if(isset($row)) {echo $row['nivel'];}elseif(isset($_GET['niv'])){ echo $_GET['niv']; }else{ echo "0";} ?>" type="hidden" />
 			<input name="catid" value="<?php if(isset($row)) {echo $row['categoria_id'];}elseif(isset($_GET['catid'])){ echo $_GET['catid']; }else{ echo "0";} ?>" type="hidden" />
-
 		</form>
 	<?php
 	break;
@@ -1463,205 +863,7 @@ switch($sec){
 	/* ---------------- FORMULARIO USUARIO ------------------------- */
 	/* ------------------------------------------------------------- */
 	case "usu":
-		require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
-		if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 
-		$mode;
-		if(isset($_GET["id"])){
-			// if define realice the query
-			$id=$_GET["id"];
-			$cons_art = $objUsuario->Consultar("SELECT * FROM usuarios WHERE id=$id");
-			$row=mysql_fetch_array($cons_art);
-			$mode = "update";
-		}else{
-			$mode = "new";
-		}
-	?>
-		<form id="user-form" name="user-form" method="post" action="save.php">
-        	<div id="toolbar">
-            	<div id="toolbar-buttons">
-                    <span class="post-submit">
-					<input class="submit" name="guardar" type="submit" value="Guardar" />
-					<a href="../rb-admin/?pag=usu"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
-
-                    </span>
-                </div>
-            </div>
-			<div>
-				<div class="content-edit">
-					<section class="seccion">
-						<div class="seccion-body">
-	                    <div class="cols-container">
-	                    	<h3 class="subtitle">Datos personales</h3>
-	                    	<div class="cols-6-md col-padding">
-		                        <label title="Nombres" for="nom">Nombres:
-		                        <input name="nom" type="text" id="nom" value="<?php if(isset($row)) echo $row['nombres'] ?>" required />
-		                        </label>
-
-		                        <label title="Apellidos" for="ape">Apellidos:
-		                        <input name="ape" type="text" id="ape" value="<?php if(isset($row)) echo $row['apellidos'] ?>" required />
-		                        </label>
-
-		                        <label title="Correo electronico" for="mail">Correo electronico:
-		                        <input name="mail" type="text" id="mail" value="<?php if(isset($row)) echo $row['correo'] ?>" />
-		                        </label>
-
-		                        <label title="Direccion" for="dir">Direccion:
-		                        <input name="dir" type="text" id="dir" value="<?php if(isset($row)) echo $row['direccion'] ?>" />
-		                        </label>
-
-		                        <label title="Congregacion" for="cong">Ciudad:
-		                        <input name="ciu" type="text" value="<?php if(isset($row)) echo $row['ciudad'] ?>" />
-		                        </label>
-
-		                        <label title="Circuito" for="cir">País:
-		                        <input name="pais" type="text" value="<?php if(isset($row)) echo $row['pais'] ?>" />
-		                        </label>
-
-
-	                        </div>
-	                        <div class="cols-6-md col-padding">
-	                        	<label title="Teléfono móvil" for="tel">Teléfono móvil:
-		                        <input name="telmov" type="text" id="telmov" value="<?php if(isset($row)) echo $row['telefono-movil'] ?>" />
-		                        </label>
-
-		                        <label title="Teléfono fíjo" for="tel">Teléfono fíjo:
-		                        <input name="telfij" type="text" id="telfij" value="<?php if(isset($row)) echo $row['telefono-fijo'] ?>" />
-		                        </label>
-		                        <label title="Sexo" for="sexo" >Sexo:
-		                        <select  name="sexo" id="sexo">
-		                            <option <?php if(isset($row) && $row['sexo']=='h') echo "selected=\"selected\"" ?> value="h">Hombre</option>
-		                            <option <?php if(isset($row) && $row['sexo']=='m') echo "selected=\"selected\"" ?> value="m">Mujer</option>
-		                        </select>
-		                        </label>
-
-		                        <label title="Sexo" for="sexo" >Image Perfil:
-		                        	<script>
-										$(document).ready(function() {
-											$(".explorer-file").filexplorer({
-												inputHideValue: "<?= isset($row) ?  $row['photo_id'] : "0" ?>" // establacer un valor por defecto al cammpo ocutlo
-											});
-										});
-									</script>
-									<input readonly type="text" name="photo" class="explorer-file" value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" id="photo" />
-		                        </label>
-		                        <label>Biografía:
-		                        	<textarea name="bio" placeholder="Cuentanos algo sobre ti"><?php if(isset($row)) echo $row['bio'] ?></textarea>
-		                        </label>
-	                        </div>
-	                    </div>
-	                    <div class="cols-container">
-	                    	<h3 class="subtitle">Redes sociales</h2>
-	                    	<div class="cols-6-md col-padding">
-	                    		<label>Twitter:
-	                        		<input name="tw" type="text" value="<?php if(isset($row)) echo $row['tw'] ?>" />
-	                        	</label>
-
-	                        	<label>Facebook:
-	                        		<input name="fb" type="text" value="<?php if(isset($row)) echo $row['fb'] ?>" />
-	                        	</label>
-
-	                        	<label>Google +:
-	                        		<input name="gplus" type="text" value="<?php if(isset($row)) echo $row['gplus'] ?>" />
-	                        	</label>
-
-	                        	<label>LinkedIn:
-	                        		<input name="in" type="text" value="<?php if(isset($row)) echo $row['in'] ?>" />
-	                        	</label>
-
-	                        	<label>Pinterest:
-	                        		<input name="pin" type="text" value="<?php if(isset($row)) echo $row['pin'] ?>" />
-	                        	</label>
-
-	                        	<label>Instagram:
-	                        		<input name="insta" type="text" value="<?php if(isset($row)) echo $row['insta'] ?>" />
-	                        	</label>
-
-	                        	<label>Youtube:
-	                        		<input name="youtube" type="text" value="<?php if(isset($row)) echo $row['youtube'] ?>" />
-	                        	</label>
-	                    	</div>
-	                    </div>
-
-	                    <div>
-
-			            </div>
-
-	                    </div>
-                    </section>
-				</div>
-                <div id="sidebar">
-                	<section class="seccion">
-                		<div class="seccion-header">
-                			<h3>Accceso al sistema</h3>
-                		</div>
-                		<div class="seccion-body">
-		                	<div>
-								<?php if($userType == "admin"): ?>
-									<label title="Tipo de Usuario" for="tipo" >Tipo de usuario:
-			                        	<select name="tipo" id="tipo">
-			                        		<option value="0">[Ninguno]</option>
-										<?php
-										$q = $objUsuario->Consultar("SELECT * FROM usuarios_niveles");
-										while($r = mysql_fetch_array($q)):
-										?>
-										<option <?= isset($row) && $row['tipo']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
-										<?php
-										endwhile;
-										?>
-										</select>
-									</label>
-		                        <?php else: ?>
-									<input type="hidden" name="tipo" value="<?= $row['tipo'] ?>" />
-								<?php endif; ?>
-							</div>
-		                    <div class="subform">
-		                    	<label title="Nombre usuario para identificarte con el sistema" for="nickname">Nombre de usuario:
-			                        <input name="nickname" type="text" id="nickname" value="<?php if(isset($row)) echo $row['nickname'] ?>" <?php if(isset($row)){ ?>readonly="readonly" <?php } ?>  />
-			                    </label>
-			                    <span class="info">
-			                    	Si no va a cambiar las contraseñas, deje los campos vacios.
-			                    </span>
-			                    <label title="Contrasena" for="password" >Contrase&ntilde;a:
-			                        <input name="password" type="password" id="password" />
-			                    </label>
-			                    <label title="Repite Contrasena" for="password1" > Repetir Contrase&ntilde;a:
-			                        <input name="password1" type="password" id="password1" />
-			                    </label>
-			                </div>
-	                    </div>
-                    </section>
-                    <section class="seccion">
-                    	<div class="seccion-header">
-                    		<h3>Grupos</h3>
-                    	</div>
-                    	<div class="seccion-body">
-							<?php if($userType == "admin"): ?>
-							<label>
-			                   	<select name="grupo">
-			                   		<option value="0">[Ninguno]</option>
-								<?php
-								$q = $objUsuario->Consultar("SELECT * FROM usuarios_grupos");
-								while($r = mysql_fetch_array($q)):
-								?>
-									<option <?= isset($row) && $row['grupo_id']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
-								<?php
-								endwhile;
-								?>
-								</select>
-							</label>
-		                    <?php else: ?>
-							<input type="hidden" name="tipo" value="<?= $row['tipo'] ?>" />
-							<?php endif; ?>
-						</div>
-                    </section>
-                </div>
-			</div>
-            <input name="section" value="usu" type="hidden" />
-            <input name="mode" value="<?php echo $mode ?>" type="hidden" />
-            <input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
-		</form>
-	<?php
 	break;
     /* ------------------------------------------------------------- */
     /* ---------------- FORMULARIO GRUPO --------------------------- */
@@ -1796,7 +998,7 @@ switch($sec){
 			$id=$_GET["id"];
 
 			// CALL TO MODULE FOR SHOW MESSAGE
-			include(ABSPATH.'rb-admin/modules/rb_message/mod.messages.show.php');
+			include(ABSPATH.'rb-script/modules/rb-message/mod.messages.show.php');
 		}else{
 			/*$mode = "new";
 		}*/

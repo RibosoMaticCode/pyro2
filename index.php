@@ -11,7 +11,7 @@ require_once('rb-script/class/rb-comentarios.class.php');
 require_once('rb-script/class/rb-mensajes.class.php');
 require_once('rb-script/class/rb-database.class.php');
 
-$Page=1;
+//$Page=1;
 // VARIABLES CON DATOS DE CABECERA GENERALES
 $rm_titlesite = G_TITULO;
 $rm_title = G_TITULO;
@@ -56,14 +56,31 @@ endif;
 
 // VALIDAMOS SI TRABAJAMOS CON ENLACES AMIGABLES
 if(G_ENL_AMIG):
+	// -- Si opcion enlaces amigables e ingresa de manera tradicional, direccionarlo a enlaces amigables.
+	//Direccionar en caso de publicacion
+	if ( isset($_GET['art']) ):
+		$Post = rb_show_post( $_GET['art'] );
+		header( 'Location: '.$Post['url'] );
+		exit();
+	endif;
+
+	// Direccionamientos pendientes
+	/*if ( isset($_GET['p']) ) $PageId = $_GET['p'];
+	if ( isset($_GET['cat']) ):
+		$CategoryId = $_GET['cat'];
+		if ( isset($_GET['page']) ) $Page = $_GET['page'];
+	endif;
+	//if ( isset($_GET['s']) ) $SearchTerm = $_GET['s'];
+	if ( isset($_GET['panel']) ) $Panel = $_GET['panel'];*/
+
+	//Direccionar en caso de busqueda
 	if ( isset($_GET['s']) ):
 		header( 'Location: '.G_SERVER.'/'.G_BASESEAR.'/'.rb_cambiar_nombre(trim($_GET['s'])).'/' );
 		exit();
 	endif;
-
-  	//$requestURI  = str_replace("/prueba", "", $_SERVER['REQUEST_URI']);
-	$requestURI  = str_replace("", "", $_SERVER['REQUEST_URI']);
-  	$requestURI     = explode("/", $requestURI);
+  //$requestURI  = str_replace("/prueba", "", $_SERVER['REQUEST_URI']);
+	$requestURI = str_replace("", "", $_SERVER['REQUEST_URI']);
+  $requestURI = explode("/", $requestURI);
 	//$requestURI = explode( '/', $_SERVER['REQUEST_URI'] );
 
 	// Eliminamos los espacios del principio y final y recalculamos los índices del vector.
@@ -108,9 +125,7 @@ if(G_ENL_AMIG):
 			// Buscamos si existe en la base de datos
 		endif;
 	endif;
-
-
-else:
+else: // SI ENLACES NO AMIGABLES
 	if ( isset($_GET['art']) ) $PostId = $_GET['art'];
 	if ( isset($_GET['p']) ) $PageId = $_GET['p'];
 	if ( isset($_GET['cat']) ):
@@ -131,7 +146,6 @@ if(isset($_GET['pa'])){
 	elseif($_GET['pa']=="panel" && G_ACCESOUSUARIO==1):
 		$rm_menu_name = "";
 		require ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
-
 	// Si es cualquier pagina, la carga respectivamente
 	else:
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$_GET['pa'].'.php';
@@ -165,23 +179,35 @@ if(isset($_GET['pa'])){
 // PAGINAS
 }elseif( isset( $PageId ) ){
 	$Page = rb_show_specific_page( $PageId );
+	if($Page==false){ // Sino es una pagina del sistema sino una pagina externa independiente html/php
+		if($PageId=="panel" && G_ACCESOUSUARIO==0):
+			header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
 
-	//die();
-	if(!$Page) header('Location: '.G_SERVER.'/404.php');
+		// Si accede a panel y esta logueado, lleva al modulo externo para el panel
+		elseif($PageId=="panel" && G_ACCESOUSUARIO==1):
+			$rm_menu_name = "";
+			require ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
+		// Si es cualquier pagina, la carga respectivamente
+		else:
+			$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$PageId.'.php';
+			if(file_exists( $file )) require_once( $file );
+		endif;
+	}else{ // Asignando valores a la pagina del sistema
+		//if(!$Page) header('Location: '.G_SERVER.'/404.php');
+	  $rm_title = $Page['titulo']." | ".G_TITULO;
+	  $rm_metakeywords = $Page['tags'];
+	  $rm_metadescription = rb_fragment_text($Page['contenido'],30, false);
+	  $rm_metaauthor = $Page['autor_id']; //--> capturar codigo de usuario
 
-  $rm_title = $Page['titulo']." | ".G_TITULO;
-  $rm_metakeywords = $Page['tags'];
-  $rm_metadescription = rb_fragment_text($Page['contenido'],30, false);
-  $rm_metaauthor = $Page['autor_id']; //--> capturar codigo de usuario
+	  $allow_sidebar = $Page['sidebar'];
+		$rm_menu_name = $Page['addon'];
+		$rm_url_page = rb_url_link('pag', $Page['id']);
 
-  $allow_sidebar = $Page['sidebar'];
-	$rm_menu_name = $Page['addon'];
-	$rm_url_page = rb_url_link('pag', $Page['id']);
-
-	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
-	if(file_exists( $file )) require_once( $file );
-	else die( message_error($file));
-
+		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
+		if(file_exists( $file )) require_once( $file );
+		else die( message_error($file));
+	}
+	// Asingar la pagina 404 en ambos casos. Arreglar bug
 // CATEGORIAS
 }elseif( isset($CategoryId) ){
 	// Verificar si pagina esta definida

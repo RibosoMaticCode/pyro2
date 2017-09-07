@@ -28,6 +28,9 @@ $rspta = array();
 if(isset($_POST['login'])){
 	$user = trim($_POST['usuario']); // nombre usuario, correo ó telefono-movil
 	$pwd = trim($_POST['contrasena']);
+	$remember = isset($_POST['remember']) ? 1 : 0;
+	setcookie("login_remember", $remember, time()+3600);
+	// Si activo recordar contraseña: crear cookie
 
 	//primera validacion: campos vacios
 	if(empty($user) || empty($pwd)){

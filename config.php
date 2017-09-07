@@ -9,6 +9,6 @@ define('G_USUARIO','root');
 define('G_CLAVE','');
 
 //nombre de la base de datos
-define('G_BASEDATOS','pyro2');
+define('G_BASEDATOS','pyro21_roden');
 
 ?>

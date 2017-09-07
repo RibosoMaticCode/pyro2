@@ -30,7 +30,9 @@ else:
 						<button name="newpass">Enviar</button>
 					</div>
 				</form>
-				<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+				<!--<?php if(G_ESTILO!="0"): ?>
+					<a class="link-back" href="<?= $rm_url ?>">Volver a la web</a>
+				<?php endif ?>-->
 			</div>
 		</div>
 	</body>

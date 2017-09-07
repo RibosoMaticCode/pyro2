@@ -1,0 +1,38 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+RewriteRule ^(rb-admin|rb-media)($|/) - [L]
+</IfModule>
+
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access 1 year"
+ExpiresByType image/jpeg "access 1 year"
+ExpiresByType image/gif "access 1 year"
+ExpiresByType image/png "access 1 year"
+ExpiresByType text/css "access 1 month"
+ExpiresByType text/html "access 1 month"
+ExpiresByType application/pdf "access 1 month"
+ExpiresByType text/x-javascript "access 1 month"
+ExpiresByType application/x-shockwave-flash "access 1 month"
+ExpiresByType image/x-icon "access 1 year"
+ExpiresDefault "access 1 month"
+</IfModule>
+## EXPIRES CACHING ##
+
+<IfModule mod_gzip.c>
+mod_gzip_on Yes
+mod_gzip_item_include file \.html$
+mod_gzip_item_include file \.php$
+mod_gzip_item_include file \.css$
+mod_gzip_item_include file \.js$
+mod_gzip_item_include mime ^application/javascript$
+mod_gzip_item_include mime ^application/x-javascript$
+mod_gzip_item_include mime ^text/.*
+mod_gzip_item_include handler ^application/x-httpd-php
+mod_gzip_item_exclude mime ^image/.*
+</IfModule>

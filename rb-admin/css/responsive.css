@@ -83,12 +83,19 @@
 	    width: 100%;
 	    border-bottom: 1px solid #E2E2E2;
 	}
+	.explorer-body{
+		min-width: 100%;
+	}
 	.explorer{
-		width:90vw;
+		width: 100%;
+		/*width:90vw;
 		height:90vh;
 		left:calc(100vw - 95vw)!important;
 		top:calc(100vh - 95vh)!important;
-		margin:0;
+		margin:0;*/
+	}
+	.explorer-body .preview{
+		max-width: 100%;
 	}
 	/* MODO EDICION - POST */
 	.mitad{

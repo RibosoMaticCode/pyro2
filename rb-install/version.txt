@@ -1,0 +1,17 @@
+Instalador Blackpyro
+====================
+version 0.0.3
+18/05/17
+- Generara nuevos valores para la tabla opciones, y añade valores por defecto a usuarios_niveles
+
+version 0.0.3
+14/06/17
+- Cambio en nombre del proyecto, ahora Pyro
+
+version 0.0.2
+24/01/17
+- Añadido otros valores iniciales.
+
+version 0.0.1
+15/03/16:
+- Permite generar la configuración inicial para el funcionamiento del gestor de contenidos, tablas: opciones y usuarios.

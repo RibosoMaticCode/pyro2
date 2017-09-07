@@ -1,7 +1,5 @@
 <?php
-//include 'islogged.php';
 require_once("../rb-script/class/rb-opciones.class.php");
-// DESTRIPAR VALOR JSON DE modules_options
 $json_post_options = $objOpcion->obtener_valor(1,'post_options');
 $array_post_options = json_decode($json_post_options, true);
 ?>
@@ -10,7 +8,7 @@ $array_post_options = json_decode($json_post_options, true);
 		event.preventDefault();
 		$(".bg-opacity").hide();
 		$(".explorer").hide();
-   		$(".explorer").empty();
+		$(".explorer").empty();
 	});
 
 	$( "#frm-posts-options" ).submit(function() {
@@ -21,21 +19,27 @@ $array_post_options = json_decode($json_post_options, true);
   		})
   		.done(function( data ) {
   			var msg;
-	  		switch(data){
-	  			case "0":
-	  				msg = "Ocurrio un problema. Vuelta a cargar la pagina e intente nuevamente";
-	  			break;
-	  			case "1":
-	  				msg = "!Cambios guardados! Se cargar la página";
-	  				window.location.href = '<?= $objOpcion->obtener_valor(1,'direccion_url') ?>/rb-admin/?pag=art&opc=nvo';
-	  			break;
-	  		}
+				if(data=="0"){
+					msg = "Ocurrio un problema. Vuelta a cargar la pagina e intente nuevamente";
+				}else{
+					$("#frm-posts-options input[type='checkbox']").each(function(){
+						var nam = $(this).attr('id');
+						var res = nam.substr(-3);
+				    if($("#"+nam).is(":checked")){
+							$("#post-"+res).show();
+				    }else{
+							$("#post-"+res).hide();
+						}
+					});
+					console.log(data);
+					$( "#close" ).click();
+				}
     		$( "#frm-posts-options-result" ).html(msg);
   		});
 	});
 </script>
 <div class="explorer-header">
-	<h3>Configuración adicional</h3>
+	<h3>Funciones adicionales</h3>
 	<a id="close" href="#">×</a>
 </div>
 <div class="explorer-body">
@@ -45,54 +49,94 @@ switch($seccion):
 	case 'posts':
 		?>
 		<form id="frm-posts-options" action="post.options.save.php" method="post">
+			<div class="cols-container">
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-gal" type="checkbox" name="post_options[gal]" value="1" <?php if($array_post_options['gal']==1) echo "checked" ?> /> Galería e imágenes
+					<span class="info">
+						Permite crear y relacionar una galería de imagenes con la publicación
+					</span>
+					</label>
+				</div>
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-adj" type="checkbox" name="post_options[adj]" value="1" <?php if($array_post_options['adj']==1) echo "checked" ?> /> Adjuntar imagenes destacadas
+					<span class="info">
+						Habilita la opción para adjuntar imagen de portada y perfil
+					</span>
+					</label>
+				</div>
+			</div>
+			<div class="cols-container">
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-edi" type="checkbox" name="post_options[edi]" value="1" <?php if($array_post_options['edi']==1) echo "checked" ?> /> Opciones de edición
+					<span class="info">
+						Permite añadir otras opciones para la publicación.
+					</span>
+					</label>
+				</div>
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-adi" type="checkbox" name="post_options[adi]" value="1" <?php if($array_post_options['adi']==1) echo "checked" ?> /> Campos adicionales
+					<span class="info">
+						Permite especificar valores adicionales a los campos personalizados. Ir a Configuracion para establecer los campos adicionales.
+					</span>
+					</label>
+				</div>
+			</div>
+			<div class="cols-container">
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-enl" type="checkbox" name="post_options[enl]" value="1" <?php if($array_post_options['enl']==1) echo "checked" ?> /> Enlazar con publicación
+					<span class="info">
+						Permite enlazar la publicación con otra.
+					</span>
+					</label>
+				</div>
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-vid" type="checkbox" name="post_options[vid]" value="1" <?php if($array_post_options['vid']==1) echo "checked" ?> /> Videos de Youtube
+					<span class="info">
+						Permite ingresar un codigo de video Youtube (solo un video)
+					</span>
+					</label>
+				</div>
+			</div>
+			<div class="cols-container">
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-cal" type="checkbox" name="post_options[cal]" value="1" <?php if($array_post_options['cal']==1) echo "checked" ?> /> Calendario
+					<span class="info">
+						Habilita un calendario, para seleccionar una fecha especifica.
+					</span>
+					</label>
+				</div>
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-otr" type="checkbox" name="post_options[otr]" value="1" <?php if($array_post_options['otr']==1) echo "checked" ?> /> Otras opciones
+					<span class="info">
+						Otras opciones para la publicación
+					</span>
+					</label>
+				</div>
+			</div>
+			<div class="cols-container">
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-sub" type="checkbox" name="post_options[sub]" value="1" <?php if($array_post_options['sub']==1) echo "checked" ?> /> Subir imágenes
+					<span class="info">
+						Habilita la opción de subir imágenes y otros archivos permitidos.
+					</span>
+					</label>
+				</div>
+				<div class="cols-6-md">
+				</div>
+			</div>
 		<ul class="options-list">
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[gal]" value="1" <?php if($array_post_options['gal']==1) echo "checked" ?> /> Galería e imágenes
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[adj]" value="1" <?php if($array_post_options['gal']==1) echo "checked" ?> /> Archivos adjuntos
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[edi]" value="1" <?php if($array_post_options['edi']==1) echo "checked" ?> /> Opciones de edición
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[adi]" value="1" <?php if($array_post_options['adi']==1) echo "checked" ?> /> Campos adicionales
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[enl]" value="1" <?php if($array_post_options['enl']==1) echo "checked" ?> /> Enlazar con publicación
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[vid]" value="1" <?php if($array_post_options['vid']==1) echo "checked" ?> /> Videos de Youtube
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[cal]" value="1" <?php if($array_post_options['cal']==1) echo "checked" ?> /> Calendario
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[otr]" value="1" <?php if($array_post_options['otr']==1) echo "checked" ?> /> Otras opciones
-				</label>
-			</li>
-			<li>
-				<label>
-				<input type="checkbox" name="post_options[sub]" value="1" <?php if($array_post_options['sub']==1) echo "checked" ?> /> Subir imágenes
-				</label>
-			</li>
+
 		</ul>
-		<button class="btn-submit">Guardar cambios</button>
+		<button id="btnSaveOpc" class="btn-submit">Guardar cambios</button>
 		</form>
 		<div id="frm-posts-options-result"></div>
 		<?php

@@ -1,28 +1,27 @@
 <?php
 function rb_encrypt_decrypt($action, $string) {
-	//https://naveensnayak.wordpress.com/2013/03/12/simple-php-encrypt-and-decrypt/e
-    $output = false;
+  //https://naveensnayak.wordpress.com/2013/03/12/simple-php-encrypt-and-decrypt/e
+  $output = false;
 
-    $encrypt_method = "AES-256-CBC";
-    $secret_key = 'This is my secret key';
-    $secret_iv = 'This is my secret iv';
+  $encrypt_method = "AES-256-CBC";
+  $secret_key = 'This is my secret key';
+  $secret_iv = 'This is my secret iv';
 
-    // hash
-    $key = hash('sha256', $secret_key);
+  // hash
+  $key = hash('sha256', $secret_key);
 
-    // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-    $iv = substr(hash('sha256', $secret_iv), 0, 16);
+  // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+  $iv = substr(hash('sha256', $secret_iv), 0, 16);
 
-    if( $action == 'encrypt' ) {
-        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-        $output = base64_encode($output);
-    }
-    else if( $action == 'decrypt' ){
-        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-    }
-
-    return $output;
+  if( $action == 'encrypt' ) {
+    $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+    $output = base64_encode($output);
+  }elseif( $action == 'decrypt' ){
+    $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+  }
+  return $output;
 }
+
 function rb_post_related_by_category($Post_id, $Category_id,  $Limit = 5){
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
@@ -87,7 +86,7 @@ function rb_show_post($post_id){
 	$objArticulo = new Articulos;
 
 	if( G_ENL_AMIG == 1 ):
-		$q = $objArticulo->Consultar("SELECT id FROM articulos WHERE titulo_enlace='$post_id'");
+		$q = $objArticulo->Consultar("SELECT id FROM articulos WHERE titulo_enlace='$post_id' OR id ='$post_id'");
 		$num_posts = mysql_num_rows($q);
 		if( $num_posts > 0):
 			$Post = mysql_fetch_array( $q );
@@ -227,7 +226,7 @@ function rb_show_specific_page($page_id){
 		//Probamos con el Id
 		$qp  = $objPagina->Consultar("SELECT * FROM paginas WHERE id=$page_id");
 		if(!$qp) return false;
-		$num_reg = mysql_num_rows($qp);
+		//$num_reg = mysql_num_rows($qp);
 	endif;
 
 	$Pages = mysql_fetch_array($qp);
@@ -279,7 +278,7 @@ function rb_nums_post_by_category($category_id){
 	return mysql_num_rows( $q );
 }
 
-function rb_list_categories($order = "DESC", $categoria_id = 0){
+function _rb_list_categories($order = "DESC", $categoria_id = 0){
   require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$objCategoria = new Categorias;
   if(G_ACCESOUSUARIO==1): // login
@@ -402,6 +401,7 @@ function rb_return_post_array($qa){
 	$i=0;
 	while($Posts = mysql_fetch_array($qa)):
 		$PostsArray[$i]['id'] = $Posts['id'];
+    $PostsArray[$i]['titulo_id'] = $Posts['titulo_enlace'];
 		$PostsArray[$i]['autor_id'] = $Posts['autor_id'];
 		$PostsArray[$i]['autor_names'] = $Posts['id'];
 		$PostsArray[$i]['titulo'] = $Posts['titulo'];
@@ -550,7 +550,7 @@ function rb_url_link($section, $id, $page=0){
 	switch($section){
 		case "cat":
 			if($link_friendly){
-				$q = $objArticulo->Consultar("SELECT id FROM categorias WHERE nombre_enlace='$id'");
+				$q = $objArticulo->Consultar("SELECT id FROM categorias WHERE id='$id'"); //verificar mas adelante 26/08/17 id x nombre_enlace
 				if( mysql_num_rows($q)==0 ):
 					return $url_web;
 				endif;
@@ -666,38 +666,32 @@ function rb_path_menu($menu_id){
 	echo $Menu['nombre']."/";
 }
 function rb_display_menu($mainmenu_id, $parent, $level, $item_selected) { // ANTES display_children
-    //$result = mysql_query("SELECT a.id, a.nombre, a.url, Deriv1.Count FROM `menu` a  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menu` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id WHERE a.menu_id=" . $parent);
+  $result = mysql_query("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
+  $style_menu = " class='rd-navbar-nav' ";
+  $style_parent = "";
 
-    $result = mysql_query("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
-    $style_menu = " class='rd-navbar-nav' ";
-    $style_parent = "";
-
-    //if($parent ==0 ) $style_menu = " class=\"menu\"";
-    if($parent ==0 && $level ==1) $style_parent = " class=\"parent\"";
+  if($parent ==0 && $level ==1) $style_parent = " class=\"parent\"";
 	if($parent >0 && $level > 0) $style_menu = " class=\"rd-navbar-dropdown\"";
-
     echo "\n<ul".$style_menu.">\n";
-    while ($row = mysql_fetch_assoc($result)) {
-    	$tipo = trim($row['tipo']);
-		$id = ($row['style']== "" ? $row['id'] : $row['style']);
+    while ($row = mysql_fetch_assoc($result)):
+      $tipo = trim($row['tipo']);
+      $id = ($row['style']== "" ? $row['id'] : $row['style']);
+      $style_selected = ($item_selected == $row['style'] ? " class=\"selected\"" : "");
 
-		$style_selected = ($item_selected == $row['style'] ? " class=\"selected\"" : "");
-		//if($item_selected == $row['style']) $style_selected = " class=\"selected\"";
-
-        if ($row['Count'] > 0) {
-            if($level > 1 ) $style_parent = " class=\"parent\"";
-            echo "<li id='".$id."-li'><a id='".$id."' class='".$id."' ".$style_parent.$style_selected." href='" . rb_url_link($tipo, $row['url'])  . "'><span>" . $row['nombre'] . "</span></a>";
-            rb_display_menu($mainmenu_id, $row['id'], $level + 1, $item_selected);
-            echo "</li>\n";
-            $style_parent = "";
-        } elseif ($row['Count']==0) {
-            echo "<li id='".$id."-li'><a id='".$id."' class='".$id."' ".$style_parent.$style_selected." href='" .rb_url_link($tipo, $row['url']) . "'><span>" . $row['nombre'] . "</span></a></li>\n";
-        } else;
-    }
+      if ($row['Count'] > 0) {
+        if($level > 1 ) $style_parent = " class=\"parent\"";
+        echo "<li id='".$id."-li'><a id='".$id."' class='".$id."' ".$style_parent.$style_selected." href='" . rb_url_link($tipo, $row['url'])  . "'><span>" . $row['nombre'] . "</span></a>";
+        rb_display_menu($mainmenu_id, $row['id'], $level + 1, $item_selected);
+        echo "</li>\n";
+        $style_parent = "";
+      }elseif ($row['Count']==0) {
+        echo "<li id='".$id."-li'><a id='".$id."' class='".$id."' ".$style_parent.$style_selected." href='" .rb_url_link($tipo, $row['url']) . "'><span>" . $row['nombre'] . "</span></a></li>\n";
+      }//else;
+    endwhile;
     echo "</ul>\n";
 }
 
-function rb_menus_to_array($mainmenu_id, $parent,$level) {
+function _rb_menus_to_array($mainmenu_id, $parent,$level) { // VERIFICAR SI FUNCIONA ___ obsoleto -- verificar
 	global $menus;
 	global $i;
 
@@ -1374,6 +1368,73 @@ function rb_list_galleries($limit=0, $groupname=""){
 	return $GaleriasArray;
 }
 
+/* Muestra ruta/ubicacion de categorias padres
+ * Parametros:
+ * 		@$category_id -> id de la categoria que deseamos buscar su ancestros.
+ *    @path -> variable interna para almacenar la ruta consultada de momento
+ * */
+
+function rb_path_categories($category_id,$path=""){
+  require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
+  $objDataBase = new DataBase;
+  $q = $objDataBase->Consultar("SELECT * FROM categorias WHERE id=$category_id");
+  $r = mysql_fetch_array($q);
+  $path = $r['nombre'].'/'.$path;
+  if($r['nivel']==0):
+    // Alcanza el top, sale
+    echo $path;
+    return;
+  else:
+    // caso contrario, imprime nombre de categoria, y busca datos de su padre
+    rb_path_categories($r['categoria_id'],$path);
+  endif;
+}
+
+/* Array de categorias y subcategorias
+ * Parametros:
+ * 		@$category_id -> id de la categoria que deseamos buscar su ancestros.
+ *    @path -> variable interna para almacenar la ruta consultada de momento
+ * */
+function rb_categories_to_array($category_id, $all=true) {
+  require_once( dirname( dirname(__FILE__) ) ."/global.php");
+	/*global $categories;
+	global $i;*/
+  $q = "SELECT c.categoria_id, c.nivel, c.id, c.nombre, c.acceso, c.niveles, Items.Count FROM categorias c LEFT OUTER JOIN (SELECT categoria_id, COUNT(*) AS Count FROM categorias GROUP BY categoria_id) Items ON c.id = Items.categoria_id WHERE c.categoria_id=$category_id ORDER BY id";
+	$r = mysql_query($q);
+	while ($row = mysql_fetch_array($r)):
+		$i = $row['id'];
+    // Si el acceso es privado, no se mostrara, pero antes
+    // se comparara el nivel del usuario con el de la categoria
+    if($row['acceso']=="privat"):
+      if(G_USERNIVELID>0){
+        $pos = strpos($row['niveles'], G_USERNIVELID);
+        if($pos === FALSE) continue;
+      }else{
+        continue;
+      }
+    endif;
+		if ($row['Count'] > 0):
+			$categories[$i]['id'] = $row['id'];
+			$categories[$i]['categoria_id'] = $row['categoria_id'];
+			$categories[$i]['nivel'] = $row['nivel'];
+			$categories[$i]['nombre'] = $row['nombre'];
+      $categories[$i]['acceso'] = $row['acceso'];
+      $categories[$i]['niveles'] = $row['niveles'];
+      $categories[$i]['url'] = rb_url_link( 'cat' , $row['id'] );
+			$categories[$i]['items'] = rb_categories_to_array($row['id']);
+		elseif($row['Count']==0):
+			$categories[$i]['id'] = $row['id'];
+			$categories[$i]['categoria_id'] = $row['categoria_id'];
+			$categories[$i]['nivel'] = $row['nivel'];
+			$categories[$i]['nombre'] = $row['nombre'];
+      $categories[$i]['acceso'] = $row['acceso'];
+      $categories[$i]['niveles'] = $row['niveles'];
+      $categories[$i]['url'] = rb_url_link( 'cat' , $row['id'] );
+		endif;
+	endwhile;
+
+	return $categories;
+}
 /*
  *
  * FUNCIONES ANTIGUAS, REVISAR SU FUNCIONAMIENTO.
@@ -1562,7 +1623,7 @@ function NumToLetras($num){
 	}
 }
 
-function menu_main($id_padre){
+function _menu_main($id_padre){ // OBSOLETO ??
 	$objMenu = new Menus;
 	$consultaSecc = $objMenu->Consultar("SELECT * FROM menu ORDER BY id");
 
@@ -1637,7 +1698,7 @@ function listar_categorias($id_padre){
 		$categoria_array[$categoria["id"]] = array(
 			"id" => $categoria["id"],
 			"nombre" => $categoria["nombre"],
-			"descripcion" => $categoria["descripcion"],
+			"descripcion" => rb_fragment_text($categoria["descripcion"],30),
 			"acceso" => $categoria["acceso"],
 			"niveles" => $categoria["niveles"],
 			"categoria_id" => $categoria["categoria_id"],
@@ -1652,7 +1713,7 @@ function listar_categorias($id_padre){
 			if($id_padre == 0){
 				echo "
 				 <tr>
-      				<td><a href='../rb-admin/index.php?pag=cat&opc=nvo&catid=".$value['id']."&niv=".($value['nivel']+1)."'><img width=\"16px\" height=\"16px\" style=\"border:0px;\" src=\"img/add-black-16.png\" alt=\"Agregar Sub Categoria\" /></a>  ".$value['nombre']."</td>
+      		<td><a title='Agregar una subcategoria' href='../rb-admin/index.php?pag=cat&opc=nvo&catid=".$value['id']."&niv=".($value['nivel']+1)."'><img width=\"16px\" height=\"16px\" style=\"border:0px;\" src=\"img/add-black-16.png\" alt=\"Agregar Sub Categoria\" /></a>  ".$value['nombre']."</td>
 					<td>".$value['descripcion']."</td>
 					<td>".rb_showvisiblename($value['acceso'])."</td>
 					<td>".rb_niveltoname($value['niveles'])."</td>
@@ -1674,7 +1735,7 @@ function listar_categorias($id_padre){
 			}else{
 				echo "
 				 <tr>
-      				<td>".str_repeat('- - ', $value['nivel'])."<a href='../rb-admin/index.php?pag=cat&opc=nvo&catid=".$value['id']."&niv=".($value['nivel']+1)."'><img style=\"border:0px;\" src=\"img/add-black-16.png\" width=\"16px\" height=\"16px\" alt=\"Agregar Sub Categoria\" /></a>  ".$value['nombre']."</td>
+      		<td>".str_repeat('- - ', $value['nivel'])."<a title='Agregar una subcategoria' href='../rb-admin/index.php?pag=cat&opc=nvo&catid=".$value['id']."&niv=".($value['nivel']+1)."'><img style=\"border:0px;\" src=\"img/add-black-16.png\" width=\"16px\" height=\"16px\" alt=\"Agregar Sub Categoria\" /></a>  ".$value['nombre']."</td>
 					<td>".$value['descripcion']."</td>
 					<td>".rb_showvisiblename($value['acceso'])."</td>
 					<td>".rb_niveltoname($value['niveles'])."</td>

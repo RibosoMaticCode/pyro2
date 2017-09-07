@@ -1,5 +1,5 @@
 <?php
-include 'islogged.php';
+//include 'islogged.php';
 require_once("../rb-script/funciones.php");
 require_once("../rb-script/class/rb-categorias.class.php");
 

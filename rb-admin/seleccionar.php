@@ -7,13 +7,11 @@ include 'islogged.php';
 if(isset($_GET['pag'])){
 	$pag=$_GET['pag'];
 }else{
-//si no esta definido mostrar index
 	$pag="";
 }
 switch($pag){
 	case "art":
 		echo '<h2 class="title">Publicaciones</h2>';
-		echo '<div class="page-bar">Inicio > Contenidos</div>';
 		$sec="art";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -22,16 +20,16 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
+				include('edit-pub.php');
 				break;
 			case "edt":
-				include('edit.php');
+				include('edit-pub.php');
 				break;
 			default:
 				include('secciones.php');
 		}
 		break;
-    case "pages":
+  case "pages":
 		if($userType != "admin"):
 			printf(" No tiene permiso de Administrador ");
 			break;
@@ -170,9 +168,6 @@ switch($pag){
 			$opc="";
 		}
 		switch($opc){
-			/*case "nvo":
-				include('edit.php');
-				break;*/
 			case "edt":
 				include('edit.php');
 				break;
@@ -246,7 +241,6 @@ switch($pag){
 		break;
 	case "usu":
 		echo '<h2 class="title">Usuarios</h2>';
-		echo '<div class="page-bar">Inicio > Usuarios</div>';
 		$sec="usu";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -259,10 +253,10 @@ switch($pag){
 					printf(" No tiene permiso de Administrador ");
 					break;
 				endif;
-				include('edit.php');
+				include('edit-user.php');
 				break;
 			case "edt":
-				include('edit.php');
+				include('edit-user.php');
 				break;
 			default:
 				if($userType != "admin"):
@@ -272,30 +266,6 @@ switch($pag){
 				include('secciones.php');
 		}
 		break;
-    case "design":
-    	if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-
-        $sec="design";
-        if(isset($_GET['opc'])){
-            $opc=$_GET['opc'];
-        }else{
-            $opc="";
-        }
-        switch($opc){
-            case "nvo":
-                //include('edit.php');
-                break;
-            case "edt":
-                //include('edit.php');
-                break;
-            default:
-                //include('secciones.php');
-                include ABSPATH.'rb-script/modules/design/mod.design.edit.php';
-        }
-        break;
 	case "men":
 		echo '<h2 class="title">Mensajes</h2>';
 		echo '<div class="page-bar">Inicio > Mensajes</div>';
@@ -348,55 +318,6 @@ switch($pag){
 		endif;
 		include_once 'core/niveles/niveles.php';
 	break;
-
-	/* modules adds */
-	case "cit":
-		/*$sec="cit";
-		if(isset($_GET['opc'])){
-			$opc=$_GET['opc'];
-		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "nvo":
-				include('edit.php');
-				break;
-			case "edt":
-				include('edit.php');
-				break;
-			default:
-				include('secciones.php');
-		}*/
-		/*if($userType != 1):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-		include_once ABSPATH.'rb-script/modules/citas/mod.cita.php';
-	break;*/
-	/* modules adds */
-	case "pla":
-		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-
-		include_once ABSPATH.'rb-script/modules/plantilla/plantilla.php';
-	break;
-	/* modules adds */
-	/*case "foot":
-		if($userType != 1):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-		include_once ABSPATH.'rb-script/modules/footer/foot.php';
-	break;
-	case "form":
-		if($userType != 1):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-		include_once ABSPATH.'rb-script/modules/forms/form.php';
-	break;*/
 	case "editfile":
 		if($userType != "admin"):
 			printf(" No tiene permiso de Administrador ");
@@ -404,23 +325,7 @@ switch($pag){
 		endif;
 		include_once ABSPATH.'rb-script/modules/rb-editfile/editfile.php';
 	break;
-	/*case "reservas":
-		if($userType != 1):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-		include_once ABSPATH.'rb-script/modules/reservas/reservas.php';
-	break;*/
-	/* COTIZACIONES */
-	/*case "cot":
-		if($userType != 1):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-		//include_once ABSPATH.'rb-script/modules/cotizador/cotizador.php';
-	break;*/
 	default:
-		// Definir buscador
 		if( isset( $_GET['term'] ) && $_GET['term']!=" "){
 			include_once 'search.php';
 		}else{

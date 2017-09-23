@@ -1,13 +1,13 @@
 <?php
-require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
+//require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 
 $mode;
 if(isset($_GET["id"])){
   // if define realice the query
   $id=$_GET["id"];
-  $cons_art = $objUsuario->Consultar("SELECT * FROM usuarios WHERE id=$id");
-  $row=mysql_fetch_array($cons_art);
+  $cons_art = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=$id");
+  $row=$cons_art->fetch_assoc();
   $mode = "update";
 }else{
   $mode = "new";
@@ -161,7 +161,7 @@ $(document).ready(function() {
                             <select name="tipo" id="tipo">
                               <option value="0">[Ninguno]</option>
                 <?php
-                $q = $objUsuario->Consultar("SELECT * FROM usuarios_niveles");
+                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles");
                 while($r = mysql_fetch_array($q)):
                 ?>
                 <option <?= isset($row) && $row['tipo']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
@@ -200,7 +200,7 @@ $(document).ready(function() {
                       <select name="grupo">
                         <option value="0">[Ninguno]</option>
             <?php
-            $q = $objUsuario->Consultar("SELECT * FROM usuarios_grupos");
+            $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_grupos");
             while($r = mysql_fetch_array($q)):
             ?>
               <option <?= isset($row) && $row['grupo_id']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>

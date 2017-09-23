@@ -15,3 +15,5 @@ version 0.0.2
 version 0.0.1
 15/03/16:
 - Permite generar la configuración inicial para el funcionamiento del gestor de contenidos, tablas: opciones y usuarios.
+- 19 tablas mysql.
+- Cambiado a mysqli - php

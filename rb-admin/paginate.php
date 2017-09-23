@@ -9,14 +9,14 @@ switch($sec){
 		require_once("../rb-script/class/rb-articulos.class.php");
 
 		if(isset($_GET['term'])){
-			$numrows = mysql_num_rows($objArticulo->Search($_GET['term']));
+			$numrows = mysql_num_rows($objDataBase->Search($_GET['term']));
 			$func_to_use = "Search";
 			$link_section = G_SERVER."/rb-admin/index.php?term=";
 		}else{
 			if(G_USERTYPE == 1):
-				$numrows = mysql_num_rows($objArticulo->Consultar("select id from articulos"));
+				$numrows = mysql_num_rows($objDataBase->Ejecutar("select id from articulos"));
 			else:
-				$numrows = mysql_num_rows($objArticulo->Consultar("select id from articulos WHERE autor_id = ".G_USERID));
+				$numrows = mysql_num_rows($objDataBase->Ejecutar("select id from articulos WHERE autor_id = ".G_USERID));
 			endif;
 			$func_to_use = "Consult";
 			$link_section = G_SERVER."/rb-admin/index.php?pag=";
@@ -30,10 +30,10 @@ switch($sec){
 		require_once("../rb-script/class/rb-usuarios.class.php");
 
 		if(isset($_GET['term'])){
-			$numrows = mysql_num_rows($objArticulo->Search($_GET['term']));
+			$numrows = mysql_num_rows($objDataBase->Search($_GET['term']));
 			$func_to_use = "Search";
 		}else{
-			$numrows = mysql_num_rows($objUsuario->Consultar("select id from usuarios"));
+			$numrows = mysql_num_rows($objUsuario->Ejecutar("select id from usuarios"));
 			$func_to_use = "Consult";
 			$link_section = G_SERVER."/rb-admin/index.php?pag=";
 		}
@@ -49,7 +49,7 @@ switch($sec){
             $numrows = mysql_num_rows($objPagina->Search($_GET['term']));
             $func_to_use = "Search";
         }else{
-            $numrows = mysql_num_rows($objPagina->Consultar("select id from paginas"));
+            $numrows = mysql_num_rows($objPagina->Ejecutar("select id from paginas"));
             $func_to_use = "Consult";
         }
         $type = "pages";
@@ -63,7 +63,7 @@ switch($sec){
 			//$numrows = $objComentario->search($_GET['term'],true);
 			//$func_to_use = "Search";
 		}else{
-			$numrows = mysql_num_rows($objComentario->Consultar("select id from comentarios"));
+			$numrows = mysql_num_rows($objComentario->Ejecutar("select id from comentarios"));
 			$func_to_use = "Consult";
 		}
 		$type = "com";

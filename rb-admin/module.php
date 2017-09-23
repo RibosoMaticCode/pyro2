@@ -5,7 +5,7 @@ include 'islogged.php';
 
 // Carga formato js de la base de datos
 global $objOpcion;
-$modules_prev = $objOpcion->obtener_valor(1,'modules_load');
+$modules_prev = rb_get_values_options('modules_load');
 
 // Convierte json a array
 $array_modules = json_decode($modules_prev, true);

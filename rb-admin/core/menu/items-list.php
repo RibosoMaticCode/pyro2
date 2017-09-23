@@ -6,11 +6,13 @@ $mainmenu_id = $_GET['id'];
 	<?php rb_menus_edition($mainmenu_id,0,0); ?>
 	</ul>
 </nav>
-		
+
 <?php
 function rb_menus_edition($mainmenu_id, $parent, $level) {
-	$result = mysql_query("SELECT mi.nivel, mi.id, mi.mainmenu_id, mi.nombre, mi.url, mi.tipo, mi.style, Items.Count FROM menus_items mi  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM menus_items GROUP BY menu_id) Items ON mi.id = Items.menu_id WHERE mi.menu_id=". $parent." AND mi.mainmenu_id=".$mainmenu_id. " ORDER BY id");
-    while ($row = mysql_fetch_assoc($result)):
+	global $objDataBase;
+
+	$result = $objDataBase->Ejecutar("SELECT mi.nivel, mi.id, mi.mainmenu_id, mi.nombre, mi.url, mi.tipo, mi.style, Items.Count FROM menus_items mi  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM menus_items GROUP BY menu_id) Items ON mi.id = Items.menu_id WHERE mi.menu_id=". $parent." AND mi.mainmenu_id=".$mainmenu_id. " ORDER BY id");
+    while ($row = $result->fetch_assoc()):
     	$class_nivel = "margen_". $row['nivel'];
     	$tipo = trim($row['tipo']);
         if ($row['Count'] > 0):

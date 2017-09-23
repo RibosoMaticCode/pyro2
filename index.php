@@ -1,15 +1,8 @@
 <?php
 require_once('global.php');
 require_once('rb-script/funciones.php');
-require_once('rb-script/class/rb-articulos.class.php');
-require_once('rb-script/class/rb-paginas.class.php');
-require_once('rb-script/class/rb-categorias.class.php');
-require_once('rb-script/class/rb-usuarios.class.php');
-require_once('rb-script/class/rb-galerias.class.php');
-require_once('rb-script/class/rb-fotos.class.php');
-require_once('rb-script/class/rb-comentarios.class.php');
-require_once('rb-script/class/rb-mensajes.class.php');
 require_once('rb-script/class/rb-database.class.php');
+require_once('rb-script/class/rb-usuarios.class.php');
 
 //$Page=1;
 // VARIABLES CON DATOS DE CABECERA GENERALES
@@ -46,8 +39,7 @@ if(G_ALCANCE==1 && G_ACCESOUSUARIO==0) header('Location: '.G_SERVER.'/login.php'
 
 // VALORES SI INICIA SESION USUARIO
 if(G_ACCESOUSUARIO==1):
-	$qu = $objUsuario->Consultar("SELECT * FROM usuarios WHERE id=".$rm_userid);
-	$user = mysql_fetch_array($qu);
+	$user = rb_get_user_info($rm_userid);
 	$rm_usernick = $user['nickname'];
 	$rm_usernames = $user['nombres'];
 	$rm_userlastnames = $user['apellidos'];
@@ -86,7 +78,6 @@ if(G_ENL_AMIG):
 	// Eliminamos los espacios del principio y final y recalculamos los índices del vector.
 	$requestURI = array_values( array_filter( $requestURI ) );
 	$numsItemArray = count($requestURI);
-	//print_r($requestURI);
 
 	if( $numsItemArray > 0 ):
 		// Si es Post - Articulos - Publicacion
@@ -158,21 +149,19 @@ if(isset($_GET['pa'])){
 
 	// VALORES DE CABECERA DEL POST
 	$rm_title = $Post['titulo']." | ".G_TITULO;
-	//$rm_metakeywords = $Post['tags']; // Antiguo
 	$rm_metadescription = rb_fragment_text($Post['contenido'],30, false);
 	$rm_metaauthor = $Post['autor_id']; //--> capturar codigo de usuario
 	$rm_url_page = $Post['url'];
 	$rm_menu_name = "";
 	$rm_url_page_img = $Post['url_img_por_max'];
-	//$objComentario = new Comentarios;
 
 	// CATEGORIA
-	$qc = $objArticulo->Consultar("SELECT c.* FROM categorias c, articulos_categorias ac, articulos a WHERE c.id=ac.categoria_id AND ac.articulo_id= a.id AND a.id =".$Post['id']." LIMIT 1");
-	$Cat = mysql_fetch_array($qc);
+	$qc = rb_get_category_by_post_id($Post['id']);
+	$Cat = $qc->fetch_assoc();
 	$Categoria_id = $Cat['id'];
 
 	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/post.php';
-	if(file_exists( $file )): require_once( $file ); $objArticulo->EditarPorCampo_int('lecturas','lecturas+1',$Post['id']);
+	if(file_exists( $file )): require_once( $file );rb_set_read_post($Post['id']);
 	else: die( message_error($file));
 	endif;
 
@@ -222,24 +211,7 @@ if(isset($_GET['pa'])){
 		$NextPage = 2;
 		$PrevPage = 0;
 	endif;
-
-	if( G_ENL_AMIG == 1):
-		$qc = $objCategoria->Consultar("SELECT * FROM categorias WHERE nombre_enlace = '$CategoryId'");
-	else:
-		//$q = $objCategoria->Consultar("SELECT * FROM categorias WHERE id = $CategoryId");
-		$qc  = $objCategoria->Consultar("SELECT * FROM categorias WHERE nombre_enlace='".$CategoryId."'");
-		if(!$qc) return false;
-		$num_reg = mysql_num_rows($qc);
-		if($num_reg==0):
-			//Probamos con el Id
-			$qc  = $objCategoria->Consultar("SELECT * FROM categorias WHERE id=$CategoryId");
-			if(!$qc) return false;
-			//$num_reg = mysql_num_rows($qc);
-		endif;
-
-		//$Pages = mysql_fetch_array($qp);
-	endif;
-	$Categoria = mysql_fetch_array($qc);
+	$Categoria = rb_get_category_info($CategoryId);
 	$categoria_id = $Categoria['id'];
 	$rm_menu_name = $Categoria['nombre_enlace'];
 
@@ -302,10 +274,10 @@ if(isset($_GET['pa'])){
 	// ** PAGINA INDEX **
 	if(G_INITIAL==0){
 		// todas las publicaciones
-		$qAll = $objArticulo->Consultar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' ORDER BY fecha_creacion DESC LIMIT 12");
+		$qAll = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' ORDER BY fecha_creacion DESC LIMIT 12");
 
 		// post destacados
-		$qStarred = $objArticulo->Consultar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' and portada=1 ORDER BY fecha_creacion DESC LIMIT 3");
+		$qStarred = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' and portada=1 ORDER BY fecha_creacion DESC LIMIT 3");
 
 		$rm_title = $rm_longtitle;
 		$rm_menu_name = "m-inicio";
@@ -314,16 +286,13 @@ if(isset($_GET['pa'])){
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}else{
-	    $Page = rb_show_specific_page(G_INITIAL);
+	  $Page = rb_show_specific_page(G_INITIAL);
+	  $rm_metakeywords = $Page['tags'];
+	  $rm_metadescription = rb_fragment_text($Page['contenido'],30, false);
+	  $rm_metaauthor = $Page['autor_id']; //--> capturar codigo de usuario
+	  $rm_menu_name = $Page['addon'];
 
-	    // valores de cabecera del post
-	    //$rm_title = G_TITULO;
-	    $rm_metakeywords = $Page['tags'];
-	    $rm_metadescription = rb_fragment_text($Page['contenido'],30, false);
-	    $rm_metaauthor = $Page['autor_id']; //--> capturar codigo de usuario
-	    $rm_menu_name = $Page['addon'];
-
-	    $file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
+	  $file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}

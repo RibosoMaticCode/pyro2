@@ -1,4 +1,102 @@
 <?php
+// paginado de listado ->
+// Parametros: Pagina actual, total de elementos, link de retorno, elementos a mostrar
+function rb_paged_list($pag_act, $total, $link_section, $nums_show){
+  if($pag_act<=0) $pag_act = 1;
+  $pag_ant=$pag_act-1;
+  $pag_sig=$pag_act+1;
+  $pag_ult=$total/$nums_show;
+  $residuo=$total%$nums_show;
+  if($residuo>0) $pag_ult=floor($pag_ult)+1;
+  ?>
+  <ul>
+  <?php
+  if($pag_act>1){	?>
+    <li><a href="<?= $link_section ?>">«</a></li> <!-- siempre sera 1 -->
+    <li><a href="<?= $link_section ?><?php if($pag_ant>1): ?>&page=<?= $pag_ant?> <?php endif ?>">‹</a></li>
+  <?php
+  }else{?>
+    <li class="page-disabled"><a class="pbutton previous">«</a></li>
+    <li class="page-disabled"><a class="pbutton previous">‹</a></li>
+  <?php
+  }
+  ?>
+  <li>
+    <span class="page-info">
+    Pagina <?= $pag_act ?> <?php if ($pag_ult > 0) ?> de <?= $pag_ult ?>
+    </span>
+  </li>
+  <?php
+  if($pag_act<$pag_ult) {?>
+    <li><a href="<?= $link_section ?>&page=<?= $pag_sig?>">›</a></li>
+    <li><a href="<?= $link_section ?>&page=<?= $pag_ult?>">»</a></li>
+    <?php
+  }else{?>
+    <li class="page-disabled"><a class="pbutton next">›</a></li>
+    <li class="page-disabled"><a class="pbutton next">»</a></li>
+  <?php
+  }
+  ?>
+  </ul>
+  <?php
+}
+
+// nuevas funciones usando msqyli
+require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php" );
+$objDataBase = new DataBase;
+
+/* CAPTURA CONSULTA Y ENVIA UN ARRAY CON DATOS DE LA PUBLICACION - TODA CONSULTA DE LISTADO DE POST DEBE USAR ESTA FUNCION*/
+function rb_return_post_array($qa){
+	$PostsArray = array();
+	$i=0;
+	//while($Posts = mysql_fetch_array($qa)):
+  while($Posts = $qa->fetch_array(MYSQLI_ASSOC)): // funciona tbm fetch_assoc()
+		$PostsArray[$i]['id'] = $Posts['id'];
+    $PostsArray[$i]['titulo_id'] = $Posts['titulo_enlace'];
+		$PostsArray[$i]['autor_id'] = $Posts['autor_id'];
+		$PostsArray[$i]['autor_names'] = $Posts['id'];
+		$PostsArray[$i]['titulo'] = $Posts['titulo'];
+		$PostsArray[$i]['contenido'] = $Posts['contenido'];
+		$PostsArray[$i]['video_embed'] = $Posts['video_embed'];
+		$PostsArray[$i]['vistas'] = $Posts['lecturas'];
+		$PostsArray[$i]['comentarios'] = rb_get_num_comments_by_post_id($Posts['id']);
+		$PostsArray[$i]['url'] = rb_url_link( 'art' , $Posts['id'] );
+		$PostsArray[$i]['fec_dia'] = isset( $Posts['fecha_dia'] ) ? $Posts['fecha_dia'] : "";
+		$PostsArray[$i]['fec_mes'] = isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "";
+		$PostsArray[$i]['fec_mes_l'] = rb_mes_nombre( isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "" );
+		$PostsArray[$i]['fec_anio'] = isset( $Posts['fecha_anio'] ) ? $Posts['fecha_anio'] : "";
+		$PostsArray[$i]['url_img_por_max'] = rb_get_url_image( $Posts['id'] , "l", "portada" );
+		$PostsArray[$i]['url_img_por_min'] = rb_get_url_image( $Posts['id'] , "m", "portada" );
+		$PostsArray[$i]['url_img_pri_max'] = rb_get_url_image( $Posts['id'] , "l", "logo" );
+		$PostsArray[$i]['url_img_pri_min'] = rb_get_url_image( $Posts['id'] , "m", "logo" );
+		$PostsArray[$i]['url_img_sec_max'] = rb_get_url_image( $Posts['id'] , "l", "adjunto" );
+		$PostsArray[$i]['url_img_sec_min'] = rb_get_url_image( $Posts['id'] , "m", "adjunto" );
+		$i++;
+	endwhile;
+	return $PostsArray;
+}
+
+// Grabar una entrada en la lista de registro dela db
+function rb_log_register($user_id, $user_name, $details){
+  global $objDataBase;
+  $objDataBase->Ejecutar("INSERT INTO log (usuario_id, usuario, observacion, fecha) VALUES ( ".$campos[0].",'".$campos[1]."','".$campos[2]."', NOW() )");
+}
+
+// La funcion retorna valor segun la opcion de la tabla opciones, que almacena los valores iniciales y generales de la web
+function rb_get_values_options($option){
+  global $objDataBase;
+  $q = $objDataBase->Ejecutar("SELECT valor FROM opciones WHERE opcion='$option'");
+  $rows = $q->fetch_assoc();
+  $q->free();
+  return $rows['valor'];
+}
+
+function rb_set_values_options($option, $new_value){
+  global $objDataBase;
+  $q = $objDataBase->Ejecutar("UPDATE opciones SET valor='$new_value' WHERE opcion='$option'");
+	return $q;
+}
+
 function rb_encrypt_decrypt($action, $string) {
   //https://naveensnayak.wordpress.com/2013/03/12/simple-php-encrypt-and-decrypt/e
   $output = false;
@@ -23,52 +121,47 @@ function rb_encrypt_decrypt($action, $string) {
 }
 
 function rb_post_related_by_category($Post_id, $Category_id,  $Limit = 5){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
-
-	$qa = $objArticulo->Consultar("SELECT a.* FROM articulos a, articulos_categorias ac, categorias c WHERE a.id=ac.articulo_id AND ac.categoria_id=c.id AND a.activo='A' AND c.id = ".$Category_id." AND a.id <> ".$Post_id." ORDER BY RAND() LIMIT $Limit");
-
+  global $objDataBase;
+	$qa = $objDataBase->Ejecutar("SELECT a.* FROM articulos a, articulos_categorias ac, categorias c WHERE a.id=ac.articulo_id AND ac.categoria_id=c.id AND a.activo='A' AND c.id = ".$Category_id." AND a.id <> ".$Post_id." ORDER BY RAND() LIMIT $Limit");
 	return rb_return_post_array($qa);
 }
 function rb_get_user_info($User_id){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-usuarios.class.php");
-	$objUsuario = new Usuarios;
-	$q = $objUsuario->Consultar("SELECT * FROM usuarios WHERE id=$User_id");
+  global $objDataBase;
+	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=$User_id");
 
 	$UserArray = array();
-	while($Users = mysql_fetch_array($q)):
+	while($Users = $q->fetch_assoc()):
 		$UserArray['id'] = $Users['id'];
 		$UserArray['nickname'] = $Users['nickname'];
-		$UserArray['nombres'] = $Users['nombres']." ".$Users['apellidos'];
+    $UserArray['nombrecompleto'] = $Users['nombres']." ".$Users['apellidos'];
+    $UserArray['nombres'] = $Users['nombres'];
+		$UserArray['apellidos'] = $Users['apellidos'];
 		$UserArray['telefono_movil'] = $Users['telefono-movil'];
 		$UserArray['telefono_fijo'] = $Users['telefono-fijo'];
 		$UserArray['correo'] = $Users['correo'];
 		$UserArray['direccion'] = $Users['direccion'];
+    $UserArray['photo_id'] = $Users['photo_id'];
 		$UserArray['url_img'] = rb_get_img_profile($Users['id']);
 		$UserArray['url'] = rb_url_link( 'user', $Users['id'] );
 	endwhile;
 	return $UserArray;
 }
 function rb_photos_from_album_post($Post_id){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
-	$objFoto = new Fotos;
-
-	$album_id = $objArticulo->SelectIdAlbum( $Post_id );
+  global $objDataBase;
+  $result = $objDataBase->Ejecutar( "SELECT b.nombre, b.id FROM articulos a, albums b, articulos_albums ab WHERE a.id=ab.articulo_id AND ab.album_id = b.id AND a.id =".$Post_id." LIMIT 1" );
+  $row = $result->fetch_assoc();
+	$album_id = $row['id'];
 	if($album_id==0) return false;
-	$qa = $objFoto->Consultar("SELECT * FROM photo WHERE album_id = ".$album_id);
 
-	if(mysql_num_rows($qa)==0) return false;
+	$qa = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id = ".$album_id);
+
+	if($qa->num_rows==0) return false;
 
 	$rm_url = G_SERVER."/";
 
 	$FotosArray = array();
 	$i=0;
-	while($Fotos = mysql_fetch_array($qa)):
+	while($Fotos = $qa->fetch_assoc()):
 			$FotosArray[$i]['id'] = $Fotos['id'];
 			$FotosArray[$i]['description'] = $Fotos['description'];
 			$FotosArray[$i]['tipo'] = $Fotos['tipo'];
@@ -81,21 +174,18 @@ function rb_photos_from_album_post($Post_id){
 }
 
 function rb_show_post($post_id){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
-
+  global $objDataBase;
 	if( G_ENL_AMIG == 1 ):
-		$q = $objArticulo->Consultar("SELECT id FROM articulos WHERE titulo_enlace='$post_id' OR id ='$post_id'");
-		$num_posts = mysql_num_rows($q);
+		$q = $objDataBase->Ejecutar("SELECT id FROM articulos WHERE titulo_enlace='$post_id' OR id ='$post_id'");
+		$num_posts = $q->num_rows;
 		if( $num_posts > 0):
-			$Post = mysql_fetch_array( $q );
+			$Post = $q->fetch_assoc();
 			$post_id = $Post['id'];
 		else:
 			return false;
 		endif;
 	endif;
-	$qa  = $objArticulo->Consultar("SELECT a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a WHERE activo='A' AND id =".$post_id);
+	$qa  = $objDataBase->Ejecutar("SELECT a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a WHERE activo='A' AND id =".$post_id);
 	// Como solo buscamos un unico valor y queremos usar la funcion "rb_return_post_array" que devuelve
 	// un array asociativo, usamos el link de ayuda. Tanto para versiones nuevas como antiguas
 
@@ -106,12 +196,48 @@ function rb_show_post($post_id){
 	// PHP Versiones mas antiguas
 	//return array_shift(array_values( rb_return_post_array($qa) ));
 }
+// Suma 1 unidad a cada acceso al post.
+function rb_set_read_post($post_id){
+	global $objDataBase;
+	$objDataBase->EditarPorCampo_int('articulos','lecturas','lecturas+1',$post_id);
+}
+// Obtener categoria del post segun id del post
+function rb_get_category_by_post_id($post_id){
+	global $objDataBase;
+	$result = $objDataBase->Ejecutar("SELECT c.* FROM categorias c, articulos_categorias ac, articulos a WHERE c.id=ac.categoria_id AND ac.articulo_id= a.id AND a.id =$post_id LIMIT 1");
+	return $result;
+}
+// obtener info de categoria por id, o nombre_enlace
+function rb_get_category_info($category){
+	global $objDataBase;
+	$qc  = $objDataBase->Ejecutar("SELECT * FROM categorias WHERE nombre_enlace='".$category."'");
+	if(!$qc) return false;
+	$num_reg = $qc->num_rows;
+	if($num_reg==0):
+		//Probamos con el Id
+		$qc  = $objDataBase->Consultar("SELECT * FROM categorias WHERE id=$category");
+		if(!$qc) return false;
+	endif;
+	$CategoriesArray = array();
+	$i=0;
+	while($Category = $qc->fetch_assoc()):
+			$CategoriesArray['id'] = $Category['id'];
+			$CategoriesArray['nombre'] = $Category['nombre'];
+			$CategoriesArray['descripcion'] = $Category['descripcion'];
+			$CategoriesArray['nombre_enlace'] = $Category['nombre_enlace'];
+			$CategoriesArray['url'] = rb_url_link( 'cat' , $Category['id'] );
+			$CategoriesArray['photo_id'] = $Category['photo_id'];
+		$i++;
+	endwhile;
+	return $CategoriesArray;
+}
+
+// mostrar foto de perfil
 function rb_get_img_profile($user_id){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-usuarios.class.php");
-	$objUsuario = New Usuarios;
-	$q = $objUsuario->Consultar("SELECT photo_id FROM usuarios WHERE id= $user_id");
-	$Usuario = mysql_fetch_array($q);
+  global $objDataBase;
+
+	$q = $objDataBase->Ejecutar("SELECT photo_id FROM usuarios WHERE id= $user_id");
+	$Usuario = $q->fetch_assoc();
 	$photos = rb_get_photo_from_id($Usuario['photo_id']);
 	if($photos['src']==""):
 		return G_SERVER."/rb-admin/img/user-default.png";
@@ -122,19 +248,21 @@ function rb_get_img_profile($user_id){
 
 /* OBTIENE DATOS FILES IN ARRAY FROM ID*/
 function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	$objFoto = new Fotos;
-	$q = $objFoto->Consultar("SELECT * FROM photo WHERE id=$photo_id");
-	$Photos = mysql_fetch_array($q);
+	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
+	$objFoto = new Fotos;*/
+  global $objDataBase;
+	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
+	$Photos = $q->fetch_assoc();
 	return $Photos;
 }
 
 /* OBTIENE DATOS FILES FROM ID*/
 function rb_get_photo_details_from_id($photo_id){
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	$objFoto = new Fotos;
-	$q = $objFoto->Consultar("SELECT * FROM photo WHERE id=$photo_id");
-	$Photo = mysql_fetch_array($q);
+  global $objDataBase;
+	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
+	$objFoto = new Fotos;*/
+	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
+	$Photo = $q->fetch_assoc();
   $DetailsPhoto = array();
   $DetailsPhoto['file_name'] = $Photo['src'];
   if($Photo['src']==""):
@@ -148,17 +276,17 @@ function rb_get_photo_details_from_id($photo_id){
 }
 
 function rb_photo_login($photo_id){ // logo image login (antes: rb_url_photo_from_id)
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	$objFoto = new Fotos;
-	$q = $objFoto->Consultar("SELECT * FROM photo WHERE id=$photo_id");
-	$Photos = mysql_fetch_array($q);
+  global $objDataBase;
+	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
+	$objFoto = new Fotos;*/
+	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
+	$Photos = $q->fetch_assoc();
 	if($Photos['src']==""):
 		return G_SERVER."/rb-admin/img/user-default.png";
 	else:
 		return G_SERVER."/rb-media/gallery/".$Photos['src'];
 	endif;
 }
-
 
 function rb_image_exists($name_img){
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
@@ -167,17 +295,17 @@ function rb_image_exists($name_img){
 	else return false;
 }
 
-
 /* MUESTRA COMENTARIOS DE ARTICULOS */
 function rb_comments_from_post($article_id){
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-comentarios.class.php");
-	$objComentario = new Comentarios;
+  global $objDataBase;
+	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-comentarios.class.php");
+	$objComentario = new Comentarios;*/
 
-	$q = $objComentario->Consultar("SELECT *,  DATE_FORMAT(fecha, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha, '%d') as fecha_dia, DATE_FORMAT(fecha, '%M') as fecha_mes_l, DATE_FORMAT(fecha, '%m') as fecha_mes, DATE_FORMAT(fecha, '%Y') as fecha_anio FROM comentarios WHERE articulo_id=$article_id");
+	$q = $objDataBase->Ejecutar("SELECT *,  DATE_FORMAT(fecha, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha, '%d') as fecha_dia, DATE_FORMAT(fecha, '%M') as fecha_mes_l, DATE_FORMAT(fecha, '%m') as fecha_mes, DATE_FORMAT(fecha, '%Y') as fecha_anio FROM comentarios WHERE articulo_id=$article_id");
 
 	$CommentsArray = array();
 	$i=0;
-	while($Comments = mysql_fetch_array($q)):
+	while($Comments = $q->fetch_assoc()):
 		$CommentsArray[$i]['id'] = $Comments['id'];
 		$CommentsArray[$i]['nombre'] = $Comments['nombre'];
 		$CommentsArray[$i]['contenido'] = $Comments['contenido'];
@@ -194,14 +322,15 @@ function rb_comments_from_post($article_id){
 
 /* MUESTRA CATEGORIAS DE POST EN PARTICULAR */
 function rb_show_category_from_post($article_id){
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
+	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
+	$objArticulo = new Articulos;*/
+  global $objDataBase;
 
-	$q = $objArticulo->Consultar("SELECT c.* FROM categorias c, articulos_categorias ac, articulos a WHERE c.id=ac.categoria_id AND ac.articulo_id= a.id AND a.id =$article_id");
+	$q = $objDataBase->Ejecutar("SELECT c.* FROM categorias c, articulos_categorias ac, articulos a WHERE c.id=ac.categoria_id AND ac.articulo_id= a.id AND a.id =$article_id");
 
 	$CategoriesArray = array();
 	$i=0;
-	while($Categories = mysql_fetch_array($q)):
+	while($Categories = $q->fetch_assoc()):
 		$CategoriesArray[$i]['id'] = $Categories['id'];
 		$CategoriesArray[$i]['nombre'] = $Categories['nombre'];
 		$CategoriesArray[$i]['url'] = rb_url_link( 'cat' , $Categories['id'] );
@@ -212,24 +341,25 @@ function rb_show_category_from_post($article_id){
 
 /* MUESTRA CONTENIDO DE UNA PÁGINA EN PARTICULAR */
 function rb_show_specific_page($page_id){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-paginas.class.php");
+  global $objDataBase;
+	/*require_once( dirname( dirname(__FILE__) ) ."/global.php");
+	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-paginas.class.php");*/
 
 	if($page_id=="") return false;
-	$objPagina = new Paginas;
+	//$objPagina = new Paginas;
 
 	// Probamos con Nombre_Enlace
-	$qp  = $objPagina->Consultar("SELECT * FROM paginas WHERE titulo_enlace='".$page_id."'");
+	$qp  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE titulo_enlace='".$page_id."'");
 	if(!$qp) return false;
-	$num_reg = mysql_num_rows($qp);
+	$num_reg = $qp->num_rows;
 	if($num_reg==0):
 		//Probamos con el Id
-		$qp  = $objPagina->Consultar("SELECT * FROM paginas WHERE id=$page_id");
+		$qp  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$page_id");
 		if(!$qp) return false;
 		//$num_reg = mysql_num_rows($qp);
 	endif;
 
-	$Pages = mysql_fetch_array($qp);
+	$Pages = $qp->fetch_assoc();
 	return $Pages;
 }
 
@@ -272,60 +402,18 @@ function rb_list_files($dir){
 }
 
 function rb_nums_post_by_category($category_id){
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-categorias.class.php");
-	$objCategoria = new Categorias;
-	$q = $objCategoria->Consultar("SELECT c.articulo_id, a.* FROM articulos a, articulos_categorias c WHERE a.id=c.articulo_id AND c.categoria_id=".$category_id." AND activo='A'");
-	return mysql_num_rows( $q );
-}
-
-function _rb_list_categories($order = "DESC", $categoria_id = 0){
-  require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	$objCategoria = new Categorias;
-  if(G_ACCESOUSUARIO==1): // login
-    $q_string = "SELECT * FROM categorias WHERE acceso='public' OR (acceso='privat' AND niveles LIKE '%".G_USERNIVELID."%') AND categoria_id=$categoria_id ORDER BY id $order";
-    $q = $objCategoria->Consultar($q_string);
-  elseif(G_ACCESOUSUARIO==0): // no login
-    $q_string = "SELECT * FROM categorias WHERE acceso='public' AND categoria_id=$categoria_id ORDER BY id $order";
-    $q = $objCategoria->Consultar($q_string);
-  endif;
-
-	$CategoriesArray = array();
-	$i=0;
-	while($Categories = mysql_fetch_array($q)):
-		$CategoriesArray[$i]['id'] = $Categories['id'];
-		$CategoriesArray[$i]['nombre_enlace'] = $Categories['nombre_enlace'];
-		$CategoriesArray[$i]['nombre'] = $Categories['nombre'];
-		$CategoriesArray[$i]['nombre_enlace'] = $Categories['nombre_enlace'];
-		$CategoriesArray[$i]['descripcion'] = $Categories['descripcion'];
-		$CategoriesArray[$i]['photo_id'] = $Categories['photo_id'];
-		$CategoriesArray[$i]['url'] = rb_url_link( 'cat' , $Categories['id'] );
-    $photos = rb_get_photo_from_id($Categories['photo_id']);
-    if($photos['src']==""):
-      $CategoriesArray[$i]['url_bgimage'] = G_SERVER."/rb-script/images/gallery-default.jpg";
-      $CategoriesArray[$i]['url_bgimagetn'] = G_SERVER."/rb-script/images/gallery-default.jpg";
-    else:
-      $CategoriesArray[$i]['url_bgimage'] = G_SERVER."/rb-media/gallery/".$photos['src'];
-      $CategoriesArray[$i]['url_bgimagetn'] = G_SERVER."/rb-media/gallery/tn/".$photos['src'];
-    endif;
-		$i++;
-	endwhile;
-	return $CategoriesArray;
+  global $objDataBase;
+	$q = $objDataBase->Ejecutar("SELECT c.articulo_id, a.* FROM articulos a, articulos_categorias c WHERE a.id=c.articulo_id AND c.categoria_id=".$category_id." AND activo='A'");
+	return $q->num_rows;
 }
 
 function rb_get_post_by_category($category_id="*", $starred=false, $show_post=false, $num_posts=10, $regstart=0, $column, $ord ){
+	global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-categorias.class.php");
-
 	$rm_url = G_SERVER."/";
 	$limit = "";
-
-	$objArticulo = new Articulos;
-	$objCategoria = new Categorias;
 	if($category_id=="") return false;
-
 	if($show_post==true) $limit = " LIMIT ".$regstart.", ".$num_posts." ";
-
 	if($starred): //destacado
 		$starred_query = " AND portada=1 ";
 	else:
@@ -341,7 +429,7 @@ function rb_get_post_by_category($category_id="*", $starred=false, $show_post=fa
 			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
 			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.acceso = 'public' ".$starred_query."
 			ORDER BY $column $ord $limit";
-			$qa  = $objArticulo->Consultar($q_string);
+			$qa  = $objDataBase->Ejecutar($q_string);
 		//elseif($access=="privat"): //privado
     elseif(G_ACCESOUSUARIO==1): // no login
       $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
@@ -349,25 +437,25 @@ function rb_get_post_by_category($category_id="*", $starred=false, $show_post=fa
 			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
 			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND (c.acceso = 'public' OR c.acceso = 'privat' AND c.niveles LIKE '%".G_USERNIVELID."%') ".$starred_query."
 			ORDER BY $column $ord $limit";
-			$qa  = $objArticulo->Consultar($q_string);
+			$qa  = $objDataBase->Ejecutar($q_string);
 		endif;
   // post por categoria
 	elseif($category_id != "" || $category_id !=0 || $category_id != "*"):
 		// Si no es "0" se busca la categoria
 		// Probamos con Nombre_Enlace
-		$qc  = $objCategoria->Consultar("SELECT id FROM categorias WHERE nombre_enlace='".$category_id."'");
+		$qc  = $objDataBase->Ejecutar("SELECT id FROM categorias WHERE nombre_enlace='".$category_id."'");
 		if(!$qc) return false;
-		$num_reg = mysql_num_rows($qc);
+		$num_reg = $qc->num_rows;
 		if($num_reg==0):
 			//Probamos con el Id
-			$qc  = $objCategoria->Consultar("SELECT id FROM categorias WHERE id=$category_id");
+			$qc  = $objDataBase->Ejecutar("SELECT id FROM categorias WHERE id=$category_id");
 			if(!$qc) return false;
-			$num_reg = mysql_num_rows($qc);
+			$num_reg = $qc->num_rows;
 		endif;
 
 		// Si Consulta funcion y Num de Regs es mayor a  "0"
 		if($qc && $num_reg > 0 ):
-			$ra = mysql_fetch_array($qc);
+			$ra = $qc->fetch_assoc();
 			$category_id = $ra['id'];
       if(G_ACCESOUSUARIO==0): // login
         $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
@@ -375,14 +463,14 @@ function rb_get_post_by_category($category_id="*", $starred=false, $show_post=fa
   			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
   			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND c.acceso = 'public' ".$starred_query."
   			ORDER BY $column $ord $limit";
-  			$qa  = $objArticulo->Consultar($q_string);
+  			$qa  = $objDataBase->Ejecutar($q_string);
   		elseif(G_ACCESOUSUARIO==1):// no login
         $q_string = "SELECT c.acceso, c.niveles, a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
   			DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes,
   			DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a, articulos_categorias ac, categorias c
   			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND (c.acceso = 'public' OR c.acceso = 'privat' AND c.niveles LIKE '%".G_USERNIVELID."%') ".$starred_query."
   			ORDER BY $column $ord $limit";
-  			$qa  = $objArticulo->Consultar($q_string);
+  			$qa  = $objDataBase->Ejecutar($q_string);
       endif;
 		else:
 			return;
@@ -391,91 +479,49 @@ function rb_get_post_by_category($category_id="*", $starred=false, $show_post=fa
 	if($show_post==true):
 		return rb_return_post_array($qa);
 	else:
-		return mysql_num_rows($qa);
+		return $qa->num_rows;
 	endif;
-}
-
-/* CAPTURA CONSULTA Y ENVIA UN ARRAY CON DATOS DE LA PUBLICACION - TODA CONSULTA DE LISTADO DE POSTE DEBE USAR ESTA FUNCION*/
-function rb_return_post_array($qa){
-	$PostsArray = array();
-	$i=0;
-	while($Posts = mysql_fetch_array($qa)):
-		$PostsArray[$i]['id'] = $Posts['id'];
-    $PostsArray[$i]['titulo_id'] = $Posts['titulo_enlace'];
-		$PostsArray[$i]['autor_id'] = $Posts['autor_id'];
-		$PostsArray[$i]['autor_names'] = $Posts['id'];
-		$PostsArray[$i]['titulo'] = $Posts['titulo'];
-		$PostsArray[$i]['contenido'] = $Posts['contenido'];
-		$PostsArray[$i]['video_embed'] = $Posts['video_embed'];
-		$PostsArray[$i]['vistas'] = $Posts['lecturas'];
-		$PostsArray[$i]['comentarios'] = rb_get_num_comments_by_post_id($Posts['id']);
-		$PostsArray[$i]['url'] = rb_url_link( 'art' , $Posts['id'] );
-		$PostsArray[$i]['fec_dia'] = isset( $Posts['fecha_dia'] ) ? $Posts['fecha_dia'] : "";
-		$PostsArray[$i]['fec_mes'] = isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "";
-		$PostsArray[$i]['fec_mes_l'] = rb_mes_nombre( isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "" );
-		$PostsArray[$i]['fec_anio'] = isset( $Posts['fecha_anio'] ) ? $Posts['fecha_anio'] : "";
-		$PostsArray[$i]['url_img_por_max'] = rb_get_url_image( $Posts['id'] , "l", "portada" );
-		$PostsArray[$i]['url_img_por_min'] = rb_get_url_image( $Posts['id'] , "m", "portada" );
-		$PostsArray[$i]['url_img_pri_max'] = rb_get_url_image( $Posts['id'] , "l", "logo" );
-		$PostsArray[$i]['url_img_pri_min'] = rb_get_url_image( $Posts['id'] , "m", "logo" );
-		$PostsArray[$i]['url_img_sec_max'] = rb_get_url_image( $Posts['id'] , "l", "adjunto" );
-		$PostsArray[$i]['url_img_sec_min'] = rb_get_url_image( $Posts['id'] , "m", "adjunto" );
-		$i++;
-	endwhile;
-	return $PostsArray;
 }
 
 // Muestra publicaciones destacadas
 function rb_get_post_stars($post_max = 4){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
+	/*require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
 
-	$objArticulo = new Articulos;
-	$q = $objArticulo->Consultar( "SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(fecha_creacion, '%Y') as fecha_anio FROM articulos WHERE portada=1 LIMIT $post_max" );
+	$objArticulo = new Articulos;*/
+	$q = $objDataBase->Ejecutar( "SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(fecha_creacion, '%Y') as fecha_anio FROM articulos WHERE portada=1 LIMIT $post_max" );
 	return rb_return_post_array($q);
 }
 
 function rb_get_post_more_read($num_posts=10){
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-
 	$rm_url = G_SERVER."/";
-	$objArticulo = new Articulos;
-	$objCategoria = new Categorias;
-
-	$qa  = $objArticulo->Consultar("SELECT a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a WHERE activo='A' ORDER BY a.lecturas DESC LIMIT $num_posts");
-
+	$qa  = $objDataBase->Ejecutar("SELECT a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a WHERE activo='A' ORDER BY a.lecturas DESC LIMIT $num_posts");
 	return rb_return_post_array($qa);
 }
 
 function rb_get_images_from_gallery($album_id){
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-galerias.class.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-
 	$rm_url = G_SERVER."/";
-	$objGaleria = new Galerias;
-	$objFoto = new Fotos;
 	if($album_id=="") return false;
-
 	// Probamos con Nombre_Enlace
-	$qg = $objGaleria->Consultar("SELECT id FROM albums WHERE nombre_enlace='$album_id'");
-	$num_reg = mysql_num_rows($qg);
+	$qg = $objDataBase->Ejecutar("SELECT id FROM albums WHERE nombre_enlace='$album_id'");
+	$num_reg = $qg->num_rows;
 	if($num_reg==0):
 		//Probamos con el Id
-		$qg = $objGaleria->Consultar("SELECT id FROM albums WHERE id='$album_id'");
-		$num_reg = mysql_num_rows($qg);
+		$qg = $objDataBase->Ejecutar("SELECT id FROM albums WHERE id='$album_id'");
+		$num_reg = $qg->num_rows;
 	endif;
 
 	if($qg && $num_reg > 0 ):
-		$rg = mysql_fetch_array($qg);
+		$rg = $qg->fetch_assoc();
 		$album_id = $rg['id'];
-		$qp = $objFoto->Consultar("SELECT * FROM photo WHERE album_id=".$album_id." ORDER BY orden");
+		$qp = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id=".$album_id." ORDER BY orden");
 
 		$FotosArray = array();
 		$i=0;
-		while($Fotos = mysql_fetch_array($qp)):
+		while($Fotos = $qp->fetch_assoc()):
 			$FotosArray[$i]['id'] = $Fotos['id'];
       $FotosArray[$i]['title'] = $Fotos['title'];
 			$FotosArray[$i]['description'] = $Fotos['description'];
@@ -492,17 +538,16 @@ function rb_get_images_from_gallery($album_id){
 }
 
 function rb_get_num_comments_by_post_id($articulo_id){
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
-	$q = $objArticulo->Consultar("SELECT id FROM comentarios WHERE articulo_id=".$articulo_id);
-	return mysql_num_rows($q);
+  global $objDataBase;
+	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
+	$objArticulo = new Articulos;*/
+	$q = $objDataBase->Ejecutar("SELECT id FROM comentarios WHERE articulo_id=".$articulo_id);
+	return $q->num_rows;
 }
 
 /* LA FUNCION DEVUELVE LA RUTA COMPLETA DE LA IMAGEN DE PORTADA DE CADA PUBLICACION */
 function rb_get_url_image($article_id, $size = "m", $section = "portada", $showImgAlt = false){
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
 
 	$url = G_SERVER."/";
 	$dir_media = "rb-media";
@@ -513,51 +558,52 @@ function rb_get_url_image($article_id, $size = "m", $section = "portada", $showI
 		$dir = "";
 	endif;
 
-	if($objArticulo->SelectObject( $section, $article_id )){
-		$file = $objArticulo->SelectObject( $section, $article_id );
+	//if($objArticulo->SelectObject( $section, $article_id )){
+	if( rb_select_object_publication( $section, $article_id ) ){
+		//$file = $objArticulo->SelectObject( $section, $article_id );
+		$file = rb_select_object_publication( $section, $article_id );
 		$url_img = $url.$dir_media."/gallery/".$dir.$file;
 		$path_img = ABSPATH.$dir_media."/gallery/".$dir.$file;
 		if(file_exists ($path_img)):
 			return $url_img;
 		else:
-			/*if($showImgAlt==true):*/
-				return G_SERVER."/rb-script/images/gallery-default.jpg";
-			/*else:
-				return "";
-			endif;*/
+			return G_SERVER."/rb-script/images/gallery-default.jpg";
 		endif;
 	}else{
-		/*if($showImgAlt==true):*/
-			return G_SERVER."/rb-script/images/gallery-default.jpg";
-		/*else:
-			return "";
-		endif;*/
+		return G_SERVER."/rb-script/images/gallery-default.jpg";
+	}
+}
+
+function rb_select_object_publication($nombre, $articulo_id, $tipo = 'image'){
+	global $objDataBase;
+	$result = $objDataBase->Ejecutar("SELECT contenido FROM objetos WHERE articulo_id=".$articulo_id." and tipo = '".$tipo."' and nombre = '".$nombre."' LIMIT 1");
+	if($result->num_rows > 0){
+		$row = $result->fetch_assoc();
+		return $row['contenido'];
+	}else{
+		return false;
 	}
 }
 
 /* LA FUNCION GENERA EL LINK DE ACUERDO A LA SECCION
  * Y EL ID (PUEDE SER CATEGORIA, PUBLICACION O PAGINA )*/
 function rb_url_link($section, $id, $page=0){
+  global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-
 	// obtener variables globales
 	$url_web = G_SERVER."/";
 	$link_friendly = G_ENL_AMIG;
-
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;
-
 	switch($section){
 		case "cat":
 			if($link_friendly){
-				$q = $objArticulo->Consultar("SELECT id FROM categorias WHERE id='$id'"); //verificar mas adelante 26/08/17 id x nombre_enlace
-				if( mysql_num_rows($q)==0 ):
+				$q = $objDataBase->Ejecutar("SELECT id FROM categorias WHERE id='$id'"); //verificar mas adelante 26/08/17 id x nombre_enlace
+				if( $q->num_rows==0 ):
 					return $url_web;
 				endif;
-				$r = mysql_fetch_array($q);
-				$q = $objArticulo->Consultar("SELECT nombre_enlace FROM categorias WHERE id=".$r['id']);
+				$r = $q->fetch_assoc();
+				$q = $objDataBase->Ejecutar("SELECT nombre_enlace FROM categorias WHERE id=".$r['id']);
 
-				$r = mysql_fetch_array($q);
+				$r = $q->fetch_assoc();
 				$name_link = $r['nombre_enlace'];
 				if($page==0 || $page==1) return $url_web.G_BASECAT."/".$name_link."/";
 				else return $url_web.G_BASECAT."/".$name_link."/".G_BASEPAGE."/".$page."/";
@@ -569,8 +615,8 @@ function rb_url_link($section, $id, $page=0){
 		case "art":
 		case "post":
 			if($link_friendly){
-				$q = $objArticulo->Consultar("SELECT titulo_enlace FROM articulos WHERE id=".$id);
-				$r = mysql_fetch_array($q);
+				$q = $objDataBase->Ejecutar("SELECT titulo_enlace FROM articulos WHERE id=".$id);
+				$r = $q->fetch_assoc();
 				$name_link = $r['titulo_enlace'];
 				return $url_web.G_BASEPUB."/".$name_link."/";
 			}else{
@@ -579,16 +625,16 @@ function rb_url_link($section, $id, $page=0){
 			break;
 		case "pag":
 			// Consultamos por -titulo-id
-			$q  = $objArticulo->Consultar("SELECT * FROM paginas WHERE titulo_enlace='".$id."'");
+			$q  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE titulo_enlace='".$id."'");
 			if(!$q) return false;
-			$num_reg = mysql_num_rows($q);
+			$num_reg = $q->num_rows;
 			if($num_reg==0):
 				// Consultamos por -id
-				$q  = $objArticulo->Consultar("SELECT * FROM paginas WHERE id=$id");
+				$q  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
 				if(!$q) return false;
-				$num_reg = mysql_num_rows($q);
+				$num_reg = $q->num_rows;
 			endif;
-			$r = mysql_fetch_array($q);
+			$r = $q->fetch_assoc();
 
 			if($link_friendly){
 				$name_link = $r['titulo_enlace'];
@@ -659,9 +705,10 @@ function rb_fragment_letters($cadena, $longitud, $elipsis = "..."){
  *
 */
 function rb_path_menu($menu_id){
+  global $objDataBase;
 	if($menu_id==0) return false;
-	$q = mysql_query("SELECT * FROM menus_items WHERE id=$menu_id");
-	$Menu = mysql_fetch_array($q);
+	$q = $objDataBase->Ejecutar("SELECT * FROM menus_items WHERE id=$menu_id");
+	$Menu = $q->fetch_assoc();
 	rb_path_menu($Menu['menu_id']);
 	echo $Menu['nombre']."/";
 }
@@ -691,30 +738,6 @@ function rb_display_menu($mainmenu_id, $parent, $level, $item_selected) { // ANT
     echo "</ul>\n";
 }
 
-function _rb_menus_to_array($mainmenu_id, $parent,$level) { // VERIFICAR SI FUNCIONA ___ obsoleto -- verificar
-	global $menus;
-	global $i;
-
-	$result = mysql_query("SELECT mi.menu_id, mi.nivel, mi.id, mi.nombre, mi.url, mi.tipo, Items.Count FROM menus_items mi  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM menus_items GROUP BY menu_id) Items ON mi.id = Items.menu_id WHERE mi.menu_id=". $parent." AND mi.mainmenu_id=".$mainmenu_id. " ORDER BY id");
-
-	while ($row = mysql_fetch_assoc($result)):
-		$i = $row['id'];
-		if ($row['Count'] > 0):
-			$menus[$i]['id'] = $row['id'];
-			$menus[$i]['menu_id'] = $row['menu_id'];
-			$menus[$i]['nivel'] = $row['nivel'];
-			$menus[$i]['nombre'] = str_repeat("-",$level).$row['nombre'];
-			rb_menus_to_array($mainmenu_id, $row['id'], $level + 1);
-		elseif($row['Count']==0):
-			$menus[$i]['id'] = $row['id'];
-			$menus[$i]['menu_id'] = $row['menu_id'];
-			$menus[$i]['nivel'] = $row['nivel'];
-			$menus[$i]['nombre'] = str_repeat("-",$level).$row['nombre'];
-		endif;
-	endwhile;
-
-	return $menus;
-}
 function rb_numadia($num){
 	switch($num){
 		case 1:
@@ -920,13 +943,14 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		imagedestroy($square_image);
 }
 function rb_BBCodeToGlobalVariable($texto,$id=0){
+  global $objDataBase;
 	$gallery_html = "";
 	if($id>0){
-		require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-paginas.class.php");
-		$objPagina = new Paginas;
+		/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-paginas.class.php");
+		$objPagina = new Paginas;*/
 
-		$qp  = $objPagina->Consultar("SELECT * FROM paginas WHERE id=$id");
-		$r = mysql_fetch_array($qp);
+		$qp  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
+		$r = $qp->fetch_assoc();
 		if($r['galeria_id']>0):
 			$gallery_html .= '<ul class="gallery">';
 			$Fotos = rb_get_images_from_gallery($r['galeria_id']);
@@ -975,12 +999,13 @@ function rb_showvisiblename($acceso){
 }
 
 function rb_shownivelname($nivel_id){
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
+	global $objDataBase;
+	/*require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
-	$objDataBase = new DataBase;
+	$objDataBase = new DataBase;*/
 
-	$q = $objDataBase->Consultar("SELECT nombre FROM usuarios_niveles WHERE id = $nivel_id");
-	$r = mysql_fetch_array($q);
+	$q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id = $nivel_id");
+	$r = $q->fetch_assoc();
 	return $r['nombre'];
 }
 
@@ -1281,11 +1306,11 @@ function rb_menu_panel(){
  * 		@$native: Por defecto true, si usa libreria estandar del PHP
  * */
 function rb_mailer($recipient, $subject, $email_content, $native = true, $email_headers_name="", $email_headers_mail=""){
-	global $objOpcion;
+	//global $objDataBase;
 	// Info de quien envia
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	if($email_headers_name=="") $email_headers_name = $objOpcion->obtener_valor(1,'name_sender');
-	if($email_headers_mail=="") $email_headers_mail = $objOpcion->obtener_valor(1,'mail_sender');
+	//require_once( dirname( dirname(__FILE__) ) ."/global.php");
+	if($email_headers_name=="") $email_headers_name = rb_get_values_options('name_sender');
+	if($email_headers_mail=="") $email_headers_mail = rb_get_values_options('mail_sender');
 
 	if($native==true):
 		$email_headers = "From: " .$email_headers_name." <".strip_tags($email_headers_mail) . "> \r\n";
@@ -1303,7 +1328,7 @@ function rb_mailer($recipient, $subject, $email_content, $native = true, $email_
 	if($native==false):
 		require_once( dirname( dirname(__FILE__) ) ."/rb-script/modules/sendgrid-php/sendgrid-php.php");
 
-		$apiKey = $objOpcion->obtener_valor(1,'sendgridapikey');
+		$apiKey = rb_get_values_options('sendgridapikey');
 
 		$from = new SendGrid\Email($email_headers_name, $email_headers_mail);
 		$to = new SendGrid\Email(null, $recipient);
@@ -1333,23 +1358,24 @@ function rb_mailer($recipient, $subject, $email_content, $native = true, $email_
  * 		@$native: Por defecto true, si usa libreria estandar del PHP
  * */
 function rb_list_galleries($limit=0, $groupname=""){
-  require_once( dirname( dirname(__FILE__) ) ."/global.php");
+  /*require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
-	$objDataBase = new DataBase;
+	$objDataBase = new DataBase;*/
+	global $objDataBase;
 
   $add_limit = "";
   if($limit>0){
     $add_limit = " LIMIT ".$limit;
   }
   if(empty($groupname)){
-      $q= $objDataBase->Consultar("SELECT * FROM albums ORDER BY nombre_enlace ASC".$add_limit);
+      $q= $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY nombre_enlace ASC".$add_limit);
   }else{
-      $q= $objDataBase->Consultar("SELECT * FROM albums WHERE galeria_grupo='$groupname' ORDER BY nombre_enlace ASC".$add_limit);
+      $q= $objDataBase->Ejecutar("SELECT * FROM albums WHERE galeria_grupo='$groupname' ORDER BY nombre_enlace ASC".$add_limit);
   }
   $GaleriasArray = Array();
   //$FotosArray = array();
 	$i=0;
-	while($Galerias = mysql_fetch_array($q)):
+	while($Galerias = $q->fetch_assoc()):
 			$GaleriasArray[$i]['id'] = $Galerias['id'];
 			$GaleriasArray[$i]['nombre'] = $Galerias['nombre'];
 			$GaleriasArray[$i]['nombre_enlace'] = $Galerias['nombre_enlace'];
@@ -1375,10 +1401,11 @@ function rb_list_galleries($limit=0, $groupname=""){
  * */
 
 function rb_path_categories($category_id,$path=""){
-  require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
-  $objDataBase = new DataBase;
-  $q = $objDataBase->Consultar("SELECT * FROM categorias WHERE id=$category_id");
-  $r = mysql_fetch_array($q);
+  /*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
+  $objDataBase = new DataBase;*/
+	global $objDataBase;
+  $q = $objDataBase->Ejecutar("SELECT * FROM categorias WHERE id=$category_id");
+  $r = $q->fetch_assoc();
   $path = $r['nombre'].'/'.$path;
   if($r['nivel']==0):
     // Alcanza el top, sale
@@ -1396,12 +1423,14 @@ function rb_path_categories($category_id,$path=""){
  *    @path -> variable interna para almacenar la ruta consultada de momento
  * */
 function rb_categories_to_array($category_id, $all=true) {
-  require_once( dirname( dirname(__FILE__) ) ."/global.php");
+  //require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	/*global $categories;
 	global $i;*/
+	global $objDataBase;
   $q = "SELECT c.categoria_id, c.nivel, c.id, c.nombre, c.acceso, c.niveles, Items.Count FROM categorias c LEFT OUTER JOIN (SELECT categoria_id, COUNT(*) AS Count FROM categorias GROUP BY categoria_id) Items ON c.id = Items.categoria_id WHERE c.categoria_id=$category_id ORDER BY id";
-	$r = mysql_query($q);
-	while ($row = mysql_fetch_array($r)):
+	//$r = mysql_query($q);
+	$r = $objDataBase->Ejecutar( $q );
+	while ( $row = $r.fetch_assoc() ):
 		$i = $row['id'];
     // Si el acceso es privado, no se mostrara, pero antes
     // se comparara el nivel del usuario con el de la categoria
@@ -1435,266 +1464,14 @@ function rb_categories_to_array($category_id, $all=true) {
 
 	return $categories;
 }
-/*
- *
- * FUNCIONES ANTIGUAS, REVISAR SU FUNCIONAMIENTO.
- *
- * */
+// Lista categorias en el panel administrativo - revisar esta funcion, es obsoleta
+function rb_listar_categorias($id_padre){ // antes listar_categorias
+	global $objDataBase;
+	/*require_once("../rb-script/class/rb-categorias.class.php");
+	$objCategoria = new Categorias;*/
+	$consultaSecc = $objDataBase->Ejecutar("SELECT * FROM categorias ORDER BY nombre");
 
-/*
-La funcion valida la url del texto, devuelve falso si esta mal escrito
-*/
-function validar_url($url){
-	$urlregex = "^(https?|ftp)\:\/\/";
-
-	// USER AND PASS (optional)
-	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";
-
-	// HOSTNAME OR IP
-	//$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*"; // http://x = allowed (ex. http://localhost, http://routerlogin)
-	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)+"; // http://x.x = minimum
-	//$urlregex .= "([a-z0-9+\$_-]+\.)*[a-z0-9+\$_-]{2,3}"; // http://x.xx(x) = minimum
-	//use only one of the above
-
-	// PORT (optional)
-	$urlregex .= "(\:[0-9]{2,5})?";
-	// PATH (optional)
-	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";
-	// GET Query (optional)
-	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";
-	// ANCHOR (optional)
-	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";
-
-	if(eregi($urlregex, $url)) return true;
-	else return false;
-}
-/*
-La funcion valida el mail del texto, devuelve falso si esta mal escrito
-*/
-function validar_mail($pMail) {
-	if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
-		return true;
-	}else{
-		return false;
-	}
-}
-/*
-La funcion divide direccion url en un array a traves de la barra invertida
-*/
-function explotar_url(){
-	$navString = $_SERVER['REQUEST_URI']; // Returns "/Mod_rewrite/edit/1/"
-	$parts = explode('/', $navString); // Break into an array
-	return $parts;
-}
-/*
-La funcion devuelve el porcentaje de popularidad de un post, segun su numero de lecturas
-*/
-function nivel_articulo($hit_articulo){
-	$Articulo=new Articulos;
-	$q = $Articulo->Consultar("SELECT AVG( lecturas ) AS promedio FROM articulos");
-	$ArticuloItem = mysql_fetch_array($q);
-	$Promedio = $ArticuloItem['promedio'];
-
-	//regla de 3 simple
-	$hitporcent = ($hit_articulo*100)/$Promedio;
-	$hitporcent = round($hitporcent,2);
-	if($hitporcent>100) return '100 %';
-	else return $hitporcent.' %';
-}
-/*
-La funcion devuelve la imagen del avatar segun correo electronico
-*/
-/*function avatar($mail,$estilo,$size=36){
-
-	$G_SERVER= "http://".$_SERVER['SERVER_NAME'];
-	$default =  $G_SERVER."/rb_temas/".$estilo."/css/images/default.png";
-
-	//You can construct your gravatar url with the following php code:
-	$grav_url = "http://www.gravatar.com/avatar.php?gravatar_id=".md5($mail).
-			"&amp;default=".urlencode($default)."&amp;size=".$size;
-
-	return $grav_url;
-}*/
-
-/*
-La funcion limpia la salida de comentarios de etiquetas html no deseadas
-*/
-function htmlclean($input) {
-     $sb_convert = $input;
-     $sb_input = array("<",">","(",")");
-     $sb_output = array("&lt;","&gt;","&#40;","&#41;");
-     $output = str_replace($sb_input, $sb_output, $sb_convert);
-     return $output;
-}
-/*
-las 2 siguientes funciones avanzan o retroceden en la navegacion de posts
-*/
-function ls_articulo_next($articulo_id){
-	$action=false;
-	$articulo_id++;
-	$Articulo=new Articulos;
-	$q=$Articulo->Consultar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-	$ArticuloItem=mysql_fetch_array($q);
-
-	if( $ArticuloItem == false ){
-		return false;
-	}
-	while($action==false){
-		if($ArticuloItem['activo']=="D"){
-			$articulo_id++;
-			$q=$Articulo->Consultar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-			$ArticuloItem=mysql_fetch_array($q);
-			if( $ArticuloItem == false ){
-				return false;
-			}
-		}else{
-			$action=true;
-		}
-	}
-
-	$valor = array();
-	$enlace = G_SERVER."/articulos/".$ArticuloItem['titulo_enlace']."/";
-	$valor['titulo'] = $ArticuloItem['titulo'];
-	$valor['enlace'] = $enlace;
-	return $valor;
-}
-
-function ls_articulo_prev($articulo_id){
-	$action=false;
-	$articulo_id--;
-	$Articulo=new Articulos;
-	$q=$Articulo->Consultar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-	$ArticuloItem=mysql_fetch_array($q);
-
-	if( $ArticuloItem == false ){
-		return false;
-	}
-	while($action==false){
-		if($ArticuloItem['activo']=="D"){
-			$articulo_id--;
-			$q=$Articulo->Consultar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-			$ArticuloItem=mysql_fetch_array($q);
-			if( $ArticuloItem == false ){
-				return false;
-			}
-		}else{
-			$action=true;
-		}
-	}
-
-	$valor = array();
-	$enlace = G_SERVER."/articulos/".$ArticuloItem['titulo_enlace']."/";
-	$valor['titulo'] = $ArticuloItem['titulo'];
-	$valor['enlace'] = $enlace;
-	return $valor;
-}
-function NumToLetras($num){
-	switch($num){
-		case 1:
-			return "uno";
-		break;
-		case 2:
-			return "dos";
-		break;
-		case 3:
-			return "tres";
-		break;
-		case 4:
-			return "cuatro";
-		break;
-		case 5:
-			return "cinco";
-		break;
-		case 6:
-			return "seis";
-		break;
-		case 7:
-			return "siete";
-		break;
-		case 8:
-			return "ocho";
-		break;
-		case 9:
-			return "nueve";
-		break;
-		case 10:
-			return "diez";
-		break;
-	}
-}
-
-function _menu_main($id_padre){ // OBSOLETO ??
-	$objMenu = new Menus;
-	$consultaSecc = $objMenu->Consultar("SELECT * FROM menu ORDER BY id");
-
-	while ( $menu = mysql_fetch_assoc($consultaSecc) ){
-		$menu_array[$menu["id"]] = array(
-			"id" => $menu["id"],
-			"nombre" => $menu["nombre"],
-			"url" => $menu["url"],
-			"menu_id" => $menu["menu_id"],
-			"nivel" => $menu["nivel"],
-		);
-	}
-	foreach($menu_array as $key => $value){
-		if ($value["menu_id"] == $id_padre){
-			if($id_padre == 0){
-				echo "
-					<li>
-						<a href=\"".G_SERVER."/".$value['url']."\" class=\"parent\">
-						<span>".$value['nombre']."</span></a>";
-				menu_main($key);
-				echo "</li>";
-			}else{
-				echo "
-					<li>
-						<a href=\"".G_SERVER."/".$value['url']."\">
-						<span>".$value['nombre']."</span></a>";
-				menu_main($key);
-				echo "</li>";
-			}
-		}
-	}
-}
-
-function convertirdorhora($hd){
-	$hrdet = "am.";
-	if($hd>12){
-		$hrdet = "pm.";
-	}
-
-	$num = explode(".",$hd);
-	$ent = $num[0];
-
-	if(strlen($ent)==1){
-		$ent = "0".$ent;
-	}
-	if(count($num)>1){
-		return $ent.":30 ".$hrdet;
-	}else{
-		return $ent.":00 ".$hrdet;
-	}
-}
-function concero($num){
-	if($num<10){
-		return "0".$num;
-	}else{
-		return $num;
-	}
-}
-function dividirnombre($nom){
-	$anom = explode(" ",$nom);
-	return $anom[0];
-}
-
-// Lista categorias en el panel administrativo
-function listar_categorias($id_padre){
-
-	require_once("../rb-script/class/rb-categorias.class.php");
-	$objCategoria = new Categorias;
-	$consultaSecc = $objCategoria->Consultar("SELECT * FROM categorias ORDER BY nombre");
-
-	while ( $categoria = mysql_fetch_assoc($consultaSecc) ){
+	while ( $categoria = $consultaSecc->fetch_assoc() ){
 		$categoria_array[$categoria["id"]] = array(
 			"id" => $categoria["id"],
 			"nombre" => $categoria["nombre"],
@@ -1731,7 +1508,7 @@ function listar_categorias($id_padre){
 					</span>
 					</td>\n
     			</tr>";
-				listar_categorias($key);
+				rb_listar_categorias($key);
 			}else{
 				echo "
 				 <tr>
@@ -1752,13 +1529,226 @@ function listar_categorias($id_padre){
 					</span>
 					</td>\n
     			</tr>";
-				listar_categorias($key);
+				rb_listar_categorias($key);
 			}
 		}
 	}
 }
+/*
+ *
+ * FUNCIONES ANTIGUAS, REVISAR SU FUNCIONAMIENTO.
+ *
+ * */
 
-function listar_archivos($dir, $fileselect){
+/*
+La funcion valida la url del texto, devuelve falso si esta mal escrito
+*/
+function _validar_url($url){
+	$urlregex = "^(https?|ftp)\:\/\/";
+
+	// USER AND PASS (optional)
+	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";
+
+	// HOSTNAME OR IP
+	//$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*"; // http://x = allowed (ex. http://localhost, http://routerlogin)
+	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)+"; // http://x.x = minimum
+	//$urlregex .= "([a-z0-9+\$_-]+\.)*[a-z0-9+\$_-]{2,3}"; // http://x.xx(x) = minimum
+	//use only one of the above
+
+	// PORT (optional)
+	$urlregex .= "(\:[0-9]{2,5})?";
+	// PATH (optional)
+	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";
+	// GET Query (optional)
+	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";
+	// ANCHOR (optional)
+	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";
+
+	if(eregi($urlregex, $url)) return true;
+	else return false;
+}
+/*
+La funcion valida el mail del texto, devuelve falso si esta mal escrito
+*/
+function _validar_mail($pMail) {
+	if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
+		return true;
+	}else{
+		return false;
+	}
+}
+/*
+La funcion divide direccion url en un array a traves de la barra invertida
+*/
+function _explotar_url(){
+	$navString = $_SERVER['REQUEST_URI']; // Returns "/Mod_rewrite/edit/1/"
+	$parts = explode('/', $navString); // Break into an array
+	return $parts;
+}
+/*
+La funcion devuelve el porcentaje de popularidad de un post, segun su numero de lecturas
+*/
+function _nivel_articulo($hit_articulo){
+	$Articulo=new Articulos;
+	$q = $Articulo->Ejecutar("SELECT AVG( lecturas ) AS promedio FROM articulos");
+	$ArticuloItem = $q->fetch_assoc();
+	$Promedio = $ArticuloItem['promedio'];
+
+	//regla de 3 simple
+	$hitporcent = ($hit_articulo*100)/$Promedio;
+	$hitporcent = round($hitporcent,2);
+	if($hitporcent>100) return '100 %';
+	else return $hitporcent.' %';
+}
+/*
+La funcion devuelve la imagen del avatar segun correo electronico
+*/
+/*function avatar($mail,$estilo,$size=36){
+
+	$G_SERVER= "http://".$_SERVER['SERVER_NAME'];
+	$default =  $G_SERVER."/rb_temas/".$estilo."/css/images/default.png";
+
+	//You can construct your gravatar url with the following php code:
+	$grav_url = "http://www.gravatar.com/avatar.php?gravatar_id=".md5($mail).
+			"&amp;default=".urlencode($default)."&amp;size=".$size;
+
+	return $grav_url;
+}*/
+
+/*
+La funcion limpia la salida de comentarios de etiquetas html no deseadas
+*/
+function _htmlclean($input) {
+     $sb_convert = $input;
+     $sb_input = array("<",">","(",")");
+     $sb_output = array("&lt;","&gt;","&#40;","&#41;");
+     $output = str_replace($sb_input, $sb_output, $sb_convert);
+     return $output;
+}
+/*
+las 2 siguientes funciones avanzan o retroceden en la navegacion de posts
+*/
+function _ls_articulo_next($articulo_id){
+	$action=false;
+	$articulo_id++;
+	$Articulo=new Articulos;
+	$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
+	$ArticuloItem=$q->fetch_assoc();
+
+	if( $ArticuloItem == false ){
+		return false;
+	}
+	while($action==false){
+		if($ArticuloItem['activo']=="D"){
+			$articulo_id++;
+			$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
+			$ArticuloItem=$q->fetch_assoc();
+			if( $ArticuloItem == false ){
+				return false;
+			}
+		}else{
+			$action=true;
+		}
+	}
+
+	$valor = array();
+	$enlace = G_SERVER."/articulos/".$ArticuloItem['titulo_enlace']."/";
+	$valor['titulo'] = $ArticuloItem['titulo'];
+	$valor['enlace'] = $enlace;
+	return $valor;
+}
+
+function _ls_articulo_prev($articulo_id){
+	$action=false;
+	$articulo_id--;
+	$Articulo=new Articulos;
+	$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
+	$ArticuloItem=$q->fetch_assoc();
+
+	if( $ArticuloItem == false ){
+		return false;
+	}
+	while($action==false){
+		if($ArticuloItem['activo']=="D"){
+			$articulo_id--;
+			$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
+			$ArticuloItem=$q->fetch_assoc();
+			if( $ArticuloItem == false ){
+				return false;
+			}
+		}else{
+			$action=true;
+		}
+	}
+
+	$valor = array();
+	$enlace = G_SERVER."/articulos/".$ArticuloItem['titulo_enlace']."/";
+	$valor['titulo'] = $ArticuloItem['titulo'];
+	$valor['enlace'] = $enlace;
+	return $valor;
+}
+function _NumToLetras($num){
+	switch($num){
+		case 1:
+			return "uno";
+		break;
+		case 2:
+			return "dos";
+		break;
+		case 3:
+			return "tres";
+		break;
+		case 4:
+			return "cuatro";
+		break;
+		case 5:
+			return "cinco";
+		break;
+		case 6:
+			return "seis";
+		break;
+		case 7:
+			return "siete";
+		break;
+		case 8:
+			return "ocho";
+		break;
+		case 9:
+			return "nueve";
+		break;
+		case 10:
+			return "diez";
+		break;
+	}
+}
+
+function _convertirdorhora($hd){
+	$hrdet = "am.";
+	if($hd>12){
+		$hrdet = "pm.";
+	}
+
+	$num = explode(".",$hd);
+	$ent = $num[0];
+
+	if(strlen($ent)==1){
+		$ent = "0".$ent;
+	}
+	if(count($num)>1){
+		return $ent.":30 ".$hrdet;
+	}else{
+		return $ent.":00 ".$hrdet;
+	}
+}
+
+function _dividirnombre($nom){
+	$anom = explode(" ",$nom);
+	return $anom[0];
+}
+
+
+
+function _listar_archivos($dir, $fileselect){
 	// only read images type down espec
 	$directorio = opendir($dir);
 	while ($fileName = readdir($directorio)){
@@ -1772,13 +1762,13 @@ function listar_archivos($dir, $fileselect){
 		}
 	}
 }
-function normalize($str) {
+function _normalize($str) {
 	$str = preg_replace('/\n(\s*\n)+/', '</p><p>', $str);
 	$str = preg_replace('/\n/', '<br/>', $str);
 	$str = '<p>'.$str.'</p>';
 	return $str;
 }
-function cambiaf_a_normal($fecha){ /* FUNCIONAL, Revision -> 16/08/16*/
+function _cambiaf_a_normal($fecha){ /* FUNCIONAL, Revision -> 16/08/16*/
     ereg( "([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})", $fecha, $mifecha);
     $lafecha=$mifecha[3]."/".$mifecha[2]."/".$mifecha[1];
     return $lafecha;

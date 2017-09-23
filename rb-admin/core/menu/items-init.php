@@ -1,49 +1,50 @@
 <?php
 // MOSTRAR LA ESTRUCTURA DE EDICION DEL MENU
-require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
+//require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
 $mainmenu_id = $_GET['id'];
 $menu_asincrono = true;
 ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script>
-	$(document).ready(function() {		
+	$(document).ready(function() {
 		$( ".column" ).sortable({
 			connectWith: ".column",
 			handle: ".header",
 			placeholder: "placeholder"
 	    });
-	    
+
 		// ocultar/mostrar cuerpo del item
 		$("#subitems").on("click", ".more", function (event) {
 		   	event.preventDefault();
 		   	$(this).closest("li").find("> .item-body").slideToggle(); // ">" solo aplica al primer elemento, sino aplicaria a todo los item-body dentro del li padre
-		});	
-			    
+		});
+
 		// Cambiar titulo del item
 		$("#subitems").on("keyup", ".menu_title", function (event) {
 		   	//console.log( $(this).val() );
 		   	$(this).closest("li").find(".item-title").html( $(this).val() );
 		   	$(this).closest("li").attr("data-title", $(this).val());
 		});
-		
+
 		// Cambiar estilo del item
 		$("#subitems").on("keyup", ".menu_style", function (event) {
 		   	//console.log( $(this).val() );
 		  	$(this).closest("li").attr("data-style", $(this).val());
 		});
-		
+
 		// Cambiar estilo del url
 		$("#subitems").on("keyup", ".menu_url", function (event) {
 		   	//console.log( $(this).val() );
 		  	$(this).closest("li").attr("data-url", $(this).val());
 		});
-			    
+
 		<?php
-		// consultar ultimo id dentro de la table menus
+		// Ejecutar ultimo id dentro de la table menus
 		require_once(ABSPATH."rb-script/class/rb-menus.class.php");
-		$row = mysql_fetch_array($objMenu->Consultar("SELECT * FROM menus_items ORDER BY id DESC LIMIT 1"));
+		$result = $objDataBase->Ejecutar("SELECT * FROM menus_items ORDER BY id DESC LIMIT 1");
+		$row = $result->fetch_assoc();
 		?>
-		
+
 		// añadir un nuevo item, con todo el form para configurar
 		var last_item = <?= $row['id'] ? $row['id'] : "1" ?>;
 
@@ -51,9 +52,9 @@ $menu_asincrono = true;
 		$('#savesubitems').click(function( event ){
 			// Agradecimiento: http://stackoverflow.com/questions/7932931/json-and-jquery-create-nested-json-from-nested-list-elements#_=_
 			var out = []; // variable array
-						 
-		    function processOneLi(node) {  
-		    	// node contiene el elemento "li" que se pasa como parametro     
+
+		    function processOneLi(node) {
+		    	// node contiene el elemento "li" que se pasa como parametro
 		        //var aNode = node.children("a:first");
 		        //node.attr()
 		        var retVal = {
@@ -75,7 +76,7 @@ $menu_asincrono = true;
 				});
 				return retVal;
 			}
-			
+
 			$(".menu-edition > ul > li").each(function() {
 				out.push(processOneLi($(this)));
 			});
@@ -83,15 +84,15 @@ $menu_asincrono = true;
 			console.log(JSON.stringify(out));
 			$.ajax({
 				type: 'POST',
-				url: '<?= G_SERVER ?>/rb-script/modules/rb-menus/save.menus.php',
+				url: '<?= G_SERVER ?>/rb-admin/core/menu/items-save.php',
 				data: {
-					mainmenu_id: <?= $mainmenu_id ?>, 
+					mainmenu_id: <?= $mainmenu_id ?>,
 					json: JSON.stringify(out)},
 				dataType: 'json'
 			})
 			.done( function (data){
 				window.location.href = '<?=  G_SERVER ?>/rb-admin/index.php?pag=menu&id=<?= $mainmenu_id ?>&m=ok';
-			});		    
+			});
 		});
 
 				// CLICK EN LOS BOTONES DE TIPO DE ITEMS DE MENU
@@ -104,7 +105,7 @@ $menu_asincrono = true;
 				});
 				$('#btn-list-art').click(function( event ){
 					$('#btn-list-pag, #btn-list-art, #btn-list-cat, #btn-list-per').removeClass('item-menu-selected');
-					$('#list-pag, #list-art, #list-cat, #list-per').removeClass('item-menu-selected');								
+					$('#list-pag, #list-art, #list-cat, #list-per').removeClass('item-menu-selected');
 					$('#btn-list-art, #list-art').addClass('item-menu-selected');
 					$('#list-art').show();
 					$('.list-link > div').hide();
@@ -124,7 +125,7 @@ $menu_asincrono = true;
 					$('.list-link > div').hide();
 					$('#list-per').show();
 				});
-				
+
 				$('#btn-add-pages').click(function( event ){
 					$('input[name^="paginas"]:checked').each(function() {
 						var type =  $(this).attr('data-type');
@@ -140,7 +141,7 @@ $menu_asincrono = true;
 					    });
 					});
 				});
-				
+
 				$('#btn-add-posts').click(function( event ){
 					$('input[name^="articulos"]:checked').each(function() {
 						var type =  $(this).attr('data-type');
@@ -156,7 +157,7 @@ $menu_asincrono = true;
 					    });
 					});
 				});
-				
+
 				$('#btn-add-categories').click(function( event ){
 					$('input[name^="categorias"]:checked').each(function() {
 						var type =  $(this).attr('data-type');
@@ -172,16 +173,16 @@ $menu_asincrono = true;
 					    });
 					});
 				});
-				
+
 				$( "#menu_item_per_frm" ).submit(function( event ) {
 					event.preventDefault();
 					var type =  $(this).attr('data-type');
 					var title =  $('#menu_item_name').val();
 					var url =  $('#menu_item_url').val();
-					
+
 					$('#subitems').append( form_html(type, title, last_item, url) );
 					last_item++;
-					
+
 					$('#menu_item_per_frm').trigger("reset");
 					$( ".column" ).sortable({
 					      connectWith: ".column",
@@ -189,17 +190,17 @@ $menu_asincrono = true;
 					      placeholder: "placeholder"
 					    });
 				});
-				
+
 				$( "#subitems" ).on( "click", ".delete", function() {
 				  	$(this).closest("li").remove();
 				});
-				
+
 				function form_html(type, title, last_item, url){
 					var item = '<li class="item" data-id="item'+last_item+'" data-title="'+title+'" data-url="'+url+'" data-menumain="<?= $mainmenu_id ?>" data-type="'+type+'" data-style="">';
 						item += '<div class="header"><span class="item-title">'+title+'</span></div>';
 						item += '<a class="more" href="#"><span class="arrow-up" style="display: none;">&#9650;</span><span class="arrow-down">&#9660;</span></a>';
 						item += '';
-						
+
 						item += '<div class="item-body" style="display: none">';
 						item += '	<label title="Titulo del Item" for="nombre">Titulo del Item:';
 						item += ' 		<input id="item-menu-name-'+last_item+'" required autocomplete="off"  name="nombre" class="menu_title" type="text" value="'+title+'" required />';
@@ -216,7 +217,7 @@ $menu_asincrono = true;
                    		item += '</div>';
                    		item += '<ul class="column item sortable"></ul> ';//<ul class='column item hidden'></ul>
                    		item += '</li>';
-                   		
+
                    	return item;
 				}
 	});
@@ -237,13 +238,7 @@ $menu_asincrono = true;
 </div>
 <div class="content-edit">
 	<section class="seccion">
-		<!--<div id="content-list">
-			<div id="resultado">-->
-				<?php include('menu.listado.php') ?>          
-			<!--</div>
-		</div>
-		<div id="pagination">
-		</div>-->
+		<?php include('items-list.php') ?>
 	</section>
 </div>
 
@@ -262,7 +257,7 @@ $menu_asincrono = true;
 				<li>
 					<a id="btn-list-art" href="#">
 						Artículo
-					</a>				
+					</a>
 				</li>
 				<li>
 					<a id="btn-list-cat" href="#">
@@ -275,13 +270,13 @@ $menu_asincrono = true;
 					</a>
 				</li>
 			</ul>
-			
+
 			<div class="list-link">
 				<div id="list-pag" class="item-menu-selected">
 					<div class="list-pag">
 					<?php
-					$q = $objArticulo->Consultar("SELECT * FROM paginas");
-					while($r = mysql_fetch_array($q)):
+					$q = $objDataBase->Ejecutar("SELECT * FROM paginas");
+					while($r = $q->fetch_assoc()):
 					?>
 						<label class="label_checkbox"><input type="checkbox" value="<?= $r['id'] ?>" data-type="pag" data-title="<?= $r['titulo'] ?>" name="paginas[]"><?= $r['titulo'] ?></label>
 					<?php
@@ -295,8 +290,8 @@ $menu_asincrono = true;
 				<div id="list-art" style="display: none">
 					<div class="list-art">
 					<?php
-					$q = $objArticulo->Consultar("SELECT * FROM articulos");
-					while($r = mysql_fetch_array($q)):
+					$q = $objDataBase->Ejecutar("SELECT * FROM articulos");
+					while($r = $q->fetch_assoc()):
 					?>
 						<label class="label_checkbox"><input type="checkbox" value="<?= $r['id'] ?>" data-type="art" data-title="<?= $r['titulo'] ?>" name="articulos[]"><?= $r['titulo'] ?></label>
 					<?php
@@ -310,8 +305,8 @@ $menu_asincrono = true;
 				<div id="list-cat" style="display: none">
 					<div class="list-cat">
 					<?php
-					$q = $objArticulo->Consultar("SELECT * FROM categorias");
-					while($r = mysql_fetch_array($q)):
+					$q = $objDataBase->Ejecutar("SELECT * FROM categorias");
+					while($r = $q->fetch_assoc()):
 					?>
 						<label class="label_checkbox"><input type="checkbox" value="<?= $r['id'] ?>" data-type="cat" data-title="<?= $r['nombre'] ?>" name="categorias[]"><?= $r['nombre'] ?></label>
 					<?php

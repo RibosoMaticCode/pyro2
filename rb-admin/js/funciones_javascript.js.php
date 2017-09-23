@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: application/javascript');
 define('__ROOT__', dirname(dirname(dirname(__FILE__))));
-require_once(__ROOT__.'/rb-script/class/rb-opciones.class.php');
+require_once(__ROOT__.'/rb-script/funciones.php');
+require_once(__ROOT__.'/rb-script/class/rb-database.class.php');
 
-$objetos = $objOpcion->obtener_valor(1,'objetos');
+$objetos = rb_get_values_options('objetos');
 $array = explode(",",$objetos);
 $array_count = count($array);
 
@@ -154,7 +155,7 @@ $(document).ready(function () {
 	//$( '.galleries' ).click(function() { // METODO .on => Permite usar elementos del DOM creados en ejecucion
 	$( '#alblist' ).on("click", ".galleries", function( event ){
 		var albumId = $(this).attr('data-id');
-		$.post( "<?= $objOpcion->obtener_valor(1,'direccion_url') ?>/rb-admin/core/post_gallery/gallery.explorer.php?album_id="+albumId , function( data ) {
+		$.post( "<?= rb_get_values_options('direccion_url') ?>/rb-admin/core/post_gallery/gallery.explorer.php?album_id="+albumId , function( data ) {
 		 	$('.explorer').html(data);
 		 	$(".bg-opacity").show();
 	   		$(".explorer").fadeIn(500);
@@ -180,7 +181,7 @@ $(document).ready(function () {
 	$( '#file-view' ).click(function( event ) {
 		var photo = $( '#photo' ).val();
 		if(photo!="" || photo==="0"){
-			$('.explorer').html('<p style="text-align:center"><img style="max-width:300px;width:100%" src="<?= $objOpcion->obtener_valor(1,'direccion_url') ?>/rb-media/gallery/'+photo+'" alt="img" /></p>');
+			$('.explorer').html('<p style="text-align:center"><img style="max-width:300px;width:100%" src="<?= rb_get_values_options('direccion_url') ?>/rb-media/gallery/'+photo+'" alt="img" /></p>');
 		 	$(".bg-opacity").show();
 	   		$(".explorer").fadeIn(500);
 	   	}

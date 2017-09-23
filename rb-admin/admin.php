@@ -11,7 +11,7 @@ require_once ABSPATH."rb-script/funciones.php";
 require_once ABSPATH."rb-script/class/rb-usuarios.class.php";
 
 //$menu_panel = rb_menu_panel(); // funcion
-$menu_panel = json_decode($objOpcion->obtener_valor(1,'menu_panel'), true); // from base datos
+$menu_panel = json_decode(rb_get_values_options('menu_panel'), true); // from base datos
 
 // CREA ESTRUCTURA DE CARPETA PARA GUARDAR MEDIOS AL PRIMER INICIO
 define('RAIZ', dirname(dirname(__FILE__)) . '/');
@@ -32,9 +32,9 @@ if(is_dir($dir_raiz4)==false){
 }
 
 /* CREAR CATEGORIA SI NO HAY NINGUNA */
-$q = $objUsuario->Consultar("SELECT * FROM categorias");
-$num_categories = mysql_num_rows($q);
-if( $num_categories == 0 ) $objUsuario->Consultar("INSERT INTO categorias (nombre_enlace, nombre ) VALUES ('pordefecto', 'Por defecto' )");
+$q = $objDataBase->Ejecutar("SELECT * FROM categorias");
+$num_categories = $q->num_rows;
+if( $num_categories == 0 ) $objDataBase->Ejecutar("INSERT INTO categorias (nombre_enlace, nombre ) VALUES ('pordefecto', 'Por defecto' )");
 
 // CONSULTAR COOKIE QUE CONTIENE AYUDAS OCULTAS
 if (isset($_COOKIE['help_close'])) $array_help_close = unserialize($_COOKIE['help_close']);
@@ -52,27 +52,28 @@ if(G_ACCESOUSUARIO==0){
 	$userType = $_SESSION['type'];
 
 	// DATOS DEL USUARIO A VARIABLES GLOBALES
-	$q = $objUsuario->Consultar("SELECT * FROM usuarios WHERE id=".G_USERID);
-	$root = mysql_fetch_array($q);
+	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=".G_USERID);
+	$root = $q->fetch_assoc();
+	//$root = mysql_fetch_array($q);
 	define("G_USERNAME",$_SESSION['usr']);
 
 	// PRINCIPALES COOKIES
 
 	// CANTIDAD POR DEFECTO EN LAS LISTAS - POR CADA SECCION
 	if(!isset($_COOKIE['art_show_items'])):
-		setcookie("art_show_items", $objOpcion->obtener_valor(1,'show_items') );
+		setcookie("art_show_items", rb_get_values_options('show_items') );
 	endif;
 
 	if(!isset($_COOKIE['user_show_items'])):
-		setcookie("user_show_items", $objOpcion->obtener_valor(1,'show_items') );
+		setcookie("user_show_items", rb_get_values_options('show_items') );
 	endif;
 
 	if(!isset($_COOKIE['page_show_items'])):
-		setcookie("page_show_items", $objOpcion->obtener_valor(1,'show_items') );
+		setcookie("page_show_items", rb_get_values_options('show_items') );
 	endif;
 
 	if(!isset($_COOKIE['com_show_items'])):
-		setcookie("com_show_items", $objOpcion->obtener_valor(1,'show_items') );
+		setcookie("com_show_items", rb_get_values_options('show_items') );
 	endif;
 	$titulo =  G_TITULO;
 }

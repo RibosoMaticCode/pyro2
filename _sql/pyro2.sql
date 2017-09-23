@@ -1,28 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 4.0.4.1
--- http://www.phpmyadmin.net
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 30-03-2017 a las 06:07:36
--- Versión del servidor: 5.5.32
--- Versión de PHP: 5.4.19
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Base de datos: `pyro2`
---
-CREATE DATABASE IF NOT EXISTS `pyro2` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `pyro2`;
-
--- --------------------------------------------------------
+﻿-- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `albums`
@@ -255,65 +231,7 @@ CREATE TABLE IF NOT EXISTS `opciones` (
   `opcion` varchar(100) NOT NULL,
   `valor` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
-
---
--- Volcado de datos para la tabla `opciones`
---
-
-INSERT INTO `opciones` (`id`, `blog_id`, `opcion`, `valor`) VALUES
-(1, 1, 'nombresitio', 'Pyro'),
-(2, 1, 'descripcion', 'Pyro'),
-(3, 1, 'direccion_url', 'http://dev.pyro2'),
-(4, 1, 'meta_keywords', ''),
-(5, 1, 'meta_description', ''),
-(6, 1, 'tema', ''),
-(7, 1, 'enlaceamigable', '0'),
-(8, 1, 'meta_author', ''),
-(9, 1, 'show_items', '25'),
-(10, 1, 'background-image', ''),
-(11, 1, 'mail_destination', 'admin@site.com'),
-(12, 1, 'objetos', ''),
-(13, 1, 'mail_sender', 'no-reply@site.com'),
-(14, 1, 'initial', '0'),
-(15, 1, 'post_by_category', '12'),
-(16, 1, 't_width', '350'),
-(17, 1, 't_height', '350'),
-(18, 1, 'linkregister', '0'),
-(19, 1, 'form_code', '1'),
-(20, 1, 'form_code2', '1'),
-(21, 1, 'mainmenu_id', '1'),
-(22, 1, 'moneda', 'S/.'),
-(23, 1, 'modules_options', '{"post":"1","cat":0,"pag":0,"com":0,"file":0,"gal":0,"usu":0,"mess":0,"men":0}'),
-(24, 1, 'post_options', '{"gal":"1","adj":"1","edi":"1","adi":"1","enl":"1","vid":"1","otr":"1","sub":"1","cal":0}'),
-(25, 1, 'slide_main', '0'),
-(26, 1, 'fb', ''),
-(27, 1, 'tw', ''),
-(28, 1, 'youtube', ''),
-(29, 1, 'gplus', ''),
-(30, 1, 'insta', ''),
-(31, 1, 'in', ''),
-(32, 1, 'pin', ''),
-(33, 1, 'whatsapp', ''),
-(34, 1, 'base_publication', 'articulo'),
-(35, 1, 'base_category', 'categoria'),
-(36, 1, 'base_search', 'busqueda'),
-(37, 1, 'base_user', 'usuario'),
-(38, 1, 'base_page', 'pag'),
-(39, 1, 'user_active_admin', '0'),
-(40, 1, 'logo', '4'),
-(41, 1, 'map-x', ''),
-(42, 1, 'map-y', ''),
-(43, 1, 'map-zoom', ''),
-(44, 1, 'map-desc', ''),
-(45, 1, 'nivel_user_register', '3'),
-(46, 1, 'modules_load', '[]'),
-(47, 1, 'sendgridapikey', ''),
-(48, 1, 'name_sender', 'No-Reply'),
-(49, 1, 'lib_mail_native', '0'),
-(50, 1, 'directorio_url', ''),
-(51, 1, 'menu_panel', '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img/icon_home.png","pos":1,"show":true,"item":null},"contents":{"key":"contents","nombre":"Contenidos","url":"#","url_imagen":"img/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1},{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"com","nombre":"Comentarios","url":"index.php?pag=com","url_imagen":"none","pos":1}]},"media":{"key":"media","nombre":"Medios","url":"#","url_imagen":"img/icon_media.png","pos":3,"show":true,"item":[{"key":"files","nombre":"Archivos","url":"index.php?pag=files","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de Medios","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img/icon_user.png","pos":4,"show":true,"item":[{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},{"key":"men","nombre":"Mensaje","url":"index.php?pag=men","url_imagen":"none","pos":1},{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}]},"visual":{"key":"visual","nombre":"Apariencia","url":"#","url_imagen":"img/icon_design.png","pos":5,"show":true,"item":[{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantillas","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}'),
-(52, 1, 'alcance', '1');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -431,6 +349,3 @@ CREATE TABLE IF NOT EXISTS `usuarios_niveles` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

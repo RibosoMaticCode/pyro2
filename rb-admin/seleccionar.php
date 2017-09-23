@@ -3,7 +3,6 @@ include 'islogged.php';
 ?>
 <div id="contenedor">
 <?php
-//si esta definido la pagina
 if(isset($_GET['pag'])){
 	$pag=$_GET['pag'];
 }else{
@@ -20,65 +19,40 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit-pub.php');
-				break;
 			case "edt":
-				include('edit-pub.php');
+				include('core/pubs/pub-edit.php');
 				break;
 			default:
-				include('secciones.php');
+				include('core/pubs/pub-init.php');
 		}
-		break;
-  case "pages":
-		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-
-		echo '<h2 class="title">Páginas</h2>';
-		echo '<div class="page-bar">Inicio > Contenidos</div>';
-        $sec="pages";
-        if(isset($_GET['opc'])){
-            $opc=$_GET['opc'];
-        }else{
-            $opc="";
-        }
-        switch($opc){
-            case "nvo":
-                include('edit.php');
-                break;
-            case "edt":
-                include('edit.php');
-                break;
-            default:
-                include('secciones.php');
-        }
-        break;
-	case "menu":
-		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
-			break;
-		endif;
-
-		echo '<h2 class="title">Sub Menús</h2>';
-		echo '<div class="page-bar">Inicio > Apariencia > Menú</div>';
-		$sec="menu";
-		if(isset($_GET['opc'])){
-			$opc=$_GET['opc'];
-		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "nvo":
-				include('edit.php');
-				break;
-			case "edt":
-				include('edit.php');
-				break;
-			default:
-				include('secciones.php');
-		}
-		break;
+	break;
+	case "usu":
+			echo '<h2 class="title">Usuarios</h2>';
+			$sec="usu";
+			if(isset($_GET['opc'])){
+				$opc=$_GET['opc'];
+			}else{
+				$opc="";
+			}
+			switch($opc){
+				case "nvo":
+					if($userType != "admin"):
+						printf(" No tiene permiso de Administrador ");
+						break;
+					endif;
+					include('core/users/user-edit.php');
+					break;
+				case "edt":
+					include('core/users/user-edit.php');
+					break;
+				default:
+					if($userType != "admin"):
+						printf(" No tiene permiso de Administrador ");
+						break;
+					endif;
+					include('core/users/user-init.php');
+			}
+	break;
 	case "menus":
 		if($userType != "admin"):
 			printf(" No tiene permiso de Administrador ");
@@ -95,15 +69,55 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
-				break;
 			case "edt":
-				include('edit.php');
+				include('core/menu/menu-edit.php');
 				break;
 			default:
-				include('secciones.php');
+				include('core/menu/menu-init.php');
 		}
 		break;
+		case "menu":
+			if($userType != "admin"):
+				printf(" No tiene permiso de Administrador ");
+				break;
+			endif;
+
+			echo '<h2 class="title">Sub Menús</h2>';
+			echo '<div class="page-bar">Inicio > Apariencia > Menú</div>';
+			$sec="menu";
+			if(isset($_GET['opc'])){
+				$opc=$_GET['opc'];
+			}else{
+				$opc="";
+			}
+			switch($opc){
+				default:
+					include('core/menu/items-init.php');
+			}
+			break;
+	// revisar de aca en adelante
+  case "pages":
+		if($userType != "admin"):
+			printf(" No tiene permiso de Administrador ");
+			break;
+		endif;
+		echo '<h2 class="title">Páginas</h2>';
+		echo '<div class="page-bar">Inicio > Contenidos</div>';
+        $sec="pages";
+        if(isset($_GET['opc'])){
+            $opc=$_GET['opc'];
+        }else{
+            $opc="";
+        }
+        switch($opc){
+            case "nvo":
+            case "edt":
+                include('core/pages/page-edit.php');
+                break;
+            default:
+                include('core/pages/page-init.php');
+        }
+    break;
 	case "gal":
 		echo '<h2 class="title">Galerías</h2>';
 		echo '<div class="page-bar">Inicio > Medios</div>';
@@ -239,33 +253,7 @@ switch($pag){
 				include('secciones.php');
 		}
 		break;
-	case "usu":
-		echo '<h2 class="title">Usuarios</h2>';
-		$sec="usu";
-		if(isset($_GET['opc'])){
-			$opc=$_GET['opc'];
-		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "nvo":
-				if($userType != "admin"):
-					printf(" No tiene permiso de Administrador ");
-					break;
-				endif;
-				include('edit-user.php');
-				break;
-			case "edt":
-				include('edit-user.php');
-				break;
-			default:
-				if($userType != "admin"):
-					printf(" No tiene permiso de Administrador ");
-					break;
-				endif;
-				include('secciones.php');
-		}
-		break;
+
 	case "men":
 		echo '<h2 class="title">Mensajes</h2>';
 		echo '<div class="page-bar">Inicio > Mensajes</div>';
@@ -298,11 +286,9 @@ switch($pag){
 			printf(" No tiene permiso de Administrador ");
 			break;
 		endif;
-
 		echo '<h2 class="title">Opciones de Configuración</h2>';
 		echo '<div class="page-bar">Inicio</div>';
-		$sec="opc";
-		include('edit.php');
+		include('option-edit.php');
 		break;
 	case "modules":
 		if($userType != "admin"):

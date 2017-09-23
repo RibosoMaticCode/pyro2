@@ -1,17 +1,24 @@
 <?php
-require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
-require_once(ABSPATH."rb-script/class/rb-categorias.class.php");
-require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
+function SelectObject($nombre, $articulo_id, $tipo = 'image'){
+  global $objDataBase;
+  $result = $objDataBase->Ejecutar("SELECT contenido FROM objetos WHERE articulo_id=".$articulo_id." and tipo = '".$tipo."' and nombre = '".$nombre."' LIMIT 1");
+  if($result->num_rows > 0){
+    $row = $result->fetch_assoc();
+    return $row['contenido'];
+  }else{
+    return false;
+  }
+}
 
-$json_post_options = $objOpcion->obtener_valor(1,'post_options');
+$json_post_options = rb_get_values_options('post_options');
 $array_post_options = json_decode($json_post_options, true);
 
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 $mode;
 if(isset($_GET["id"])){
   $id=$_GET["id"];
-  $cons_art = $objArticulo->Consultar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fechamod, DATE_FORMAT(fecha_creacion, '%d-%m-%Y') as fechadmY FROM articulos WHERE id=$id");
-  $row=mysql_fetch_array($cons_art);
+  $cons_art = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fechamod, DATE_FORMAT(fecha_creacion, '%d-%m-%Y') as fechadmY FROM articulos WHERE id=$id");
+  $row= $cons_art->fetch_assoc();
   $mode = "update";
   $new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=art&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
 }else{
@@ -44,13 +51,12 @@ include_once("tinymce.module.small.php");
   $(document).ready(function() {
     $( '#edit-config' ).click(function( event ) {
       event.preventDefault();
-      $.post( "post.options.php?s=posts" , function( data ) {
+      $.post( "core/pubs/post.options.php?s=posts" , function( data ) {
         $('.explorer').html(data);
         $(".bg-opacity").show();
           $(".explorer").fadeIn(500);
       });
     });
-
     // Validando AJAX antes de enviar datos
     $('#article-form').submit(function() {
       // Contenido
@@ -69,7 +75,7 @@ include_once("tinymce.module.small.php");
 </script>
 <form name="formcat" action="category.minisave.php" method="post" id="formcat"></form>
 <form name="formgaleria" action="album.minisave.php" method="post" id="formgaleria"></form>
-<form enctype="multipart/form-data" id="article-form" name="article-form" method="post" action="save.php">
+<form enctype="multipart/form-data" id="article-form" name="article-form" method="post" action="core/pubs/pub-save.php">
   <div id="toolbar">
     <div id="toolbar-buttons">
       <input class="submit" name="guardar" type="submit" value="Guardar" />
@@ -107,7 +113,6 @@ include_once("tinymce.module.small.php");
         </div>
       </div>
     </section>
-
     <!-- SECCION ENLAZAR -->
     <section id="post-enl" class="seccion" <?php if($array_post_options['enl']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
       <div class="seccion-header">
@@ -123,16 +128,16 @@ include_once("tinymce.module.small.php");
               <th></th>
             </tr>
           <?php
-          $qAll = $objArticulo->Consultar("SELECT titulo, id FROM articulos");
-          $qo = $objArticulo->Consultar("SELECT * FROM articulos_articulos WHERE articulo_id_padre =". $row['id']);
-          while($Atributo = mysql_fetch_array($qo)):
+          $qAll = $objDataBase->Ejecutar("SELECT titulo, id FROM articulos");
+          $qo = $objDataBase->Ejecutar("SELECT * FROM articulos_articulos WHERE articulo_id_padre =". $row['id']);
+          while($Atributo = $qo->fetch_assoc()):
           ?>
             <tr>
               <td><input id="input_<?= $Atributo['id']?>" type="text" name="atributo[<?= $Atributo['id']?>][nombre]" value="<?= $Atributo['nombre_atributo'] ?>" /> </td>
               <td>
                 <select class="select" data-id="<?= $Atributo['id']?>" id="select_<?= $Atributo['id']?>" required name="atributo[<?= $Atributo['id']?>][id]">
                 <?php
-                while($Posts = mysql_fetch_array($qAll)):
+                while($Posts = $qAll->fetch_assoc()):
                 ?>
                   <option title="<?= $Posts['titulo'] ?>" value="<?= $Posts['id'] ?>" <?php if($Posts['id']==$Atributo['articulo_id_hijo']) echo " selected " ?>><?= $Posts['id'] ?>-<?= $Posts['titulo'] ?></option>
                 <?php
@@ -160,7 +165,6 @@ include_once("tinymce.module.small.php");
         <?php endif; ?>
       </div>
     </section>
-
     <!-- SECCIONES ADJUNTOS -->
     <section id="post-adj" class="seccion" <?php if($array_post_options['adj']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
       <div class="seccion-header">
@@ -184,7 +188,7 @@ include_once("tinymce.module.small.php");
                   <span class="info">Sirve como imagen de fondo, para slideshow, por lo general una imagen grande.</span>
                 </td>
                 <td>
-                  <input name="portada" type="text" id="portada" class="explorer-file" readonly value="<?= rb_image_exists( $objArticulo->SelectObject( "portada" , $row['id'] , 'image' ) ) ? $objArticulo->SelectObject( "portada" , $row['id'] , 'image' ) : '' ?>" />
+                  <input name="portada" type="text" id="portada" class="explorer-file" readonly value="<?= rb_image_exists( SelectObject( "portada" , $row['id'] , 'image' ) ) ? SelectObject( "portada" , $row['id'] , 'image' ) : '' ?>" />
                 </td>
               </tr>
               <tr>
@@ -192,17 +196,9 @@ include_once("tinymce.module.small.php");
                   <span class="info">Sirve como imagen que identifica a la publicación o artículo.</span>
                 </td>
                 <td>
-                  <input name="secundaria" type="text" id="logo" class="explorer-file" readonly value="<?= rb_image_exists( $objArticulo->SelectObject( "logo" , $row['id'] , 'image' ) ) ? $objArticulo->SelectObject( "logo" , $row['id'] , 'image' ) : '' ?>" />
+                  <input name="secundaria" type="text" id="logo" class="explorer-file" readonly value="<?= rb_image_exists( SelectObject( "logo" , $row['id'] , 'image' ) ) ? SelectObject( "logo" , $row['id'] , 'image' ) : '' ?>" />
                 </td>
               </tr>
-              <!--<tr>
-                <td><strong>Archivo Adjunto</strong> <br />
-                  <span class="info">Puede ser un archivo DOC, PDF, como información complementaria para descargar.</span>
-                </td>
-                <td>
-                  <input name="adjunto" type="text" id="adjunto" class="explorer-file" readonly value="<?= rb_image_exists( $objArticulo->SelectObject( "adjunto" , $row['id'] , 'image' ) ) ? $objArticulo->SelectObject( "adjunto" , $row['id'] , 'image' ) : '' ?>" />
-                </td>
-              </tr>-->
             </table>
           <!-- N U E V O -->
           <?php else: ?>
@@ -223,20 +219,11 @@ include_once("tinymce.module.small.php");
                   <input name="secundaria" type="text" id="secundaria" class="explorer-file" readonly />
                 </td>
               </tr>
-              <!--<tr>
-                <td>Archivo Adjunto <br />
-                  <span class="info">Puede ser un archivo DOC, PDF, como información complementaria para descargar.</span>
-                </td>
-                <td>
-                  <input name="adjunto" type="text" id="adjunto" class="explorer-file" readonly />
-                </td>
-              </tr>-->
             </table>
           <?php endif; ?>
         </div>
       </div>
     </section>
-
     <!-- SECCIONES OTRAS OPCIONES -->
     <section id="post-edi" class="seccion" <?php if($array_post_options['edi']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
       <div class="seccion-header">
@@ -295,14 +282,15 @@ include_once("tinymce.module.small.php");
           </script>
           <div id="catlist">
             <?php
-              $cons_cat = $objCategoria->Consultar("SELECT * FROM categorias ORDER BY nombre ASC");
-              while($row_c=mysql_fetch_array($cons_cat)){
+              $cons_cat = $objDataBase->Ejecutar("SELECT * FROM categorias ORDER BY nombre ASC");
+              while( $row_c = $cons_cat->fetch_assoc() ){
                 $categoria_id=$row_c['id'];
                 if(isset($row)){ // si esta definida variable con datos cargados para actualizar
                   //buscar las coincidencias articulos-categorias
-                  $coincidencia=mysql_num_rows($objArticulo->Consultar("SELECT * FROM articulos_categorias WHERE articulo_id=$id AND categoria_id=$categoria_id"));
+                  $result = $objDataBase->Ejecutar("SELECT * FROM articulos_categorias WHERE articulo_id=$id AND categoria_id=$categoria_id");
+                  $coincidencia = $result->num_rows;
                 }else{
-                  $coincidencia=0;
+                  $coincidencia = 0;
                 }
                 echo "<label class=\"label_checkbox\">";
                 if($coincidencia>0){
@@ -328,32 +316,32 @@ include_once("tinymce.module.small.php");
       <div id="objects-extern" class="inseccion">
         <!-- actualizar -->
         <?php if(isset($row)):?>
-          <table class="tsmall" id="t_externo" width="100%">
-                      <tr>
-                        <th>Tipo</th>
-                        <th>Contenido</th>
-                      </tr>
-                      <?php
-                      $i=0;
-                      $objetos = $objOpcion->obtener_valor(1,'objetos');
-            $array = explode(",",$objetos);
-            $array_count = count($array);
-                      while($i<$array_count):
-                      ?>
-                      <tr>
-                        <td>
-                          <input name="externo[<?= trim($array[$i]) ?>][tipo]" type="hidden" value="<?= trim($array[$i]) ?>" />
-                          <?php echo trim($array[$i]) ?>
-                        </td>
-                        <td>
-                          <input name="externo[<?= trim($array[$i]) ?>][contenido]" type="text" value="<?= $objArticulo->SelectObject(trim($array[$i]),$row['id'],'objeto') ?>"/>
-                        </td>
-                      </tr>
-                      <?php
-                      $i++;
-            endwhile;
-                      ?>
-                    </table>
+        <table class="tsmall" id="t_externo" width="100%">
+            <tr>
+              <th>Tipo</th>
+              <th>Contenido</th>
+            </tr>
+          <?php
+          $i=0;
+          $objetos = rb_get_values_options('objetos');
+          $array = explode(",",$objetos);
+          $array_count = count($array);
+          while($i<$array_count):
+          ?>
+            <tr>
+              <td>
+                <input name="externo[<?= trim($array[$i]) ?>][tipo]" type="hidden" value="<?= trim($array[$i]) ?>" />
+                <?php echo trim($array[$i]) ?>
+              </td>
+              <td>
+                <input name="externo[<?= trim($array[$i]) ?>][contenido]" type="text" value="<?= SelectObject(trim($array[$i]),$row['id'],'objeto') ?>"/>
+              </td>
+            </tr>
+          <?php
+          $i++;
+          endwhile;
+          ?>
+        </table>
         <!-- nuevo -->
         <?php else: ?>
           <table class="tsmall" id="t_externo" width="100%">
@@ -363,7 +351,7 @@ include_once("tinymce.module.small.php");
                       </tr>
                       <?php
                       $i=0;
-                      $objetos = $objOpcion->obtener_valor(1,'objetos');
+                      $objetos = rb_get_values_options('objetos');
             $array = explode(",",$objetos);
             $array_count = count($array);
                       while($i<$array_count):
@@ -398,18 +386,18 @@ include_once("tinymce.module.small.php");
           <div id="alblist">
           <?php
           if($userType == "user-panel"):
-            $cons_cat = $objCategoria->Consultar("SELECT * FROM albums WHERE usuario_id = ".G_USERID." ORDER BY nombre ASC");
+            $cons_cat = $objDataBase->Ejecutar("SELECT * FROM albums WHERE usuario_id = ".G_USERID." ORDER BY nombre ASC");
           else:
-            $cons_cat = $objCategoria->Consultar("SELECT * FROM albums ORDER BY nombre ASC");
+            $cons_cat = $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY nombre ASC");
           endif;
 
-                        while($row_c=mysql_fetch_array($cons_cat)){
-                          $album_id=$row_c['id'];
-
-                            if(isset($row)){ // si esta definida variable con datos cargados para actualizar
+          while($row_c = $cons_cat->fetch_assoc()){
+            $album_id=$row_c['id'];
+            if(isset($row)){ // si esta definida variable con datos cargados para actualizar
                 //buscar las coincidencias articulos-categorias
-                $coincidencia=mysql_num_rows($objArticulo->Consultar("SELECT * FROM articulos_albums WHERE articulo_id=$id AND album_id=$album_id"));
-              }else{
+                $result = $objDataBase->Ejecutar("SELECT * FROM articulos_albums WHERE articulo_id=$id AND album_id=$album_id");
+              $coincidencia=$result->num_rows;
+            }else{
                 $coincidencia=0;
               }
 

@@ -1,6 +1,10 @@
 <?php
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once(ABSPATH."rb-script/funciones.php");
+
 header('Content-Type: application/json');
-require_once("../rb-script/class/rb-opciones.class.php");
 
 if(!isset($_REQUEST['post_options'])) {
 	// Si no hay ninguno seleccionado, creamos un array vacio
@@ -21,9 +25,8 @@ if (!array_key_exists('otr', $array_post_options)) $array_post_options['otr'] = 
 if (!array_key_exists('sub', $array_post_options)) $array_post_options['sub'] = 0;
 
 $array_post_options_json = json_encode($array_post_options);
-if($objOpcion->modificar_valor(1,'post_options',$array_post_options_json)):
-
-	$json_post_options = $objOpcion->obtener_valor(1,'post_options');
+if(rb_set_values_options('post_options',$array_post_options_json)):
+	$json_post_options = rb_get_values_options('post_options');
 	$array_post_options = json_encode($json_post_options, true);
 	die($array_post_options);
 else:

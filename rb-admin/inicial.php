@@ -1,34 +1,34 @@
 <?php
 include 'islogged.php';
 // Requerir las clases de las tablas
-require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
-require_once(ABSPATH."rb-script/class/rb-log.class.php");
-$qLog = $objLog->Consultar("SELECT * FROM log ORDER BY id DESC LIMIT 10");
+//require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
+require_once(ABSPATH."rb-script/class/rb-database.class.php");
+$qLog = $objDataBase->Ejecutar("SELECT * FROM log ORDER BY id DESC LIMIT 10");
 
-$objArticulos = new Articulos;
-$qPosts = $objArticulos->Consultar("SELECT id FROM articulos");
-$numPosts = mysql_num_rows($qPosts);
+//$objArticulos = new Articulos;
+$qPosts = $objDataBase->Ejecutar("SELECT id FROM articulos");
+$numPosts = $qPosts->num_rows;
 
-$qPages = $objArticulos->Consultar("SELECT id FROM paginas");
-$numPages = mysql_num_rows($qPages);
+$qPages = $objDataBase->Ejecutar("SELECT id FROM paginas");
+$numPages = $qPages->num_rows;
 
-$qFiles = $objArticulos->Consultar("SELECT id FROM photo");
-$numFiles = mysql_num_rows($qFiles);
+$qFiles = $objDataBase->Ejecutar("SELECT id FROM photo");
+$numFiles = $qFiles->num_rows;
 
-$qComments = $objArticulos->Consultar("SELECT id FROM comentarios");
-$numComments = mysql_num_rows($qComments);
+$qComments = $objDataBase->Ejecutar("SELECT id FROM comentarios");
+$numComments = $qComments->num_rows;
 
-$qUsers = $objArticulos->Consultar("SELECT id FROM usuarios");
-$numUsers = mysql_num_rows($qUsers);
+$qUsers = $objDataBase->Ejecutar("SELECT id FROM usuarios");
+$numUsers = $qUsers->num_rows;
 
-$qCategories = $objArticulos->Consultar("SELECT id FROM categorias");
-$numCategories = mysql_num_rows($qCategories);
+$qCategories = $objDataBase->Ejecutar("SELECT id FROM categorias");
+$numCategories = $qCategories->num_rows;
 
 // Tamaño de base datos
 $sql = "SHOW TABLE STATUS";
-$resultado = mysql_query($sql) or die(mysql_error());
+$resultado = $objDataBase->Ejecutar($sql);// or die(mysql_error());
 $total = 0;
-while ($tabla = mysql_fetch_assoc($resultado))
+while ($tabla = $resultado->fetch_assoc())
 	$total += ($tabla['Data_length']+$tabla['Index_length']);
 
 $size_db = round($total/1024,2)." KB";
@@ -90,7 +90,7 @@ if(isset($_SESSION['type'])){
 				</div>
 				<div class="seccion-body">
 					<table width="100%;">
-					<?php while ($log = mysql_fetch_array($qLog)): ?>
+					<?php while ($log = $qLog->fetch_assoc()): ?>
 						<tr>
 							<td><?= $log['usuario'] ?></td>
 							<td><?= $log['fecha'] ?></td>

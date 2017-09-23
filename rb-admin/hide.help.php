@@ -1,5 +1,4 @@
 <?php
-//include 'islogged.php';
 $name = $_GET['nameHelpBox'];
 
 if(isset($_COOKIE['help_close'])):

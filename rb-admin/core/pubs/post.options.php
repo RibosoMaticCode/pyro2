@@ -1,6 +1,9 @@
 <?php
-require_once("../rb-script/class/rb-opciones.class.php");
-$json_post_options = $objOpcion->obtener_valor(1,'post_options');
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once(ABSPATH."rb-script/funciones.php");
+$json_post_options = rb_get_values_options('post_options');
 $array_post_options = json_decode($json_post_options, true);
 ?>
 <script>
@@ -15,7 +18,7 @@ $array_post_options = json_decode($json_post_options, true);
 		event.preventDefault();
 		$.ajax({
 			data: $( "#frm-posts-options" ).serialize(),
-  			url: "post.options.save.php",
+  			url: "core/pubs/post.options.save.php",
   		})
   		.done(function( data ) {
   			var msg;

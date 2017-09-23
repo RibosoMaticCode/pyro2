@@ -3,13 +3,13 @@
  * Cambios rb-temas/'.G_ESTILO.'/ por rb-script/
  * para que archivos de login y recuperacion este en carpeta rb-script, en vez del tema
  */
-require("global.php");
-require("rb-script/funciones.php");
-require("rb-script/class/rb-usuarios.class.php");
-require("rb-script/class/rb-log.class.php");
+require_once("global.php");
+require_once("rb-script/funciones.php");
+require_once("rb-script/class/rb-usuarios.class.php");
+//require("rb-script/class/rb-log.class.php");
 
-$url_panel = $objOpcion->obtener_valor(1,'direccion_url').'/rb-admin';
-$url_panel_usuario = $objOpcion->obtener_valor(1,'direccion_url').''; //
+$url_panel = rb_get_values_options('direccion_url').'/rb-admin';
+$url_panel_usuario = rb_get_values_options('direccion_url').''; //
 
 $rm_title = G_TITULO;
 $rm_subtitle = G_SUBTITULO;
@@ -100,10 +100,10 @@ if(isset($_POST['login'])){
 			$_SESSION['ultimoacceso'] =  $usuario['ultimoacceso'];
 
 			// actualizar columna ultimoacceso a fecha actual
-			$objUsuario->consultar("UPDATE usuarios SET ultimoacceso=NOW() WHERE id=".$usuario['id']);
+			$objDataBase->Ejecutar("UPDATE usuarios SET ultimoacceso=NOW() WHERE id=".$usuario['id']);
 			$idu = $usuario['id'];
-			$objLog->Insertar(array($idu,$user,'ingreso al sistema'));
-
+			//$objLog->Insertar();
+			rb_log_register( array($idu,$user,'ingreso al sistema') );
 			$msg="Conectado";
 			$msgok = 5;
 			define('G_MESSAGELOGIN', $msg);
@@ -145,17 +145,17 @@ if(isset($_POST['recovery'])){
 	$mail = $_POST['mail'];
 
 	// verificar existencia de correo
-	$qr = $objUsuario->Consultar("SELECT correo FROM usuarios WHERE correo = '$mail'");
+	$qr = $objDataBase->Ejecutar("SELECT correo FROM usuarios WHERE correo = '$mail'");
 	//echo "SELECT correo FROM usuarios WHERE correo = '$mail'";
 
-	$CountPostReturn = mysql_num_rows($qr);
+	$CountPostReturn = $qr->num_rows;
 	if($CountPostReturn==0){
 		$msg="usuario no existe";
 		define('G_MESSAGELOGIN', $msg);
 	}else{
 		// verificar si campo recovery esta activado, sino se sale
-		$qr = $objUsuario->Consultar("SELECT recovery FROM usuarios WHERE correo = '$mail'");
-		$UsuarioItem = mysql_fetch_array($qr);
+		$qr = $objDataBase->Ejecutar("SELECT recovery FROM usuarios WHERE correo = '$mail'");
+		$UsuarioItem = $qr->fetch_assoc();
 		$recover = $UsuarioItem['recovery'];
 		if($recover==1){
 			$msg="usted ya solicito cambio de contrase&ntilde;a. vea su correo";
@@ -165,7 +165,7 @@ if(isset($_POST['recovery'])){
 			require ABSPATH.'rb-script/modules/rb-login/recovery.mail.php';
 			if(mailer_recovery(G_TITULO, $mail, G_SERVER, G_HOSTNAME)==1){
 				// actualizar campo en tabla que active el recovery
-				$objUsuario->Consultar("UPDATE usuarios SET recovery=1 WHERE correo = '$mail'");
+				$objDataBase->Ejecutar("UPDATE usuarios SET recovery=1 WHERE correo = '$mail'");
 
 				// msje del proceso efectuado
 				$msg="se enviaron instrucciones a su correo para restablecer su contrase&ntilde;a, revise carpeta SPAM por si las dudas :-)";
@@ -191,7 +191,7 @@ if(isset($_GET['reg'])){
 		die();
 	}else{
 		//redireccionar
-		header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
+		header('Location: '.rb_get_values_options('direccion_url'));
 		exit();
 	}
 }
@@ -208,8 +208,8 @@ if(isset($_GET['recovery'])){
 			}
 
 			// verificar si campo recovery esta activado, sino se sale
-			$qr = $objUsuario->Consultar("SELECT recovery FROM usuarios WHERE correo = '$mail'");
-			$UsuarioItem = mysql_fetch_array($qr);
+			$qr = $objDataBase->Ejecutar("SELECT recovery FROM usuarios WHERE correo = '$mail'");
+			$UsuarioItem = $qr->fetch_assoc();
 			$recover = $UsuarioItem['recovery'];
 			if($recover==0){
 				die("Usted no solicito un cambio de password");
@@ -226,7 +226,7 @@ if(isset($_GET['recovery'])){
 		}
 	}else{
 		//redireccionar
-		header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
+		header('Location: '.rb_get_values_options('direccion_url'));
 		exit();
 	}
 }
@@ -244,15 +244,15 @@ if(isset($_POST['newpass'])){
 	}
 
 	// buscando usuario ID por su mail
-	$qr = $objUsuario->Consultar("SELECT id FROM usuarios WHERE correo = '$mail'");
-	$UsuarioItem = mysql_fetch_array($qr);
+	$qr = $objDataBase->Ejecutar("SELECT id FROM usuarios WHERE correo = '$mail'");
+	$UsuarioItem = $qr->fetch_assoc();
 	$id = $UsuarioItem['id'];
 
 	// cambiamos el password
 	$objUsuario->EditarPorCampo("password", md5(trim($pwd)),$id);
 
 	// quitamos recovery mode
-	$objUsuario->Consultar("UPDATE usuarios SET recovery=0 WHERE correo = '$mail'");
+	$objDataBase->Ejecutar("UPDATE usuarios SET recovery=0 WHERE correo = '$mail'");
 
 	$msg="se cambio la contrase&ntilde;a, no se olvide esta vez :-) ";
 	define('G_MESSAGELOGIN', $msg);
@@ -263,7 +263,7 @@ if(isset($_GET['out'])){
 	session_destroy();
 	// session_unregister('_ribapp'); --> session_unregister en desuso en nva version
 	//redireccionar
-	header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
+	header('Location: '.rb_get_values_options('direccion_url'));
 	exit();
 }
 
@@ -274,8 +274,8 @@ if(isset($_GET['active'])){
 	if($objUsuario->existe('correo',$md5user)==0):
 		header('Location: '.G_SERVER.'/rb-script/message.php?title=No existe el usuario&desc=Registrese en nuestra web... Sera redireccionado&img=message.error.png');
 	else:
-		$q = $objUsuario->Consultar("SELECT id, activo FROM usuarios WHERE correo='$md5user'");
-		$r = mysql_fetch_array($q);
+		$q = $objDataBase->Ejecutar("SELECT id, activo FROM usuarios WHERE correo='$md5user'");
+		$r = $q->fetch_assoc();
 		/*print_r($r);
 
 		die();*/

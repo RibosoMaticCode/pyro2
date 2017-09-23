@@ -58,8 +58,7 @@ $opciones_valores = array(
 	"alcance" => "1"
 );
 
-require_once("../rb-script/class/rb-opciones.class.php");
-require_once("../rb-script/class/rb-usuarios.class.php");
+require_once("../rb-script/funciones.php");
 require_once("../rb-script/class/rb-database.class.php");
 
 if(isset($_POST)):
@@ -72,32 +71,37 @@ if(isset($_POST)):
 	if($usuario_pass != $usuario_pass1) die("Contraseñas no coinciden");
 
 	/* USUARIO INICIAL */
-	if($objUsuario->Insertar( array('admin', $usuario_pass, 'Admin', 'Del Sitio', '', '', '', '', $usuario_correo, '', 1, 'h', 0) )):
-		$usuario_id=mysql_insert_id();
+	$response = $objDataBase->Insertar("INSERT INTO usuarios (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
+		VALUES ('admin', md5($usuario_pass), 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");
+	
+	if($response['result']==true):
+
+	//if($objUsuario->Insertar( array('admin', $usuario_pass, 'Admin', 'Del Sitio', '', '', '', '', $usuario_correo, '', 1, 'h', 0) )):
+		$usuario_id = $response['insert_id'];
 
 		// ACTIVANDO USUARIO
-		$objUsuario->EditarPorCampo('activo',1,$usuario_id);
+		$objDataBase->EditarPorCampo('usuarios','activo',1,$usuario_id);
 
 		// Recorrer array de valores para ingresarlos como valores por defecto
 		foreach($opciones_valores as $option  => $value){
-			$objOpcion->insert_valor(1, $option, $value);
+			//$objOpcion->insert_valor(1, $option, $value);
+			$objDataBase->Ejecutar("INSERT INTO opciones (opcion, valor) VALUES ('$option','$value')");
 		}
 
 		/* VALORES INICIALES PARA EL BLOG */
-		$objOpcion->modificar_valor(1, "nombresitio", $sitio_titulo);
-		$objOpcion->modificar_valor(1, "direccion_url", $sitio_url);
-		$objOpcion->modificar_valor(1, "mail_destination", $usuario_correo);
-		$objOpcion->modificar_valor(1, "mail_sender", $usuario_correo);
+		rb_set_values_options( "nombresitio", $sitio_titulo);
+		rb_set_values_options( "direccion_url", $sitio_url);
+		rb_set_values_options( "mail_destination", $usuario_correo);
+		rb_set_values_options( "mail_sender", $usuario_correo);
 
 		// Niveles de usuarios
-		$objDataBase->Consultar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (1, 'Adminitrador', 'admin', 'Administra y gestiona la configuración todo el sitio web')");
-		$objDataBase->Consultar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (2, 'Usuario Gestionador', 'user-panel', 'Usuario con acceso privilegio para gestionar parte del sitio web')");
-		$objDataBase->Consultar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar la web')");
+		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (1, 'Adminitrador', 'admin', 'Administra y gestiona la configuración todo el sitio web')");
+		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (2, 'Usuario Gestionador', 'user-panel', 'Usuario con acceso privilegio para gestionar parte del sitio web')");
+		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar la web')");
 
 		header('Location: '.$sitio_url."/login.php");
 	else:
-		die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico. <br />Datos técnicos: ".mysql_error());
+		die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico.".$response['error']);
 	endif;
-
 endif;
 ?>

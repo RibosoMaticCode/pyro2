@@ -245,3 +245,103 @@
 .input_red{
 	border:1px solid red!important;
 }
+
+/* EDITOR VISUAL DE PAGINAS */
+.container-page-edit{
+	margin: 0 auto;
+	max-width: 1100px;
+	width: 100%
+}
+#boxes{
+	border:1px dashed gray;
+	padding: 10px;
+}
+.boxes-options li a{
+	padding: 5px 10px;
+    display: block;
+    background-color: #FBFBFB;
+}
+#boxes li{
+	list-style-type:none;
+	border:1px solid #EFEFEF;
+	background-color:#f9f9f9;
+	margin: 5px 0;
+	width: 100%;
+}
+
+.box-header{
+	padding:8px 10px;
+	background-color:#EFEFEF;
+	position:relative;
+}
+.box-header select,
+.box-header label{
+	margin: 0!important;
+	width: auto!important;
+	display: initial!important;
+	padding: 0 5px!important;
+}
+.box-header label{
+	float: right;
+	margin-right: 10px!important;
+}
+.box-header .arrow-down{
+	display:none;
+}
+.box-header .more{
+	position:absolute;
+	top:10px;
+	right:20px;
+	font-size:0.9em;
+	text-decoration: none;
+}
+.box-header .toggle{
+	position:absolute;
+	top:10px;
+	right:25px;
+	font-size:0.9em;
+	text-decoration: none;
+}
+.box-header .boxdelete{
+	position:absolute;
+	top:10px;
+	right:10px;
+	font-size:0.9em;
+	text-decoration: none;
+}
+.box-body{
+	padding:8px 10px;
+}
+
+.box-body label{
+	padding:4px 0;
+	display:block;
+}
+.box-body .col .col-head{
+	position:relative;
+	display:block;
+	height:20px;
+	background-color:#E6E7E8;
+}
+.box-body .col .close-column{
+	position:absolute;
+	right:10px;
+}
+.box-body .cols-html{
+	display: flex;
+}
+.box-body .box-edit-options{
+	padding: 50px 60px;
+	text-align: center;
+}
+.box-body .box-edit-options a{
+	border-radius: 15px;
+	background-color: #2196F3;
+	color: #fff;
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: .75em;
+}
+.box-body .box-edit{
+	padding: 10px;
+}

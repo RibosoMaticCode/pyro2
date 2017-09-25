@@ -95,13 +95,12 @@ switch($pag){
 					include('core/menu/items-init.php');
 			}
 			break;
-	// revisar de aca en adelante
   case "pages":
 		if($userType != "admin"):
 			printf(" No tiene permiso de Administrador ");
 			break;
 		endif;
-		echo '<h2 class="title">Páginas</h2>';
+		echo '<h2 class="title">Editor Visual de Páginas (v.0.1)</h2>';
 		echo '<div class="page-bar">Inicio > Contenidos</div>';
         $sec="pages";
         if(isset($_GET['opc'])){
@@ -112,12 +111,13 @@ switch($pag){
         switch($opc){
             case "nvo":
             case "edt":
-                include('core/pages/page-edit.php');
+                include('core/pages2/page-edit.php');
                 break;
             default:
-                include('core/pages/page-init.php');
+                include('core/pages2/page-init.php');
         }
     break;
+	// revisar de aca en adelante
 	case "gal":
 		echo '<h2 class="title">Galerías</h2>';
 		echo '<div class="page-bar">Inicio > Medios</div>';

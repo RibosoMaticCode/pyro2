@@ -1464,6 +1464,12 @@ function rb_categories_to_array($category_id, $all=true) {
 
 	return $categories;
 }
+// Cambiar fechas
+function rb_cambiaf_a_normal($fecha){ /* FUNCIONAL, Revision -> 16/08/16*/
+    ereg( "([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})", $fecha, $mifecha);
+    $lafecha=$mifecha[3]."/".$mifecha[2]."/".$mifecha[1];
+    return $lafecha;
+}
 // Lista categorias en el panel administrativo - revisar esta funcion, es obsoleta
 function rb_listar_categorias($id_padre){ // antes listar_categorias
 	global $objDataBase;
@@ -1767,10 +1773,5 @@ function _normalize($str) {
 	$str = preg_replace('/\n/', '<br/>', $str);
 	$str = '<p>'.$str.'</p>';
 	return $str;
-}
-function _cambiaf_a_normal($fecha){ /* FUNCIONAL, Revision -> 16/08/16*/
-    ereg( "([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})", $fecha, $mifecha);
-    $lafecha=$mifecha[3]."/".$mifecha[2]."/".$mifecha[1];
-    return $lafecha;
 }
 ?>

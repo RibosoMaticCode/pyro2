@@ -4,8 +4,11 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 $q = $objDataBase->Ejecutar("SELECT * FROM albums");
+
+if(!isset($_GET['temp_id'])) $temp_id = 1;
+else $temp_id = $_GET['temp_id'];
 ?>
-<li class="col">
+<li class="col" data-id="<?= $temp_id ?>" data-type="slide">
 	<span class="col-head">
 		<strong>Slide</strong><a class="close-column" href="#">X</a>
 	</span>

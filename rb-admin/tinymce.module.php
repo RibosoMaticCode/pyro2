@@ -1,9 +1,7 @@
 <?php
 include 'islogged.php';
 ?>
-<!-- Add tiny_mce -->
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<!--<script>tinymce.init({ selector:'textarea' });</script>-->
 <script type="text/javascript">
 	tinymce.init({
 		selector: '.mce_tiny',

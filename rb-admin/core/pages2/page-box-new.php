@@ -6,14 +6,17 @@ $(document).ready(function() {
   });
 });
 </script>
-<li class="item" id="" data-type="">
+<?php
+if(!isset($_GET['temp_id'])) $temp_id = 1;
+else $temp_id = $_GET['temp_id'];
+?>
+<li class="item" data-id="box<?= $temp_id ?>" data-type="box">
   <div class="box-header">
-    <h4>Bloque</h4>
-    <!--<a class="add-column" href="#">(+) Agregar Columna</a>-->
-    <ul>
+    <strong>Bloque</strong>
+    <ul class="box-options">
       <li>
         <a href="#">Añadir columna</a>
-        <ul>
+        <ul class="box-options-list">
           <li>
             <a class="addSlide" href="#">Slide</a>
           </li>

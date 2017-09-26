@@ -59,7 +59,7 @@ while ($row = $consulta->fetch_assoc()){
   <span><?php if($row['bloques']==1) echo "Estructural"; else echo "Estándar"; ?></span>
 </td>
 <?php
-      echo "<td>".cambiaf_a_normal($row['fecha_creacion'])."</td>";
+      echo "<td>".rb_cambiaf_a_normal($row['fecha_creacion'])."</td>";
     $i++;
 }
  ?>

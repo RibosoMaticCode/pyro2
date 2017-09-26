@@ -345,3 +345,31 @@
 .box-body .box-edit{
 	padding: 10px;
 }
+/* MENU DE CADA BOX */
+ul.box-options{
+	float: right;
+	margin-right: 35px;
+}
+.box-options li{
+	display: inline-block;
+	width:auto!important;
+	margin: 0!important;
+	position: relative;
+}
+.box-options li a{
+	font-size: .9em;
+	display: block;
+}
+.box-options li a:hover + ul.box-options-list,
+ul.box-options-list:hover{
+	display: block;
+}
+ul.box-options-list{
+	position: absolute;
+	display: none;
+	z-index: 1;
+}
+.box-options-list li{
+	padding: 3px 15px;
+	display: block;
+}

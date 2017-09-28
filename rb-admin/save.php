@@ -1,6 +1,5 @@
 <?php
 include("../rb-script/funciones.php");
-require("../rb-script/class/rb-opciones.class.php");
 define('G_SERVER', $objOpcion->obtener_valor(1,'direccion_url'));
 
 include 'islogged.php';
@@ -168,45 +167,6 @@ switch($operacion){
 			}else{
 				$urlreload=G_SERVER.'/rb-admin/index.php?pag=menu&opc=edt&id='.$id.'&mainmenu_id='.$mainmenu_id;
 			}
-			header('Location: '.$urlreload);
-		}
-	break;
-	/*---------------------------------------------*/
-	/*-------------- GALERIA ----------------------*/
-	/*---------------------------------------------*/
-	case "gal":
-		require_once("../rb-script/class/rb-galerias.class.php");
-
-		// Modo
-		$mode=$_POST['mode'];
-
-		// variables
-		$nom = $_POST['nombre'];
-		$des = $_POST['descripcion'];
-		$nom_id=$_POST['titulo_enlace'];
-		$user_id = $_POST['user_id'];
-		$galeria_grupo = $_POST['grupo'];
-		$imgfondo_id = $_POST['imgfondo_id'];
-
-		if(empty($nom_id)){
-			$nom_id = rb_cambiar_nombre($_POST['nombre']);
-		}
-
-		// tipo de accion
-		if($mode=="new"){
-			$objGaleria->Insertar(array($nom,$des,$nom_id, $galeria_grupo,$user_id,$imgfondo_id));
-			$ultimo_id=mysql_insert_id();
-
-			//redireccionar a la pagina de edicion
-			$urlreload=G_SERVER.'/rb-admin/index.php?pag=gal&opc=edt&id='.$ultimo_id."&m=ok";
-			header('Location: '.$urlreload);
-		}elseif($mode=="update"){
-			$id = $_POST['id'];
-
-			$objGaleria->Editar(array($nom,$des,$nom_id,$galeria_grupo,$imgfondo_id),$id);
-
-			//redireccionar a la pagina de edicion
-			$urlreload=G_SERVER.'/rb-admin/index.php?pag=gal&opc=edt&id='.$id."&m=ok";
 			header('Location: '.$urlreload);
 		}
 	break;
@@ -697,4 +657,5 @@ switch($operacion){
 			}
 		}
 	break;
+}
 ?>

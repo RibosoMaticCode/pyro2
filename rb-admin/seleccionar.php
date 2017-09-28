@@ -117,7 +117,6 @@ switch($pag){
                 include('core/pages2/page-init.php');
         }
     break;
-	// revisar de aca en adelante
 	case "gal":
 		echo '<h2 class="title">Galerías</h2>';
 		echo '<div class="page-bar">Inicio > Medios</div>';
@@ -129,15 +128,14 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
-				break;
 			case "edt":
-				include('edit.php');
+				include('core/galleries/gallery-edit.php');
 				break;
 			default:
-				include('secciones.php');
+				include('core/galleries/gallery-init.php');
 		}
 		break;
+
 	case "files":
 		echo '<h2 class="title">Archivos</h2>';
 		echo '<div class="page-bar">Inicio > Medios</div>';
@@ -149,13 +147,13 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
+				include('core/files/file-new.php');
 				break;
-			case "edt":
+			/*case "edt":
 				include('edit.php');
-				break;
+				break;*/
 			default:
-				include('secciones.php');
+				include('core/files/file-init.php');
 		}
 		break;
 	case "imgnew":
@@ -167,10 +165,10 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
+				include('core/galleries/img-new.php');
 				break;
-			default:
-				include('secciones.php');
+			/*default:
+				include('secciones.php');*/
 		}
 	break;
 	case "img":
@@ -183,12 +181,13 @@ switch($pag){
 		}
 		switch($opc){
 			case "edt":
-				include('edit.php');
+				include('core/galleries/img-edit.php'); //posible duplicado con imgnew
 				break;
 			default:
-				include('secciones.php');
+				include('core/galleries/img-init.php');
 		}
 		break;
+	// revisar de aca en adelante
 	case "file_edit":
 		echo '<h2 class="title">Archivos</h2>';
 		echo '<div class="page-bar">Inicio > Medios</div>';
@@ -200,10 +199,10 @@ switch($pag){
 		}
 		switch($opc){
 			case "edt":
-				include('edit.php');
+				include('core/files/file-edit.php');
 				break;
-			default:
-				include('secciones.php');
+			/*default:
+				include('secciones.php');*/
 		}
 		break;
 	case "com":

@@ -39,8 +39,6 @@ $menu_asincrono = true;
 		});
 
 		<?php
-		// Ejecutar ultimo id dentro de la table menus
-		require_once(ABSPATH."rb-script/class/rb-menus.class.php");
 		$result = $objDataBase->Ejecutar("SELECT * FROM menus_items ORDER BY id DESC LIMIT 1");
 		$row = $result->fetch_assoc();
 		?>

@@ -1,6 +1,5 @@
 <?php
 include_once("tinymce.module.small.php");
-require_once(ABSPATH."rb-script/class/rb-opciones.class.php");
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 ?>
 <form name="options-form" method="post" action="option-save.php">

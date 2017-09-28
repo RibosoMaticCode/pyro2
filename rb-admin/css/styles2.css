@@ -253,19 +253,19 @@
 	width: 100%
 }
 #boxes{
-	border:1px dashed gray;
-	padding: 10px;
+	/*border:1px dashed gray;
+	padding: 10px;*/
 }
 .boxes-options li a{
 	padding: 5px 10px;
     display: block;
     background-color: #FBFBFB;
 }
-#boxes li{
+#boxes > li{
 	list-style-type:none;
 	border:1px solid #EFEFEF;
 	background-color:#f9f9f9;
-	margin: 5px 0;
+	margin: 15px 0;
 	width: 100%;
 }
 
@@ -310,7 +310,7 @@
 	text-decoration: none;
 }
 .box-body{
-	padding:8px 10px;
+	padding:5px;
 }
 
 .box-body label{
@@ -329,6 +329,13 @@
 }
 .box-body .cols-html{
 	display: flex;
+}
+.cols-html > li {
+    list-style-type: none;
+    border: 1px solid #EFEFEF;
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    width: 100%;
 }
 .box-body .box-edit-options{
 	padding: 50px 60px;

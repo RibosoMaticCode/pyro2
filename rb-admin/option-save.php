@@ -1,6 +1,5 @@
 <?php
 require_once("../global.php");
-require_once("../rb-script/class/rb-opciones.class.php");
 require_once("../rb-script/funciones.php");
 
 $nombresitio = $_POST['nombresitio'];

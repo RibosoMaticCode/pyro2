@@ -3,9 +3,9 @@
 * Actualizacion: agregado linea meta charset utf-8, para evitar errores en caracteres especiales */
 require_once '../global.php';
 include 'islogged.php';
-require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
+/*require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 require_once(ABSPATH."rb-script/class/rb-fotos.class.php");
-require_once(ABSPATH."rb-script/funciones.php");
+require_once(ABSPATH."rb-script/funciones.php");*/
 if(isset($_GET['type'])):
 ?>
 <html>
@@ -35,11 +35,11 @@ if(isset($_GET['type'])):
 						<ul class="gallery pop_library">
 						<?php
 						if($_GET['type']=="image"):
-							$q = $objFoto->Consultar("SELECT * FROM photo WHERE type LIKE 'image%' ORDER BY id DESC");
+							$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE type LIKE 'image%' ORDER BY id DESC");
 						elseif($_GET['type']=="file"):
-							$q = $objFoto->Consultar("SELECT * FROM photo ORDER BY id DESC");
+							$q = $objDataBase->Ejecutar("SELECT * FROM photo ORDER BY id DESC");
 						endif;
-						while ($row = mysql_fetch_array($q)):
+						while ($row = $q->fetch_assoc()):
 							?>
 							<li>
 								<a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">

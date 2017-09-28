@@ -6,46 +6,9 @@ $(document).ready(function() {
   });
   var i=1;
 
-  // click al llamar cada elemento para estructura de la web
-  $('#boxSlide').click( function( event ){
-    i++;
-    $.ajax({
-        url: "core/pages2/mod.design.blocks.php?t=slide&temp_id="+i
-    })
-    .done(function( data ) {
-       $('#boxes').append( data );
-    });
-  });
-  $('#boxGallery').click( function( event ){
-    i++;
-    $.ajax({
-        url: "core/pages2/mod.design.blocks.php?t=gallery&temp_id="+i
-    })
-    .done(function( data ) {
-       $('#boxes').append( data );
-    });
-  });
-  $('#boxHtml').click( function( event ){
-    i++;
-    $.ajax({
-        url: "core/pages2/mod.design.blocks.php?t=html&temp_id="+i
-    })
-    .done(function( data ) {
-       $('#boxes').append( data );
-    });
-  });
-  $('#boxPosts').click( function( event ){
-    i++;
-    $.ajax({
-        url: "core/pages2/mod.design.blocks.php?t=posts&temp_id="+i
-    })
-    .done(function( data ) {
-       $('#boxes').append( data );
-    });
-  });
-
   // Nuevo bloque, caja - box
   $('#boxNew').click( function( event ){
+    event.preventDefault();
     i++;
     $.ajax({
         url: "core/pages2/page-box-new.php?temp_id="+i
@@ -57,33 +20,17 @@ $(document).ready(function() {
 
   // borrar cada bloque
   $("#boxes").on("click", ".boxdelete", function (event) {
-      var msg = confirm("¿Desea quitar?");
-      if(msg){
-        $(this).closest("li").remove();
-      }
+    event.preventDefault();
+    var msg = confirm("¿Desea quitar?");
+    if(msg){
+      $(this).closest("li").remove();
+    }
   });
-
-  // agregar columna PROTOTIPO INICIAL
-  /*$("#boxes").on("click", ".add-column", function (event) {
-    var item = '<li class="col">'+
-      '<span class="col-head">'+
-        '<a class="close-column" href="#">X</a>'+
-      '</span>'+
-      '<div class="col-box-edit">'+
-        '<div class="box-edit-options">'+
-          '<a class="optSlide" href="#">Slides</a>'+
-          '<a class="optHTML" href="#">HTML</a>'+
-        '</div>'+
-        '<div class="box-edit">'+
-        '</div>'+
-      '</div>'+
-    '</li>';
-    $(this).closest("li").find(".cols-html").append(item);
-  });*/
 
   // Añadir Columna para Slide
   var j = 0;
   $("#boxes").on("click", ".addSlide", function (event) {
+    event.preventDefault();
     var box_edit = $(this).closest(".item").find(".cols-html");
     var box_id = $(this).closest(".item").attr('data-id');
     j++;
@@ -98,6 +45,7 @@ $(document).ready(function() {
   // Añadir Columan para HTML
   var k = 0;
   $("#boxes").on("click", ".addHtml", function (event) {
+    event.preventDefault();
     var box_edit = $(this).closest(".item").find(".cols-html");
     var box_id = $(this).closest(".item").attr('data-id');
     k++;
@@ -112,52 +60,17 @@ $(document).ready(function() {
   // Mostrar Editor HTML
   $("#boxes").on("click", ".showEditHtml", function (event) {
     event.preventDefault();
+    event.preventDefault();
     var box_edit_html = $(this).closest(".col-box-edit").find(".box-edit-html");
     var content_to_edit = box_edit_html.html();
     var content_to_edit_id = box_edit_html.attr('id');
-
-    //alert(content_to_edit);
-    /*$.ajax({
-        url: "core/pages2/html-edit.php?cte="+content_to_edit+"&cte_id="+content_to_edit_id
-    })
-    .done(function( data ) {
-      $('.bg-opacity').show();
-      $('.explorer').show();
-      $('.explorer').append(data);
-    });*/
     tinymce.activeEditor.setContent(content_to_edit);
     $('#control_id').val(content_to_edit_id);
   });
-  /*
-  $("#boxes").on("click", ".optSlide", function (event) {
-    var box_edit_options = $(this).closest(".col-box-edit").find(".box-edit-options");
-    var box_edit = $(this).closest(".col-box-edit").find(".box-edit");
-    console.log('test');
-    $.ajax({
-        url: "core/pages2/box-slide.php"
-    })
-    .done(function( data ) {
-      box_edit_options.slideUp();
-      box_edit.append( data );
-    });
-  });
-
-  // Click en Option Slide
-  $("#boxes").on("click", ".optHTML", function (event) {
-    var box_edit_options = $(this).closest(".col-box-edit").find(".box-edit-options");
-    var box_edit = $(this).closest(".col-box-edit").find(".box-edit");
-    console.log('test');
-    $.ajax({
-        url: "core/pages2/box-html.php"
-    })
-    .done(function( data ) {
-      box_edit_options.slideUp();
-      box_edit.append( data );
-    });
-  });*/
 
   // Remover columnas
   $("#boxes").on("click", ".close-column", function (event) {
+    event.preventDefault();
     var msg = confirm("¿Desea quitar?");
       if(msg){
         $(this).closest("li").remove();
@@ -166,165 +79,81 @@ $(document).ready(function() {
 
   // button hide/show
   $( ".arrow-up" ).hide();
-
   $("#boxes").on("click", ".toggle", function (event) {
+    event.preventDefault();
     $(this).closest("li").find(".box-body").toggle();
     $(this).closest("li").find(".arrow-up, .arrow-down").toggle();
   });
 
   // Guardar cambios en diseñador
-  $( "#btnGuardar" ).click(function() {
-    var pagina_title = $('#titulo').val();
+  function htmlEntities(str) {
+    // Remplaza codigo HTML con otras entidades
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n|\r/g, "");
+  }
 
-    var boxesmain_string_start = " {'boxes': [ ";
-    var boxesmain_string_end = " ] ";
-    //var boxes_string_content = "";
-    var boxes_coma = "";
-    var final_string_content = "";
+  $( "#btnGuardar" ).click(function() {
+    event.preventDefault();
+    var pagina_title = $('#titulo').val();
+    var pagina_id = $('#pagina_id').val();
+    var mode = $('#mode').val();
+
+    var boxesmain_string_start = '{"boxes": [';
+    var boxesmain_string_end = ']}';
+    var boxes_coma = '';
+    var final_string_content = '';
     var i=0;
-    var all_columns_string = "";
+    var all_columns_string = '';
 
     // Revisando cada box - caja
     $('#boxes .item').each(function(indice, elemento) {
-      var box_string_init = "{'box_id' : '"+$(elemento).attr('data-id')+"'";
-      var cols_string_start = ", 'columns': [ ";
-      var cols_string_end = " ] ";
-      var cols_string_content = "";
-      var coma = "";
+      var box_string_init = '{"box_id" : "'+$(elemento).attr('data-id')+'"';
+      var cols_string_start = ',"columns":[';
+      var cols_string_end = ']';
+      var cols_string_content = '';
+      var coma = '';
       var j=0;
 
       var $this = $(this);
       // Revisando cada columna
       $this.find(".cols-html .col").each(function(indice, elemento) {
-
+        var col_id = $(elemento).attr('data-id');
         var col_type = $(elemento).attr('data-type');
+        var col_css = $('#class_'+col_id).val();
         switch (col_type) {
           case 'html':
             htmlt_content_col = $(elemento).find('.box-edit-html').html();
+            htmlt_content_col = encodeURIComponent(htmlEntities(htmlt_content_col)); //encodeURIComponent transforma los &amp en otras entidades
           break;
           case 'slide':
             htmlt_content_col = $(elemento).find('.slide_name').val();
           break;
         }
-        cols_string_content += coma + "{'col_id' : '"+$(elemento).attr('data-id')+"' , 'col_content' : '"+htmlt_content_col+"' , 'col_type' : '" + col_type + "'}";
+        cols_string_content += coma + '{"col_id" : "'+$(elemento).attr('data-id')+'","col_content" : "'+htmlt_content_col+'","col_type":"'+ col_type + '", "col_css" : "'+ col_css +'"}';
         coma = ",";
         j++;
       });
-      cols_nums = ", 'num_cols' : '"+ j +"' }";
+      cols_nums = ',"num_cols":"'+ j +'"}';
       all_columns_string += boxes_coma + box_string_init + cols_string_start + cols_string_content + cols_string_end + cols_nums;
       //console.log(string_data);
       boxes_coma = ",";
     });
     final_string_content += boxesmain_string_start + all_columns_string + boxesmain_string_end;
-    console.log(JSON.stringify(final_string_content));
+    console.log(final_string_content); // no es necesario pasar a json en js antes JSON.stringify
 
     $.ajax({
-      url: "core/pages2/page.save.php?title="+pagina_title+"&content="+JSON.stringify(final_string_content),
-      method: 'get'
+      url: "core/pages2/page.save.php",
+      method: 'post',
+      data: "title="+pagina_title+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode
     })
     .done(function( data ) {
-      console.log(data);
-    });
-  });
-
-// old - borrar
-  $( "#_btnGuardar" ).click(function() {
-    var pagina_id = 0;
-    var pagina_title = $('#titulo').val();
-    console.log( "Pagina Id:"+pagina_id );
-
-    $.ajax({
-      url: "page.save.php?title="+pagina_title
-    })
-    .done(function( data ) {
-      if(data=="0"){
-        console.log("Error al guardar la página");
-        return;
+      if(data.resultado=="ok"){
+        notify("La página se guardo en la base de datos");
+        setTimeout(function(){
+          window.location.href = data.url+'/rb-admin/index.php?pag=pages&opc=edt&id='+data.last_id;
+        }, 1000);
       }else{
-        var pagina_id = data;
-
-        $('#boxes .item').each(function(indice, elemento) {
-          console.log('Elemento: Position:'+indice+',Codigo:'+$(elemento).attr('id')+',Tipo:'+$(elemento).attr('data-type'));
-
-          var string_data;
-
-          var type = $(elemento).attr('data-type');
-          /*switch(type){
-            case 'slide':
-              var gallery_id = $(elemento).find('.slide_name').val();
-              string_data = "{'gallery_id':'"+gallery_id+"'}";
-
-              $.ajax({
-                  url: "design.save.php?pid="+pagina_id+"&tip="+type+"&pos="+indice+"&det="+string_data
-              })
-              .done(function( data ) {
-                console.log( data );
-              });
-            break;
-            case 'gallery':
-              var gallery_id = $(elemento).find('.gallery_name').val();
-              var gallery_show = $(elemento).find('.gallery_show').val();
-              var gallery_byrow = $(elemento).find('.gallery_byrow').val();
-
-              string_data = "{'gallery_id':'"+gallery_id+"', 'gallery_show' : '"+gallery_show+"', 'gallery_byrow' : '"+gallery_byrow+"'}";
-
-              $.ajax({
-                  url: "design.save.php?pid="+pagina_id+"&tip="+type+"&pos="+indice+"&det="+string_data
-              })
-              .done(function( data ) {
-                console.log( data );
-              });
-            break;
-            case 'html':
-              var html_string_start = " {'columns': [ ";
-              var html_string_end = " ] ";
-              var html_string_content = "";
-              var coma = "";
-              var j=0;
-
-              $('.cols-html li').each(function(indice, elemento) {
-                console.log( 'Columna: Position:'+indice+',Contenido:'+$(elemento).find('.col-content').val() );
-                htmlt_content_col = $(elemento).find('.col-content').val();
-
-                html_string_content += coma + "{'html_id' : '"+indice+"' , 'html_content' : '"+htmlt_content_col+"'}";
-                coma = ",";
-                j++;
-              });
-              html_num_cols = ", 'num_cols' : '"+ j +"' }";
-
-              string_data = html_string_start + html_string_content + html_string_end + html_num_cols;
-
-              $.ajax({
-                  url: "design.save.php?pid="+pagina_id+"&tip="+type+"&pos="+indice+"&det="+string_data
-              })
-              .done(function( data ) {
-                console.log( data );
-              });
-              //console.log( html_string_all );
-            break;
-            case 'posts':
-              var category_id = $(elemento).find('.category_name').val();
-              var category_show = $(elemento).find('.category_show').val();
-              var category_byrow = $(elemento).find('.category_byrow').val();
-
-              if( $(elemento).find('.category_list').is( ":checked" ) ){
-                var category_style = "list";
-              }
-              if( $(elemento).find('.category_grid').is( ":checked" ) ){
-                var category_style = "grid";
-              }
-
-              string_data = "{'category_id':'"+category_id+"', 'category_show' : '"+category_show+"', 'category_byrow' : '"+category_byrow+"', 'category_style' : '"+category_style+"'}";
-
-              $.ajax({
-                  url: "design.save.php?pid="+pagina_id+"&tip="+type+"&pos="+indice+"&det="+string_data
-              })
-              .done(function( data ) {
-                console.log( data );
-              });
-            break;
-          }*/
-        });
+        notify("Existe un error al intentar guardar en la base de datos");
+        console.log(data.contenido);
       }
     });
   });

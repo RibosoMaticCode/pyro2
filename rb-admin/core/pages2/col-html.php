@@ -11,6 +11,9 @@ else $temp_id = $_GET['temp_id'];
 			<label>
 			  <div class="box-edit-html" id="box-edit<?= $temp_id ?>">Click here to edit the second section of content!</div>
 			</label>
+			<label> Class CSS:
+				<input type="text" id="class_<?= $temp_id ?>" value="" />
+			</label>
 		</div>
 		<a href="#" class="showEditHtml">Editar</a>
 	</div>

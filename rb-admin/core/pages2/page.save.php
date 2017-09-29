@@ -15,7 +15,8 @@ $mode = $_POST['mode'];
 $pagina_id = $_POST['pid'];
 header('Content-type: application/json; charset=utf-8');
 if($mode=="new"):
-	$result = $objDataBase->Insertar("INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, contenido) VALUES (NOW(), '$titulo', '$titulo_enlace', $autor_id, '$contenido')");
+	$q = "INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, contenido) VALUES (NOW(), '$titulo', '$titulo_enlace', $autor_id, '$contenido')";
+	$result = $objDataBase->Insertar($q);
 	if($result):
 		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina guardada', 'url' => G_SERVER, 'last_id' => $result['insert_id'] );
 		die(json_encode($arr));
@@ -25,11 +26,12 @@ if($mode=="new"):
 	endif;
 elseif($mode=="update"):
 	$q = "UPDATE paginas SET titulo='$titulo', titulo_enlace = '$titulo_enlace', contenido = '$contenido' WHERE id= $pagina_id";
-	if($objDataBase->Ejecutar($q)):
+	if($result = $objDataBase->Ejecutar($q)):
 		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina actualizada', 'url' => G_SERVER, 'last_id' => $pagina_id );
 		die(json_encode($arr));
 	else:
-		$arr = array('resultado' => 'ok', 'contenido' => 'Error' );
+		$error = $result->error;
+		$arr = array('resultado' => 'bad', 'contenido' => $error );
 		die(json_encode($arr));
 	endif;
 endif;

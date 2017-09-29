@@ -71,7 +71,7 @@ if(G_ENL_AMIG):
 		exit();
 	endif;
   //$requestURI  = str_replace("/prueba", "", $_SERVER['REQUEST_URI']);
-	$requestURI = str_replace("", "", $_SERVER['REQUEST_URI']);
+	$requestURI = str_replace("", "/ayahuasca", $_SERVER['REQUEST_URI']);
   $requestURI = explode("/", $requestURI);
 	//$requestURI = explode( '/', $_SERVER['REQUEST_URI'] );
 

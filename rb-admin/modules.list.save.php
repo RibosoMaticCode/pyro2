@@ -1,7 +1,7 @@
 <?php
 require_once("../global.php");
 include 'islogged.php';
-require_once("../rb-script/class/rb-opciones.class.php");
+//require_once("../rb-script/class/rb-opciones.class.php");
 $module_name = $_GET['name'];
 
 // Carga formato json de la base de datos

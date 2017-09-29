@@ -6,7 +6,8 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
 //llamar a clase con las opciones basica del sitio
-require(ABSPATH."rb-script/class/rb-database.class.php");
+require_once(ABSPATH."rb-script/class/rb-database.class.php");
+$objDataBase = new DataBase;
 require_once(ABSPATH.'rb-script/funciones.php');
 
 // verifica datos en tabla, sino inicial el instalador

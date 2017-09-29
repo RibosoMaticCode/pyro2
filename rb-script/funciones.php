@@ -502,6 +502,7 @@ function rb_get_post_more_read($num_posts=10){
 }
 
 function rb_get_images_from_gallery($album_id){
+  global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$rm_url = G_SERVER."/";
 	if($album_id=="") return false;
@@ -713,14 +714,15 @@ function rb_path_menu($menu_id){
 	echo $Menu['nombre']."/";
 }
 function rb_display_menu($mainmenu_id, $parent, $level, $item_selected) { // ANTES display_children
-  $result = mysql_query("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
+  global $objDataBase;
+  $result = $objDataBase->Ejecutar("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
   $style_menu = " class='rd-navbar-nav' ";
   $style_parent = "";
 
   if($parent ==0 && $level ==1) $style_parent = " class=\"parent\"";
 	if($parent >0 && $level > 0) $style_menu = " class=\"rd-navbar-dropdown\"";
     echo "\n<ul".$style_menu.">\n";
-    while ($row = mysql_fetch_assoc($result)):
+    while ($row = $result->fetch_assoc()): //mysql_fetch_assoc($result)
       $tipo = trim($row['tipo']);
       $id = ($row['style']== "" ? $row['id'] : $row['style']);
       $style_selected = ($item_selected == $row['style'] ? " class=\"selected\"" : "");
@@ -827,7 +829,7 @@ function rb_cambiar_nombre($url) {
 }
 
 function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_image_directory,$final_width_of_image=100) {
-	require_once( dirname( dirname(__FILE__) ) ."/global.php");
+  require_once( dirname( dirname(__FILE__) ) ."/global.php");
 
 		$destination_file = $path_to_thumbs_directory.$original_file;
 		$original_file = $path_to_image_directory.$original_file;
@@ -1000,10 +1002,6 @@ function rb_showvisiblename($acceso){
 
 function rb_shownivelname($nivel_id){
 	global $objDataBase;
-	/*require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
-	$objDataBase = new DataBase;*/
-
 	$q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id = $nivel_id");
 	$r = $q->fetch_assoc();
 	return $r['nombre'];
@@ -1358,9 +1356,6 @@ function rb_mailer($recipient, $subject, $email_content, $native = true, $email_
  * 		@$native: Por defecto true, si usa libreria estandar del PHP
  * */
 function rb_list_galleries($limit=0, $groupname=""){
-  /*require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
-	$objDataBase = new DataBase;*/
 	global $objDataBase;
 
   $add_limit = "";
@@ -1401,8 +1396,6 @@ function rb_list_galleries($limit=0, $groupname=""){
  * */
 
 function rb_path_categories($category_id,$path=""){
-  /*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php");
-  $objDataBase = new DataBase;*/
 	global $objDataBase;
   $q = $objDataBase->Ejecutar("SELECT * FROM categorias WHERE id=$category_id");
   $r = $q->fetch_assoc();

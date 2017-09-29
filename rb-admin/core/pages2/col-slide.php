@@ -27,6 +27,9 @@ else $temp_id = $_GET['temp_id'];
 			    ?>
 			  </select>
 			</label>
+			<label> Class CSS:
+				<input type="text" id="class_<?= $temp_id ?>" value="" />
+			</label>
 		</div>
 	</div>
 </li>

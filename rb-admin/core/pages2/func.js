@@ -59,7 +59,8 @@ $(document).ready(function() {
 
   // Mostrar Editor HTML
   $("#boxes").on("click", ".showEditHtml", function (event) {
-    event.preventDefault();
+    $(".bg-opacity").show();
+    $(".editor-html").show();
     event.preventDefault();
     var box_edit_html = $(this).closest(".col-box-edit").find(".box-edit-html");
     var content_to_edit = box_edit_html.html();
@@ -87,8 +88,8 @@ $(document).ready(function() {
 
   // Guardar cambios en diseñador
   function htmlEntities(str) {
-    // Remplaza codigo HTML con otras entidades
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n|\r/g, "");
+    // Remplaza codigo HTML con otras entidades (Como: &, <, >, ", espacio en blancos, ')
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n|\r/g, "").replace(/'/g, '&#39;');
   }
 
   $( "#btnGuardar" ).click(function() {

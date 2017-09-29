@@ -31,26 +31,20 @@ if(isset($_GET["id"])){
 			</div>
 			<label>Estructura</label>
 			<div class="estructure">
+				<script>
+				$(document).ready(function() {
+				  $( ".cols-html" ).sortable({
+				      placeholder: "placeholder",
+				      handle: ".col-head"
+				  });
+				});
+				</script>
 				<ul id="boxes">
 				<?php if(isset($row)): ?>
 					<?php
-					//echo $row['contenido']."<br />";
-
 					$array_content = json_decode($row['contenido'], true);
 					//print_r($array_content);
 					foreach ($array_content['boxes'] as $box) {
-						?>
-						<!--<script>
-						$(document).ready(function() {
-						  $( ".cols-html" ).sortable({
-						      placeholder: "placeholder",
-						      handle: ".col-head"
-						  });
-						});
-						</script>-->
-						<?php
-						/*if(!isset($_GET['temp_id'])) $temp_id = 1;
-						else $temp_id = $_GET['temp_id'];*/
 						?>
 						<li class="item" data-id="<?= $box['box_id'] ?>" data-type="box">
 						  <div class="box-header">
@@ -121,6 +115,9 @@ if(isset($_GET["id"])){
 													    ?>
 													  </select>
 													</label>
+													<label> Class CSS:
+														<input type="text" id="class_<?= $col['col_id'] ?>" value="<?= $col['col_css'] ?>" />
+													</label>
 												</div>
 											</div>
 											<?php
@@ -146,12 +143,13 @@ if(isset($_GET["id"])){
 	</section>
 </div>
 <!-- editor -->
-<div class="editor-html" style="padding-bottom:100px">
+<div class="editor-html">
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.1/tinymce.min.js"></script>
 	<div id="ta">
 	  <p>Editor de html</p>
 	</div>
-	<button id="btn1">Get content with tinymce</button>
+	<button id="btn1">Cambiar</button>
+	<button id="btn2">Cancelar</button>
 	<input type="hidden" id="control_id" value="" />
 	<script>
 	$(function() {
@@ -190,11 +188,14 @@ if(isset($_GET["id"])){
 			}
 		});
 
-	    $('#btn1').click(function() {
-	        //console.log(tinymce.activeEditor.getContent());
-					var control_id = $('#control_id').val();
-					 $('#'+control_id).html(tinymce.activeEditor.getContent());
-	    });
+	  $('#btn1').click(function() {
+			var control_id = $('#control_id').val();
+			$('#'+control_id).html(tinymce.activeEditor.getContent());
+			$('.bg-opacity, .editor-html').hide();
+	  });
+		$('#btn2').click(function() {
+			$('.bg-opacity, .editor-html').hide();
+	  });
 	});
 	</script>
 </div>

@@ -71,7 +71,7 @@ if(G_ENL_AMIG):
 		exit();
 	endif;
   //$requestURI  = str_replace("/prueba", "", $_SERVER['REQUEST_URI']);
-	$requestURI = str_replace("", "/ayahuasca", $_SERVER['REQUEST_URI']);
+	$requestURI = str_replace("", "", $_SERVER['REQUEST_URI']);
   $requestURI = explode("/", $requestURI);
 	//$requestURI = explode( '/', $_SERVER['REQUEST_URI'] );
 
@@ -161,7 +161,7 @@ if(isset($_GET['pa'])){
 	$Categoria_id = $Cat['id'];
 
 	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/post.php';
-	if(file_exists( $file )): require_once( $file );rb_set_read_post($Post['id']);
+	if(file_exists( $file )): require_once( $file );rb_set_read_post($Post['id'], 'articulos');
 	else: die( message_error($file));
 	endif;
 
@@ -193,8 +193,9 @@ if(isset($_GET['pa'])){
 		$rm_url_page = rb_url_link('pag', $Page['id']);
 
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
-		if(file_exists( $file )) require_once( $file );
-		else die( message_error($file));
+		if(file_exists( $file )): require_once( $file );rb_set_read_post($Page['id'], 'paginas');
+		else: die( message_error($file));
+		endif;
 	}
 	// Asingar la pagina 404 en ambos casos. Arreglar bug
 // CATEGORIAS

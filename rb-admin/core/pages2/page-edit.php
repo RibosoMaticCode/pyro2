@@ -29,6 +29,25 @@ if(isset($_GET["id"])){
 				<input type="hidden" name="pagina_id" id="pagina_id" value="<?php if(isset($row)) echo $row['id']; else echo "0" ?>" />
 				<input type="hidden" name="mode" id="mode" value="<?= $mode ?>" />
 			</div>
+			<label>Menu asociado a la pagina
+				<span class="info">
+					Por defecto se establece como menu principal el establecido en las opciones generales. Sin embargo si desea especificar para esta pagina un menu diferente puede cambiarlo desde aqui. Por Ej. para una web que maneje contenido en diferentes idiomas.
+				</span>
+				<select id="menu" name="menu">
+					<?php
+					$result = $objDataBase->Ejecutar("SELECT * FROM menus");
+					while($menu = $result->fetch_assoc()):
+						?>
+						<option <?php if($menu['id'] == $row['menu_id']) echo " selected" ?> value="<?= $menu['id'] ?>"><?= $menu['nombre'] ?></option>
+						<?php
+					endwhile;
+					?>
+				</select>
+			</label>
+			<label>nombre-del-vinculo-amigable
+				<span class="info">Vinculo amigable (generado automaticamente, si se deja en blanco)</span>
+				<input type="text" name="pagina_enlace" id="pagina_enlace" value="<?php if(isset($row)) echo $row['titulo_enlace']; else echo "" ?>" />
+			</label>
 			<label>Estructura</label>
 			<div class="estructure">
 				<script>

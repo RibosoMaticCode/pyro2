@@ -103,7 +103,7 @@ if(isset($_POST['login'])){
 			$objDataBase->Ejecutar("UPDATE usuarios SET ultimoacceso=NOW() WHERE id=".$usuario['id']);
 			$idu = $usuario['id'];
 			//$objLog->Insertar();
-			rb_log_register( array($idu,$user,'ingreso al sistema') );
+			rb_log_register( array($idu,$user,'Ingreso al sistema') );
 			$msg="Conectado";
 			$msgok = 5;
 			define('G_MESSAGELOGIN', $msg);

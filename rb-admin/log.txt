@@ -10,11 +10,17 @@ Web: emocion.pe
 
 Licencia: ../rb-admin/licencia.txt
 
+version 2.0.2 pyro2 (sep 17)
+-------------------
+- Se han cambiado funciones mysql(deprecated) por mysqli
+- Editor visual 1.0 para paginas
+- Eliminado funciones php deprecateds
+- Independizando modulos principales del sistema
+
 version 2.0.1 pyro2 (mar - abr 17)
 -------------------
 - date_default_timezone_set en global.php para funciones de fechas
 - fix bug al eliminar categorias de listado
-- cambiando funciones mysql por mysqli
 
 version 2.0.0 metro3 (mar 17)
 --------------------

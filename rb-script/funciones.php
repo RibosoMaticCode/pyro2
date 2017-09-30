@@ -77,9 +77,9 @@ function rb_return_post_array($qa){
 }
 
 // Grabar una entrada en la lista de registro dela db
-function rb_log_register($user_id, $user_name, $details){
+function rb_log_register( $values ){
   global $objDataBase;
-  $objDataBase->Ejecutar("INSERT INTO log (usuario_id, usuario, observacion, fecha) VALUES ( ".$campos[0].",'".$campos[1]."','".$campos[2]."', NOW() )");
+  $objDataBase->Ejecutar("INSERT INTO log (usuario_id, usuario, observacion, fecha) VALUES ( ".$values[0].",'".$values[1]."','".$values[2]."', NOW() )");
 }
 
 // La funcion retorna valor segun la opcion de la tabla opciones, que almacena los valores iniciales y generales de la web
@@ -196,10 +196,10 @@ function rb_show_post($post_id){
 	// PHP Versiones mas antiguas
 	//return array_shift(array_values( rb_return_post_array($qa) ));
 }
-// Suma 1 unidad a cada acceso al post.
-function rb_set_read_post($post_id){
+// Suma 1 unidad a cada acceso al post, paginas, etc
+function rb_set_read_post($id, $table){
 	global $objDataBase;
-	$objDataBase->EditarPorCampo_int('articulos','lecturas','lecturas+1',$post_id);
+	$objDataBase->EditarPorCampo_int($table,'lecturas','lecturas+1',$id);
 }
 // Obtener categoria del post segun id del post
 function rb_get_category_by_post_id($post_id){
@@ -363,7 +363,6 @@ function rb_show_specific_page($page_id){
 	return $Pages;
 }
 
-
 /* FUNCION FECHAS / INICIO */
 function rb_a_ddmmyyyy($yyyymmdd, $separate = "-"){
 	$fec_frag = explode("-",$yyyymmdd);
@@ -374,12 +373,12 @@ function rb_a_yyyymmdd($ddmmyyyy, $separate = "-"){
 	$fec_frag = explode("-",$ddmmyyyy);
 	return $fec_frag[2].$separate.$fec_frag[1].$separate.$fec_frag[0];
 }
-function rb_datesql_to_ddmmyyyy($fecha, $separate = "/"){
+/*function rb_datesql_to_ddmmyyyy($fecha, $separate = "/"){
     ereg( "([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})", $fecha, $mifecha);
     $lafecha=$mifecha[3].$separate.$mifecha[2].$separate.$mifecha[1];
     return $lafecha;
-}
-function rb_fecha_format($sqlfecha){
+}*/
+function rb_fecha_format($sqlfecha){ // Convierte fecha SQl (formato ingles) a fecha unix y luego a formato español.
 	$FechaSQL = strtotime($sqlfecha);
 	$FechaFormat = date('d-m-Y',$FechaSQL);
 	return $FechaFormat;
@@ -1457,12 +1456,7 @@ function rb_categories_to_array($category_id, $all=true) {
 
 	return $categories;
 }
-// Cambiar fechas
-function rb_cambiaf_a_normal($fecha){ /* FUNCIONAL, Revision -> 16/08/16*/
-    ereg( "([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})", $fecha, $mifecha);
-    $lafecha=$mifecha[3]."/".$mifecha[2]."/".$mifecha[1];
-    return $lafecha;
-}
+
 // Lista categorias en el panel administrativo - revisar esta funcion, es obsoleta
 function rb_listar_categorias($id_padre){ // antes listar_categorias
 	global $objDataBase;

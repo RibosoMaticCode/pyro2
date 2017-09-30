@@ -16,7 +16,7 @@ if(isset($_GET['term'])){
     //$consulta = $objDataBase->Search($_GET['term'], true, $RegistrosAEmpezar, $regMostrar);
 }else{
     // consulta por defecto
-    $consulta = $objDataBase->Ejecutar("SELECT * FROM paginas ORDER BY titulo LIMIT $RegistrosAEmpezar, $regMostrar");
+    $consulta = $objDataBase->Ejecutar("SELECT * FROM paginas ORDER BY id DESC LIMIT $RegistrosAEmpezar, $regMostrar");
 }
 
 $i=1;
@@ -47,11 +47,7 @@ while ($row = $consulta->fetch_assoc()){
   <span>
     <a href="content.duplicate.php?id=<?= $row['id'] ?>&sec=pages">Duplicar</a></span>
   <span>
-    <?php if($row['popup']==1):?>
-      <a class="fancybox fancybox.iframe" href="preview.php?page_id=<?php if(isset($row)) echo $row['id'] ?>">Vista previa</a>
-    <?php else: ?>
-      <a href="<?= rb_url_link('pag',$row['id']) ?>" target="_blank">Vista previa</a>
-    <?php endif; ?>
+      <a class="fancybox fancybox.iframe" href="<?= rb_url_link('pag',$row['id']) ?>" target="_blank">Vista previa</a>
   </span>
 </div>
 </td>
@@ -59,7 +55,7 @@ while ($row = $consulta->fetch_assoc()){
   <span><?php if($row['bloques']==1) echo "Estructural"; else echo "Estándar"; ?></span>
 </td>
 <?php
-      echo "<td>".rb_cambiaf_a_normal($row['fecha_creacion'])."</td>";
+      echo "<td>".rb_fecha_format($row['fecha_creacion'])."</td>";
     $i++;
 }
  ?>

@@ -50,6 +50,10 @@ class DataBase{
 		$conexion = $this->Conexion();
 		return $conexion->query("UPDATE `$tabla` SET `$campo`=$valor WHERE id=$id");
 	}
+
+	function Insert($table, $data){
+		
+	}
 }
 $objDataBase = new DataBase;
 ?>

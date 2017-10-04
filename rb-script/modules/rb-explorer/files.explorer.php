@@ -13,9 +13,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname( dirname( dirname( dirname(__FILE__) ) ) ). '/' );
 
 require_once ABSPATH.'global.php';
-require_once(ABSPATH.'rb-script/class/rb-galerias.class.php');
-require_once(ABSPATH.'rb-script/class/rb-fotos.class.php');
-require_once(ABSPATH.'rb-script/funciones.php');
+require_once ABSPATH.'rb-script/funciones.php';
 
 $controlShowId = $_GET['controlShowId'];
 $controlHideId = $_GET['controlHideId'];

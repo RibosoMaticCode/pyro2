@@ -243,13 +243,11 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
-				break;
 			case "edt":
-				include('edit.php');
+				include('core/categories/category-edit.php');
 				break;
 			default:
-				include('secciones.php');
+				include('core/categories/category-init.php');
 		}
 		break;
 

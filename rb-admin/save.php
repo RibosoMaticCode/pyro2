@@ -405,64 +405,7 @@ switch($operacion){
 	/*---------------------------------------------*/
 
 	case "cat":
-		require_once("../rb-script/class/rb-categorias.class.php");
-		// Modo
-		$mode=$_POST['mode'];
-
-		// Tipo acceso
-		$acceso=$_POST['acceso'];
-		if($acceso=="privat"):
-			// Niveles
-			if(!isset($_REQUEST['niveles'])) {
-				print "[!] Debe seleccionar al menos un nivel de acceso!!!";
-			}
-			$niveles = "";
-			$coma= "";
-			foreach($_REQUEST['niveles'] as $nivel){
-				$niveles .= $coma.$nivel;
-				$coma =",";
-			}
-		endif;
-
-		// definiendo valores
-		$nomOcul = rb_cambiar_nombre(utf8_encode($_POST['nombre']));
-
-		if(empty($_POST['nombre_enlace'])){
-			$nomOcul = rb_cambiar_nombre(utf8_encode($_POST['nombre']));
-		}else{
-			$nomOcul = rb_cambiar_nombre(utf8_encode( $_POST['nombre_enlace'] ));
-		}
-
-		$nomVis = $_POST['nombre'];
-		$des = $_POST['descripcion'];
-		$catpadre = $_POST['catid'];
-		$nivel = $_POST['nivel'];
-		$photo_id = $_POST['imagen-categoria_id'];
-
-        // validates
-        if($nomVis=="") die("Falta nombre de la categoria");
-        //if($des=="") die("Falta descripcion de la categoria");
-
-		// tipo de accion
-		if($mode=="new"){
-			$objCategoria->Insertar(array($nomOcul,$nomVis,$des,$catpadre,$nivel,$photo_id));
-			$ultimo_id=mysql_insert_id();
-
-			// Actualizamos niveles de acceso en post
-			$objCategoria->Consultar("UPDATE categorias SET acceso = '$acceso', niveles = '$niveles' WHERE id = $ultimo_id");
-
-			$enlace=G_SERVER.'/rb-admin/index.php?pag=cat&opc=edt&id='.$ultimo_id;
-			header('Location: '.$enlace);
-		}elseif($mode=="update"){
-			$id=$_POST['id'];
-			$objCategoria->Editar(array($nomOcul,$nomVis,$des,$catpadre,$nivel,$photo_id),$id);
-
-			// Actualizamos niveles de acceso en post
-			$objCategoria->Consultar("UPDATE categorias SET acceso = '$acceso', niveles = '$niveles' WHERE id = $id");
-
-			$enlace=G_SERVER.'/rb-admin/index.php?pag=cat&opc=edt&id='.$id;
-			header('Location: '.$enlace);
-		}
+		
 	break;
 	/*---------------------------------------------*/
 	/*-------------- USUARIOS ---------------------*/

@@ -13,19 +13,19 @@ if ( !defined('ABSPATH') )
 	//define('ABSPATH', $_SERVER['DOCUMENT_ROOT']."/" );
 
 require_once ABSPATH.'global.php';
-require_once(ABSPATH.'rb-script/class/rb-fotos.class.php');
+require_once(ABSPATH.'rb-script/class/rb-database.class.php');
 require_once(ABSPATH.'rb-script/funciones.php');
 
 if(G_USERTYPE == 1):
-	$q = $objFoto->Consultar("SELECT * FROM photo ORDER BY id DESC");
+	$q = $objDataBase->Ejecutar("SELECT * FROM photo ORDER BY id DESC");
 else:
-	$q = $objFoto->Consultar("SELECT * FROM photo WHERE usuario_id=".G_USERID." ORDER BY id DESC");
+	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE usuario_id=".G_USERID." ORDER BY id DESC");
 endif;
-if(mysql_num_rows($q)):
+if( $q->num_rows ):
 ?>
 <ul class="gallery" style="overflow:hidden;margin-bottom:20px;">
 	<?php
-	while ($row = mysql_fetch_array($q)):
+	while ( $row = $q->fetch_assoc() ):
 	?>
 	<li><a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">
 		<?php

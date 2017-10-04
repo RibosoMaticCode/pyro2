@@ -61,7 +61,7 @@ while ($row = $consulta->fetch_assoc()):
       ?>
     </td>
     <td class="col_vistas"><?= $row['lecturas'] ?></td>
-    <td class="col_fecha"><?= rb_datesql_to_ddmmyyyy($row['fecha_creacion']) ?></td> <!-- actualizar funcion -->
+    <td class="col_fecha"><?= rb_sqldate_to($row['fecha_creacion']) ?></td> <!-- actualizar funcion -->
   </tr>
 <?php
 $i++;

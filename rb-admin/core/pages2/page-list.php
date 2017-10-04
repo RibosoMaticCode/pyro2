@@ -55,7 +55,7 @@ while ($row = $consulta->fetch_assoc()){
   <span><?php if($row['bloques']==1) echo "Estructural"; else echo "Estándar"; ?></span>
 </td>
 <?php
-      echo "<td>".rb_fecha_format($row['fecha_creacion'])."</td>";
+      echo "<td>".rb_sqldate_to($row['fecha_creacion'])."</td>";
     $i++;
 }
  ?>

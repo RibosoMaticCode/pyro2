@@ -26,8 +26,8 @@ $(document).ready(function() {
 	 */
 	$(".file_item").on("click" , "li a.filename", function (event){
 		$(".filename").removeClass('file_selected');
-		
-		$(this).addClass('file_selected');		
+
+		$(this).addClass('file_selected');
 		event.preventDefault();
 		var tipo = $(this).attr("data-type");
 		if(tipo=="file"){
@@ -39,7 +39,7 @@ $(document).ready(function() {
 			  	url: "<?= $path_module ?>readfile.php?filename="+fn
 			}).done(function( msg ) {
 			    $('#textarea').val( msg );
-			});	
+			});
 		}else if(tipo=="dir"){
 			var fn = $(this).attr("href");
 			$('#file_name').val(fn);
@@ -51,7 +51,7 @@ $(document).ready(function() {
 			    $('.file_item').html(msg);
 			});
 		}
-		
+
 	});
 	/*
 	 * Si se pulsa sobre Guardar Cambios.
@@ -63,7 +63,8 @@ $(document).ready(function() {
 		  	url: "<?= $path_module ?>save.change.php",
 		  	data: $( "#file_form" ).serialize()
 		}).done(function( msg ) {
-		    $('#file-result').html( msg );
+			notify(msg);
+		   // $('#file-result').html( msg );
 		});
 	});
 });
@@ -97,7 +98,7 @@ $(document).ready(function() {
 					<button class="btn-primary" type="submit">Guardar cambios</button>
 					</form>
 					<div id="file-result">
-						
+
 					</div>
 				</div>
 			</div>

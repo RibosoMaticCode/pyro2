@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname( dirname( dirname( dirname(__FILE__) ) ) ). '/' );
 
 require_once ABSPATH.'global.php';
-require_once(ABSPATH.'rb-script/class/rb-database.class.php');
+require_once ABSPATH.'rb-script/class/rb-database.class.php';
 ?>
 <script>
 	$( "#close" ).click(function( event ) {
@@ -19,8 +19,8 @@ require_once(ABSPATH.'rb-script/class/rb-database.class.php');
 </div>
 <div class="explorer-body">
   <?php
-  $q = $objDataBase->Consultar("SELECT src FROM photo WHERE id=".$_GET['file_id']);
-  $file = mysql_fetch_array($q)
+  $q = $objDataBase->Ejecutar("SELECT src FROM photo WHERE id=".$_GET['file_id']);
+  $file = $q->fetch_assoc();
   ?>
   <img class="preview" src="<?= G_SERVER ?>/rb-media/gallery/<?= $file['src']?>" alt="previa" />
 </div>

@@ -22,21 +22,29 @@ function show_nivel($nivel_id){
 }
 
 $result = $objDataBase->Ejecutar("SELECT * FROM usuarios ORDER BY $colOrder $Ord LIMIT $RegistrosAEmpezar, $regMostrar");
-while ( $row = $result->fetch_assoc() ){
-  echo '	<tr>
-        <td><input id="user-'.$row['id'].'" type="checkbox" value="'.$row['id'].'" name="items" /></td>
-        <td>'.$row['nickname'].'</td>
-        <td>'.$row['nombres'].' '.$row['apellidos'].'
-        <div class="options">
-        <span><a title="Editar" href="../rb-admin/index.php?pag=usu&amp;opc=edt&amp;id='.$row['id'].'">Editar</a></span>
-        <span><a style="color:red" href="#" title="Eliminar" onclick="Delete('.$row['id'].',\'usu\')">Eliminar</a></span></td>
-        </div>
-        </td>
-        <td>'.$row['correo'].'</td>
-        <td>'.show_nivel($row['tipo']).'</td>';
-  echo		'<td>';
-        if($row['activo']==0) echo '<a href="user.active.php?id='.$row['id'].'">¿Activar?</a>';
-        else echo "Activo";
-  echo 		'</td>';
-}
+while ( $row = $result->fetch_assoc() ):
+  ?>
+  <tr>
+    <td>
+      <input id="user-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
+    </td>
+    <td><?= $row['nickname'] ?></td>
+    <td>
+      <?= $row['nombres'] ?> <?= $row['apellidos'] ?>
+      <div class="options">
+        <span><a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=usu&amp;opc=edt&amp;id=<?= $row['id'] ?>">Editar</a></span>
+        <span><a style="color:red" class="del-item" data-id="<?= $row['id'] ?>" href="#" title="Eliminar">Eliminar</a></span></td>
+      </div>
+    </td>
+    <td><?= $row['correo'] ?></td>
+    <td><?= show_nivel($row['tipo']) ?></td>
+    <td>
+      <?php
+      if($row['activo']==0) echo '<a href="user.active.php?id='.$row['id'].'">¿Activar?</a>';
+      else echo "Activo";
+      ?>
+    </td>
+  </tr>
+<?php
+endwhile;
 ?>

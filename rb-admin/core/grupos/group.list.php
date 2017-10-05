@@ -1,19 +1,16 @@
 <?php
-require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
-global $objUsuario;// = new Usuarios;
-$regMostrar = $_COOKIE['user_show_items'];
-
+//$regMostrar = $_COOKIE['user_show_items'];
 $colOrder = "id"; // column name table
 $Ord = "ASC"; // A-Z
-		
-if(isset($_GET['page']) && ($_GET['page']>0)){
+
+/*if(isset($_GET['page']) && ($_GET['page']>0)){
 	$RegistrosAEmpezar=($_GET['page']-1)*$regMostrar;
 }else{
 	$RegistrosAEmpezar=0;
-}
-		
-$result = $objUsuario->Consultar("SELECT * FROM usuarios_grupos ORDER BY $colOrder $Ord LIMIT $RegistrosAEmpezar, $regMostrar");
-while ($row = mysql_fetch_array($result)):
+}*/
+global $objDataBase;
+$result = $objDataBase->Ejecutar("SELECT * FROM usuarios_grupos ORDER BY $colOrder $Ord");
+while ($row = $result->fetch_assoc()):
 ?>
 	<tr>
 		<td><input id="nivel-<?= $row['id']?>" type="checkbox" value="<?= $row['id']?>" name="items" /></td>

@@ -1,9 +1,10 @@
 <?php
-//include 'islogged.php';
+// Actualiza cookie local para establecer el valor de cuantos elementos mostrar por lista
 $value = $_GET['value'];
 $sec = $_GET['sec'];
-require("../rb-script/class/rb-opciones.class.php");
-define('G_SERVER', $objOpcion->obtener_valor(1,'direccion_url'));
+require("../global.php");
+
+//define('G_SERVER', rb_get_values_options('direccion_url'));
 
 switch($sec){
 	case "usu":

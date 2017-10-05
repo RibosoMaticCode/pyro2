@@ -1,6 +1,5 @@
 <h2 class="title">Niveles de acceso</h2>
 <div class="page-bar">Inicio > Usuario</div>
-
 <?php
 $sec="nivel";
 if(isset($_GET['opc'])):
@@ -11,7 +10,6 @@ else:
 <div id="sidebar-left">
 	<ul class="buttons-edition">
 		<li><a class="btn-primary" href="../rb-admin/?pag=nivel&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo"> Nuevo</a></li>
-		<li><a class="btn-primary" href="#" id="edit"><img src="img/edit-white-16.png" alt="Editar"> Editar</a></li>
 		<li><a class="btn-primary" href="#" id="delete"><img src="img/del-white-16.png" alt="delete"> Eliminar</a></li>
 	</ul>
 </div>

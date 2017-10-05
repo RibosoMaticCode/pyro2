@@ -41,6 +41,16 @@ class DataBase{
 		return $conexion->query($q);
 	}
 
+	function Editar($q){ // Solo para sentecnias UPDATE, devuelve si algunas filas fueron afectadas o no por la actualizacion
+		$conexion = $this->Conexion();
+		if($conexion->query($q)){
+			$resultArray = array('result' => true, 'affected_rows' => $conexion->affected_rows );
+		}else{
+			$resultArray = array('result' => false, 'affected_rows' => $conexion->affected_rows, 'error' => $conexion->connect_errno.$conexion->connect_error );
+		}
+		return $resultArray;
+	}
+
 	function EditarPorCampo($tabla,$campo,$valor,$id){ // string
     $conexion = $this->Conexion();
 		return $conexion->query("UPDATE `$tabla` SET `$campo`='$valor' WHERE id=$id");
@@ -51,8 +61,8 @@ class DataBase{
 		return $conexion->query("UPDATE `$tabla` SET `$campo`=$valor WHERE id=$id");
 	}
 
-	function Insert($table, $data){
-		
+	function Insert($table, $data){ // con array - key - value - comming soon
+
 	}
 }
 $objDataBase = new DataBase;

@@ -17,7 +17,7 @@ $pag_act = isset($_GET['page']) ? $_GET['page'] : 1;
 			</td>
 			<?php if($nums_show_list): ?>
 			<td><strong>Mostrar:</strong>
-				<select onchange="change_items_show()" id="nums_items_show" name="<?= $type?>">
+				<select id="nums_items_show" name="<?= $type?>">
 					<option <?php if($nums_show==25) echo "selected"?> value="25">25</option>
 					<option <?php if($nums_show==50) echo "selected"?> value="50">50</option>
 					<option <?php if($nums_show==100) echo "selected"?> value="100">100</option>

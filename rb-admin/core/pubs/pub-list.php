@@ -5,7 +5,6 @@ function categorias_del_articulo($articulo_id){
 }
 
 $regMostrar = $_COOKIE['art_show_items'];
-
 if(isset($_GET['page']) && ($_GET['page']>0)):
   $RegistrosAEmpezar = ($_GET['page']-1) * $regMostrar;
 else:
@@ -17,9 +16,7 @@ if(G_USERTYPE == "admin"):
 else:
   $consulta = $objDataBase->Ejecutar("SELECT a.portada, a.id, a.fecha_creacion, a.titulo, a.titulo_enlace, a.lecturas, a.comentarios, a.activo, a.actcom, a.autor_id, u.nickname, u.nombres FROM articulos a, usuarios u WHERE a.autor_id = u.id AND a.autor_id = ".G_USERID." ORDER BY id DESC LIMIT $RegistrosAEmpezar, $regMostrar");
 endif;
-
 $i=1;
-
 // bucle para llenar los datos segun pagina
 while ($row = $consulta->fetch_assoc()):
 ?>
@@ -39,13 +36,13 @@ while ($row = $consulta->fetch_assoc()):
           <a title="Editar" href="../rb-admin/index.php?pag=art&amp;opc=edt&amp;id=<?= $row['id'] ?>">Editar</a>
         </span>
         <span>
-          <a href="#" style="color:red" title="Eliminars" onclick="Delete(<?= $row['id'] ?>,'art')">Eliminar</a> <!-- actualizar funcion js -->
+          <a data-id="<?= $row['id'] ?>" class="del-item" href="#" style="color:red" title="Eliminar">Eliminar</a>
         </span>
         <span>
           <a href="content.duplicate.php?id=<?= $row['id'] ?>&sec=art">Duplicar</a>
         </span>
         <span>
-          <a href="<?= rb_url_link('art',$row['id']) ?>" target="_blank">Vista Preliminar</a>
+          <a class="fancybox fancybox.iframe" href="<?= rb_url_link('art',$row['id']) ?>" target="_blank">Vista Preliminar</a>
         </span>
       </div>
     </td>

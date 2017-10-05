@@ -12,7 +12,7 @@ if(isset($_GET["id"])){
   die("Usar otro metodo");
 }
 ?>
-<form enctype="multipart/form-data" id="galery-form" name="galery-form" method="post" action="save.php">
+<form enctype="multipart/form-data" id="galery-form" name="galery-form" method="post" action="core/files/file-save.php">
       <div id="toolbar">
           <div id="toolbar-buttons">
                 <span class="post-submit">

@@ -3,43 +3,37 @@
 $id=$_GET['id'];
 $sec=$_GET['sec'];
 
+require("../rb-script/class/rb-database.class.php");
+
 switch($sec){
 	case "art":
-		require("../rb-script/class/rb-articulos.class.php");
 		$objArticulo->Eliminar($id);
 	break;
   case "pages":
-		require("../rb-script/class/rb-paginas.class.php");
     $objPagina->Eliminar($id);
   break;
   case "menus":
-    require("../rb-script/class/rb-menus.class.php");
     $objMenu->EliminarNodos($id);
     $objMenu->Eliminar($id);
     break;
 	case "menu":
-    require("../rb-script/class/rb-menus.class.php");
     $objMenu->Eliminar_Item($id);
 		//falta eliminar hijos del item, si los hubiera
     break;
 	case "com":
-		require("../rb-script/class/rb-comentarios.class.php");
 		$objComentario->Eliminar($id);
 	break;
 	case "gal":
-    require("../rb-script/class/rb-galerias.class.php");
     $objGaleria->Eliminar($id);
 	break;
 	case "img": // resetea album_id de la imagen
-		require("../rb-script/class/rb-fotos.class.php");
-		$q = $objFoto->Consultar("UPDATE photo SET album_id=0 WHERE id=".$id);
+		$q = $objFoto->Ejecutar("UPDATE photo SET album_id=0 WHERE id=".$id);
 	break;
 	case "files":
     $album_id = $_GET['_other'];
-		require("../rb-script/class/rb-fotos.class.php");
 
 		// buscar datos de la foto
-		$q = $objFoto->Consultar("select src from photo where id=$id");
+		$q = $objFoto->Ejecutar("select src from photo where id=$id");
     $r = mysql_fetch_array($q);
     $src_img = $r['src'];
 
@@ -58,7 +52,6 @@ switch($sec){
 	break;
 	case "cat":
 		//error falta eliminar demas nodos hijos
-		require("../rb-script/class/rb-categorias.class.php");
 		$objCategoria->EliminarNodos($id);
 		$objCategoria->Eliminar($id);
 		include('listado.php');

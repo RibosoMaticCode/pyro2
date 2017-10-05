@@ -22,6 +22,7 @@ include 'islogged.php';
 <?= do_action('panel_header_css') ?>
 
 <script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/func.js"></script>
 <script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>
 <script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/funciones_javascript.js.php"></script>
 <script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/atributos.js.php"></script>

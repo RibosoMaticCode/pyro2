@@ -36,7 +36,7 @@ $(document).ready(function() {
   });
 });
 </script>
-<form id="user-form" name="user-form" method="post" action="save.php">
+<form id="user-form" name="user-form" method="post" action="core/users/user-save.php">
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">
@@ -162,7 +162,7 @@ $(document).ready(function() {
                               <option value="0">[Ninguno]</option>
                 <?php
                 $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles");
-                while($r = mysql_fetch_array($q)):
+                while($r = $q->fetch_assoc()):
                 ?>
                 <option <?= isset($row) && $row['tipo']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
                 <?php
@@ -201,7 +201,7 @@ $(document).ready(function() {
                         <option value="0">[Ninguno]</option>
             <?php
             $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_grupos");
-            while($r = mysql_fetch_array($q)):
+            while($r = $q->fetch_assoc() ):
             ?>
               <option <?= isset($row) && $row['grupo_id']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
             <?php

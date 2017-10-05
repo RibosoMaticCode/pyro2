@@ -21,10 +21,10 @@ while ($row = $result->fetch_assoc()):
       <span class="filename">
         <?= utf8_encode($row['src']) ?>
       </span>
-      <span class="edit"><a href="../rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $row['id'] ?>">
+      <span class="edit"><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $row['id'] ?>">
         <img src="img/edit-black-16.png" alt="icon" />
       </a></span>
-      <span class="delete"><a href="#" style="color:red" onclick="Delete(<?= $row['id'] ?>,'files',0,0)">
+      <span class="delete"><a href="#" style="color:red" class="del-item" data-id="<?= $row['id'] ?>">
         <img src="img/del-black-16.png" alt="icon" />
       </a></span>
     </div>

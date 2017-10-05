@@ -85,7 +85,7 @@ $rg= $qg->fetch_assoc();
       </div>
       <div class="seccion-body">
         <div class="flibrary">
-          <form action="save.php" method="POST" name="library">
+          <form action="core/galleries/img-add.php" method="POST" name="library">
             <input type="hidden" name="album_id" value="<?= $album_id ?>" />
             <input type="hidden" name="section" value="imgnew" />
             <ul class="wrap-grid">

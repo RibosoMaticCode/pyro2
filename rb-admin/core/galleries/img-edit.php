@@ -13,7 +13,7 @@ if(isset($_GET["id"])){
   $mode = "new";
 }
 ?>
-<form enctype="multipart/form-data" id="galery-form" name="galery-form" method="post" action="save.php">
+<form enctype="multipart/form-data" id="galery-form" name="galery-form" method="post" action="core/galleries/img-save.php">
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">

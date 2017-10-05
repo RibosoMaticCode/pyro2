@@ -1,10 +1,9 @@
 <?php
-require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
-	$q = $objUsuario->Consultar("SELECT * FROM usuarios_niveles WHERE id=$id");
-	$row=mysql_fetch_array($q);
+	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE id=$id");
+	$row= $q->fetch_assoc();
 	$mode = "update";
 }else{
 	$mode = "new";

@@ -42,8 +42,19 @@ function rb_paged_list($pag_act, $total, $link_section, $nums_show){
 }
 
 // nuevas funciones usando msqyli
-require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-database.class.php" );
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
+
+require_once ABSPATH."rb-script/class/rb-database.class.php";
 $objDataBase = new DataBase;
+
+function rb_header($header_template=""){ // REVISAR
+  if($header_template==""){
+    include_once ABSPATH.'rb-temas/'.G_ESTILO.'/header.php';
+  }elseif($header_template!=""){
+    include_once ABSPATH.'rb-temas/'.G_ESTILO.'/'.$header_template;
+  }
+}
 
 /* CAPTURA CONSULTA Y ENVIA UN ARRAY CON DATOS DE LA PUBLICACION - TODA CONSULTA DE LISTADO DE POST DEBE USAR ESTA FUNCION*/
 function rb_return_post_array($qa){
@@ -378,10 +389,12 @@ function rb_a_yyyymmdd($ddmmyyyy, $separate = "-"){
     $lafecha=$mifecha[3].$separate.$mifecha[2].$separate.$mifecha[1];
     return $lafecha;
 }*/
-function rb_fecha_format($sqlfecha){ // Convierte fecha SQl (formato ingles) a fecha unix y luego a formato español.
-	$FechaSQL = strtotime($sqlfecha);
-	$FechaFormat = date('d-m-Y',$FechaSQL);
-	return $FechaFormat;
+
+// Antes rb_fecha_format
+function rb_sqldate_to($sqlfecha, $format = 'd-m-Y'){ // Convierte fecha SQl (formato ingles) a fecha unix y luego a formato español.
+	$date_unix = strtotime($sqlfecha);
+	$format_date = date($format,$date_unix);
+	return $format_date;
 }
 /* FUNCION FECHAS / FIN */
 
@@ -406,7 +419,7 @@ function rb_nums_post_by_category($category_id){
 	return $q->num_rows;
 }
 
-function rb_get_post_by_category($category_id="*", $starred=false, $show_post=false, $num_posts=10, $regstart=0, $column, $ord ){
+function rb_get_post_by_category($category_id="*", $starred=false, $show_post=false, $num_posts=10, $regstart=0, $column="id", $ord = "DESC" ){ // Se cambio orden de parametros
 	global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$rm_url = G_SERVER."/";
@@ -1496,7 +1509,7 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 
 					<td width='40px;'>
 					<span>
-					<a href=\"#\" title=\"Eliminar\" onclick=\"Delete(".$value['id'].",'cat')\">
+					<a href=\"#\" title=\"Eliminar\" class=\"del-item\" data-id=\"".$value['id']."\">
 					<img src=\"img/del-black-16.png\" alt=\"Eliminar\" /></a>
 					</span>
 					</td>\n
@@ -1517,7 +1530,7 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 					</td>
 					<td width='40px;'>
 					<span>
-					<a href=\"#\" title=\"Eliminar\" onclick=\"Delete(".$value['id'].",'cat')\">
+					<a href=\"#\" title=\"Eliminar\" class=\"del-item\" data-id=\"".$value['id']."\">
 					<img src=\"img/del-black-16.png\" alt=\"Eliminar\" /></a>
 					</span>
 					</td>\n

@@ -1,8 +1,7 @@
 <?php
 //require_once(ABSPATH."rb-script/class/rb-paginas.class.php");
 // determinando consulta con nro de paginas y registro a empezar
-$regMostrar = 30;
-
+$regMostrar = $_COOKIE['page_show_items'];
 // si pagina esta definido y es mayor que 0
 if(isset($_GET['page']) && ($_GET['page']>0)){
     $RegistrosAEmpezar=($_GET['page']-1)*$regMostrar;
@@ -43,7 +42,7 @@ while ($row = $consulta->fetch_assoc()){
     endif;
     ?>
   <span>
-    <a href="#" style="color:red" title="Eliminar" onclick="Delete(<?= $row['id'] ?>,'pages')">Eliminar</a></span>
+    <a href="#" style="color:red" title="Eliminar" class="del-item" data-id="<?= $row['id'] ?>">Eliminar</a></span>
   <span>
     <a href="content.duplicate.php?id=<?= $row['id'] ?>&sec=pages">Duplicar</a></span>
   <span>

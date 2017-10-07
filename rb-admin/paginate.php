@@ -5,65 +5,15 @@ if(!isset($sec)){
 	$sec = $_GET['sec'];
 }
 switch($sec){
-	case "art":
-		require_once("../rb-script/class/rb-articulos.class.php");
-
-		if(isset($_GET['term'])){
-			$numrows = mysql_num_rows($objDataBase->Search($_GET['term']));
-			$func_to_use = "Search";
-			$link_section = G_SERVER."/rb-admin/index.php?term=";
-		}else{
-			if(G_USERTYPE == 1):
-				$numrows = mysql_num_rows($objDataBase->Ejecutar("select id from articulos"));
-			else:
-				$numrows = mysql_num_rows($objDataBase->Ejecutar("select id from articulos WHERE autor_id = ".G_USERID));
-			endif;
-			$func_to_use = "Consult";
-			$link_section = G_SERVER."/rb-admin/index.php?pag=";
-		}
-		$type = "art";
-		$nums_show = $_COOKIE['art_show_items'];
-		$nums_show_list=true;
-		$link_section = $link_section.$type;
-	break;
-	case "usu":
-		require_once("../rb-script/class/rb-usuarios.class.php");
-
-		if(isset($_GET['term'])){
-			$numrows = mysql_num_rows($objDataBase->Search($_GET['term']));
-			$func_to_use = "Search";
-		}else{
-			$numrows = mysql_num_rows($objUsuario->Ejecutar("select id from usuarios"));
-			$func_to_use = "Consult";
-			$link_section = G_SERVER."/rb-admin/index.php?pag=";
-		}
-		$type = "usu";
-		$nums_show = $_COOKIE['user_show_items'];
-		$nums_show_list=true;
-		$link_section = $link_section.$type;
-	break;
-    case "pages":
-        require_once("../rb-script/class/rb-paginas.class.php");
-
-        if(isset($_GET['term'])){
-            $numrows = mysql_num_rows($objPagina->Search($_GET['term']));
-            $func_to_use = "Search";
-        }else{
-            $numrows = mysql_num_rows($objPagina->Ejecutar("select id from paginas"));
-            $func_to_use = "Consult";
-        }
-        $type = "pages";
-        $nums_show = $_COOKIE['page_show_items'];
-		$nums_show_list=true;
-    break;
 	case "com":
-		require_once("../rb-script/class/rb-comentarios.class.php");
+		require_once("../rb-script/class/rb-database.class.php");
 
 		if(isset($_GET['term'])){
-			//$numrows = $objComentario->search($_GET['term'],true);
+			//$numrows = $objDataBase->search($_GET['term'],true);
 			//$func_to_use = "Search";
 		}else{
-			$numrows = mysql_num_rows($objComentario->Ejecutar("select id from comentarios"));
+			$q = $objDataBase->Ejecutar("select id from comentarios");
+			$numrows = $q->num_rows;
 			$func_to_use = "Consult";
 		}
 		$type = "com";

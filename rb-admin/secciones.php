@@ -176,7 +176,7 @@ function load_page(page_string){
 switch($sec){
 	//SECCION COMENTARIOS ------------------------->>>>>>>>>>>>
 	case "com":
-		require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
+		require_once(ABSPATH."rb-script/class/rb-database.class.php");
 	?>
 		<?php if (!in_array("com", $array_help_close)): ?>
 		<div class="help" data-name="com">
@@ -192,8 +192,8 @@ switch($sec){
 				<?php
 				// si variable art esta definida entonces
 				if(isset($_GET['art'])) {
-					$q = $objArticulo->Consultar("SELECT titulo FROM articulos WHERE id=".$_GET['art']);
-					$r = mysql_fetch_array($q);
+					$q = $objDataBase->Ejecutar("SELECT titulo FROM articulos WHERE id=".$_GET['art']);
+					$r = $q->fetch_assoc();
 					?>
 					<li><a href="../rb-admin/?pag=com&amp;art=<?php echo $_GET['art'] ?>">Comentarios en <em><?php echo $r['titulo'] ?></em></a></li>
 				<?php } ?>

@@ -11,7 +11,7 @@ switch($sec){
 	/* ------------- SECCION COMENTARIOS ----------------------*/
 	/* --------------------------------------------------------*/
 	case "com":
-		require_once(ABSPATH."rb-script/class/rb-comentarios.class.php");
+		require_once(ABSPATH."rb-script/class/rb-database.class.php");
 
 		// si esta definida variabla art entonces se muestra los
 		// comentarios de ese articulo
@@ -20,24 +20,24 @@ switch($sec){
 
 		if(isset($_GET['art'])){
 			$articulo_id=$_GET['art'];
-			$consulta = $objComentario->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE a.id = c.articulo_id AND c.articulo_id = $articulo_id ORDER BY fecha DESC");
+			$consulta = $objDataBase->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE a.id = c.articulo_id AND c.articulo_id = $articulo_id ORDER BY fecha DESC");
 		}elseif(isset($_GET['page']) && ($_GET['page']>0)){
 			$RegistrosAEmpezar=($_GET['page']-1)*$regMostrar;
 			if(isset($_GET['term'])){
-				//$consulta = $objComentario->search($_GET['term'], false, $RegistrosAEmpezar, $regMostrar);
+				//$consulta = $objDataBase->search($_GET['term'], false, $RegistrosAEmpezar, $regMostrar);
 			}else{
-				$consulta = $objComentario->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE a.id = c.articulo_id ORDER BY fecha DESC LIMIT $RegistrosAEmpezar, $regMostrar");
+				$consulta = $objDataBase->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE a.id = c.articulo_id ORDER BY fecha DESC LIMIT $RegistrosAEmpezar, $regMostrar");
 			}
 		}else{
 			$RegistrosAEmpezar = 0;
 			if(isset($_GET['term'])){
-				//$consulta = $objComentario->search($_GET['term']);
+				//$consulta = $objDataBase->search($_GET['term']);
 			}else{
-				$consulta = $objComentario->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE c.articulo_id = a.id ORDER BY fecha DESC LIMIT $RegistrosAEmpezar, $regMostrar");
+				$consulta = $objDataBase->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE c.articulo_id = a.id ORDER BY fecha DESC LIMIT $RegistrosAEmpezar, $regMostrar");
 			}
 		}
 		//<td>".nl2br(htmlspecialchars($row['contenido']))."</td>
-		while ($row = mysql_fetch_array($consulta)){
+		while ($row = $consulta->fetch_assoc()){
 			echo "	<tr>
 					<td><input id=\"art-".$row['id']."\" type=\"checkbox\" value=\"".$row['id']."\" name=\"items\" /></td>
 					<td><h3>".$row['nombre']."</h3>
@@ -55,51 +55,25 @@ switch($sec){
 				</tr>";
 		}
 	break;
-    /* --------------------------------------------------------*/
-    /* --------------SECCION GRUPOS ---------------------------*/
-    /* --------------------------------------------------------*/
-    case "gru":
-        require_once(ABSPATH."rb-script/class/rb-grupos.class.php");
-
-        $result = $objGrupo->Ejecutar("SELECT * FROM grupos ORDER BY nombre DESC LIMIT 10");
-        while ($row = mysql_fetch_array($result)){
-            echo "  <tr>
-                        <td>".$row['nombre']."</td>";
-            echo "<td width='40px;'>
-                    <span>
-                        <a title=\"Editar\" href='../rb-admin/index.php?pag=gru&amp;opc=edt&amp;id=".$row['id']."'>
-                        <img style=\"border:0px;\" src=\"img/page_edit.png\" alt=\"Editar\" /></a>
-                    </span>
-                    </td>";
-            echo "<td width='40px;'>
-                    <span>
-                        <a href=\"#\" style=\"color:red\" title=\"Eliminar\" onclick=\"Delete(".$row['id'].",'gru')\">
-                        <img src=\"img/delete.png\" alt=\"Eliminar\" /></a>
-                    </span>
-                    </td>
-                    <tr>\n";
-        }
-    break;
 	/* --------------------------------------------------------*/
 	/* -------------- SECCION MENSAJES ------------------------*/
 	/* --------------------------------------------------------*/
 	case "men":
-		require_once(ABSPATH."rb-script/class/rb-mensajes.class.php");
-		require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
+		require_once(ABSPATH."rb-script/class/rb-database.class.php");
 
 		if(isset($_GET['opc'])){
 			// ENVIADOS
 
 			if($_GET['opc'] == "send"){
-				$result = $objMensaje->Ejecutar("SELECT id, asunto, fecha_envio, inactivo FROM mensajes WHERE remitente_id = ".G_USERID." AND inactivo = 0 ORDER BY fecha_envio DESC LIMIT 10");
+				$result = $objDataBase->Ejecutar("SELECT id, asunto, fecha_envio, inactivo FROM mensajes WHERE remitente_id = ".G_USERID." AND inactivo = 0 ORDER BY fecha_envio DESC LIMIT 10");
 			}
 		}else{
 			// RECIBIDOS
 
-			$result = $objMensaje->Ejecutar("SELECT u.nombres, m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo FROM mensajes m, mensajes_usuarios mu, usuarios u WHERE m.id = mu.mensaje_id AND u.id = m.remitente_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 ORDER BY fecha_envio DESC LIMIT 10");
+			$result = $objDataBase->Ejecutar("SELECT u.nombres, m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo FROM mensajes m, mensajes_usuarios mu, usuarios u WHERE m.id = mu.mensaje_id AND u.id = m.remitente_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 ORDER BY fecha_envio DESC LIMIT 10");
 		}
 
-		while ($row = mysql_fetch_array($result)){
+		while ($row = $result->fetch_assoc()){
 			$style = "";
 			$mod = "";
 			// si estamos en la opcion de enviados
@@ -120,7 +94,7 @@ switch($sec){
 				echo "<td>";
 				$coma = "";
 				$q = $objUsuario->destinatarios_del_mensaje($row['id']);
-				while($r = mysql_fetch_array($q)){
+				while($r = $q->fetch_assoc()){
 					echo $coma.$r['nombres'];
 					$coma=", ";
 				}

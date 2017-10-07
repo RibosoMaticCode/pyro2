@@ -18,8 +18,8 @@ switch($sec){
 	case "com":
 
 		$id=$_GET["id"];
-		require_once(ABSPATH."rb-script/class/rb-comentarios.class.php");
-		$consulta = $objComentario->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE a.id = c.articulo_id AND c.id=$id");
+		require_once(ABSPATH."rb-script/class/rb-database.class.php");
+		$consulta = $objDataBase->Ejecutar("SELECT c.*, a.titulo FROM comentarios c, articulos a WHERE a.id = c.articulo_id AND c.id=$id");
 		$row= $consulta->fetch_assoc();
 		$mode = "update";
 		?>
@@ -75,55 +75,11 @@ switch($sec){
 		</form>
 	<?php
 	break;
-    /* ------------------------------------------------------------- */
-    /* ---------------- FORMULARIO GRUPO --------------------------- */
-    /* ------------------------------------------------------------- */
-    case "gru":
-        require_once(ABSPATH."rb-script/class/rb-grupos.class.php");
-        $mode;
-        if(isset($_GET["id"])){
-            // if define realice the query
-            $id=$_GET["id"];
-            $q = $objDataBase->Ejecutar("SELECT * FROM grupos WHERE id=$id");
-            $row=$q->fetch_assoc();
-            $mode = "update";
-        }else{
-            $mode = "new";
-        }
-    ?>
-        <form id="form" name="form" method="post" action="save.php">
-            <div id="toolbar">
-                <div id="toolbar-buttons">
-                    <span class="post-submit">
-                    <input class="submit" name="guardar" type="submit" value="Guardar" />
-                    <a href="../rb-admin/?pag=gru"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
-
-                    </span>
-                </div>
-            </div>
-            <div>
-                <div class="content-edit">
-                    <div class="wrap-input">
-                    <label title="Nombre del Grupo" for="web_nombre">Nombre del Grupo:
-                    <input  name="nombre" type="text" id="nombre" value="<?php if(isset($row)) echo $row['nombre'] ?>" />
-                    </label>
-                    </div>
-                </div>
-                <div id="sidebar">
-                </div>
-            </div>
-            <input name="section" value="gru" type="hidden" />
-            <input name="mode" value="<?php echo $mode ?>" type="hidden" />
-            <input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
-        </form>
-    <?php
-    break;
 	/* ------------------------------------------------------------- */
 	/* ---------------- FORMULARIO MENSAJES ------------------------ */
 	/* ------------------------------------------------------------- */
 	case "men":
-		require_once(ABSPATH."rb-script/class/rb-mensajes.class.php");
-		require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
+		require_once(ABSPATH."rb-script/class/rb-database.class.php");
 		$mode;
 		if(isset($_GET["id"])){
 			if($_GET["id"]=="") die (" Ocurrio un problema ");

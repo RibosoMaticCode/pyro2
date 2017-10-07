@@ -105,7 +105,7 @@ if($mode=="new"){
   // EDITAR
   if($objUsuario->Editar(array($nm, $ap, $cn, $cr, $tm, $tf, $mail, $di, $tipo, $sex, $photo),$id)){
 
-    if($change_pwd==1) $objDataBase->EditarPorCampo("password", md5(trim($pwd)),$id);
+    if($change_pwd==1) $objDataBase->EditarPorCampo("usuarios", "password", md5(trim($pwd)),$id);
 
     $objDataBase->EditarPorCampo("usuarios", "bio", $bio, $id);
     $objDataBase->EditarPorCampo("usuarios", "tw", $tw, $id);

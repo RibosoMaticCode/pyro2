@@ -36,9 +36,13 @@ if(isset($_GET["id"])){
 				<select id="menu" name="menu">
 					<?php
 					$result = $objDataBase->Ejecutar("SELECT * FROM menus");
+					$menu_id = isset($row) ? $row['menu_id'] : 0;
+					?>
+					<option value="0">[Ninguno]</option>
+					<?php
 					while($menu = $result->fetch_assoc()):
 						?>
-						<option <?php if($menu['id'] == $row['menu_id']) echo " selected" ?> value="<?= $menu['id'] ?>"><?= $menu['nombre'] ?></option>
+						<option <?php if($menu['id'] == $menu_id) echo " selected" ?> value="<?= $menu['id'] ?>"><?= $menu['nombre'] ?></option>
 						<?php
 					endwhile;
 					?>

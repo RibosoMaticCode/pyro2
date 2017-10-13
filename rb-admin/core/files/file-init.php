@@ -70,14 +70,73 @@ $(document).ready(function() {
   		});
   	}
   });
+
+  // show uploader
+  $('.show-uploader').click(function( event ){
+    $('#uploader').slideToggle();
+  });
 });
 </script>
 <div id="sidebar-left">
   <ul class="buttons-edition">
-    <li><a class="btn-primary" href="../rb-admin/?pag=files&amp;opc=nvo"><img src="img/add-white-16.png" alt="Cargar" /> Cargar Archivo</a></li>
+    <li><a class="btn-primary show-uploader" href="#"><img src="img/add-white-16.png" alt="Cargar" /> Subir Archivos</a></li>
     <li><a class="btn-primary" rel="files" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
   </ul>
 </div>
+<!-- plugin uploader -->
+<div class="wrap-home">
+  <section id="uploader" class="seccion" style="display:none">
+    <div class="seccion-header">
+      <h3>Subir archivos</h3>
+    </div>
+    <div class="seccion-body">
+    <div id="mulitplefileuploader"></div>
+    <span class="info">Archivos permitidos: jpg, png, gif, doc, docx, xls, xlsx, pdf. Tamaño máximo: 8 MB</span>
+    <div id="status"></div>
+    <!-- Load multiples imagenes -->
+    <link href="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
+    <script src="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+      var settings = {
+        url: "<?= G_SERVER ?>/rb-admin/uploader.php",
+        dragDrop:true,
+        fileName: "myfile",
+        formData: {"albumid":"0", "user_id" : "<?= G_USERID ?>"},
+        urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
+        allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf",
+        returnType:"html", //json
+        showStatusAfterSuccess: false,
+        onSuccess:function(files,data,xhr){
+          console.log(data);
+          $.ajax({
+              method: "GET",
+              url: "core/files/file-item.php?id="+data
+              //data: $( "#formcat" ).serialize()
+          }).done(function( msg ) {
+              $('#grid').prepend( msg );
+          });
+             //$("#status").append("Subido con exito");
+        },
+        //showDelete:true,
+        deleteCallback: function(data,pd){
+          for(var i=0;i<data.length;i++){
+            $.post("delete.php",{op:"delete",name:data[i]},
+            function(resp, textStatus, jqXHR){
+              $("#status").append("<div>Archivo borrado</div>");
+            });
+          }
+          pd.statusbar.hide(); //You choice to hide/not.
+        }
+      }
+      var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
+    });
+    </script>
+    </div>
+  </section>
+</div>
+<!-- plugin uploader -->
 <div class="content">
   <div id="content-list">
     <div id="resultado"> <!-- ajax asyncron here -->

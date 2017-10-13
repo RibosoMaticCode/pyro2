@@ -7,7 +7,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once(ABSPATH.'global.php');
-require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
+require_once(ABSPATH."rb-script/class/rb-database.class.php");
 ?>
 <script>
 	$( "#close" ).click(function( event ) {
@@ -81,12 +81,12 @@ require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
 /* ACCESO A TRAVES DEL CODIGO DEL ALBUM/GALERIA */
 
 if(G_USERTYPE==1):
-	$qg = $objGaleria->Consultar("SELECT nombre FROM albums WHERE id=$album_id");
+	$qg = $objDataBase->Ejecutar("SELECT nombre FROM albums WHERE id=$album_id");
 else:
-	$qg = $objGaleria->Consultar("SELECT nombre FROM albums WHERE id=$album_id AND usuario_id = ".G_USERID);
+	$qg = $objDataBase->Ejecutar("SELECT nombre FROM albums WHERE id=$album_id AND usuario_id = ".G_USERID);
 endif;
 
-$rg=mysql_fetch_array($qg);
+$rg= $qg->fetch_assoc();
 ?>
 <div class="explorer-header">
 	<h3>Galería: <?= $rg['nombre']?></h3>
@@ -120,7 +120,7 @@ $rg=mysql_fetch_array($qg);
 			<script type="text/javascript">
 			$(document).ready(function(){
 				var settings = {
-				    url: "upload.php",
+				    url: "<?= G_SERVER ?>/rb-admin/uploader.php",
 				    dragDrop:true,
 				    fileName: "myfile",
 				    formData: {"albumid":"<?= $album_id ?>", "user_id" : "<?= G_USERID ?>"},
@@ -147,11 +147,11 @@ $rg=mysql_fetch_array($qg);
 			</script>
 			<?php
 			if(G_USERTYPE==1):
-				$q = $objGaleria->Consultar("SELECT * FROM photo WHERE album_id=0 AND type IN ('image/gif','image/png','image/jpeg')");
+				$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id=0 AND type IN ('image/gif','image/png','image/jpeg')");
 			else:
-				$q = $objGaleria->Consultar("SELECT * FROM photo WHERE album_id=0 AND type IN ('image/gif','image/png','image/jpeg') AND usuario_id = ".G_USERID);
+				$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id=0 AND type IN ('image/gif','image/png','image/jpeg') AND usuario_id = ".G_USERID);
 			endif;
-			if(mysql_num_rows($q)):
+			if( $q->num_rows ):
 			?>
 			<h4>Imagenes sin galería</h4>
 			<div class="flibrary">

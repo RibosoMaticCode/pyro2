@@ -265,7 +265,7 @@ include_once("tinymce.module.small.php");
                 event.preventDefault();
                 $.ajax({
                     method: "POST",
-                    url: "category.add.post.php",
+                    url: "core/pubs/category.add.post.php",
                     data: $( "#formcat" ).serialize()
                 }).done(function( msg ) {
                     $('#catlist').append( msg );
@@ -429,7 +429,7 @@ include_once("tinymce.module.small.php");
                           event.preventDefault();
                   $.ajax({
                     method: "POST",
-                    url: "gallery.add.post.php",
+                    url: "core/pubs/gallery.add.post.php",
                     data: $( "#formgaleria" ).serialize()
                 }).done(function( msg ) {
                     $('#alblist').append( msg );

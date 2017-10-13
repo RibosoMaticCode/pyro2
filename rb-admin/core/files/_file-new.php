@@ -1,13 +1,21 @@
-<div class="wrap-home">
+<?php
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/class/rb-database.class.php';
+require_once ABSPATH.'rb-script/funciones.php';
+?>
+<!--<div class="wrap-home">-->
   <section class="seccion">
     <div class="seccion-header">
       <h3>Subir archivos</h3>
     </div>
     <div class="seccion-body">
     <!--<h2>Subir archivos <sup class="required">*</sup> a la Biblioteca de Medios: [<a href="<?= G_SERVER ?>/rb-admin/index.php?pag=files">Volver</a>]</h2>-->
-    <ul class="buttons-edition">
+    <!--<ul class="buttons-edition">
       <li><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=files" class="btn-primary">Volver</a></li>
-    </ul>
+    </ul>-->
 
     <div id="mulitplefileuploader"></div>
     <span class="info">Archivos permitidos: jpg, png, gif, doc, docx, xls, xlsx, pdf. Tamaño máximo: 8 MB</span>
@@ -51,4 +59,4 @@
     </script>
     </div>
   </section>
-</div>
+<!--</div>-->

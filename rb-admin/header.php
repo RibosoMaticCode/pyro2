@@ -38,7 +38,7 @@ include 'islogged.php';
 <link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.css">
 
 <!-- Funciones nuevas -->
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-script/modules/rb-explorer/file.explorer.js"></script>
+<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
 <script>
 	$(document).ready(function() {
 		$(".fancybox").fancybox();
@@ -161,10 +161,10 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 				<?php endif ?>
 	    	<?php if($userType == "admin"): ?>
 	    	<a id="config" title="Opciones" href="index.php?pag=opc">
-	    		<img src="img/options-icon.png" alt="Opciones">
+	    		<img src="img/options-icon.png" alt="Configuración general">
 	    	</a>
 	    	<?php endif ?>
-	    	<a id="out" title="Cerrar sesion" href="../login.php?out">
+	    	<a id="out" title="Cerrar sesion" href="<?= G_SERVER ?>/login.php?out">
 	    		<img src="img/out-icon.png" alt="Cerrar">
 	    	</a>
 			</div>

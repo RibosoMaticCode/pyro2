@@ -13,7 +13,7 @@ if(isset($_GET["id"])){
 ?>
 <form id="nivel-form" method="post" action="../rb-admin/core/grupos/group.save.php">
 	<div id="toolbar">
-       	<div id="toolbar-buttons">
+    <div id="toolbar-buttons">
 			<span class="post-submit">
 				<input class="submit" name="guardar" type="submit" value="Guardar" />
 				<a href="?pag=gru"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar/Volver" /></a>

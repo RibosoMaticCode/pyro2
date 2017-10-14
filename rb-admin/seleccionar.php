@@ -262,20 +262,21 @@ switch($pag){
 		}
 		switch($opc){
 			case "nvo":
-				include('edit.php');
+				include('core/messages/message-edit.php');
 				break;
 			case "view":
-				include('edit.php');
+				$id=$_GET["id"];
+				include('core/messages/message-view.php');
 				break;
 			case "send":
 				$style_btn_default = " ";
 				$style_btn_1 = "style=\"font-weight:bold;\"";
-				include('secciones.php');
+				include('core/messages/message-init.php');
 				break;
 			default:
 				$style_btn_default = "style=\"font-weight:bold;\" ";
 				$style_btn_1 = " ";
-				include('secciones.php');
+				include('core/messages/message-init.php');
 		}
 		break;
 	case "opc":

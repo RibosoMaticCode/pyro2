@@ -134,7 +134,7 @@ if(isset($_SESSION['type'])){
 					</p>
 					<h4>Subir archivo</h4>
 					<?php
-					include_once ABSPATH.'rb-script/modules/rb-uploadimg/mod.uploadimg.php';
+					include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
 					?>
 				</div>
 			</section>

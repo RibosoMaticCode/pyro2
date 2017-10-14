@@ -111,8 +111,8 @@ $mode=$_POST['mode'];
 				$objDataBase->Ejecutar("INSERT INTO objetos (nombre, contenido, tipo, articulo_id) VALUES ('portada', '$portada','image',$ultimo_id)");
 				$logo = $_POST['secundaria'];
 				$objDataBase->Ejecutar("INSERT INTO objetos (nombre, contenido, tipo, articulo_id) VALUES ('logo', '$logo','image',$ultimo_id)");
-				$adjunto = $_POST['adjunto'];
-				$objDataBase->Ejecutar("INSERT INTO objetos (nombre, contenido, tipo, articulo_id) VALUES ('adjunto', '$adjunto','image',$ultimo_id)");
+				/*$adjunto = $_POST['adjunto'];
+				$objDataBase->Ejecutar("INSERT INTO objetos (nombre, contenido, tipo, articulo_id) VALUES ('adjunto', '$adjunto','image',$ultimo_id)");*/
 				//redireccionar a la pagina de edicion
 				if($volver=="true"){
 					$urlreload=G_SERVER.'/rb-admin/index.php?pag=art';

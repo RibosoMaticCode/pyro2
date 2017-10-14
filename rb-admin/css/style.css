@@ -288,14 +288,18 @@ section.seccion .popup {
     text-decoration: none;
 }
 .help{
-    background-color: #0094DA;
+    background: url('../img/icon_info.png') no-repeat #0094DA;
+		background-position: 102% 110%;
     display: block;
     margin: 5px 5px 20px 5px;
     background-color: #FFFDE9;
     box-shadow: 1px 1px 4px #E4E4E4;
     padding: 22px;
-    font-size: 1.2em;
+    font-size: 1em;
     position:relative;
+}
+.help li{
+	margin-left: 20px;
 }
 .help-close{
 	top:22px;

@@ -1,25 +1,23 @@
 <?php
-//require_once(ABSPATH."rb-script/class/rb-galerias.class.php");
-
 $album_id=$_GET["album_id"];
 $qg = $objDataBase->Ejecutar("SELECT nombre FROM albums WHERE id=$album_id");
 $rg= $qg->fetch_assoc();
-
 ?>
+<h2 class="title"><?= $rg['nombre'] ?></h2>
+<div class="page-bar">Inicio &gt; Medios &gt; Galería</div>
+<?php if (!in_array("imgnew", $array_help_close)): ?>
+<div class="help" data-name="imgnew">
+  <p>Puedes agregar nuevos elementos a tu Galería:</p>
+  <ul>
+    <li>Subir directamente tu imagen</li>
+    <li>Seleccionar imágenes desde las que ya tienes subidas</li>
+          <!--<li>O también agregar un video, presentación, etc. Solo tendrás que copiar el código que te proporciona tu servicio de medios favorito.</li>-->
+  </ul>
+</div>
+<?php endif ?>
 <div id="sidebar-left">
-  <div class="help">
-          <h4>Información</h4>
-          <p>Puedes agregar nuevos elementos a tu Galería:</p>
-          <ul>
-            <li>Subir directamente tu imagen</li>
-            <li>Seleccionar imágenes desde las que ya tienes subidas</li>
-            <!--<li>O también agregar un video, presentación, etc. Solo tendrás que copiar el código que te proporciona tu servicio de medios favorito.</li>-->
-          </ul>
-        </div>
 </div>
 <div class="content">
-  <h2 class="title"><?= $rg['nombre'] ?></h2>
-  <div class="page-bar">Inicio &gt; Medios &gt; Galería</div>
   <!--<div class="wrap-home">-->
     <ul class="buttons-edition">
       <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/index.php?pag=img&album_id=<?= $album_id ?>">Volver</a></li>
@@ -38,7 +36,7 @@ $rg= $qg->fetch_assoc();
       <script type="text/javascript">
       $(document).ready(function(){
         var settings = {
-            url: "upload.php",
+            url: "<?= G_SERVER ?>/rb-admin/uploader.php",
             dragDrop:true,
             fileName: "myfile",
             formData: {"albumid":"<?= $album_id ?>" , "user_id" : "<?= G_USERID ?>"},

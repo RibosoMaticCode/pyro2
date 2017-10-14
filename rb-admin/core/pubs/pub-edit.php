@@ -21,12 +21,19 @@ if(isset($_GET["id"])){
   $row= $cons_art->fetch_assoc();
   $mode = "update";
   $new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=art&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
+  $qattr = $objDataBase->Ejecutar("SELECT * FROM articulos_articulos WHERE articulo_id_padre =". $row['id']);
+  $count_attr = $qattr->num_rows;
 }else{
   $mode = "new";
   $new_button = '';
+  $count_attr = 0;
 }
 include_once("tinymce.module.small.php");
+
+//Obtener cantidad de atributos
 ?>
+<!-- JAVASCRIPT FUNCIONS -->
+<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/core/pubs/atributos.js.php?attrs=<?= $count_attr ?>"></script>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script>
   $.datepicker.regional['es'] = {
@@ -49,6 +56,7 @@ include_once("tinymce.module.small.php");
   $.datepicker.setDefaults($.datepicker.regional['es']);
 
   $(document).ready(function() {
+    //Abre el cuadro de dialogo para mas extras para editar el post
     $( '#edit-config' ).click(function( event ) {
       event.preventDefault();
       $.post( "core/pubs/post.options.php?s=posts" , function( data ) {
@@ -71,6 +79,93 @@ include_once("tinymce.module.small.php");
         return false;
       }
     });
+    //Mostrar/ocultar editar la fecha del post
+    $('#btnshowDateTimeCover').click( function (event){
+      event.preventDefault();
+      $('#coverFechaPublicacion').slideDown();
+    });
+    $('#btnhideDateTimeCover').click( function (event){
+      event.preventDefault();
+      $('#coverFechaPublicacion').slideUp();
+    });
+    //Asociar clase CSS para mostrar el explorador de archivos
+    $(document).ready(function() {
+      $(".explorer-file").filexplorer({
+        inputHideValue : ""
+      });
+    });
+    //Nueva categoria insitu
+    $( ".popup" ).click(function( event ) {
+      event.preventDefault();
+      $( ".categoria_nueva" ).toggle();
+      $( "#categoria_nombre" ).focus();
+    });
+    $( "#formcat" ).submit(function( event ) {
+      event.preventDefault();
+      $.ajax({
+          method: "POST",
+          url: "core/pubs/category.add.post.php",
+          data: $( "#formcat" ).serialize()
+      }).done(function( msg ) {
+          $('#catlist').append( msg );
+          $( ".categoria_nueva" ).toggle();
+          $( "#categoria_nombre" ).val("");
+      });
+    });
+    $( "#cancel" ).click(function( event ) {
+      event.preventDefault();
+      $( ".categoria_nueva" ).toggle();
+      $( "#categoria_nombre" ).val("");
+    });
+    // Agregar galeria y añadir fotos y situ
+    $( ".popup_galeria" ).click(function( event ) {
+      event.preventDefault();
+      $( ".galeria_nueva" ).toggle();
+      $( "#galeria_nombre" ).focus();
+    });
+
+    $( "#formgaleria" ).submit(function( event ) {
+      event.preventDefault();
+      $.ajax({
+        method: "POST",
+        url: "core/pubs/gallery.add.post.php",
+        data: $( "#formgaleria" ).serialize()
+      }).
+      done(function( msg ) {
+        $('#alblist').append( msg );
+        $( ".galeria_nueva" ).toggle();
+        $( "#galeria_nombre" ).val("");
+      });
+    });
+
+    $( "#cancel_galeria" ).click(function( event ) {
+      event.preventDefault();
+      $( ".galeria_nueva" ).toggle();
+      $( "#categoria_nombre" ).val("");
+    });
+    //Datapicker para fecha de actividades
+    $('.fecha_actividad').datepicker();
+    $('.fecha_actividad').datepicker('option', {
+      minDate: 0,
+      dateFormat: 'dd-mm-yy'
+    });
+    <?php
+    if(isset($row) && $row['actividad']=='1'):
+    ?>
+    $('.fecha_actividad').datepicker('setDate', '<?= rb_a_ddmmyyyy($row['fecha_actividad']) ?>');
+    <?php
+    endif;
+    ?>
+    // Mostrar la galeria
+    $( '#alblist' ).on("click", ".galleries", function( event ){
+      event.preventDefault();
+  		var albumId = $(this).attr('data-id');
+  		$.post( "<?= rb_get_values_options('direccion_url') ?>/rb-admin/core/post_gallery/gallery.explorer.php?album_id="+albumId , function( data ) {
+  		 	$('.explorer').html(data);
+  		 	$(".bg-opacity").show();
+  	   		$(".explorer").fadeIn(500);
+  		});
+  	});
   });
 </script>
 <form name="formcat" action="category.minisave.php" method="post" id="formcat"></form>
@@ -91,18 +186,6 @@ include_once("tinymce.module.small.php");
       <div class="seccion-body">
         <input autocomplete="off" placeholder="Escribe el titulo aqui" class="titulo" name="titulo" type="text" id="titulo" value="<?php if(isset($row)) echo $row['titulo'] ?>" required />
         <textarea class=" mceEditor" name="contenido" id="contenido" style="width:100%;"><?php if(isset($row)) echo stripslashes(htmlspecialchars($row['contenido'])); ?></textarea>
-        <script>
-          $(document).ready(function() {
-            $('#btnshowDateTimeCover').click( function (event){
-              event.preventDefault();
-              $('#coverFechaPublicacion').slideDown();
-            });
-            $('#btnhideDateTimeCover').click( function (event){
-              event.preventDefault();
-              $('#coverFechaPublicacion').slideUp();
-            });
-          });
-        </script>
         <a href="#" id="btnshowDateTimeCover">Establecer fecha de publicación</a>
         <div id="coverFechaPublicacion">
           <label title="Editar fecha publicacion">Fecha de Publicacion:
@@ -142,7 +225,8 @@ include_once("tinymce.module.small.php");
                   <option title="<?= $Posts['titulo'] ?>" value="<?= $Posts['id'] ?>" <?php if($Posts['id']==$Atributo['articulo_id_hijo']) echo " selected " ?>><?= $Posts['id'] ?>-<?= $Posts['titulo'] ?></option>
                 <?php
                 endwhile;
-                mysql_data_seek($qAll, 0)
+                $qAll->data_seek(0);
+                //mysql_data_seek($qAll, 0)
                 ?>
                 </select>
               </td>
@@ -172,13 +256,6 @@ include_once("tinymce.module.small.php");
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
       <div class="seccion-body">
-        <script>
-          $(document).ready(function() {
-            $(".explorer-file").filexplorer({
-              inputHideValue : ""
-            });
-          });
-        </script>
         <div id="featured-image">
           <!-- A C T U A L I Z A R -->
           <?php if(isset($row)):?>
@@ -254,32 +331,6 @@ include_once("tinymce.module.small.php");
             <input type="text" name="categoria_nombre" form="formcat" id="categoria_nombre" required value="" />
             <input type="submit" form="formcat" value="Guardar" /> <input type="button" form="formcat" value="Cancelar" id="cancel" />
           </div>
-          <script>
-            $(document).ready(function() {
-              $( ".popup" ).click(function( event ) {
-                event.preventDefault();
-                $( ".categoria_nueva" ).toggle();
-                $( "#categoria_nombre" ).focus();
-              });
-              $( "#formcat" ).submit(function( event ) {
-                event.preventDefault();
-                $.ajax({
-                    method: "POST",
-                    url: "core/pubs/category.add.post.php",
-                    data: $( "#formcat" ).serialize()
-                }).done(function( msg ) {
-                    $('#catlist').append( msg );
-                    $( ".categoria_nueva" ).toggle();
-                    $( "#categoria_nombre" ).val("");
-                });
-              });
-              $( "#cancel" ).click(function( event ) {
-                event.preventDefault();
-                $( ".categoria_nueva" ).toggle();
-                $( "#categoria_nombre" ).val("");
-              });
-            });
-          </script>
           <div id="catlist">
             <?php
               $cons_cat = $objDataBase->Ejecutar("SELECT * FROM categorias ORDER BY nombre ASC");
@@ -412,129 +463,72 @@ include_once("tinymce.module.small.php");
           ?>
           </div>
           <a href="#" class="popup_galeria add" title="Nueva Galería">Nueva Galería</a>
-          <!--<a class="add" href="index.php?pag=gal">Editor Avanzado</a>-->
                       <div class="galeria_nueva" style="display:none">
                         <input type="text" name="galeria_nombre" form="formgaleria" id="galeria_nombre" required value="" />
                         <input type="submit" form="formgaleria" value="Guardar" /> <input type="button" form="formgaleria" value="Cancelar" id="cancel_galeria" />
                       </div>
-                    <script>
-                      $(document).ready(function() {
-                        $( ".popup_galeria" ).click(function( event ) {
-                          event.preventDefault();
-                          $( ".galeria_nueva" ).toggle();
-                          $( "#galeria_nombre" ).focus();
-                        });
-
-                        $( "#formgaleria" ).submit(function( event ) {
-                          event.preventDefault();
-                  $.ajax({
-                    method: "POST",
-                    url: "core/pubs/gallery.add.post.php",
-                    data: $( "#formgaleria" ).serialize()
-                }).done(function( msg ) {
-                    $('#alblist').append( msg );
-                    $( ".galeria_nueva" ).toggle();
-                    $( "#galeria_nombre" ).val("");
-                });
-              });
-
-              $( "#cancel_galeria" ).click(function( event ) {
-                event.preventDefault();
-                $( ".galeria_nueva" ).toggle();
-                $( "#categoria_nombre" ).val("");
-              });
-                      });
-                    </script>
-
-        <!--</div>-->
-
                   </div>
                   <div style="clear: both"></div>
               </section>
 
+    <!-- SECCION VIDEO -->
+    <section id="post-vid" class="seccion" <?php if($array_post_options['vid']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
+      <div class="seccion-header">
+        <h3>Video</h3>
+        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+      </div>
+      <div class="seccion-body">
+        <span class="info">Puedes mostrar videos de Youtube unicamente (aparecerá luego del contenido)</span>
+        <textarea name="video_embed" placeholder="http://www.youtube.com/embed/CODIGO"><?php if(isset($row)) echo $row['video_embed'] ?></textarea>
+      </div>
+    </section>
 
-
-                <!-- SECCION VIDEO -->
-      <section id="post-vid" class="seccion" <?php if($array_post_options['vid']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-        <div class="seccion-header">
-                    <h3>Video</h3>
-                    <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                  </div>
-        <div class="seccion-body">
-          <span class="info">Puedes mostrar videos de Youtube unicamente (aparecerá luego del contenido)</span>
-          <textarea name="video_embed" placeholder="http://www.youtube.com/embed/CODIGO"><?php if(isset($row)) echo $row['video_embed'] ?></textarea>
-        </div>
-      </section>
-
-
-      <!-- SECCION CALENDARIO -->
-      <section id="post-cal" class="seccion" <?php if($array_post_options['cal']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-        <div class="seccion-header">
-          <h3>Calendario</h3>
-          <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-        </div>
-        <div class="seccion-body">
+    <!-- SECCION CALENDARIO -->
+    <section id="post-cal" class="seccion" <?php if($array_post_options['cal']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
+      <div class="seccion-header">
+        <h3>Calendario</h3>
+        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+      </div>
+      <div class="seccion-body">
         <span class="info">Bastará con seleccionar la fecha, y esta publicación aparecera en el calendario de actividades</span>
-          <script>
-          $(document).ready(function() {
-            /* datapicker manager */
-            /* ================== */
-            $('.fecha_actividad').datepicker();
+        <input type="text" name="calendar" class="fecha_actividad" value="<?php if(isset($row) && $row['actividad']=='1') echo rb_a_ddmmyyyy($row['fecha_actividad']) ?>" />
+      </div>
+    </section>
 
-            $('.fecha_actividad').datepicker('option', {
-              minDate: 0,
-              dateFormat: 'dd-mm-yy'
-            });
-
-            <?php
-            if(isset($row) && $row['actividad']=='1'):
-            ?>
-            $('.fecha_actividad').datepicker('setDate', '<?= a_ddmmyyyy($row['fecha_actividad']) ?>');
-            <?php
-            endif;
-            ?>
-          });
-          </script>
-        <input type="text" name="calendar" class="fecha_actividad" value="<?php if(isset($row) && $row['actividad']=='1') echo a_ddmmyyyy($row['fecha_actividad']) ?>" />
-        </div>
-      </section>
-
-
-      <!-- SECCION OTRAS OPCIONES -->
-                <section id="post-otr" class="seccion" <?php if($array_post_options['otr']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-                  <div class="seccion-header">
-          <h3>Otras opciones</h3>
-          <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-        </div>
-        <div class="seccion-body">
-          <span class="info">Estas opciones afectan las publicaciones dependiendo de la plantilla usada.</span>
+    <!-- SECCION OTRAS OPCIONES -->
+    <section id="post-otr" class="seccion" <?php if($array_post_options['otr']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
+      <div class="seccion-header">
+        <h3>Otras opciones</h3>
+        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+      </div>
+      <div class="seccion-body">
+        <span class="info">Estas opciones afectan las publicaciones dependiendo de la plantilla usada.</span>
         <label class="label_checkbox" for="featured">
-                    <?php $chektext = "Destacar <img src='img/star-16.png' alt='starred' />"?>
-                    <?php if(isset($row)):
-                      $check ="";
-                      if($row['portada']==1) $check = " checked=\"checked\" ";
-                    ?>
-                    <input type="checkbox" name="featured" id="featured" value="1" <?php echo $check ?> /> <?=$chektext?>
-                    <?php else: ?>
-                    <input type="checkbox" name="featured" id="featured" value="1" /> <?=$chektext?>
-                    <?php endif; ?>
+          <?php $chektext = "Destacar <img src='img/star-16.png' alt='starred' />"?>
+          <?php if(isset($row)):
+          $check ="";
+          if($row['portada']==1) $check = " checked=\"checked\" ";
+          ?>
+          <input type="checkbox" name="featured" id="featured" value="1" <?php echo $check ?> /> <?=$chektext?>
+          <?php else: ?>
+          <input type="checkbox" name="featured" id="featured" value="1" /> <?=$chektext?>
+          <?php endif; ?>
         </label>
-
-        </div>
-      </section>
+      </div>
+    </section>
 
     <!-- SECCION SUBIR IMAGENES -->
-      <section id="post-sub" class="seccion" <?php if($array_post_options['sub']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-        <div class="seccion-header">
-          <h3>Subir imagenes</h3>
-          <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-        </div>
-        <div class="seccion-body">
-        <?php
-        include_once ABSPATH.'rb-script/modules/rb-uploadimg/mod.uploadimg.php';
-        ?>
-        </div>
-      </section>
+    <section id="post-sub" class="seccion" <?php if($array_post_options['sub']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
+      <div class="seccion-header">
+        <h3>Subir imagenes</h3>
+        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+      </div>
+      <div class="seccion-body">
+      <?php
+      include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
+      ?>
+      </div>
+    </section>
   </div>
 
   <input name="section" value="art" type="hidden" />

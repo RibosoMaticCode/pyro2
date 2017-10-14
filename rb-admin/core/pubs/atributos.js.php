@@ -1,11 +1,16 @@
 <?php
-header('Content-Type: application/javascript');
-define('__ROOT__', dirname(dirname(dirname(__FILE__))));
-require_once(__ROOT__.'/rb-script/class/rb-database.class.php');
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/class/rb-database.class.php';
+require_once ABSPATH.'rb-script/funciones.php';
+
 $qa = $objDataBase->Ejecutar("SELECT id, titulo, titulo_enlace FROM articulos ORDER BY id");
+$count_attr = $qa->num_rows;
 ?>
 $(document).ready(function () {
-	var idAtributo = 0;
+	var idAtributo = 100<?= $_GET['attrs'] ?>;
 
 	$( "#newAtributo" ).click(function(event) {
 		event.preventDefault();

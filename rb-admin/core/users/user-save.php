@@ -117,7 +117,11 @@ if($mode=="new"){
     $objDataBase->EditarPorCampo("usuarios", "youtube", $youtube, $id);
     $objDataBase->EditarPorCampo("usuarios", "grupo_id", $grupo_id, $id);
 
-    $enlace=G_SERVER.'/rb-admin/index.php?pag=usu&opc=edt&id='.$id."&m=ok";
+		if(isset($_POST['profile'])):
+	    $enlace=G_SERVER.'/rb-admin/index.php?pag=usu&opc=edt&id='.$id."&m=ok&profile";
+		else:
+			$enlace=G_SERVER.'/rb-admin/index.php?pag=usu&opc=edt&id='.$id."&m=ok";
+		endif;
     header('Location: '.$enlace);
   }else{
     echo "[!] Problemas a actualizar datos del usuario";

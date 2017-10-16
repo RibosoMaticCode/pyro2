@@ -37,11 +37,24 @@ $(document).ready(function() {
 });
 </script>
 <form id="user-form" name="user-form" method="post" action="core/users/user-save.php">
+  <?php
+  if(isset($_GET['profile'])):
+  ?>
+  <input type="hidden" name="profile" />
+  <?php
+  endif;
+  ?>
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">
         <input class="submit" name="guardar" type="submit" value="Guardar" />
-        <a href="../rb-admin/?pag=usu"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+        <?php
+        if(!isset($_GET['profile'])):
+        ?>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=usu"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+        <?php
+        endif;
+        ?>
       </span>
     </div>
   </div>

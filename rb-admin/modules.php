@@ -1,5 +1,5 @@
 <?php
-require_once '../rb-script/hook.php';
+require_once 'hook.php';
 require_once 'admin.php';
 include 'islogged.php';
 
@@ -39,36 +39,6 @@ $seccion = 'modules-list'; // pintar boton del menu
 				</div>
 				<?php endif ?>
 				<div class="wrap-content-list">
-					<!-- modulos del sistema -->
-					<!--<section class="seccion">
-						<table class="tables">
-							<thead>
-								<tr>
-									<th style="width:30px"><input type="checkbox" value="all" id="select_all" /></th>
-									<th>Módulo del sistema</th>
-									<th>Descripcion</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td></td>
-									<td><strong>Contenidos</strong></td>
-									<td>Permite añadir publicaciones periodicas a modo de blog, agruparlas en categorias y revisar comentarios. Como tambien páginas independientes.</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td><strong>Archivos</strong></td>
-									<td>Ayuda a la gestión de los archivos y creación de albums/galerias solo de imágenes.</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td><strong>Apariencia</strong></td>
-									<td>Permite hacer algunos cambios en el diseño-estructura de la plantilla. Editar la organizacion del menu de la plantilla y editar el codigo de la plantilla. (Se requiere conocimiento de HTML, CSS y algunos casos PHP.)</td>
-								</tr>
-							</tbody>
-						</table>
-					</section>-->
-
 					<section class="seccion">
 						<table class="tables">
 							<thead>

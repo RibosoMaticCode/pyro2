@@ -19,7 +19,7 @@ rb_add_specific_item_menu('users', array(
 if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 	if($userType != "admin"):
 		printf(" No tiene permiso de Administrador ");
-		break;
+		die;
 	endif;
 	// Contenido inicial
 	function group_admin_content(){

@@ -1,5 +1,5 @@
 <?php
-require_once '../rb-script/hook.php';
+require_once 'hook.php';
 require_once 'admin.php';
 include 'islogged.php';
 

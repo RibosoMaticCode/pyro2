@@ -27,7 +27,11 @@ switch($pag){
 		}
 	break;
 	case "usu":
+		if(isset($_GET['profile'])){
+			echo '<h2 class="title">Mi perfil</h2>';
+		}else{
 			echo '<h2 class="title">Usuarios</h2>';
+		}
 			$sec="usu";
 			if(isset($_GET['opc'])){
 				$opc=$_GET['opc'];
@@ -221,10 +225,10 @@ switch($pag){
 		}
 		switch($opc){
 			case "edt":
-				include('edit.php');
+				include('core/comments/comment-edit.php');
 				break;
 			default:
-				include('secciones.php');
+				include('core/comments/comment-init.php');
 		}
 		break;
 	case "cat":
@@ -313,7 +317,7 @@ switch($pag){
 		if( isset( $_GET['term'] ) && $_GET['term']!=" "){
 			include_once 'search.php';
 		}else{
-			include('inicial.php');
+			include('initial.php');
 		}
 }
 ?>

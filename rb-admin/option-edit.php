@@ -270,7 +270,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         </div>
         <!-- redes sociales -->
         <div class="cols-container">
-          <h3 class="subtitle">Panel Administrativo</h3>
+          <h3 class="subtitle">Menu Principal</h3>
           <div class="cols-6-md col-padding">
             <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
             <script>
@@ -282,15 +282,19 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 //http://jsfiddle.net/beyondsanity/HgDZ9/
 
                 $(".btnSaveOrderMenu").click(function(event){
-
                   var optionTexts = [];
                   var i=1;
                   $("#sortable li").each(function() {
                     var key = $(this).attr("data-key");
+                    var show = 1;
+                    if ($('#chk_'+key).is(':checked')) {
+                      var show = 0;
+                    }
                     //var pos = $(this).attr("data-pos");
                     optionTexts.push({
                       name : key,
-                      position : i
+                      position : i,
+                      show: show
                     });
                     i++;
                   });
@@ -310,12 +314,19 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               } );
             </script>
             <div class="cols-container">
-              <div class="cols-6-md">
+              <div>
               <ul id="sortable" class="menu-list-edit">
                 <?php
                 $menu_panel = json_decode(rb_get_values_options('menu_panel'), true);
                 foreach ($menu_panel as $module => $value) {
-                  echo '<li data-key='.$value['key'].' data-pos='.$value['pos'].' class="ui-state-default">'.$value['nombre'].'</li>';
+                  ?>
+                  <li data-key='<?= $value['key'] ?>' data-pos='<?= $value['pos'] ?>' class="ui-state-default">
+                    <?= $value['nombre'] ?>
+                    <label>
+                      <input type="checkbox" value="1" id="chk_<?= $value['key'] ?>" <?php if($value['show']==0) echo " checked "?> /> Ocultar
+                    </label>
+                  </li>
+                  <?php
                 }
                 ?>
               </ul>

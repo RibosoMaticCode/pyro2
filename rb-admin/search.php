@@ -4,32 +4,31 @@ $term = $_GET['term'];
 require_once(ABSPATH."global.php");
 
 // Requerir las clases de las tablas
-require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
+require_once(ABSPATH."rb-script/class/rb-database.class.php");
 
 // Realizar busqueda en todas las tablas
-$objArticulos = new Articulos;
 if(G_USERTYPE == "admin"):
-	$qPosts = $objArticulos->Consultar("SELECT * FROM articulos WHERE titulo LIKE '%$term%' OR contenido LIKE '%$term%' LIMIT 10");
+	$qPosts = $objDataBase->Ejecutar("SELECT * FROM articulos WHERE titulo LIKE '%$term%' OR contenido LIKE '%$term%' LIMIT 10");
 else:
-	$qPosts = $objArticulos->Consultar("SELECT * FROM articulos WHERE autor_id = ".G_USERID."  AND titulo LIKE '%$term%' OR contenido LIKE '%$term%' LIMIT 10");
+	$qPosts = $objDataBase->Ejecutar("SELECT * FROM articulos WHERE autor_id = ".G_USERID."  AND titulo LIKE '%$term%' OR contenido LIKE '%$term%' LIMIT 10");
 endif;
-$numPosts = mysql_num_rows($qPosts);
+$numPosts = $qPosts->num_rows;
 
-$qPages = $objArticulos->Consultar("SELECT * FROM paginas WHERE titulo LIKE '%$term%' OR contenido LIKE '%$term%' LIMIT 10");
-$numPages = mysql_num_rows($qPages);
+$qPages = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE titulo LIKE '%$term%' OR contenido LIKE '%$term%' LIMIT 10");
+$numPages = $qPages->num_rows;
 
 if(G_USERTYPE == "admin"):
-	$qFiles = $objArticulos->Consultar("SELECT * FROM photo WHERE src LIKE '%$term%' OR description LIKE '%$term%' LIMIT 10");
+	$qFiles = $objDataBase->Ejecutar("SELECT * FROM photo WHERE src LIKE '%$term%' OR description LIKE '%$term%' LIMIT 10");
 else:
-	$qFiles = $objArticulos->Consultar("SELECT * FROM photo WHERE usuario_id = ".G_USERID." AND src LIKE '%$term%' OR description LIKE '%$term%' LIMIT 10");
+	$qFiles = $objDataBase->Ejecutar("SELECT * FROM photo WHERE usuario_id = ".G_USERID." AND src LIKE '%$term%' OR description LIKE '%$term%' LIMIT 10");
 endif;
-$numFiles = mysql_num_rows($qFiles);
+$numFiles = $qFiles->num_rows;
 
-$qComments = $objArticulos->Consultar("SELECT * FROM comentarios WHERE nombre LIKE '%$term%' OR contenido LIKE '%$term%' OR mail LIKE '%$term%' LIMIT 10");
-$numComments = mysql_num_rows($qComments);
+$qComments = $objDataBase->Ejecutar("SELECT * FROM comentarios WHERE nombre LIKE '%$term%' OR contenido LIKE '%$term%' OR mail LIKE '%$term%' LIMIT 10");
+$numComments = $qComments->num_rows;
 
-$qUsers = $objArticulos->Consultar("SELECT * FROM usuarios WHERE nickname LIKE '%$term%' OR nombres LIKE '%$term%' OR apellidos LIKE '%$term%' OR correo LIKE '%$term%' LIMIT 10");
-$numUsers = mysql_num_rows($qUsers);
+$qUsers = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE nickname LIKE '%$term%' OR nombres LIKE '%$term%' OR apellidos LIKE '%$term%' OR correo LIKE '%$term%' LIMIT 10");
+$numUsers = $qUsers->num_rows;
 ?>
 <h2 class="title">Resultados para: <?= $term ?></h2>
 <div class="wrap-content-list">
@@ -52,11 +51,11 @@ $numUsers = mysql_num_rows($qUsers);
 					</td>
 				</tr>
 				<?php else:?>
-				<?php while( $post = mysql_fetch_array($qPosts) ): ?>
+				<?php while( $post = $qPosts->fetch_assoc() ): ?>
 				<tr>
 					<td><?= $post['titulo'] ?>
 						<div class="options">
-							<span><a href="../rb-admin/index.php?pag=art&amp;opc=edt&amp;id=<?= $post['id'] ?>">Editar</a></span>
+							<span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=art&amp;opc=edt&amp;id=<?= $post['id'] ?>">Editar</a></span>
 							<span><a href="<?= rb_url_link('art',$post['id']) ?>">Ver</a></span>
 						</div>
 					</td>
@@ -88,11 +87,11 @@ $numUsers = mysql_num_rows($qUsers);
 					</td>
 				</tr>
 				<?php else:?>
-				<?php while( $page = mysql_fetch_array($qPages) ): ?>
+				<?php while( $page = $qPages->fetch_assoc() ): ?>
 				<tr>
 					<td><?= $page['titulo'] ?>
 						<div class="options">
-							<span><a href="../rb-admin/index.php?pag=pages&amp;opc=edt&amp;id=<?= $page['id'] ?>">Editar</a></span>
+							<span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=pages&amp;opc=edt&amp;id=<?= $page['id'] ?>">Editar</a></span>
 							<span><a href="<?= rb_url_link('pag',$page['id']) ?>">Ver</a></span>
 						</div>
 					</td>
@@ -124,12 +123,12 @@ $numUsers = mysql_num_rows($qUsers);
 					</td>
 				</tr>
 				<?php else:?>
-				<?php while( $file = mysql_fetch_array($qFiles) ): ?>
+				<?php while( $file = $qFiles->fetch_assoc() ): ?>
 				<tr>
-					<td><img class="image-table" src="../rb-media/gallery/tn/<?= $file['src'] ?>" alt="previa" /></td>
+					<td><img class="image-table" src="<?= G_SERVER ?>/rb-media/gallery/tn/<?= $file['src'] ?>" alt="previa" /></td>
 					<td><?= $file['src'] ?>
 						<div class="options">
-							<span><a href="../rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $file['id'] ?>">Editar</a></span>
+							<span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $file['id'] ?>">Editar</a></span>
 						</div>
 					</td>
 					<td><?= $file['description'] ?></td>
@@ -159,11 +158,11 @@ $numUsers = mysql_num_rows($qUsers);
 					</td>
 				</tr>
 				<?php else:?>
-				<?php while( $comment = mysql_fetch_array($qComments) ): ?>
+				<?php while( $comment = $qComments->fetch_assoc() ): ?>
 				<tr>
 					<td><?= $comment['nombre'] ?>
 						<div class="options">
-							<span><a href="../rb-admin/index.php?pag=com&amp;opc=edt&amp;id=<?= $comment['id'] ?>">Editar</a></span>
+							<span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=com&amp;opc=edt&amp;id=<?= $comment['id'] ?>">Editar</a></span>
 						</div>
 					</td>
 					<td><?= rb_fragment_text($comment['contenido'], 30) ?></td>
@@ -196,11 +195,11 @@ $numUsers = mysql_num_rows($qUsers);
 					</td>
 				</tr>
 				<?php else:?>
-				<?php while( $user = mysql_fetch_array($qUsers) ): ?>
+				<?php while( $user = $qUsers->fetch_assoc() ): ?>
 				<tr>
 					<td><?= $user['nickname'] ?>
 						<div class="options">
-							<span><a href="../rb-admin/index.php?pag=usu&amp;opc=edt&amp;id=<?= $user['id'] ?>">Editar</a></span>
+							<span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=usu&amp;opc=edt&amp;id=<?= $user['id'] ?>">Editar</a></span>
 						</div>
 					</td>
 					<td><?= $user['nombres']." ".$user['apellidos']  ?></td>

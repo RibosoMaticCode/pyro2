@@ -1,9 +1,8 @@
 <?php
-require_once '../rb-script/hook.php';
+require_once 'hook.php';
 require_once 'admin.php';
 
 // Carga formato js de la base de datos
-global $objOpcion;
 $modules_prev = rb_get_values_options('modules_load');
 
 // Convierte json a array

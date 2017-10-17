@@ -80,7 +80,7 @@ $(document).ready(function() {
 <div id="sidebar-left">
   <ul class="buttons-edition">
     <li><a class="btn-primary show-uploader" href="#"><img src="img/add-white-16.png" alt="Cargar" /> Subir Archivos</a></li>
-    <li><a class="btn-primary" rel="files" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
+    <li><a class="btn-delete" rel="files" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
   </ul>
 </div>
 <!-- plugin uploader -->

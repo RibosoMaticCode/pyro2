@@ -6,7 +6,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">
-        <input class="submit" name="guardar" type="submit" value="Guardar" />
+        <input class="button" name="guardar" type="submit" value="Guardar" />
       </span>
     </div>
   </div>
@@ -321,7 +321,8 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 foreach ($menu_panel as $module => $value) {
                   ?>
                   <li data-key='<?= $value['key'] ?>' data-pos='<?= $value['pos'] ?>' class="ui-state-default">
-                    <?= $value['nombre'] ?>
+                    <img src="<?= G_SERVER ?>/rb-admin/img/drag-icon.png" alt="icon" />
+                    <span><?= $value['nombre'] ?></span>
                     <label>
                       <input type="checkbox" value="1" id="chk_<?= $value['key'] ?>" <?php if($value['show']==0) echo " checked "?> /> Ocultar
                     </label>
@@ -330,7 +331,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 }
                 ?>
               </ul>
-              <button class="btnSaveOrderMenu" type="button">Guardar orden</button>
+              <button class="button btnSaveOrderMenu" type="button">Guardar orden</button>
               </div>
             </div>
           </div>

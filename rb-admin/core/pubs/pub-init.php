@@ -75,7 +75,7 @@ $(document).ready(function() {
 <div id="sidebar-left">
   <ul class="buttons-edition">
     <li><a class="btn-primary" href="../rb-admin/?pag=art&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo" /> Nuevo</a></li>
-    <li><a class="btn-primary" rel="art" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
+    <li><a class="btn-delete" rel="art" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
   </ul>
 </div>
 <div class="wrap-content-list">

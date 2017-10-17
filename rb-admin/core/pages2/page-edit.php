@@ -16,7 +16,7 @@ if(isset($_GET["id"])){
 		<span class="post-submit">
 			<input class="submit" name="guardar" type="submit" value="Guardar" id="btnGuardar" />
 			<!--<input class="submit" name="guardar_volver" type="submit" value="Guardar y volver" id="btnGuardarBack"/>-->
-			<a href="../rb-admin/?pag=pages"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Volver" /></a>
+			<a href="<?= G_SERVER ?>/rb-admin/?pag=pages"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Volver" /></a>
 		</span>
 	</div>
 </div>

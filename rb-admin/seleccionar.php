@@ -64,7 +64,6 @@ switch($pag){
 		endif;
 
 		echo '<h2 class="title">Menús</h2>';
-		echo '<div class="page-bar">Inicio > Apariencia</div>';
 		$sec="menus";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -87,7 +86,6 @@ switch($pag){
 			endif;
 
 			echo '<h2 class="title">Sub Menús</h2>';
-			echo '<div class="page-bar">Inicio > Apariencia > Menú</div>';
 			$sec="menu";
 			if(isset($_GET['opc'])){
 				$opc=$_GET['opc'];
@@ -105,7 +103,6 @@ switch($pag){
 			break;
 		endif;
 		echo '<h2 class="title">Editor Visual de Páginas (v.0.1)</h2>';
-		echo '<div class="page-bar">Inicio > Contenidos</div>';
         $sec="pages";
         if(isset($_GET['opc'])){
             $opc=$_GET['opc'];
@@ -123,7 +120,6 @@ switch($pag){
     break;
 	case "gal":
 		echo '<h2 class="title">Galerías</h2>';
-		echo '<div class="page-bar">Inicio > Medios</div>';
 		$sec="gal";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -142,7 +138,6 @@ switch($pag){
 
 	case "files":
 		echo '<h2 class="title">Archivos</h2>';
-		echo '<div class="page-bar">Inicio > Medios</div>';
 		$sec="files";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -194,7 +189,6 @@ switch($pag){
 	// revisar de aca en adelante
 	case "file_edit":
 		echo '<h2 class="title">Archivos</h2>';
-		echo '<div class="page-bar">Inicio > Medios</div>';
 		$sec="file_edit";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -216,7 +210,6 @@ switch($pag){
 		endif;
 
 		echo '<h2 class="title">Comentarios</h2>';
-		echo '<div class="page-bar">Inicio > Contenidos</div>';
 		$sec="com";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -238,7 +231,6 @@ switch($pag){
 		endif;
 
 		echo '<h2 class="title">Categorias</h2>';
-		echo '<div class="page-bar">Inicio > Contenidos</div>';
 		$sec="cat";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -257,7 +249,6 @@ switch($pag){
 
 	case "men":
 		echo '<h2 class="title">Mensajes</h2>';
-		echo '<div class="page-bar">Inicio > Mensajes</div>';
 		$sec="men";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -289,7 +280,6 @@ switch($pag){
 			break;
 		endif;
 		echo '<h2 class="title">Opciones de Configuración</h2>';
-		echo '<div class="page-bar">Inicio</div>';
 		include('option-edit.php');
 		break;
 	case "modules":

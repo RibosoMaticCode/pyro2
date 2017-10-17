@@ -4,7 +4,6 @@ $qg = $objDataBase->Ejecutar("SELECT nombre FROM albums WHERE id=$album_id");
 $rg= $qg->fetch_assoc();
 ?>
 <h2 class="title"><?= $rg['nombre'] ?></h2>
-<div class="page-bar">Inicio &gt; Medios &gt; Galería</div>
 <?php if (!in_array("imgnew", $array_help_close)): ?>
 <div class="help" data-name="imgnew">
   <p>Puedes agregar nuevos elementos a tu Galería:</p>

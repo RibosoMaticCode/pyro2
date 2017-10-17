@@ -20,4 +20,24 @@ $(document).ready(function() {
     event.preventDefault();
     $(this).closest(".seccion").find(".seccion-body").slideToggle();
   });
+
+  // Activar articulo
+  $(".active").click(function( event ){
+    event.preventDefault();
+    var post_id = $(this).attr('data-postid');
+    var post_state = $(this).attr('data-state');
+    $.ajax({
+        method: "POST",
+        url: "../rb-admin/core/pubs/pub-active.php?activo="+post_state+"&article_id="+post_id,
+    }).done(function( data ) {
+      if(data.estado==0){
+        notify('Publicacion desactivada');
+        console.log(data.estado);
+      }
+      if(data.estado==1){
+        notify('Publicacion desactivada');
+        console.log(data.estado);
+      }
+    });
+  });
 });

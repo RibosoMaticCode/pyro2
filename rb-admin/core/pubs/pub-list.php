@@ -27,9 +27,9 @@ while ($row = $consulta->fetch_assoc()):
       <div class="options">
         <span id="boxart_<?= $row['id'] ?>">
           <?php if($row['activo']=="D"): ?>
-            <a href="#" title="Activar articulo" onclick="activarArticulo(<?= $row['id'] ?>)">Publicar</a> <!-- actualizar funcion js -->
+            <a href="#" data-state="<?= $row['activo'] ?>" data-postid="<?= $row['id'] ?>" class="active" title="Activar articulo">Publicar</a> <!-- actualizar funcion js -->
           <?php else: ?>
-            <a href="#" title="Desactivar articulo" onclick="activarArticulo(<?= $row['id'] ?>)">No publicar</a> <!-- actualizar funcion js -->
+            <a href="#" data-state="<?= $row['activo'] ?>" data-postid="<?= $row['id'] ?>" class="active" title="Desactivar articulo">No publicar</a> <!-- actualizar funcion js -->
           <?php endif ?>
         </span>
         <span>

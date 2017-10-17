@@ -230,8 +230,8 @@ $menu_asincrono = true;
 <?php endif ?>
 <div id="sidebar-left">
 	<ul class="buttons-edition">
-		<li><a class="btn-primary" href="../rb-admin/?pag=menus">Volver a Todos los Menús</a></li>
 		<li><a id="savesubitems" class="btn-primary" href="#">Guardar Menu</a></li>
+		<li><a class="button" href="<?= G_SERVER ?>/rb-admin/?pag=menus">Volver</a></li>
 	</ul>
 </div>
 <div class="content-edit">

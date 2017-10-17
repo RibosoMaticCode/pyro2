@@ -86,10 +86,10 @@ $(document).ready(function() {
 </script>
 <div id="sidebar-left">
   <ul class="buttons-edition">
-    <li><a class="btn-primary" <?= $style_btn_default ?>href="<?= G_SERVER ?>/rb-admin/?pag=men">Recibidos</a></li>
-    <li><a class="btn-primary" <?= $style_btn_1 ?>href="<?= G_SERVER ?>/rb-admin/?pag=men&opc=send">Enviados</a></li>
     <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=men&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo" /> Nuevo</a></li>
-    <li><a class="btn-primary" rel="usu" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
+    <li><a class="button" <?= $style_btn_default ?>href="<?= G_SERVER ?>/rb-admin/?pag=men">Recibidos</a></li>
+    <li><a class="button" <?= $style_btn_1 ?>href="<?= G_SERVER ?>/rb-admin/?pag=men&opc=send">Enviados</a></li>
+    <li><a class="btn-delete" rel="usu" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
   </ul>
 </div>
 <div class="wrap-content-list">

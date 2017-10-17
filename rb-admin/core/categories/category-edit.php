@@ -7,7 +7,7 @@ if(isset($_GET["id"])){
   $row=$cons_art->fetch_assoc();
   $mode = "update";
   $cancel ="Cancelar";
-  $new_button = '<a href="../rb-admin/?pag=cat&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
+  $new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=cat&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
 }else{
   $mode = "new";
   $cancel ="Cancelar";
@@ -26,7 +26,7 @@ if(isset($_GET["id"])){
     <div id="toolbar-buttons">
       <span class="post-submit">
         <input class="submit" name="guardar" type="submit" value="Guardar" />
-        <a href="../rb-admin/?pag=cat"><input title="Volver al listado" class="button" name="cancelar" type="button" value="<?= $cancel ?>" /></a>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=cat"><input title="Volver al listado" class="button" name="cancelar" type="button" value="<?= $cancel ?>" /></a>
         <?= $new_button ?>
       </span>
     </div>

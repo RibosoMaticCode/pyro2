@@ -4,13 +4,12 @@ $result_g = $objDataBase->Ejecutar("SELECT nombre FROM albums WHERE id=".$album_
 $row_g = $result_g->fetch_assoc();
 ?>
 <h2 class="title"><?= $row_g['nombre'] ?></h2>
-<div class="page-bar">Inicio > Medios > Galerías</div>
 <div id="sidebar-left">
   <ul class="buttons-edition">
-    <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=gal">Volver</a></li>
     <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=imgnew&amp;opc=nvo&amp;album_id=<?= $album_id ?>"><img src="img/add-white-16.png" alt="Cargar" /> Agregar nuevo item</a></li>
-    <li><a class="btn-primary" rel="img" data-albumid="<?= $album_id ?>" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
     <li><a class="btn-primary" href="#" id="imgSaveOrder">Guardar orden</a></li>
+    <li><a class="btn-delete" rel="img" data-albumid="<?= $album_id ?>" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
+    <li><a class="button" href="<?= G_SERVER ?>/rb-admin/?pag=gal">Volver</a></li>
   </ul>
 </div>
 <div class="content">

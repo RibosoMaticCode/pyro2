@@ -22,7 +22,7 @@ require_once(ABSPATH."rb-script/class/rb-database.class.php");
     <?php } ?>
 
     <li><a class="btn-primary" rel="com" href="#" id="edit"><img src="img/edit-white-16.png" alt="Editar" /> Editar</a></li>
-    <li><a class="btn-primary" rel="com" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
+    <li><a class="btn-delete" rel="com" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
         </ul>
 </div>
 

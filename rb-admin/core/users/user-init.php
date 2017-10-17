@@ -59,9 +59,9 @@ $(document).ready(function() {
   			success: function(data){
           if(data.result == 1){
             notify('El dato fue eliminado correctamente.');
-            /*setTimeout(function(){
+            setTimeout(function(){
               window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=usu';
-            }, 1000);*/
+            }, 1000);
           }else{
             notify(data.message);
           }
@@ -74,7 +74,7 @@ $(document).ready(function() {
 <div id="sidebar-left">
   <ul class="buttons-edition">
     <li><a class="btn-primary" href="../rb-admin/?pag=usu&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo" /> Nuevo</a></li>
-    <li><a class="btn-primary" rel="usu" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
+    <li><a class="btn-delete" rel="usu" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
   </ul>
 </div>
 <div class="wrap-content-list">

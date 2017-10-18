@@ -1,8 +1,4 @@
 <?php
-require_once('../rb-script/funciones.php');
-require_once('../rb-script/class/rb-opciones.class.php');
-require_once('../rb-script/class/rb-paginas.class.php');
-
 $rm_url = "http://".$_SERVER['SERVER_NAME'];
 ?>
 <!DOCTYPE html>
@@ -58,6 +54,5 @@ $rm_url = "http://".$_SERVER['SERVER_NAME'];
 				<p style="font-size: .8em;margin-top: 20px; text-align: center"><a href="version.txt">Datos sobre la versión</a></p>
 			</div>
 		</div>
-
 	</body>
 </html>

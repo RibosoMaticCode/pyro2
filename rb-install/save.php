@@ -73,7 +73,7 @@ if(isset($_POST)):
 
 	/* USUARIO INICIAL */
 	$response = $objDataBase->Insertar("INSERT INTO usuarios (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
-		VALUES ('admin', md5($usuario_pass), 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");
+		VALUES ('admin', '".md5($usuario_pass)."', 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");
 
 	if($response['result']==true):
 
@@ -85,7 +85,6 @@ if(isset($_POST)):
 
 		// Recorrer array de valores para ingresarlos como valores por defecto
 		foreach($opciones_valores as $option  => $value){
-			//$objOpcion->insert_valor(1, $option, $value);
 			$objDataBase->Ejecutar("INSERT INTO opciones (opcion, valor) VALUES ('$option','$value')");
 		}
 

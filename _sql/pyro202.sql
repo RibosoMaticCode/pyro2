@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-07-2017 a las 16:01:07
+-- Tiempo de generación: 18-10-2017 a las 17:39:52
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `pyro21`
+-- Base de datos: `pyro21_focus`
 --
 
 -- --------------------------------------------------------
@@ -227,7 +227,7 @@ CREATE TABLE `objetos` (
   `contenido` text NOT NULL,
   `tipo` varchar(10) NOT NULL DEFAULT 'imagen',
   `articulo_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
 
@@ -262,7 +262,8 @@ CREATE TABLE `paginas` (
   `popup` tinyint(1) NOT NULL,
   `galeria_id` tinyint(4) NOT NULL,
   `addon` varchar(200) NOT NULL,
-  `bloques` tinyint(1) NOT NULL
+  `bloques` tinyint(1) NOT NULL,
+  `menu_id` mediumint(5) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -368,6 +369,12 @@ ALTER TABLE `articulos`
 ALTER TABLE `articulos` ADD FULLTEXT KEY `titulo` (`titulo`,`contenido`);
 
 --
+-- Indices de la tabla `articulos_articulos`
+--
+ALTER TABLE `articulos_articulos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `categorias`
 --
 ALTER TABLE `categorias`
@@ -455,22 +462,27 @@ ALTER TABLE `usuarios_niveles`
 -- AUTO_INCREMENT de la tabla `albums`
 --
 ALTER TABLE `albums`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `articulos_articulos`
+--
+ALTER TABLE `articulos_articulos`
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `mensajes`
 --
@@ -495,7 +507,7 @@ ALTER TABLE `objetos`
 -- AUTO_INCREMENT de la tabla `opciones`
 --
 ALTER TABLE `opciones`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `paginas`
 --
@@ -505,12 +517,12 @@ ALTER TABLE `paginas`
 -- AUTO_INCREMENT de la tabla `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `usuarios_grupos`
 --
@@ -520,7 +532,7 @@ ALTER TABLE `usuarios_grupos`
 -- AUTO_INCREMENT de la tabla `usuarios_niveles`
 --
 ALTER TABLE `usuarios_niveles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

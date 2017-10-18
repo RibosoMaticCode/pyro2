@@ -9,6 +9,7 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 $mode=$_POST['mode'];
 
 // variables
+$id = $_POST['id'];
 $nom = $_POST['nombre'];
 $des = $_POST['descripcion'];
 $nom_id=$_POST['titulo_enlace'];
@@ -32,7 +33,7 @@ if($mode=="new"){
   header('Location: '.$urlreload);
 }elseif($mode=="update"){
   $id = $_POST['id'];
-  $objDataBase->Ejecutar("UPDATE albums SET nombre='$nom', descripcion='$des', nombre_enlace = '$nom_id', galeria_grupo= '$galeria_grupo', photo_id = $imgfondo_id WHERE id = $user_id");
+  $objDataBase->Ejecutar("UPDATE albums SET nombre='$nom', descripcion='$des', nombre_enlace = '$nom_id', galeria_grupo= '$galeria_grupo', photo_id = $imgfondo_id WHERE id = $id");
   $urlreload=G_SERVER.'/rb-admin/index.php?pag=gal&opc=edt&id='.$id."&m=ok";
   header('Location: '.$urlreload);
 }

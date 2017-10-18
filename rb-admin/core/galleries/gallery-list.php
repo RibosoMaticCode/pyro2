@@ -22,6 +22,7 @@ while ($row = $q->fetch_assoc()):
     <h3><?= $row['nombre']?></h3>
     <div class="options">
       <span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=img&amp;album_id=<?= $row['id']?>">Añadir / Ver fotos</a></span>
+      <span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=gal&amp;opc=edt&id=<?= $row['id']?>">Editar</a></span>
       <span><a href='#' style="color:red" class="del-item" data-id="<?= $row['id']?>">Eliminar</a></span>
     </div>
   </td>

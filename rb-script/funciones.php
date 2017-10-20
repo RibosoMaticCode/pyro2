@@ -1184,9 +1184,9 @@ function rb_menu_panel(){
 						'show' => true,
 						'item' => NULL
 					),
-					'contents' => array(
-						'key' => 'contents',
-						'nombre' => "Contenidos",
+					'blogs' => array(
+						'key' => 'blogs',
+						'nombre' => "Blog",
 						'url' => "#",
 						'url_imagen' => "img/icon_post.png",
 						'pos' => 2,
@@ -1207,17 +1207,17 @@ function rb_menu_panel(){
 								'pos' => 1,
 							),
 							array(
-								'key' => 'pages',
-								'nombre' => "Paginas",
-								'url' => "index.php?pag=pages",
+								'key' => 'com',
+								'nombre' => "Comentarios",
+								'url' => "index.php?pag=com",
 								'url_imagen' => "none",
 								'pos' => 1,
 							)
 						)
 					),
-					'media' => array(
-						'key' => 'media',
-						'nombre' => "Medios",
+					'files' => array(
+						'key' => 'files',
+						'nombre' => "Archivos",
 						'url' => "#",
 						'url_imagen' => "img/icon_media.png",
 						'pos' => 3,
@@ -1225,14 +1225,14 @@ function rb_menu_panel(){
 						'item' => array(
 							'0' => array(
 								'key' => 'files',
-								'nombre' => "Archivos",
+								'nombre' => "Explorar",
 								'url' => "index.php?pag=files",
 								'url_imagen' => "none",
 								'pos' => 1,
 							),
 							'1' => array(
 								'key' => 'gal',
-								'nombre' => "Galería de Medios",
+								'nombre' => "Galeria y/o Album",
 								'url' => "index.php?pag=gal",
 								'url_imagen' => "none",
 								'pos' => 1,
@@ -1254,14 +1254,14 @@ function rb_menu_panel(){
 								'url_imagen' => "none",
 								'pos' => 1,
 							),
-							'1' => array(
+							'2' => array(
 								'key' => 'men',
-								'nombre' => "Mensaje",
+								'nombre' => "Mensajeria",
 								'url' => "index.php?pag=men",
 								'url_imagen' => "none",
 								'pos' => 1,
 							),
-							'2' => array(
+							'3' => array(
 								'key' => 'nivel',
 								'nombre' => "Niveles de acceso",
 								'url' => "index.php?pag=nivel",
@@ -1272,20 +1272,27 @@ function rb_menu_panel(){
 					),
 					'visual' => array(
 						'key' => 'visual',
-						'nombre' => "Apariencia",
+						'nombre' => "Contenidos y Estructuras",
 						'url' => "#",
 						'url_imagen' => "img/icon_design.png",
 						'pos' => 5,
 						'show' => true,
 						'item' => array(
-							'0' => array(
+              '0' => array(
+								'key' => 'pages',
+								'nombre' => "Paginas",
+								'url' => "index.php?pag=pages",
+								'url_imagen' => "none",
+								'pos' => 1,
+							),
+							'1' => array(
 								'key' => 'menus',
 								'nombre' => "Menus",
 								'url' => "index.php?pag=menus",
 								'url_imagen' => "none",
 								'pos' => 1,
 							),
-							'1' => array(
+							'2' => array(
 								'key' => 'editfile',
 								'nombre' => "Plantillas",
 								'url' => "index.php?pag=editfile",
@@ -1297,14 +1304,14 @@ function rb_menu_panel(){
 				);
 
 	// reemplaza el contenido de iten
-	$menu_panel['contents']['item'][3] =  array(
+	/*$menu_panel['contents']['item'][3] =  array(
 			'key' => 'com',
 			'nombre' => "Comentarios",
 			'url' => "index.php?pag=com",
 			'url_imagen' => "none",
 			'pos' => 1,
 
-	);
+	);*/
 	return $menu_panel;
 }
 
@@ -1360,12 +1367,43 @@ function rb_mailer($recipient, $subject, $email_content, $native = true, $email_
 	endif;
 }
 
-/* Envia correo usando la libreria nativa del PHP o externa (en este caso SendGrid)
+/* Informacion de una galeria o album de imagenes */
+
+function rb_get_info_gallery($album_id){
+  global $objDataBase;
+  $rm_url = G_SERVER."/";
+	if($album_id=="") return false;
+	$qg = $objDataBase->Ejecutar("SELECT * FROM albums WHERE nombre_enlace='$album_id'");
+	$num_reg = $qg->num_rows;
+	if($num_reg==0):
+		$qg = $objDataBase->Ejecutar("SELECT * FROM albums WHERE id=$album_id");
+		$num_reg = $qg->num_rows;
+    if($num_reg==0) return false;
+	endif;
+
+  $GaleriasArray = Array();
+	while($Galerias = $qg->fetch_assoc()):
+			$GaleriasArray['id'] = $Galerias['id'];
+			$GaleriasArray['nombre'] = $Galerias['nombre'];
+			$GaleriasArray['nombre_enlace'] = $Galerias['nombre_enlace'];
+			$GaleriasArray['usuario_id'] = $Galerias['usuario_id'];
+			$GaleriasArray['galeria_grupo'] = $Galerias['galeria_grupo'];
+      $photos = rb_get_photo_from_id($Galerias['photo_id']);
+    	if($photos['src']==""):
+    		$GaleriasArray['url_bgimage'] = G_SERVER."/rb-script/images/gallery-default.jpg";
+        $GaleriasArray['url_bgimagetn'] = G_SERVER."/rb-script/images/gallery-default.jpg";
+    	else:
+    		$GaleriasArray['url_bgimage'] = G_SERVER."/rb-media/gallery/".$photos['src'];
+        $GaleriasArray['url_bgimagetn'] = G_SERVER."/rb-media/gallery/tn/".$photos['src'];
+    	endif;
+	endwhile;
+	return $GaleriasArray;
+}
+
+/* Lista las galerias de la base de datos
  * Parametros:
- * 		@$recipient: Correo del destinario
- * 		@$subject: Asunto del correo
- * 		@$email_content: Contenido del correo
- * 		@$native: Por defecto true, si usa libreria estandar del PHP
+ * 		@limitar cantidad a mostrar
+ *    @groupname mostrar un grupo en particular
  * */
 function rb_list_galleries($limit=0, $groupname=""){
 	global $objDataBase;

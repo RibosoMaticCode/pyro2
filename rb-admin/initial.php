@@ -5,4 +5,5 @@
   <p>Esta es la página inicial del gestor de contenidos. Puedes agregar accesos directos a esta seccion.</p>
 </div>
 <?php endif ?>
+
 <?= do_action('panel_home') ?>

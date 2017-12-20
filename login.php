@@ -6,7 +6,6 @@
 require_once("global.php");
 require_once("rb-script/funciones.php");
 require_once("rb-script/class/rb-usuarios.class.php");
-//require("rb-script/class/rb-log.class.php");
 
 $url_panel = rb_get_values_options('direccion_url').'/rb-admin';
 $url_panel_usuario = rb_get_values_options('direccion_url').''; //
@@ -249,13 +248,15 @@ if(isset($_POST['newpass'])){
 	$id = $UsuarioItem['id'];
 
 	// cambiamos el password
-	$objUsuario->EditarPorCampo("password", md5(trim($pwd)),$id);
+	$objDataBase->EditarPorCampo("usuarios","password", md5(trim($pwd)),$id);
 
 	// quitamos recovery mode
 	$objDataBase->Ejecutar("UPDATE usuarios SET recovery=0 WHERE correo = '$mail'");
 
 	$msg="se cambio la contrase&ntilde;a, no se olvide esta vez :-) ";
 	define('G_MESSAGELOGIN', $msg);
+	require ABSPATH.'rb-script/modules/rb-login/login.php';
+	exit();
 }
 
 // 6.- CERRANDO SESION DE USUARIO
@@ -284,7 +285,7 @@ if(isset($_GET['active'])){
 			exit();
 		endif;
 
-		if($objUsuario->EditarPorCampo_Int("activo", 1,$r['id'])):
+		if($objDataBase->EditarPorCampo_Int("usuarios","activo", 1,$r['id'])):
 			header('Location: '.G_SERVER.'/rb-script/message.php?title=Su cuenta ahora esta activa!&desc=Vaya la web e inicie sesión... Sera redireccionado&img=message.good.png');
 			exit();
 		else:

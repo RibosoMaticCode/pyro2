@@ -5,7 +5,6 @@ else:
 	$page_title = "Nueva contraseña";
 	require_once 'login.header.php'
 ?>
-
 		<div class="wrap-content">
 			<div class="content">
 				<?php
@@ -13,7 +12,7 @@ else:
 					echo $msg;
 				}
 				?>
-				<form class="frmlogin" action="login.php" name="login" method="post">
+				<form class="frmlogin frmlogin-abs" action="login.php" name="login" method="post">
 					<div class="cover-imagen-login" style="background:url('<?= rb_photo_login(G_LOGO) ?>') no-repeat center center;background-size:cover;"></div>
 					<h2>Nueva contraseña</h2>
 					<label>

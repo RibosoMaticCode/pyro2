@@ -7,9 +7,10 @@ $opciones_valores = array(
 	"nombresitio" => "Nombre Sitio",
 	"descripcion" => "Descripcion del sitio",
 	"direccion_url" => "http://",
+	"host" => $_SERVER['HTTP_HOST'],
 	"meta_keywords" => "",
 	"meta_description" => "",
-	"tema" => "",
+	"tema" => "default",
 	"enlaceamigable" => "0",
 	"meta_author" => "blackpyro",
 	"show_items" => "25",
@@ -56,7 +57,9 @@ $opciones_valores = array(
 	"directorio_url" => "",
 	"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img\/icon_home.png","pos":1,"show":true,"item":null},"blogs":{"key":"blogs","nombre":"Blog","url":"#","url_imagen":"img\/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1},{"key":"com","nombre":"Comentarios","url":"index.php?pag=com","url_imagen":"none","pos":1}]},"files":{"key":"files","nombre":"Archivos","url":"#","url_imagen":"img\/icon_media.png","pos":3,"show":true,"item":[{"key":"explorer","nombre":"Explorar","url":"index.php?pag=files","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria y\/o Album","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img\/icon_user.png","pos":4,"show":true,"item":{"0":{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},"2":{"key":"men","nombre":"Mensajeria","url":"index.php?pag=men","url_imagen":"none","pos":1},"3":{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}}},"visual":{"key":"visual","nombre":"Contenidos y Estructuras","url":"#","url_imagen":"img\/icon_design.png","pos":5,"show":true,"item":[{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantillas","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',
 	/*"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img/icon_home.png","pos":1,"show":true,"item":null},"contents":{"key":"contents","nombre":"Contenidos","url":"#","url_imagen":"img/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1},{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"com","nombre":"Comentarios","url":"index.php?pag=com","url_imagen":"none","pos":1}]},"media":{"key":"media","nombre":"Medios","url":"#","url_imagen":"img/icon_media.png","pos":3,"show":true,"item":[{"key":"files","nombre":"Archivos","url":"index.php?pag=files","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de Medios","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img/icon_user.png","pos":4,"show":true,"item":[{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},{"key":"men","nombre":"Mensaje","url":"index.php?pag=men","url_imagen":"none","pos":1},{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}]},"visual":{"key":"visual","nombre":"Apariencia","url":"#","url_imagen":"img/icon_design.png","pos":5,"show":true,"item":[{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantillas","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',*/
-	"alcance" => "1"
+	"alcance" => "1",
+	"version" => "2.0.3",
+	"sidebar_pos" => "left"
 );
 
 require_once("../rb-script/funciones.php");

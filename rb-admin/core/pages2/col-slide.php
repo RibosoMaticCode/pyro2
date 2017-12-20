@@ -10,7 +10,10 @@ else $temp_id = $_GET['temp_id'];
 ?>
 <li class="col" data-id="<?= $temp_id ?>" data-type="slide">
 	<span class="col-head">
-		<strong>Slide</strong><a class="close-column" href="#">X</a>
+		<strong>Slide</strong>
+		<a class="close-column" href="#" title="Eliminar">
+			<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+		</a>
 	</span>
 	<div class="col-box-edit">
 		<div class="box-edit">

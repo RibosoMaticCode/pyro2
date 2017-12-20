@@ -48,13 +48,13 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH."rb-script/class/rb-database.class.php";
 $objDataBase = new DataBase;
 
-function rb_header($header_template=""){ // REVISAR
+/*function rb_header($header_template=""){ // REVISAR
   if($header_template==""){
     include_once ABSPATH.'rb-temas/'.G_ESTILO.'/header.php';
   }elseif($header_template!=""){
     include_once ABSPATH.'rb-temas/'.G_ESTILO.'/'.$header_template;
   }
-}
+}*/
 
 /* CAPTURA CONSULTA Y ENVIA UN ARRAY CON DATOS DE LA PUBLICACION - TODA CONSULTA DE LISTADO DE POST DEBE USAR ESTA FUNCION*/
 function rb_return_post_array($qa){
@@ -164,7 +164,7 @@ function rb_photos_from_album_post($Post_id){
 	$album_id = $row['id'];
 	if($album_id==0) return false;
 
-	$qa = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id = ".$album_id);
+	$qa = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id = ".$album_id." ORDER BY orden ASC");
 
 	if($qa->num_rows==0) return false;
 
@@ -725,9 +725,11 @@ function rb_path_menu($menu_id){
 	rb_path_menu($Menu['menu_id']);
 	echo $Menu['nombre']."/";
 }
-function rb_display_menu($mainmenu_id, $parent, $level, $item_selected) { // ANTES display_children
+function rb_display_menu($mainmenu_id, $parent=0, $level=0, $item_selected="") { // ANTES display_children
   global $objDataBase;
-  $result = $objDataBase->Ejecutar("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
+  $result = $objDataBase->Ejecutar("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a
+    LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id
+    WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
   $style_menu = " class='rd-navbar-nav' ";
   $style_parent = "";
 
@@ -737,7 +739,7 @@ function rb_display_menu($mainmenu_id, $parent, $level, $item_selected) { // ANT
     while ($row = $result->fetch_assoc()): //mysql_fetch_assoc($result)
       $tipo = trim($row['tipo']);
       $id = ($row['style']== "" ? $row['id'] : $row['style']);
-      $style_selected = ($item_selected == $row['style'] ? " class=\"selected\"" : "");
+      $style_selected = ($item_selected == isset($row['style']) ? " class=\"selected\"" : "");
 
       if ($row['Count'] > 0) {
         if($level > 1 ) $style_parent = " class=\"parent\"";
@@ -980,8 +982,8 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
 	}
 
    	$bbcode = array(
-      "/\[SERVER_URL]/is",
-      "/\[SERVER_THEME]/is",
+      "/\[RUTA_SITIO]/is",
+      "/\[RUTA_TEMA]/is",
       "/\[YOUTUBE=\"(.*?)\"]/is",
       "/\[GALERIA]/is",
       "/\[FORMULARIO]/is",
@@ -1578,238 +1580,65 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 		}
 	}
 }
-/*
- *
- * FUNCIONES ANTIGUAS, REVISAR SU FUNCIONAMIENTO.
- *
- * */
 
+function rb_show_bar_admin(){
+  require_once( dirname( dirname(__FILE__) ) ."/global.php");
+  if(G_ACCESOUSUARIO==1):
+    echo '<div class="wrap-content wrap-content-bar-admin"><div class="inner-content inner-content-bar-admin">
+      Hola, tienes iniciado el gestor de contenido. <a href="'.G_SERVER.'/rb-admin/">Admistrarlo</a>. <a href="'.G_SERVER.'/login.php?out">Cerrar Session</a>.
+    </div></div>';
+  endif;
+}
 /*
-La funcion valida la url del texto, devuelve falso si esta mal escrito
+* Muestra la cabecera de la plantilla, por defecto el archivo se llama header.php, tambien se puede adicional algunos otros,
+* los cuales se incluyen DESPUES de header.php
 */
-function _validar_url($url){
-	$urlregex = "^(https?|ftp)\:\/\/";
+function rb_header($add_header = array()){
+  global $show_header;
+  if(isset($show_header) && $show_header==0) return false;
 
-	// USER AND PASS (optional)
-	$urlregex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?";
+  if ( !defined('ABSPATH') )
+  	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
 
-	// HOSTNAME OR IP
-	//$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)*"; // http://x = allowed (ex. http://localhost, http://routerlogin)
-	$urlregex .= "[a-z0-9+\$_-]+(\.[a-z0-9+\$_-]+)+"; // http://x.x = minimum
-	//$urlregex .= "([a-z0-9+\$_-]+\.)*[a-z0-9+\$_-]{2,3}"; // http://x.xx(x) = minimum
-	//use only one of the above
-
-	// PORT (optional)
-	$urlregex .= "(\:[0-9]{2,5})?";
-	// PATH (optional)
-	$urlregex .= "(\/([a-z0-9+\$_-]\.?)+)*\/?";
-	// GET Query (optional)
-	$urlregex .= "(\?[a-z+&\$_.-][a-z0-9;:@/&%=+\$_.-]*)?";
-	// ANCHOR (optional)
-	$urlregex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?\$";
-
-	if(eregi($urlregex, $url)) return true;
-	else return false;
+  require_once ABSPATH."global.php";
+  include_once ABSPATH."rb-temas/".G_ESTILO."/header.php";
+  foreach ($add_header as $header) {
+    include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
+  }
 }
-/*
-La funcion valida el mail del texto, devuelve falso si esta mal escrito
-*/
-function _validar_mail($pMail) {
-	if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
-		return true;
-	}else{
-		return false;
-	}
-}
-/*
-La funcion divide direccion url en un array a traves de la barra invertida
-*/
-function _explotar_url(){
-	$navString = $_SERVER['REQUEST_URI']; // Returns "/Mod_rewrite/edit/1/"
-	$parts = explode('/', $navString); // Break into an array
-	return $parts;
-}
-/*
-La funcion devuelve el porcentaje de popularidad de un post, segun su numero de lecturas
-*/
-function _nivel_articulo($hit_articulo){
-	$Articulo=new Articulos;
-	$q = $Articulo->Ejecutar("SELECT AVG( lecturas ) AS promedio FROM articulos");
-	$ArticuloItem = $q->fetch_assoc();
-	$Promedio = $ArticuloItem['promedio'];
-
-	//regla de 3 simple
-	$hitporcent = ($hit_articulo*100)/$Promedio;
-	$hitporcent = round($hitporcent,2);
-	if($hitporcent>100) return '100 %';
-	else return $hitporcent.' %';
-}
-/*
-La funcion devuelve la imagen del avatar segun correo electronico
-*/
-/*function avatar($mail,$estilo,$size=36){
-
-	$G_SERVER= "http://".$_SERVER['SERVER_NAME'];
-	$default =  $G_SERVER."/rb_temas/".$estilo."/css/images/default.png";
-
-	//You can construct your gravatar url with the following php code:
-	$grav_url = "http://www.gravatar.com/avatar.php?gravatar_id=".md5($mail).
-			"&amp;default=".urlencode($default)."&amp;size=".$size;
-
-	return $grav_url;
-}*/
 
 /*
-La funcion limpia la salida de comentarios de etiquetas html no deseadas
+* Muestra el pie de la plantilla, por defecto el archivo se llama footer.php, tambien se puede adicional algunos otros,
+* los cuales se incluyen ANTES de footer.php
 */
-function _htmlclean($input) {
-     $sb_convert = $input;
-     $sb_input = array("<",">","(",")");
-     $sb_output = array("&lt;","&gt;","&#40;","&#41;");
-     $output = str_replace($sb_input, $sb_output, $sb_convert);
-     return $output;
+function rb_footer($add_footer = array()){
+  global $show_footer;
+  if(isset($show_footer) && $show_footer==0) return false;
+
+  if ( !defined('ABSPATH') )
+  	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
+
+  require_once ABSPATH."global.php";
+  foreach ($add_footer as $footer) {
+    include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
+  }
+  include_once ABSPATH."rb-temas/".G_ESTILO."/footer.php";
 }
+
 /*
-las 2 siguientes funciones avanzan o retroceden en la navegacion de posts
+* Muestra la columna lateral de la plantilla, por defecto el archivo se llama sidebar.php
 */
-function _ls_articulo_next($articulo_id){
-	$action=false;
-	$articulo_id++;
-	$Articulo=new Articulos;
-	$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-	$ArticuloItem=$q->fetch_assoc();
+function rb_sidebar($add_sidebar = array()){
+  global $show_sidebar;
+  if(isset($show_sidebar) && $show_sidebar==0) return false;
 
-	if( $ArticuloItem == false ){
-		return false;
-	}
-	while($action==false){
-		if($ArticuloItem['activo']=="D"){
-			$articulo_id++;
-			$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-			$ArticuloItem=$q->fetch_assoc();
-			if( $ArticuloItem == false ){
-				return false;
-			}
-		}else{
-			$action=true;
-		}
-	}
+  if ( !defined('ABSPATH') )
+  	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
 
-	$valor = array();
-	$enlace = G_SERVER."/articulos/".$ArticuloItem['titulo_enlace']."/";
-	$valor['titulo'] = $ArticuloItem['titulo'];
-	$valor['enlace'] = $enlace;
-	return $valor;
-}
-
-function _ls_articulo_prev($articulo_id){
-	$action=false;
-	$articulo_id--;
-	$Articulo=new Articulos;
-	$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-	$ArticuloItem=$q->fetch_assoc();
-
-	if( $ArticuloItem == false ){
-		return false;
-	}
-	while($action==false){
-		if($ArticuloItem['activo']=="D"){
-			$articulo_id--;
-			$q=$Articulo->Ejecutar("select titulo, titulo_enlace, activo from articulos where id=$articulo_id");
-			$ArticuloItem=$q->fetch_assoc();
-			if( $ArticuloItem == false ){
-				return false;
-			}
-		}else{
-			$action=true;
-		}
-	}
-
-	$valor = array();
-	$enlace = G_SERVER."/articulos/".$ArticuloItem['titulo_enlace']."/";
-	$valor['titulo'] = $ArticuloItem['titulo'];
-	$valor['enlace'] = $enlace;
-	return $valor;
-}
-function _NumToLetras($num){
-	switch($num){
-		case 1:
-			return "uno";
-		break;
-		case 2:
-			return "dos";
-		break;
-		case 3:
-			return "tres";
-		break;
-		case 4:
-			return "cuatro";
-		break;
-		case 5:
-			return "cinco";
-		break;
-		case 6:
-			return "seis";
-		break;
-		case 7:
-			return "siete";
-		break;
-		case 8:
-			return "ocho";
-		break;
-		case 9:
-			return "nueve";
-		break;
-		case 10:
-			return "diez";
-		break;
-	}
-}
-
-function _convertirdorhora($hd){
-	$hrdet = "am.";
-	if($hd>12){
-		$hrdet = "pm.";
-	}
-
-	$num = explode(".",$hd);
-	$ent = $num[0];
-
-	if(strlen($ent)==1){
-		$ent = "0".$ent;
-	}
-	if(count($num)>1){
-		return $ent.":30 ".$hrdet;
-	}else{
-		return $ent.":00 ".$hrdet;
-	}
-}
-
-function _dividirnombre($nom){
-	$anom = explode(" ",$nom);
-	return $anom[0];
-}
-
-
-
-function _listar_archivos($dir, $fileselect){
-	// only read images type down espec
-	$directorio = opendir($dir);
-	while ($fileName = readdir($directorio)){
-        $ext = substr($fileName, strrpos($fileName, '.') + 1);
-    	if(in_array($ext, array("jpg","jpeg","png","gif"))){
-        	//echo $fileName;
-        	//if($fileselect=="") $selected = "";
-			if($fileName==$fileselect) $selected="selected=\"selected\"";
-			else $selected="";
- 			echo "<option $selected>$fileName</option>";
-		}
-	}
-}
-function _normalize($str) {
-	$str = preg_replace('/\n(\s*\n)+/', '</p><p>', $str);
-	$str = preg_replace('/\n/', '<br/>', $str);
-	$str = '<p>'.$str.'</p>';
-	return $str;
+  require_once ABSPATH."global.php";
+  /*foreach ($add_sidebar as $block) {
+    include_once ABSPATH."rb-temas/".G_ESTILO."/".$block;
+  }*/
+  include_once ABSPATH."rb-temas/".G_ESTILO."/sidebar.php";
 }
 ?>

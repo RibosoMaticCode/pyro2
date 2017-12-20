@@ -1,18 +1,18 @@
-.form input[type="text"], 
-.form input[type="password"], 
+.form input[type="text"],
+.form input[type="password"],
 .form select,
 .form textarea{
 	font-size:1em;
 	padding:5px;
-    border: 1px solid #CCCCCC;
-    margin:5px 0;
-    width:100%;
-    background-image: linear-gradient(to bottom, #FFF, #FBFBFB);
-    max-width: 100%;
-    font-family:Arial;
+  border: 1px solid #CCCCCC;
+  margin:5px 0;
+  width:100%;
+  background-image: linear-gradient(to bottom, #FFF, #FBFBFB);
+  max-width: 100%;
+  font-family:Arial;
 }
-.form input[type="text"]:focus, 
-.form input[type="password"]:focus, 
+.form input[type="text"]:focus,
+.form input[type="password"]:focus,
 .form select:focus,
 .form textarea:focus{
 	outline:0;
@@ -20,12 +20,12 @@
 }
 .form button{
 	color: #fff;
-    background-color: #4CAF50;
-    padding: 5px 15px;
-    border-radius: 4px;
-    font-size: 1em;
-    margin-right: 5px;
-    display: inline-block;
-    border: 0;
-    font-weight: bold;
+  background-color: #4CAF50;
+  padding: 5px 15px;
+  border-radius: 4px;
+  font-size: 1em;
+  margin-right: 5px;
+  display: inline-block;
+  border: 0;
+  font-weight: bold;
 }

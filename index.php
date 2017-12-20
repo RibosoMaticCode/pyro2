@@ -4,46 +4,48 @@ require_once('rb-script/funciones.php');
 require_once('rb-script/class/rb-database.class.php');
 require_once('rb-script/class/rb-usuarios.class.php');
 
-//$Page=1;
 // VARIABLES CON DATOS DE CABECERA GENERALES
-$rm_titlesite = G_TITULO;
-$rm_title = G_TITULO;
-$rm_subtitle = G_SUBTITULO;
-$rm_longtitle = G_TITULO . ( G_SUBTITULO=="" ? "" :  " - ".G_SUBTITULO );
-$rm_metakeywords = G_METAKEYWORDS;
-$rm_metadescription = G_METADESCRIPTION;
-$rm_metaauthor = G_METAAUTHOR;
-$rm_url = G_SERVER."/";
-$rm_urltheme = G_URLTHEME."/";
-$rm_datetoday = date("Y-m-d");
-$rm_mainmenu = G_MAINMENU;
-$rm_usernick = "";
-$rm_usernames = "";
-$rm_userlastnames = "";
-$rm_userimgid = "";
-$rm_userid = G_USERID;
-$rm_url_page = $rm_url;
-$rm_url_page_img = $rm_url."blackpyro-logo.png";
+define('rm_titlesite', G_TITULO);
+define('rm_subtitle', G_SUBTITULO);
+define('rm_longtitle' , G_TITULO . ( G_SUBTITULO=="" ? "" :  " - ".G_SUBTITULO ));
+define('rm_url', G_SERVER."/" );
+define('rm_urltheme', G_URLTHEME."/");
+define('rm_datetoday', date("Y-m-d"));
+define('rm_mainmenu', G_MAINMENU);
 
+// definiendo clases para el sidebar
+$show_sidebar = rb_get_values_options('sidebar');
+if($show_sidebar==1){
+	$sidebar_align = rb_get_values_options('sidebar_pos');
+	if($sidebar_align == 'right'):
+		define('class_col_1', " block-left-content ");
+		define('class_col_2', " block-right-sidebar ");
+	elseif($sidebar_align == 'left'):
+		define('class_col_1', " block-right-content ");
+		define('class_col_2', " block-left-sidebar ");
+	endif;
+}else{
+	$class_col_1 = " block-full ";
+}
 function message_error($file){
 	header( 'Location: '.G_SERVER.'/login.php');
 }
 // SI NO ACCESÓ
 if(G_ACCESOUSUARIO==0){
-	if(G_ESTILO=="0"){ // Si no hay estilo seleccionado, que se logueo para conseguirlo
+	if(G_ESTILO=="0"){ // Si no hay estilo seleccionado, que se logueo para asignar la plantilla
 		header('Location: '.G_SERVER.'/login.php');
 	}
 }
 // Si sitio inicial es Privado y no se logueo, manda a loguearse
 if(G_ALCANCE==1 && G_ACCESOUSUARIO==0) header('Location: '.G_SERVER.'/login.php');
 
-// VALORES SI INICIA SESION USUARIO
+// VALORES SI INICIA SESION USUARIO - Datos del usuario que inicio sesion
 if(G_ACCESOUSUARIO==1):
-	$user = rb_get_user_info($rm_userid);
-	$rm_usernick = $user['nickname'];
-	$rm_usernames = $user['nombres'];
-	$rm_userlastnames = $user['apellidos'];
-	$rm_userimgid = $user['photo_id'];
+	$user = rb_get_user_info(G_USERID);
+	define('rm_usernick', $user['nickname']);
+	define('rm_usernames', $user['nombres']);
+	define('rm_userlastnames', $user['apellidos']);
+	define('rm_userimgid', $user['photo_id']);
 endif;
 
 // VALIDAMOS SI TRABAJAMOS CON ENLACES AMIGABLES
@@ -70,6 +72,7 @@ if(G_ENL_AMIG):
 		header( 'Location: '.G_SERVER.'/'.G_BASESEAR.'/'.rb_cambiar_nombre(trim($_GET['s'])).'/' );
 		exit();
 	endif;
+
   //$requestURI  = str_replace("/prueba", "", $_SERVER['REQUEST_URI']);
 	$requestURI = str_replace("", "", $_SERVER['REQUEST_URI']);
   $requestURI = explode("/", $requestURI);
@@ -148,9 +151,10 @@ if(isset($_GET['pa'])){
 	if(!$Post) header('Location: '.G_SERVER.'/404.php');
 
 	// VALORES DE CABECERA DEL POST
-	$rm_title = $Post['titulo']." | ".G_TITULO;
-	$rm_metadescription = rb_fragment_text($Post['contenido'],30, false);
-	$rm_metaauthor = $Post['autor_id']; //--> capturar codigo de usuario
+	define('rm_title' , $Post['titulo']." | ".G_TITULO);
+	define('rm_title_page' , $Post['titulo']);
+	define('rm_metadescription' , rb_fragment_text($Post['contenido'],30, false) );
+	define('rm_metaauthor' , $Post['autor_id']); //--> capturar codigo de usuario
 	$rm_url_page = $Post['url'];
 	$rm_menu_name = "";
 	$rm_url_page_img = $Post['url_img_por_max'];
@@ -182,13 +186,14 @@ if(isset($_GET['pa'])){
 			if(file_exists( $file )) require_once( $file );
 		endif;
 	}else{ // Asignando valores a la pagina del sistema
-		//if(!$Page) header('Location: '.G_SERVER.'/404.php');
-	  $rm_title = $Page['titulo']." | ".G_TITULO;
-	  $rm_metakeywords = $Page['tags'];
-	  $rm_metadescription = rb_fragment_text($Page['contenido'],30, false);
-	  $rm_metaauthor = $Page['autor_id']; //--> capturar codigo de usuario
+	  define('rm_title', $Page['titulo']." | ".G_TITULO);
+		define('rm_title_page', $Page['titulo']);
+	  define('rm_metakeywords', $Page['tags']);
+	  define('rm_metadescription', rb_fragment_text($Page['description'],30, false));
+	  define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 
-	  $allow_sidebar = $Page['sidebar'];
+		$show_header = $Page['show_header'];
+		$show_footer = $Page['show_footer'];
 		$rm_menu_name = $Page['addon'];
 		$rm_url_page = rb_url_link('pag', $Page['id']);
 
@@ -228,6 +233,7 @@ if(isset($_GET['pa'])){
 	if($CurrentPage == $TotalPage) $LastPage = 0;
 
 	$rm_title = $Categoria['nombre']." | ".G_TITULO;
+	$rm_title_page = $Categoria['nombre'];
 	$rm_metakeywords =  $Categoria['nombre'];
 	$rm_metadescription =  $Categoria['descripcion'];
 	$rm_metaauthor = G_METAAUTHOR;
@@ -256,6 +262,7 @@ if(isset($_GET['pa'])){
 	$CountTotal = $CountPosts + $CountPages;
 
 	$rm_title = "Buscando ".$data_to_search." | ".G_TITULO;
+	$rm_title_page = "Buscando ".$data_to_search;
 	$rm_metakeywords =  "";
 	$rm_metadescription =  "Resultados de busqueda";
 	$rm_metaauthor = G_METAAUTHOR;
@@ -269,10 +276,10 @@ if(isset($_GET['pa'])){
 	if(G_ACCESOUSUARIO==1){
 		require ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
 	}else{
-		header('Location: '.$objOpcion->obtener_valor(1,'direccion_url').'/login.php');
+		header('Location: '.rb_get_values_options('direccion_url').'/login.php');
 	}
 }else{
-	// ** PAGINA INDEX **
+	// ** PAGINA INDEX DEL TEMA- PLANTILLA **
 	if(G_INITIAL==0){
 		// todas las publicaciones
 		$qAll = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' ORDER BY fecha_creacion DESC LIMIT 12");
@@ -280,7 +287,8 @@ if(isset($_GET['pa'])){
 		// post destacados
 		$qStarred = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' and portada=1 ORDER BY fecha_creacion DESC LIMIT 3");
 
-		$rm_title = $rm_longtitle;
+		define('rm_title', rm_longtitle);
+		define('rm_metadescription', G_METADESCRIPTION);
 		$rm_menu_name = "m-inicio";
 
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/index.php';
@@ -288,10 +296,11 @@ if(isset($_GET['pa'])){
 		else die( message_error($file));
 	}else{
 	  $Page = rb_show_specific_page(G_INITIAL);
-	  $rm_metakeywords = $Page['tags'];
-	  $rm_metadescription = rb_fragment_text($Page['contenido'],30, false);
-	  $rm_metaauthor = $Page['autor_id']; //--> capturar codigo de usuario
-	  $rm_menu_name = $Page['addon'];
+		define('rm_title', rm_longtitle);
+		define('rm_title_page', $Page['titulo']);
+		define('rm_metadescription', ''); //rb_fragment_text($Page['contenido'],30, false)
+		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
+	  define('rm_metakeywords', $Page['tags']);
 
 	  $file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
 		if(file_exists( $file )) require_once( $file );

@@ -35,8 +35,7 @@ else:
 				<?php endif ?>-->
 			</div>
 		</div>
-	</body>
-	</html>
+	<?php require_once 'login.footer.php' ?>
 <?php
 endif;
 ?>

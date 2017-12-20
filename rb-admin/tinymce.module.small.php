@@ -2,7 +2,7 @@
 include 'islogged.php';
 ?>
 <!-- Add tiny_mce -->
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.1/tinymce.min.js"></script>
 <!--<script>tinymce.init({ selector:'textarea' });</script>-->
 <script type="text/javascript">
 	tinymce.init({
@@ -15,10 +15,10 @@ include 'islogged.php';
 	  	plugins: [
 	    	'advlist autolink lists link image charmap print preview anchor',
 	    	'searchreplace visualblocks code fullscreen',
-	    	'insertdatetime media table contextmenu paste code'
+	    	'insertdatetime media table contextmenu paste code textcolor'
 	  	],
-	  	toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-	  	content_css: '//www.tinymce.com/css/codepen.min.css',
+	  	toolbar: 'forecolor sizeselect | bold italic | fontselect |  fontsizeselect insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+	  	//content_css: '//www.tinymce.com/css/codepen.min.css',
 	  	file_browser_callback   : function(field_name, url, type, win) {
 	  		if (type == 'file') {
 				var cmsURL       = 'gallery.explorer.tinymce.php?type=file';

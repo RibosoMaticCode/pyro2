@@ -88,6 +88,7 @@ $(document).ready(function() {
             <tr>
               <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
               <th><h3>Nombre</h3></th>
+              <th><h3>Como usarlo</h3></th>
             </tr>
           </thead>
           <tbody id="itemstable">

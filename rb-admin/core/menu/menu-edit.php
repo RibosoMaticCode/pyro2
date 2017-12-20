@@ -29,6 +29,15 @@ if(isset($_GET["id"])){
       </div>
     </section>
   </div>
+  <div id="sidebar">
+    <?php if(isset($row)): ?>
+      <section class="seccion">
+        <div class="seccion-body">
+          <a class="btn-primary" href="index.php?pag=menu&id=<?= $row['id'] ?>">Añadir items</a>
+        </div>
+      </section>
+    <?php endif ?>
+  </div>
   <input name="mode" value="<?php echo $mode; ?>" type="hidden" />
   <input name="section" value="menus" type="hidden" />
   <input name="id" value="<?php if(isset($row)) echo $row['id']; ?>" type="hidden" />

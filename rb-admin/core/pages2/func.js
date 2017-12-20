@@ -1,17 +1,27 @@
 $(document).ready(function() {
+  /**
+   * Creates a string that can be used for dynamic id attributes
+   * http://www.frontcoded.com/javascript-create-unique-ids.html
+   * Example: "id-so7567s1pcpojemi"
+   * @returns {string}
+  */
+
+  var uniqueId = function() {
+    return Math.random().toString(36).substr(2, 16);
+  };
   // jquery ui elementos que se pueden arrastrar y soltar
   $( "#boxes" ).sortable({
     placeholder: "placeholder",
     handle: ".box-header"
   });
-  var i=1;
 
   // Nuevo bloque, caja - box
+  //var i=1;
   $('#boxNew').click( function( event ){
     event.preventDefault();
-    i++;
+    //i++;
     $.ajax({
-        url: "core/pages2/page-box-new.php?temp_id="+i
+        url: "core/pages2/page-box-new.php?temp_id="+uniqueId()
     })
     .done(function( data ) {
        $('#boxes').append( data );
@@ -28,14 +38,14 @@ $(document).ready(function() {
   });
 
   // Añadir Columna para Slide
-  var j = 0;
+  //var j = 0;
   $("#boxes").on("click", ".addSlide", function (event) {
     event.preventDefault();
     var box_edit = $(this).closest(".item").find(".cols-html");
     var box_id = $(this).closest(".item").attr('data-id');
-    j++;
+    //j++;
     $.ajax({
-        url: "core/pages2/col-slide.php?temp_id="+box_id+"slide"+j
+        url: "core/pages2/col-slide.php?temp_id="+box_id+"slide"+uniqueId()
     })
     .done(function( data ) {
       box_edit.append(data);
@@ -43,14 +53,14 @@ $(document).ready(function() {
   });
 
   // Añadir Columan para HTML
-  var k = 0;
+  //var k = 0
   $("#boxes").on("click", ".addHtml", function (event) {
     event.preventDefault();
     var box_edit = $(this).closest(".item").find(".cols-html");
     var box_id = $(this).closest(".item").attr('data-id');
-    k++;
+    //k++;
     $.ajax({
-        url: "core/pages2/col-html.php?temp_id="+box_id+"html"+k
+        url: "core/pages2/col-html.php?temp_id="+box_id+"html"+uniqueId()
     })
     .done(function( data ) {
       box_edit.append(data);
@@ -60,13 +70,78 @@ $(document).ready(function() {
   // Mostrar Editor HTML
   $("#boxes").on("click", ".showEditHtml", function (event) {
     $(".bg-opacity").show();
-    $(".editor-html").show();
+    $("#editor-html").show();
     event.preventDefault();
+    //Captura contenido
     var box_edit_html = $(this).closest(".col-box-edit").find(".box-edit-html");
     var content_to_edit = box_edit_html.html();
     var content_to_edit_id = box_edit_html.attr('id');
+    //capturar nombre de clase
+    var css_class = $(this).closest(".col-box-edit").find(".css_class");
+    var css_class_val = css_class.val();
+    var css_class_id = css_class.attr('id');
+    // Asignando valores
     tinymce.activeEditor.setContent(content_to_edit);
+    $('#class_css').val(css_class_val);
+    //Asignando id de los campos
     $('#control_id').val(content_to_edit_id);
+    $('#css_box_id').val(css_class_id);
+  });
+
+  // Mostrar Editor de Bloque
+  $("#boxes").on("click", ".showEditBox", function (event) {
+    var box_id = $(this).closest(".item").attr('data-id');
+    //Bloque interno valores
+    var boxin_height = $(this).closest(".item").attr('data-inheight');
+    var boxin_width = $(this).closest(".item").attr('data-inwidth');
+    var boxin_bgimage = $(this).closest(".item").attr('data-inbgimage');
+    var boxin_bgcolor = $(this).closest(".item").attr('data-inbgcolor');
+    var boxin_paddingtop = $(this).closest(".item").attr('data-inpaddingtop');
+    var boxin_paddingright = $(this).closest(".item").attr('data-inpaddingright');
+    var boxin_paddingbottom = $(this).closest(".item").attr('data-inpaddingbottom');
+    var boxin_paddingleft = $(this).closest(".item").attr('data-inpaddingleft');
+    var boxin_class = $(this).closest(".item").attr('data-inclass');
+    //Bloque externos interno
+    //var boxext_height = $(this).closest(".item").attr('data-extheight');
+    //var boxext_width = $(this).closest(".item").attr('data-extwidth');
+    var boxext_parallax = $(this).closest(".item").attr('data-extparallax');
+    var boxext_bgimage = $(this).closest(".item").attr('data-extbgimage');
+    var boxext_bgcolor = $(this).closest(".item").attr('data-extbgcolor');
+    var boxext_paddingtop = $(this).closest(".item").attr('data-extpaddingtop');
+    var boxext_paddingright = $(this).closest(".item").attr('data-extpaddingright');
+    var boxext_paddingbottom = $(this).closest(".item").attr('data-extpaddingbottom');
+    var boxext_paddingleft = $(this).closest(".item").attr('data-extpaddingleft');
+    var boxext_class = $(this).closest(".item").attr('data-extclass');
+
+    $('#eb_id').val(box_id);
+    $('#boxin_height').val(boxin_height);
+    $('#boxin_width').val(boxin_width);
+    $('#boxin_bgimage').val(boxin_bgimage);
+    $('#boxin_bgcolor').val(boxin_bgcolor);
+    $('#boxin_paddingtop').val(boxin_paddingtop);
+    $('#boxin_paddingright').val(boxin_paddingright);
+    $('#boxin_paddingbottom').val(boxin_paddingbottom);
+    $('#boxin_paddingleft').val(boxin_paddingleft);
+    $('#boxin_class').val(boxin_class);
+
+    //$('#boxext_height').val(boxext_height);
+    //$('#boxext_width').val(boxext_width);
+    $('#boxext_bgimage').val(boxext_bgimage);
+    $('#boxext_bgcolor').val(boxext_bgcolor);
+    $('#boxext_paddingtop').val(boxext_paddingtop);
+    $('#boxext_paddingright').val(boxext_paddingright);
+    $('#boxext_paddingbottom').val(boxext_paddingbottom);
+    $('#boxext_paddingleft').val(boxext_paddingleft);
+    $('#boxext_class').val(boxext_class);
+    if(boxext_parallax==1){
+      $('#boxext_parallax').prop('checked', true);
+    }else{
+      $('#boxext_parallax').prop('checked', false);
+    }
+
+    $(".bg-opacity").show();
+    $("#editor-box").show();
+    event.preventDefault();
   });
 
   // Remover columnas
@@ -114,6 +189,8 @@ $(document).ready(function() {
     // Revisando cada box - caja
     $('#boxes .item').each(function(indice, elemento) {
       var box_string_init = '{"box_id" : "'+$(elemento).attr('data-id')+'"';
+      var box_string_values_ext = ',"boxext_bgimage" : "'+$(elemento).attr('data-extbgimage')+'","boxext_bgcolor" : "'+$(elemento).attr('data-extbgcolor')+'","boxext_paddingtop" : "'+$(elemento).attr('data-extpaddingtop')+'","boxext_paddingright" : "'+$(elemento).attr('data-extpaddingright')+'","boxext_paddingbottom" : "'+$(elemento).attr('data-extpaddingbottom')+'","boxext_paddingleft" : "'+$(elemento).attr('data-extpaddingleft')+'","boxext_class" : "'+$(elemento).attr('data-extclass')+'","boxext_parallax" : "'+$(elemento).attr('data-extparallax')+'"';
+      var box_string_values_in = ',"boxin_height" : "'+$(elemento).attr('data-inheight')+'","boxin_width" : "'+$(elemento).attr('data-inwidth')+'","boxin_bgimage" : "'+$(elemento).attr('data-inbgimage')+'","boxin_bgcolor" : "'+$(elemento).attr('data-inbgcolor')+'","boxin_paddingtop" : "'+$(elemento).attr('data-inpaddingtop')+'","boxin_paddingright" : "'+$(elemento).attr('data-inpaddingright')+'","boxin_paddingbottom" : "'+$(elemento).attr('data-inpaddingbottom')+'","boxin_paddingleft" : "'+$(elemento).attr('data-inpaddingleft')+'","boxin_class" : "'+$(elemento).attr('data-inclass')+'"';
       var cols_string_start = ',"columns":[';
       var cols_string_end = ']';
       var cols_string_content = '';
@@ -140,7 +217,7 @@ $(document).ready(function() {
         j++;
       });
       cols_nums = ',"num_cols":"'+ j +'"}';
-      all_columns_string += boxes_coma + box_string_init + cols_string_start + cols_string_content + cols_string_end + cols_nums;
+      all_columns_string += boxes_coma + box_string_init + box_string_values_ext + box_string_values_in + cols_string_start + cols_string_content + cols_string_end + cols_nums;
       //console.log(string_data);
       boxes_coma = ",";
     });

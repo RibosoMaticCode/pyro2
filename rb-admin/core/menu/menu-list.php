@@ -20,6 +20,9 @@ while ($row = $result->fetch_assoc()):
       </span>
     </div>
   </td>
+  <td>
+    <p class="info">Aplicarlo en el codigo: <br /><code>&lt;?php rb_display_menu(<?= $row['id']?>) ?&gt;</code></p>
+  </td>
 </tr>
 <?php
 endwhile;

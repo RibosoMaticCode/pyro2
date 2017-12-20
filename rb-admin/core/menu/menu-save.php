@@ -18,7 +18,7 @@ if($mode=="new"){
   header('Location: '.$enlace);
 }elseif($mode=="update"){
   $id=$_POST['id'];
-  $objMenu->Consultar("UPDATE menus SET nombre = '$nom' WHERE id = $id");
+  $objDataBase->Ejecutar("UPDATE menus SET nombre = '$nom' WHERE id = $id");
   $enlace=G_SERVER.'/rb-admin/index.php?pag=menus&opc=edt&id='.$id;
   header('Location: '.$enlace);
 }

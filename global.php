@@ -18,6 +18,9 @@ if($q->num_rows==0){
 //enlaces amigables
 define('G_ENL_AMIG', rb_get_values_options('enlaceamigable'));
 
+// version del gestor
+define('G_VERSION', rb_get_values_options('version'));
+
 //nombre del servidor http
 define('G_SERVER', rb_get_values_options('direccion_url'));
 

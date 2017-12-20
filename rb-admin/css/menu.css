@@ -14,7 +14,6 @@
 }
 
 /* SIDEBAR MENU */
-
 .selected-parent{
 	background-color:#2d323c;
 }
@@ -28,6 +27,7 @@
 	max-width:24px;
 	max-height:24px;
 	width:100%;
+	float:left;
 }
 /* LISTA UL DENTRO LI OCULTA */
 .items li ul {

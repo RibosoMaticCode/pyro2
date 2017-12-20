@@ -68,8 +68,7 @@ else:
 				<?php endif ?>-->
 			</div>
 		</div>
-	</body>
-	</html>
+	<?php require_once 'login.footer.php' ?>
 <?php
 	else:
 		header('Location: '.$rm_url.'login.php');

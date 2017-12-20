@@ -78,6 +78,8 @@ rb_set_values_options('base_page', $_POST['base_pag']);
 rb_set_values_options('user_active_admin', $_POST['user_active_admin']);
 rb_set_values_options('nivel_user_register', $_POST['nivel_user_register']);
 rb_set_values_options('alcance', $_POST['alcance']);
+rb_set_values_options('sidebar', $_POST['sidebar']);
+rb_set_values_options('sidebar_pos', $_POST['sidebar_pos']);
 $urlreload=G_SERVER."/rb-admin/index.php?pag=opc&m=ok";
 header('Location: '.$urlreload);
 ?>

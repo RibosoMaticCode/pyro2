@@ -1,14 +1,23 @@
 Blackpyro CMS - Gestor Basico de Contenidos
 ===========================================
 Desarrollo: Jesus Liñan < jesusvld@gmail.com >
-Respaldo: Branding Emoción EIRL - Pedro Solar < psolar@emocion.pe >
 
 PHP, MySQL, JavaScript (jquery), HTML 5, CSS3
 
 Web: ribosomatic.com
-Web: emocion.pe
 
 Licencia: ../rb-admin/licencia.txt
+
+version 2.0.3 pyro2 (dic 17)
+-------------------
+- Plantilla default para un proyecto Basico
+- Barra de acceso rapido en el frontend
+- Sidebar acepta widgets
+- Mejoras en funcion rb_header, rb_footer, rb_sidebar
+- Mejoras en el Editor de paginas
+- Buscador funcional
+- Elimina campo: blog_id de opciones
+- Campos añadidos a paginas: show_header, show_footer, description
 
 version 2.0.2 pyro2 (sep 17)
 -------------------

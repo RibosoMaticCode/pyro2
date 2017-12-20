@@ -1,0 +1,14 @@
+@media screen and (max-width: 425px) {
+  .cols > div{
+    width: 100%!important;
+    float: none!important;
+  }
+  .cols{
+    display: block!important;
+  }
+  .block-left,
+  .block-right{
+    float: none;
+    width: 100%;
+  }
+}

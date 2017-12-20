@@ -1,17 +1,41 @@
 /* ESTRUCTURAS PRINCIPALES */
+/* FONTS AWESOME */
+.fa {
+  display: inline-block;
+  font-family: Awesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+	color: #909090;
+}
 /* CABECERAS */
 #wrap-menu{
 	height:52px;
 	background-color:#fff;
 	position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 .logo{
 	background-color:#3A404B;
 	width:160px;
 	float:left;
 	height:52px;
+	position: relative;
+}
+.logo h1{
+	font-size:1em;
+	text-align:center;
+	padding:5px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.logo h1 a{
+	color:#fff;
 }
 .bar{
 	width:calc(100% - 160px);
@@ -59,10 +83,11 @@
 	padding:10px 5px;
 	font-size:.9em;
 	margin-top:52px;
-	margin-bottom: 10px;
+	margin-bottom: 60px;
 }
 /* PIE DE PAGINA */
 #footer {
+	z-index: 1;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -247,23 +272,68 @@
 }
 
 /* EDITOR VISUAL DE PAGINAS */
+.editor-main-title{
+  margin: 20px 0 0!important;
+  background-color: #03A9F4;
+  padding: 5px 0;
+  text-align: center;
+  color:#fff!important;
+}
+.editor-main-title i{
+  color:#fff;
+}
+#editor-box,
+#editor-html{
+	display: none;
+}
 .container-page-edit{
 	margin: 0 auto;
 	max-width: 1100px;
 	width: 100%
 }
-.editor-html{
+.editor-window{
 	position: fixed;
 	width: 100%;
-	max-width: 700px;
+	max-width: 720px;
 	top:50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	display: none;
+	/*display: none;*/
 	z-index: 9998;
-	padding: 10px;
-	box-shadow: 1px 1px 5px gray;
 	background-color: #fff;
+}
+.editor-header{
+	background-color: #03A9F4;
+	padding: 10px;
+}
+.editor-header strong{
+	color: #fff;
+}
+.editor-body{
+	padding: 10px;
+  background-color: #fbfbfb;
+}
+.editor-body input[type="text"]{
+	width: 100%;
+	padding: 4px 6px;
+	margin: 6px 0;
+  border: 1px solid #9E9E9E;
+}
+.editor-body label{
+	display: block;
+	padding: 4px 0;
+	font-weight: bold;
+  font-size: .9em;
+}
+.editor-body label span{
+  display: block;
+  margin-bottom: 5px;
+}
+.spacing-right{
+	padding-right: 5px;
+}
+.spacing-left{
+	padding-left: 5px;
 }
 .boxes-options li a{
 	padding: 5px 10px;
@@ -272,12 +342,22 @@
 }
 #boxes > li{
 	list-style-type:none;
-	border:1px solid #EFEFEF;
+	border:4px solid #EFEFEF;
 	background-color:#f9f9f9;
 	margin: 15px 0;
 	width: 100%;
 }
-
+.wrap-boton-new-block{
+	padding: 15px 10px;
+	width: 100%;
+	display: block;
+	background-color: #efefef;
+}
+.wrap-boton-new-block #boxNew{
+	margin: 0 auto;
+  display: block;
+  width: 24px;
+}
 .box-header{
 	padding:8px 10px;
 	background-color:#EFEFEF;
@@ -313,13 +393,13 @@
 }
 .box-header .boxdelete{
 	position:absolute;
-	top:10px;
-	right:10px;
+  top: 6px;
+  right: 12px;
 	font-size:0.9em;
 	text-decoration: none;
 }
 .box-body{
-	padding:5px;
+	padding:6px 3px;
 }
 
 .box-body label{
@@ -330,7 +410,8 @@
 	position:relative;
 	display:block;
 	height:20px;
-	background-color:#E6E7E8;
+	padding: 0 10px;
+	background-color:#e4e4e4;
 }
 .box-body .col .close-column{
 	position:absolute;
@@ -340,11 +421,11 @@
 	display: flex;
 }
 .cols-html > li {
-    list-style-type: none;
-    border: 1px solid #EFEFEF;
-    background-color: #f9f9f9;
-    margin: 5px 0;
-    width: 100%;
+  list-style-type: none;
+  border: 5px solid #e4e4e4;
+  background-color: #f9f9f9;
+  margin: 5px 2px!important;
+  width: 100%;
 }
 .box-body .box-edit-options{
 	padding: 50px 60px;
@@ -360,6 +441,36 @@
 }
 .box-body .box-edit{
 	padding: 10px;
+	position: relative;
+  min-height: 80px;
+  overflow: hidden;
+}
+/* OPCIONES DE EDICION DE CADA CAJITA HTML */
+.box-edit-html{
+	position: relative;
+	z-index: 1;
+}
+.box-edit-html:hover + .box-edit-tool,
+.box-edit-tool:hover{
+	display: block;
+}
+.box-edit-tool{
+	position: absolute;
+	left: 50%;
+	top:50%;
+	transform:translate(-50%, -50%);
+	box-shadow: 2px 2px 5px gray;
+	background-color: #fff;
+	padding: 6px 40px;
+	display: none;
+	z-index: 2;
+}
+.col-box-edit{
+	position: relative;
+}
+.col-box-edit img{
+  max-width: 100%;
+  height: auto;
 }
 /* MENU DE CADA BOX */
 ul.box-options{
@@ -384,6 +495,7 @@ ul.box-options-list{
 	position: absolute;
 	display: none;
 	z-index: 1;
+	background-color: #fff
 }
 .box-options-list li{
 	padding: 3px 15px;
@@ -419,3 +531,6 @@ ul.box-options-list{
     margin: 0 1em 1em 0;
     height: 50px;
   }
+.widgets{
+	padding: 0 10px;
+}

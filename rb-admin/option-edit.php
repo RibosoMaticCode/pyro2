@@ -189,6 +189,26 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="alcance" type="radio" value="1" <?php if(rb_get_values_options('alcance')=='1') echo "checked=\"checked\""?> />
               Privado - para acceder al index tendra que loguearse previamente
             </label>
+            <label>Barra lateral de blog</label>
+            <span class="info">Configuracion de visualizacion de la barra lateral.</span>
+            <label class="lbl-listoptions">
+              <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
+              Ocultar
+            </label>
+            <label class="lbl-listoptions">
+              <input name="sidebar" type="radio" value="1" <?php if(rb_get_values_options('sidebar')=='1') echo "checked=\"checked\""?> />
+              Mostrar
+            </label>
+            <div style="padding-left:15px">
+              <label class="lbl-listoptions">
+                <input name="sidebar_pos" type="radio" value="right" <?php if(rb_get_values_options('sidebar_pos')=='right') echo "checked=\"checked\""?> />
+                A la derecha
+              </label>
+              <label class="lbl-listoptions">
+                <input name="sidebar_pos" type="radio" value="left" <?php if(rb_get_values_options('sidebar_pos')=='left') echo "checked=\"checked\""?> />
+                A la izquierda
+              </label>
+            </div>
           </div>
         </div>
         <!-- gestion de usuarios -->

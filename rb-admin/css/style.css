@@ -7,7 +7,11 @@
 	color:#565656;
 }
 code{
-	color:#FF5722;
+	color: #FF5722;
+	background-color: #fffde9;
+  padding: 5px;
+  display: inline-block;
+  border: 1px solid #fffac4;
 }
 a{
 	color:#03A9F4;
@@ -61,14 +65,7 @@ p{
     border-top: 1px solid #E2E2E2;
     border-bottom: 1px solid #E2E2E2;
 }
-.logo h1{
-	font-size:1em;
-	text-align:center;
-	padding:5px;
-}
-.logo h1 a{
-	color:#fff;
-}
+
 #out,
 #config,
 #modules{
@@ -360,7 +357,7 @@ section.seccion .popup {
 	margin-right:5px;
 }
 .seccion .lbl-listoptions{
-	padding:5px 15px 5px;
+	padding:2px 0;
 	color:gray;
 	max-width:500px;
 	width:100%;
@@ -414,45 +411,6 @@ section.seccion .popup {
 	display:inline-block;
 	list-style-type:none;
 }
-
-/*.btn-primary,
-#contenedor .submit,
-#contenedor .button,
-#contenedor .submit,
-#contenedor .button_new{
-    color: #fff;
-    background-color: #4CAF50;
-    padding: 5px 15px;
-    border-radius: 4px;
-    font-size: 1em;
-    margin-right: 5px;
-    display: inline-block;
-    border:0;
-    font-weight:bold;
-}
-.btn-primary:hover,
-#contenedor .submit:hover,
-#contenedor .button:hover,
-#contenedor .submit:hover,
-#contenedor .button_new:hover{
-	background-color: #0FBB16;
-}
-.btn-secundary{
-	color: #fff;
-    background-color: #FF9800;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: .85em;
-    margin-right: 4px;
-    display: inline-block;
-    border:0;
-}
-.btn-delete{
-	background-color: red;
-}
-.btn-secundary:hover{
-    background-color: #FFC107;
-}*/
 /* PAGINATION */
 .navs table{
 	width:100%;
@@ -462,8 +420,6 @@ section.seccion .popup {
 	overflow:hidden;
 }
 .pagination ul{
-	/*float:right;
-	margin-right:20px;*/
 	margin-left:1px;
 }
 .pagination ul li{

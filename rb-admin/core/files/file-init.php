@@ -2,7 +2,6 @@
 <div class="help" data-name="files">
   <h4>Información</h4>
   <p>Puedes subir tus archivos necesarios para asociarlos con los contenidos que generes en el sitio.</p>
-  <p>Para <strong>imágenes de productos</strong>, recomendamos una dimensión mínima de <strong>400x400</strong> píxeles.</p>
 </div>
 <?php endif ?>
 <script>

@@ -85,7 +85,7 @@ switch($pag){
 				break;
 			endif;
 
-			echo '<h2 class="title">Sub Menús</h2>';
+			//echo '<h2 class="title">Sub Menús</h2>';
 			$sec="menu";
 			if(isset($_GET['opc'])){
 				$opc=$_GET['opc'];

@@ -2,6 +2,8 @@
 // MOSTRAR LA ESTRUCTURA DE EDICION DEL MENU
 //require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
 $mainmenu_id = $_GET['id'];
+$r = $objDataBase->Ejecutar("SELECT * FROM menus WHERE id=$mainmenu_id");
+$menu = $r->fetch_assoc();
 $menu_asincrono = true;
 ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
@@ -220,6 +222,7 @@ $menu_asincrono = true;
 				}
 	});
 </script>
+<h2 class="title">Menu <?= $menu['nombre'] ?></h2>
 <?php if (!in_array("menu", $array_help_close)): ?>
 	<div class="help" data-name="menu">
 		<h4>Información</h4>

@@ -6,9 +6,12 @@
   .cols{
     display: block!important;
   }
-  .block-left,
-  .block-right{
+  .block-left-content,
+  .block-right-content,
+  .block-left-sidebar,
+  .block-right-sidebar{
     float: none;
     width: 100%;
+    padding: 10px;
   }
 }

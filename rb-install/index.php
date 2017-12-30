@@ -1,5 +1,7 @@
 <?php
+$directory = str_replace('/rb-install/index.php', '', $_SERVER['SCRIPT_NAME']);
 $rm_url = "http://".$_SERVER['SERVER_NAME'];
+$rm_urlinstall = $rm_url.$directory;
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -25,7 +27,7 @@ $rm_url = "http://".$_SERVER['SERVER_NAME'];
 					<div class="frmmessage alert warning">
 						<p>Tenga en cuenta haber hecho estos 2 procesos</p>
 						<ul>
-							<li>Cargar la estructura de base de datos (puede descargar una copia <a href="/_sql/pyro.sql">desde aqui</a>)</li>
+							<li>Cargar la estructura de base de datos (puede descargar una copia <a href="/_sql/pyro203.sql">desde aqui</a>)</li>
 							<li>Especificar nombre de base de datos, usuario y clave necesarios en el archivo <code>config.php</code></li>
 						</ul>
 					</div>
@@ -35,7 +37,7 @@ $rm_url = "http://".$_SERVER['SERVER_NAME'];
 					</label>
 					<label>
 						<span>URL del sitio</span>
-						<input type="text" name="sitio_url" value="<?= $rm_url ?>" required readonly />
+						<input type="text" name="sitio_url" value="<?= $rm_urlinstall ?>" required readonly />
 					</label>
 					<label>
 						<span>Correo electronico</span>

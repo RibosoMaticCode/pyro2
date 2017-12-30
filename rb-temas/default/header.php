@@ -5,7 +5,7 @@
 		<title><?= rm_title ?></title>
 		<meta name="description" content="<?= rm_metadescription ?>">
 		<meta name="author" content="<?= rm_metaauthor ?>">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 
 		<meta property="og:title" content="<?= rm_title ?>"/>
 		<meta property="og:image" content="<?= rm_urltheme ?>img/default.png"/>
@@ -21,6 +21,8 @@
 		<!-- jquery -->
 	  <script type="text/javascript" src="<?= rm_urltheme ?>js/jquery-1.11.2.min.js"></script>
 		<script type="text/javascript" src="<?= rm_urltheme ?>js/jquery-migrate-1.2.1.js"></script>
+		<!-- parallax -->
+		<script type="text/javascript" src="<?= rm_urltheme ?>js/parallax.js"></script>
 		<!-- fancy box -->
 	  <link rel="stylesheet" href="<?= rm_urltheme ?>res/fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
 	  <script type="text/javascript" src="<?= rm_urltheme ?>res/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>

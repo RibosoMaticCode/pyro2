@@ -282,10 +282,10 @@
 .editor-main-title i{
   color:#fff;
 }
-#editor-box,
+/*#editor-box,
 #editor-html{
 	display: none;
-}
+}*/
 .container-page-edit{
 	margin: 0 auto;
 	max-width: 1100px;
@@ -298,7 +298,7 @@
 	top:50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	/*display: none;*/
+	display: none;
 	z-index: 9998;
 	background-color: #fff;
 }
@@ -313,7 +313,8 @@
 	padding: 10px;
   background-color: #fbfbfb;
 }
-.editor-body input[type="text"]{
+.editor-body input[type="text"],
+.editor-body select{
 	width: 100%;
 	padding: 4px 6px;
 	margin: 6px 0;
@@ -328,6 +329,11 @@
 .editor-body label span{
   display: block;
   margin-bottom: 5px;
+}
+.editor-footer {
+  border-top: 1px solid #c7c7c7;
+  background-color: #f1f1f1;
+  padding: 7px 10px;
 }
 .spacing-right{
 	padding-right: 5px;
@@ -456,14 +462,23 @@
 }
 .box-edit-tool{
 	position: absolute;
-	left: 50%;
-	top:50%;
-	transform:translate(-50%, -50%);
-	box-shadow: 2px 2px 5px gray;
-	background-color: #fff;
+	background-color: #000;
 	padding: 6px 40px;
 	display: none;
+  opacity: .6;
 	z-index: 2;
+  width: 100%;
+  height: 100%;
+  top:0;
+}
+.box-edit-tool a{
+  position: absolute;
+  left: 50%;
+	top:50%;
+	transform:translate(-50%, -50%);
+  color:#fff;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 .col-box-edit{
 	position: relative;
@@ -482,10 +497,15 @@ ul.box-options{
 	width:auto!important;
 	margin: 0!important;
 	position: relative;
+
 }
 .box-options li a{
 	font-size: .9em;
 	display: block;
+}
+.box-options li ul li a{
+	padding: 5px 20px;
+  border-bottom: 1px dotted gray;
 }
 .box-options li a:hover + ul.box-options-list,
 ul.box-options-list:hover{
@@ -494,11 +514,12 @@ ul.box-options-list:hover{
 ul.box-options-list{
 	position: absolute;
 	display: none;
-	z-index: 1;
-	background-color: #fff
+	z-index: 3;
+	background-color: #fff;
+  box-shadow:1px 1px 5px gray;
 }
 .box-options-list li{
-	padding: 3px 15px;
+	/*padding: 3px 15px;*/
 	display: block;
 }
 

@@ -13,7 +13,8 @@ require_once(ABSPATH.'rb-script/funciones.php');
 // verifica datos en tabla, sino inicial el instalador
 $q = $objDataBase->Ejecutar("SELECT * FROM opciones");
 if($q->num_rows==0){
-	header('Location: ../rb-install/index.php');
+	$directory = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
+	header('Location: ..'.$directory.'/rb-install/index.php');
 }
 //enlaces amigables
 define('G_ENL_AMIG', rb_get_values_options('enlaceamigable'));
@@ -86,6 +87,9 @@ define('G_SLIDEMAIN', rb_get_values_options('slide_main'));
 
 // logo
 define('G_LOGO', rb_get_values_options('logo'));
+
+// background-image login
+define('G_BGLOGIN', rb_get_values_options('background-image'));
 
 // mail libreria externa
 define('G_LIBMAILNATIVE', rb_get_values_options('lib_mail_native'));

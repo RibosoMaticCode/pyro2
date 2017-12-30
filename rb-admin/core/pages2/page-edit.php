@@ -68,6 +68,7 @@ if(isset($_GET["id"])){
 					<?php
 					$array_content = json_decode($row['contenido'], true);
 					//print_r($array_content);
+					//die($row['contenido']);
 					foreach ($array_content['boxes'] as $box) {
 						?>
 						<li id="<?= $box['box_id'] ?>" class="item" data-id="<?= $box['box_id'] ?>" data-type="box" data-inheight="<?= $box['boxin_height'] ?>" data-inwidth="<?= $box['boxin_width'] ?>"
@@ -91,6 +92,9 @@ if(isset($_GET["id"])){
 						          <li>
 						            <a class="addHtml" href="#">HTML</a>
 						          </li>
+											<li>
+						            <a class="addHtml" href="#">Publicaciones (horizontal)</a>
+						          </li>
 						        </ul>
 						      </li>
 						    <a class="toggle" href="#">
@@ -107,7 +111,7 @@ if(isset($_GET["id"])){
 								  $array_cols =$box['columns'];
 								  foreach ($array_cols as $col) {
 										?>
-										<li class="col" data-id="<?= $col['col_id'] ?>" data-type="<?= $col['col_type'] ?>">
+										<li id="<?= $col['col_id'] ?>" class="col" data-id="<?= $col['col_id'] ?>" data-type="<?= $col['col_type'] ?>" data-values='<?= json_encode ($col['col_values']) ?>' data-class="<?= $col['col_css'] ?>">
 										<?php
 								    switch ($col['col_type']) {
 								      case 'html':
@@ -156,6 +160,24 @@ if(isset($_GET["id"])){
 											</div>
 											<?php
 								        break;
+											case 'post1':
+											?>
+											<span class="col-head">
+												<strong>Publicaciones</strong>
+												<a class="close-column" href="#" title="Eliminar">
+													<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+												</a>
+											</span>
+											<div class="col-box-edit">
+												<div class="box-edit">
+													<div class="box-edit-html" id="box-edit<?= $col['col_id'] ?>">
+														<p style="text-align:center;max-width:100%"><img src="core/pages2/img/post1.png" alt="post" /></p>
+													</div>
+													<div class="box-edit-tool"><a href="#" class="showEditPost1">Editar</a></div>
+												</div>
+											</div>
+											<?php
+												break;
 								    }
 										?>
 										</li>
@@ -178,251 +200,8 @@ if(isset($_GET["id"])){
 		</div>
 	</section>
 </div>
-<!-- MODAL WINDOWS BOX EDITOR AND CONFIGURATION -->
-<!-- ========================================== -->
-<div id="editor-box" class="editor-window">
-	<!-- ED = Editor Box -->
-	<div class="editor-header">
-		<strong>Configuración del bloque</strong>
-	</div>
-	<div class="editor-body">
-		<h3>Bloque Externo</h3>
-		<div class="cols-container">
-			<div class="cols-6-md spacing-right">
-				<label>
-					<span>Imagen de fondo (url completa)  [ <input type="checkbox" name="boxext_parallax" id="boxext_parallax" />  ¿Parallax? ]</span>
-					<input type="text" name="boxext_bgimage" id="boxext_bgimage" />
-				</label>
-			</div>
-			<div class="cols-6-md spacing-left">
-				<label>
-					<span>Color de fondo (codigo hex, o rgb)</span>
-					<input type="text" name="boxext_bgcolor" id="boxext_bgcolor" />
-				</label>
-			</div>
-		</div>
-		<div class="cols-container">
-			<div class="cols-3-md spacing-right">
-				<label>
-					<span>Espacido Interno (Arriba)</span>
-					<input type="text" name="boxext_paddingtop" id="boxext_paddingtop" />
-				</label>
-			</div>
-			<div class="cols-3-md spacing-left spacing-right">
-				<label>
-					<span>Espacido Interno (Abajo)</span>
-					<input type="text" name="boxext_paddingbottom" id="boxext_paddingbottom" />
-				</label>
-			</div>
-			<div class="cols-3-md spacing-left spacing-right">
-				<label>
-					<span>Espacido Interno (Izquierda)</span>
-					<input type="text" name="boxext_paddingleft" id="boxext_paddingleft" />
-				</label>
-			</div>
-			<div class="cols-3-md spacing-left">
-				<label>
-					<span>Espacido Interno (Derecha)</span>
-					<input type="text" name="boxext_paddingright" id="boxext_paddingright" />
-				</label>
-			</div>
-		</div>
-		<div class="cols-container">
-			<div class="cols-6-md spacing-right">
-				<label>
-					<span>Clase CSS</span>
-					<input type="text" name="boxext_class" id="boxext_class" />
-				</label>
-			</div>
-		</div>
-		<h3>Bloque Interno</h3>
-		<div class="cols-container">
-			<div class="cols-6-md spacing-right">
-				<label>
-					<span>Ancho completo (Yes, ó pixeles, ej. 900px)</span>
-					<input type="text" name="boxin_width" id="boxin_width" />
-				</label>
-			</div>
-			<div class="cols-6-md spacing-left">
-				<label>
-					<span>Imagen de fondo (url completa)</span>
-					<input type="text" name="boxin_bgimage" id="boxin_bgimage" />
-				</label>
-			</div>
-		</div>
-		<div class="cols-container">
-			<div class="cols-6-md spacing-right">
-				<label>
-					<span>Color de fondo (codigo hex, o rgb)</span>
-					<input type="text" name="boxin_bgcolor" id="boxin_bgcolor" />
-				</label>
-			</div>
-			<div class="cols-6-md spacing-left">
-				<label>
-					<span>Alto del bloque (en pixeles, ej: 400px)</span>
-					<input type="text" name="boxin_height" id="boxin_height" />
-				</label>
-			</div>
-		</div>
-		<div class="cols-container">
-			<div class="cols-3-md spacing-right">
-				<label>
-					<span>Espacido Interno (Arriba)</span>
-					<input type="text" name="eb_bgcolor" id="boxin_paddingtop" />
-				</label>
-			</div>
-			<div class="cols-3-md spacing-left spacing-right">
-				<label>
-					<span>Espacido Interno (Abajo)</span>
-					<input type="text" name="boxin_paddingbottom" id="boxin_paddingbottom" />
-				</label>
-			</div>
-			<div class="cols-3-md spacing-left spacing-right">
-				<label>
-					<span>Espacido Interno (Izquierda)</span>
-					<input type="text" name="boxin_paddingleft" id="boxin_paddingleft" />
-				</label>
-			</div>
-			<div class="cols-3-md spacing-left">
-				<label>
-					<span>Espacido Interno (Derecha)</span>
-					<input type="text" name="boxin_paddingright" id="boxin_paddingright" />
-				</label>
-			</div>
-		</div>
-		<div class="cols-container">
-			<div class="cols-6-md spacing-right">
-				<label>
-					<span>Clase CSS</span>
-					<input type="text" name="boxin_class" id="boxin_class" />
-				</label>
-			</div>
-		</div>
-		<input type="hidden" id="eb_id" value="" />
-		<button class="btn-primary" id="boxform-btn-accept">Cambiar</button>
-		<button class="button" id="boxform-btn-cancel">Cancelar</button>
-	</div>
-</div>
-<script>
-$(document).ready(function() {
-	// Aceptando cambios
-	$('#boxform-btn-accept').click(function() {
-		var box_id = $('#eb_id').val();
-		//Internos
-		$('#'+ box_id).attr('data-inheight', $('#boxin_height').val());
-		$('#'+ box_id).attr('data-inwidth', $('#boxin_width').val());
-		$('#'+ box_id).attr('data-inbgimage', $('#boxin_bgimage').val());
-		$('#'+ box_id).attr('data-inbgcolor', $('#boxin_bgcolor').val());
-		$('#'+ box_id).attr('data-inpaddingtop', $('#boxin_paddingtop').val());
-		$('#'+ box_id).attr('data-inpaddingright', $('#boxin_paddingright').val());
-		$('#'+ box_id).attr('data-inpaddingbottom', $('#boxin_paddingbottom').val());
-		$('#'+ box_id).attr('data-inpaddingleft', $('#boxin_paddingleft').val());
-		$('#'+ box_id).attr('data-inclass', $('#boxin_class').val());
-		//Externos
-		//$('#'+ box_id).attr('data-extheight', $('#boxext_height').val());
-		//$('#'+ box_id).attr('data-extwidth', $('#boxext_width').val());
-		$('#'+ box_id).attr('data-extbgimage', $('#boxext_bgimage').val());
-		$('#'+ box_id).attr('data-extbgcolor', $('#boxext_bgcolor').val());
-		$('#'+ box_id).attr('data-extpaddingtop', $('#boxext_paddingtop').val());
-		$('#'+ box_id).attr('data-extpaddingright', $('#boxext_paddingright').val());
-		$('#'+ box_id).attr('data-extpaddingbottom', $('#boxext_paddingbottom').val());
-		$('#'+ box_id).attr('data-extpaddingleft', $('#boxext_paddingleft').val());
-		$('#'+ box_id).attr('data-extclass', $('#boxext_class').val());
-		if ($('#boxext_parallax').is(':checked')) {
-			$('#'+ box_id).attr('data-extparallax', 1);
-		}else{
-			$('#'+ box_id).attr('data-extparallax', 0);
-		}
-		$('.bg-opacity, #editor-box').hide();
-	});
-	// Cancelando cambios
-	$('#boxform-btn-cancel').click(function() {
-		$('.bg-opacity, #editor-box').hide();
-	});
-});
-</script>
-<!-- MODAL WINDOWS HTML EDITOR AND CONFIGURATION -->
-<!-- ========================================== -->
-<div id="editor-html" class="editor-window">
-	<div class="editor-header">
-		<strong>Configuración del contenido</strong>
-	</div>
-	<div class="editor-body">
-		<script type="text/javascript" src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-			<div class="cols-container">
-				<div class="cols-6-md spacing-right">
-					<label>Class CSS
-						<input type="text" name="class_css" id="class_css" />
-					</label>
-				</div>
-				<div class="cols-6-md spacing-left">
-					<!--<label>ID CSS
-						<input type="text" name="id_css" id="id_css" />
-					</label>-->
-				</div>
-			</div>
-			<div id="ta">
-			  <p>Editor de html</p>
-			</div>
-			<button class="btn-primary" id="btn1">Cambiar</button>
-			<button class="button" id="btn2">Cancelar</button>
-			<!-- nombres de los controles -->
-			<input type="hidden" id="control_id" value="" />
-			<input type="hidden" id="css_box_id" value="" />
-	</div>
-	<script>
-	$(function() {
-		tinymce.init({
-			selector: '#ta',
-			entity_encoding : "raw",
-			menubar: false,
-			convert_urls : false,
-			language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',
-			height: 300,
-			//forced_root_block : false,
-			plugins: [
-				'advlist autolink lists link image charmap print preview anchor textcolor',
-    		'searchreplace visualblocks code fullscreen table',
-    		'insertdatetime media table contextmenu paste code'
-			],
-			toolbar: 'insert | table |  formatselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code',
-			content_css: '//www.tinymce.com/css/codepen.min.css',
-			file_browser_callback   : function(field_name, url, type, win) {
-				if (type == 'file') {
-					var cmsURL       = 'gallery.explorer.tinymce.php?type=file';
-				} else if (type == 'image') {
-					var cmsURL       = 'gallery.explorer.tinymce.php?type=image';
-				}
-
-				tinymce.activeEditor.windowManager.open({
-					file            : cmsURL,
-					title           : 'Selecciona una imagen',
-					width           : 860,
-					height          : 600,
-					resizable       : "yes",
-					inline          : "yes",
-					close_previous  : "yes"
-				}, {
-					window  : win,
-					input   : field_name
-				});
-			}
-		});
-
-	  $('#btn1').click(function() {
-			// Enviando los valores
-			// - Contenido
-			var control_id = $('#control_id').val();
-			$('#'+control_id).html(tinymce.activeEditor.getContent());
-			// - Nombre de la clase
-			var css_box_id = $('#css_box_id').val();
-			$('#'+css_box_id).val($('#class_css').val());
-
-			$('.bg-opacity, #editor-html').hide();
-	  });
-		$('#btn2').click(function() {
-			$('.bg-opacity, #editor-html').hide();
-	  });
-	});
-	</script>
-</div>
+<?php
+include_once 'modal-box-config.php';
+include_once 'modal-html-config.php';
+include_once 'modal-post1-config.php';
+?>

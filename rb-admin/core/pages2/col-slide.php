@@ -8,7 +8,7 @@ $q = $objDataBase->Ejecutar("SELECT * FROM albums");
 if(!isset($_GET['temp_id'])) $temp_id = 1;
 else $temp_id = $_GET['temp_id'];
 ?>
-<li class="col" data-id="<?= $temp_id ?>" data-type="slide">
+<li id="<?= $temp_id ?>" class="col" data-id="<?= $temp_id ?>" data-type="slide" data-class="" data-values="{}">
 	<span class="col-head">
 		<strong>Slide</strong>
 		<a class="close-column" href="#" title="Eliminar">

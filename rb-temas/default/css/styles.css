@@ -77,10 +77,10 @@ a{
 
 /* background home */
 .bg-intro{
-  background: url('../img/intro.jpg');
+  /*background: url('../img/intro.jpg');
   background-size: cover;
   background-attachment: fixed;
-	background-position: center center;
+	background-position: center center;*/
 }
 .bg-intro-inner{
   height: 100vh;

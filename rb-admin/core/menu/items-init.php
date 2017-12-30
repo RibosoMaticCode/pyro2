@@ -331,6 +331,15 @@ $menu_asincrono = true;
 						</label>
 						<button id="btn-add-custom">Añadir al Menú</button>
 					</form>
+					<p>Puedes usar estas variables globales</p>
+					<ul>
+						<li>
+							<code>[RUTA_SITIO]</code>: Es la url absoluta del sitio web:
+						</li>
+						<li>
+							<code>[RUTA_TEMA]</code>: Apunta a la url donde esta alojado el tema.
+						</li>
+					</ul>
 					</div>
 				</div>
 			</div>

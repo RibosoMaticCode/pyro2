@@ -78,7 +78,8 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <span class="info">Estos campos aparecerán en la seccion Publicaciones, permiten añadir valores adicionales a los pre-establecidos.</span>
               <input  name="objetos" type="text" value="<?= rb_get_values_options('objetos') ?>" />
             </label>
-            <label title="Numero de Items por Página" for="style">Numero de Items por Página:
+            <label title="Numero de Items por Página" for="style">Numero de Publicaciones por Página:
+              <span class="info">Cantidad de publicaciones a mostrar en el index (por defecto) y por categoria.</span>
               <input  name="post_by_category" type="text" value="<?= rb_get_values_options('post_by_category') ?>" />
             </label>
             <label>Logo:
@@ -89,7 +90,21 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 });
               });
               </script>
-              <input  name="logo" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('logo') ); echo $photos['src']; ?>" />
+              <input name="logo" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('logo') ); echo $photos['src']; ?>" />
+            </label>
+            <label>Imagen de fondo login:
+              <script>
+              $(document).ready(function() {
+                $(".explorer-bgimage").filexplorer({
+                  inputHideValue: "<?=  rb_get_values_options('background-image') ?>" // establacer un valor por defecto al cammpo ocutlo
+                });
+              });
+              </script>
+              <input name="bgimage" type="text" class="explorer-bgimage" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('background-image') ); echo $photos['src']; ?>" />
+            </label>
+            <label>URL terminos y condiciones:
+              <span class="info">Esta se muestra en la seccion de registro de usuarios</span>
+              <input  name="terms_url" type="text" value="<?= rb_get_values_options('terms_url') ?>" />
             </label>
             <label title="Menu Principal" for="menu">Menu Principal: <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=menus">Nuevo menú</a>
               <span class="info">Dependiendo de la plantilla instalada, el menú que eliga figurara en la parte superior de la web.</span>

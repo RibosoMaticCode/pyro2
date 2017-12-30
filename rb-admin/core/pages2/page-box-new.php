@@ -31,6 +31,9 @@ else $temp_id = $_GET['temp_id'];
           <li>
             <a class="addHtml" href="#">HTML</a>
           </li>
+          <li>
+            <a class="addPost1" href="#">Publicaciones (horizontal)</a>
+          </li>
         </ul>
       </li>
     <a class="toggle" href="#">

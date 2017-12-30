@@ -3,6 +3,7 @@
 * Instalador: Establece valores iniciales em la tabla Opciones
 * Ultima actualizacion : 24-01-17
 */
+$directory = str_replace('/rb-install/save.php', '', $_SERVER['SCRIPT_NAME']); //obteniendo sub directorio de instalacion
 $opciones_valores = array(
 	"nombresitio" => "Nombre Sitio",
 	"descripcion" => "Descripcion del sitio",
@@ -14,7 +15,7 @@ $opciones_valores = array(
 	"enlaceamigable" => "0",
 	"meta_author" => "blackpyro",
 	"show_items" => "25",
-	"background-image" => "",
+	"background-image" => "0",
 	"mail_destination" => "",
 	"objetos" => "",
 	"mail_sender" => "",
@@ -28,7 +29,7 @@ $opciones_valores = array(
 	"mainmenu_id" => "0",
 	"moneda" => "S/.",
 	"modules_optiones" => '{"post":"1","cat":0,"pag":0,"com":0,"file":0,"gal":0,"usu":0,"mess":0,"men":0}',
-	"post_options" => '{"gal":"1","adj":"1","edi":"1","adi":"1","enl":"1","vid":"1","otr":"1","sub":"1","cal":0}',
+	"post_options" => '{"gal":"0","adj":"1","edi":"0","adi":"0","enl":"0","vid":"0","otr":"0","sub":"1","cal":0}',
 	"slide_main" => "0",
 	"fb" => "",
 	"tw" => "",
@@ -54,12 +55,14 @@ $opciones_valores = array(
 	"sendgridapikey" => "",
 	"name_sender" => "No-Reply",
 	"lib_mail_native" => "0",
-	"directorio_url" => "",
+	"directorio_url" => $directory,
 	"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img\/icon_home.png","pos":1,"show":true,"item":null},"blogs":{"key":"blogs","nombre":"Blog","url":"#","url_imagen":"img\/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1},{"key":"com","nombre":"Comentarios","url":"index.php?pag=com","url_imagen":"none","pos":1}]},"files":{"key":"files","nombre":"Archivos","url":"#","url_imagen":"img\/icon_media.png","pos":3,"show":true,"item":[{"key":"explorer","nombre":"Explorar","url":"index.php?pag=files","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria y\/o Album","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img\/icon_user.png","pos":4,"show":true,"item":{"0":{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},"2":{"key":"men","nombre":"Mensajeria","url":"index.php?pag=men","url_imagen":"none","pos":1},"3":{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}}},"visual":{"key":"visual","nombre":"Contenidos y Estructuras","url":"#","url_imagen":"img\/icon_design.png","pos":5,"show":true,"item":[{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantillas","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',
 	/*"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img/icon_home.png","pos":1,"show":true,"item":null},"contents":{"key":"contents","nombre":"Contenidos","url":"#","url_imagen":"img/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1},{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"com","nombre":"Comentarios","url":"index.php?pag=com","url_imagen":"none","pos":1}]},"media":{"key":"media","nombre":"Medios","url":"#","url_imagen":"img/icon_media.png","pos":3,"show":true,"item":[{"key":"files","nombre":"Archivos","url":"index.php?pag=files","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de Medios","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img/icon_user.png","pos":4,"show":true,"item":[{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},{"key":"men","nombre":"Mensaje","url":"index.php?pag=men","url_imagen":"none","pos":1},{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}]},"visual":{"key":"visual","nombre":"Apariencia","url":"#","url_imagen":"img/icon_design.png","pos":5,"show":true,"item":[{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantillas","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',*/
 	"alcance" => "1",
 	"version" => "2.0.3",
-	"sidebar_pos" => "left"
+	"sidebar" => "0",
+	"sidebar_pos" => "left",
+	"terms_url" => ""
 );
 
 require_once("../rb-script/funciones.php");
@@ -101,6 +104,59 @@ if(isset($_POST)):
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (1, 'Adminitrador', 'admin', 'Administra y gestiona la configuración todo el sitio web')");
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (2, 'Usuario Gestionador', 'user-panel', 'Usuario con acceso privilegio para gestionar parte del sitio web')");
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, permisos) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar la web')");
+
+		//function crear htaccess
+		function create_htaccess($dir){
+			//Agradecimiento: http://www.dreamincode.net/forums/topic/214225-php-create-htaccess/page__view__findpost__p__1243819
+			$create_name = "../.htaccess";
+			// open the .htaccess file for editing
+			$file_handle = fopen($create_name, 'w') or die("Error: Can't open file");
+			//enter the contents
+			$content_string = "# Generado automaticamente por Blackpyro\n";
+			//$content_string .= "RewriteEngine On\n";
+			$content_string .= "<IfModule mod_rewrite.c>
+				RewriteEngine On
+				RewriteBase $dir/
+				RewriteRule ^index\.php$ - [L]
+				RewriteCond %{REQUEST_FILENAME} !-f
+				RewriteCond %{REQUEST_FILENAME} !-d
+				RewriteRule . $dir/index.php [L]
+			</IfModule>\n\n";
+			// Mas opciones
+			$content_string .= '## EXPIRES CACHING ##
+			<IfModule mod_expires.c>
+			ExpiresActive On
+			ExpiresByType image/jpg "access 1 year"
+			ExpiresByType image/jpeg "access 1 year"
+			ExpiresByType image/gif "access 1 year"
+			ExpiresByType image/png "access 1 year"
+			ExpiresByType text/css "access 1 month"
+			ExpiresByType text/html "access 1 month"
+			ExpiresByType application/pdf "access 1 month"
+			ExpiresByType text/x-javascript "access 1 month"
+			ExpiresByType application/x-shockwave-flash "access 1 month"
+			ExpiresByType image/x-icon "access 1 year"
+			ExpiresDefault "access 1 month"
+			</IfModule>
+
+			## EXPIRES CACHING ##
+			<IfModule mod_gzip.c>
+			mod_gzip_on Yes
+			mod_gzip_item_include file \.html$
+			mod_gzip_item_include file \.php$
+			mod_gzip_item_include file \.css$
+			mod_gzip_item_include file \.js$
+			mod_gzip_item_include mime ^application/javascript$
+			mod_gzip_item_include mime ^application/x-javascript$
+			mod_gzip_item_include mime ^text/.*
+			mod_gzip_item_include handler ^application/x-httpd-php
+			mod_gzip_item_exclude mime ^image/.*
+			</IfModule>';
+			fwrite($file_handle, $content_string);
+			// close
+			fclose($file_handle);
+		}
+		create_htaccess($directory);
 
 		header('Location: '.$sitio_url."/login.php");
 	else:

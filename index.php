@@ -73,8 +73,7 @@ if(G_ENL_AMIG):
 		exit();
 	endif;
 
-  //$requestURI  = str_replace("/prueba", "", $_SERVER['REQUEST_URI']);
-	$requestURI = str_replace("", "", $_SERVER['REQUEST_URI']);
+	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
   $requestURI = explode("/", $requestURI);
 	//$requestURI = explode( '/', $_SERVER['REQUEST_URI'] );
 
@@ -294,7 +293,7 @@ if(isset($_GET['pa'])){
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/index.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
-	}else{
+	}else{ // Pagina seleccionada por el usuario
 	  $Page = rb_show_specific_page(G_INITIAL);
 		define('rm_title', rm_longtitle);
 		define('rm_title_page', $Page['titulo']);

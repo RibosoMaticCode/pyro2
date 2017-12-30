@@ -10,13 +10,15 @@ Licencia: ../rb-admin/licencia.txt
 
 version 2.0.3 pyro2 (dic 17)
 -------------------
+- Instalador funcional, incluso en directorios secundarios.
+- Instalador crear el archivo htaccess por defecto.
 - Plantilla default para un proyecto Basico
-- Barra de acceso rapido en el frontend
-- Sidebar acepta widgets
+- Barra de acceso rapido en el frontend - function: <?php rb_show_bar_admin() ?> luego de body tag.
+- Sidebar acepta widgets - en proceso
 - Mejoras en funcion rb_header, rb_footer, rb_sidebar
 - Mejoras en el Editor de paginas
-- Buscador funcional
-- Elimina campo: blog_id de opciones
+- Buscador funcional basico
+- Elimina campo: blog_id de tabla opciones
 - Campos añadidos a paginas: show_header, show_footer, description
 
 version 2.0.2 pyro2 (sep 17)

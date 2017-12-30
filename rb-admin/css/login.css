@@ -11,6 +11,7 @@
 }
 body{
 	font-size:.9em;
+	height: 100vh;
 }
 .frmlogin{
 	border-top:5px solid #4FA9E0;
@@ -18,7 +19,8 @@ body{
 	max-width:340px;
 	margin:10px auto;
 	padding:20px;
-	box-shadow:-1px -1px 50px #efefef;
+	box-shadow:-1px -1px 10px #5a5a5a;
+	background-color: #fff;
 }
 .frminstall{
 	max-width: 520px!important;

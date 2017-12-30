@@ -127,7 +127,7 @@ p{
 }
 .btn-goto-web{
 	position:absolute;
-	right:145px;
+	right:150px;
 	top:10px;
 }
 /* CONTENIDOS */
@@ -792,7 +792,7 @@ ul#grid{
 .list-art,
 .list-per,
 .list-cat{
-	height: 200px;
+	height: 400px;
     overflow-y: auto;
 }
 .item-menu-selected{

@@ -152,7 +152,9 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
     	</form>
 			<div class="menu2">
 				<?php if(G_ESTILO!="0"): ?>
-	    		<a class="btn-primary btn-goto-web" target="_blank" href="<?= G_SERVER ?>">Ir a la web</a>
+	    	<a title="Ver Sitio Web" class="btn-primary btn-goto-web" target="_blank" href="<?= G_SERVER ?>">
+					<img src="img/website-icon.png" alt="Ver Sitio Web">
+				</a>
 				<?php endif ?>
 				<?php if($userType == "admin"): ?>
 	    	<a id="modules" title="Añadir funciones extras" href="modules.php">

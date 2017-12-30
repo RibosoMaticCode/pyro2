@@ -37,6 +37,8 @@ $(document).ready(function() {
     }
   });
 
+  // ***** AÑADIR COLUMNAS ********
+
   // Añadir Columna para Slide
   //var j = 0;
   $("#boxes").on("click", ".addSlide", function (event) {
@@ -67,25 +69,70 @@ $(document).ready(function() {
     });
   });
 
+  // Añadir Columan para Post1
+  $("#boxes").on("click", ".addPost1", function (event) {
+    event.preventDefault();
+    var box_edit = $(this).closest(".item").find(".cols-html");
+    var box_id = $(this).closest(".item").attr('data-id');
+    //k++;
+    $.ajax({
+        //url: "core/pages2/col-post1.php?temp_id="+box_id+"html"+uniqueId()
+        url: "core/pages2/col-post1.php?temp_id=post1"+uniqueId()
+    })
+    .done(function( data ) {
+      box_edit.append(data);
+    });
+  });
+
+  //*** EDITOR MODAL BOX ****
+
   // Mostrar Editor HTML
   $("#boxes").on("click", ".showEditHtml", function (event) {
     $(".bg-opacity").show();
     $("#editor-html").show();
     event.preventDefault();
     //Captura contenido
+    var col_id = $(this).closest(".col").attr('id');
+
     var box_edit_html = $(this).closest(".col-box-edit").find(".box-edit-html");
     var content_to_edit = box_edit_html.html();
     var content_to_edit_id = box_edit_html.attr('id');
     //capturar nombre de clase
-    var css_class = $(this).closest(".col-box-edit").find(".css_class");
-    var css_class_val = css_class.val();
-    var css_class_id = css_class.attr('id');
+    //var css_class = $(this).closest(".col-box-edit").find(".css_class");
+    //var css_class_val = css_class.val();
+    //var css_class_id = css_class.attr('id');
     // Asignando valores
+    //Id control a editar y asignar valor
+    $('#control_edit_id').val(content_to_edit_id);
     tinymce.activeEditor.setContent(content_to_edit);
-    $('#class_css').val(css_class_val);
-    //Asignando id de los campos
-    $('#control_id').val(content_to_edit_id);
-    $('#css_box_id').val(css_class_id);
+
+    // Capturando clase y asignando valor
+    var css_class = $(this).closest(".col").attr('data-class');
+    $('#control_id').val(col_id);
+    $('#class_css').val(css_class);
+  });
+
+  // Mostrar Editor de Post1
+  $("#boxes").on("click", ".showEditPost1", function (event) {
+    var post1_id = $(this).closest(".col").attr('data-id');
+    var post1_class = $(this).closest(".col").attr('data-class');
+    var post1_values_string = $(this).closest(".col").attr('data-values');
+
+    //post1_values_array === pva
+    var pva = JSON.parse(post1_values_string);
+    //console.log(pva.cat);
+
+    $('#post1_id').val(post1_id);
+    $('#post1_title').val(pva.tit);
+    $('#post1_category').val(pva.cat);
+    $('#post1_count').val(pva.count);
+    $('#post1_order').val(pva.ord);
+    $("input[name='post1_type'][value='"+pva.typ+"']").prop('checked', true);
+    $('#post1_class').val(post1_class);
+
+    $(".bg-opacity").show();
+    $("#editor-post1").show();
+    event.preventDefault();
   });
 
   // Mostrar Editor de Bloque
@@ -161,7 +208,7 @@ $(document).ready(function() {
     $(this).closest("li").find(".arrow-up, .arrow-down").toggle();
   });
 
-  // Guardar cambios en diseñador
+  // ******* ENVIAR LOS DATOS PARA SER GUARDADOS ********
   function htmlEntities(str) {
     // Remplaza codigo HTML con otras entidades (Como: &, <, >, ", espacio en blancos, ')
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n|\r/g, "").replace(/'/g, '&#39;');
@@ -202,17 +249,23 @@ $(document).ready(function() {
       $this.find(".cols-html .col").each(function(indice, elemento) {
         var col_id = $(elemento).attr('data-id');
         var col_type = $(elemento).attr('data-type');
-        var col_css = $('#class_'+col_id).val();
+        var col_css = $(elemento).attr('data-class'); //$('#class_'+col_id).val();// corregir de
         switch (col_type) {
           case 'html':
             htmlt_content_col = $(elemento).find('.box-edit-html').html();
             htmlt_content_col = encodeURIComponent(htmlEntities(htmlt_content_col)); //encodeURIComponent transforma los &amp en otras entidades
+            col_values = "{}";
           break;
           case 'slide':
             htmlt_content_col = $(elemento).find('.slide_name').val();
+            cols_values = "{}";
+          break;
+          case 'post1':
+            col_values = $(elemento).attr('data-values');
+            htmlt_content_col = "";
           break;
         }
-        cols_string_content += coma + '{"col_id" : "'+$(elemento).attr('data-id')+'","col_content" : "'+htmlt_content_col+'","col_type":"'+ col_type + '", "col_css" : "'+ col_css +'"}';
+        cols_string_content += coma + '{"col_id" : "'+$(elemento).attr('data-id')+'","col_content" : "'+htmlt_content_col+'","col_type":"'+ col_type + '", "col_css" : "'+ col_css +'","col_values": '+col_values+'}';
         coma = ",";
         j++;
       });

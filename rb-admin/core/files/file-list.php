@@ -10,7 +10,9 @@ while ($row = $result->fetch_assoc()):
     <div class="cover-img">
     <?php
       if(rb_file_type($row['type']) == "image"):
-        echo "<a class=\"fancybox\" rel=\"group\" href=\"../rb-media/gallery/".utf8_encode($row['src'])."\"> <img src=\"../rb-media/gallery/tn/".utf8_encode($row['tn_src'])."\" /></a>";
+        ?>
+        <a class="fancybox" rel="group" href="../rb-media/gallery/<?= utf8_encode($row['src']) ?>"> <img src="../rb-media/gallery/tn/<?= utf8_encode($row['tn_src']) ?>" /></a>
+        <?php
       else:
         if( rb_file_type( $row['type'] )=="pdf" ) echo "<img src=\"img/pdf.png\" alt=\"png\" />";
         if( rb_file_type( $row['type'] )=="word" ) echo "<img src=\"img/doc.png\" alt=\"png\" />";

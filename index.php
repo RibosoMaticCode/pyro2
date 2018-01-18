@@ -129,6 +129,9 @@ else: // SI ENLACES NO AMIGABLES
 	if ( isset($_GET['panel']) ) $Panel = $_GET['panel'];
 endif;
 
+// URL adicionales definidos por la plantilla
+require ABSPATH.'rb-temas/'.G_ESTILO.'/urls.php';
+
 // ARCHIVOS DIRECTOS
 if(isset($_GET['pa'])){
 	// Si accede a panel y no esta logueado, manda al index
@@ -138,7 +141,7 @@ if(isset($_GET['pa'])){
 	// Si accede a panel y esta logueado, lleva al modulo externo para el panel
 	elseif($_GET['pa']=="panel" && G_ACCESOUSUARIO==1):
 		$rm_menu_name = "";
-		require ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
+		require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
 	// Si es cualquier pagina, la carga respectivamente
 	else:
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$_GET['pa'].'.php';
@@ -178,12 +181,13 @@ if(isset($_GET['pa'])){
 		// Si accede a panel y esta logueado, lleva al modulo externo para el panel
 		elseif($PageId=="panel" && G_ACCESOUSUARIO==1):
 			$rm_menu_name = "";
-			require ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
+			require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
 		// Si es cualquier pagina, la carga respectivamente
 		else:
 			$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$PageId.'.php';
 			if(file_exists( $file )) require_once( $file );
 		endif;
+		header('Location: '.G_SERVER.'/404.php');
 	}else{ // Asignando valores a la pagina del sistema
 	  define('rm_title', $Page['titulo']." | ".G_TITULO);
 		define('rm_title_page', $Page['titulo']);
@@ -196,7 +200,7 @@ if(isset($_GET['pa'])){
 		$rm_menu_name = $Page['addon'];
 		$rm_url_page = rb_url_link('pag', $Page['id']);
 
-		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
+		$file = ABSPATH.'rb-script/modules/pages.view/page.php';
 		if(file_exists( $file )): require_once( $file );rb_set_read_post($Page['id'], 'paginas');
 		else: die( message_error($file));
 		endif;
@@ -247,24 +251,19 @@ if(isset($_GET['pa'])){
 
 // BUSQUEDA
 }elseif( isset( $SearchTerm ) ){
-	//if( !isset($_GET['search']) ) die('No hay termino a buscar');
 	$data_to_search = $SearchTerm;
 
 	/*search articulos*/
-	$qa = $objArticulo->Search($data_to_search, false);
-	$CountPosts = mysql_num_rows($qa);
+	$qs = $objDataBase->Search($data_to_search, 'articulos', ['titulo', 'contenido']);
+	$CountPosts = $qs->num_rows;
 
-	/*search paginas*/
-	$qp = $objPagina->Search($data_to_search, false);
-	$CountPages = mysql_num_rows($qp);
+	//$CountTotal = $CountPosts + $CountPages;
 
-	$CountTotal = $CountPosts + $CountPages;
-
-	$rm_title = "Buscando ".$data_to_search." | ".G_TITULO;
-	$rm_title_page = "Buscando ".$data_to_search;
-	$rm_metakeywords =  "";
-	$rm_metadescription =  "Resultados de busqueda";
-	$rm_metaauthor = G_METAAUTHOR;
+	define('rm_title',"Buscando ".$data_to_search." | ".G_TITULO);
+	define('rm_title_page',"Buscando ".$data_to_search);
+	define('rm_metakeywords', "");
+	define('rm_metadescription', "Resultados de busqueda");
+	define('rm_metaauthor',G_METAAUTHOR);
 
 	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/search.php';
 	if(file_exists( $file )) require_once( $file );
@@ -273,12 +272,12 @@ if(isset($_GET['pa'])){
 // AL MODULO : PANEL DE USUARIO
 }elseif( isset( $Panel ) ){
 	if(G_ACCESOUSUARIO==1){
-		require ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
+		require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
 	}else{
 		header('Location: '.rb_get_values_options('direccion_url').'/login.php');
 	}
 }else{
-	// ** PAGINA INDEX DEL TEMA- PLANTILLA **
+	// ** PAGINA INDEX DEL TEMA MUESTRA EN BLOG POR DEFECTO **
 	if(G_INITIAL==0){
 		// todas las publicaciones
 		$qAll = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' ORDER BY fecha_creacion DESC LIMIT 12");
@@ -301,7 +300,7 @@ if(isset($_GET['pa'])){
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 	  define('rm_metakeywords', $Page['tags']);
 
-	  $file = ABSPATH.'rb-temas/'.G_ESTILO.'/page.php';
+	  $file = ABSPATH.'rb-script/modules/pages.view/page.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}

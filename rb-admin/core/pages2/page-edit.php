@@ -17,15 +17,22 @@ if(isset($_GET["id"])){
 			<input class="submit" name="guardar" type="submit" value="Guardar" id="btnGuardar" />
 			<!--<input class="submit" name="guardar_volver" type="submit" value="Guardar y volver" id="btnGuardarBack"/>-->
 			<a href="<?= G_SERVER ?>/rb-admin/?pag=pages"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Volver" /></a>
+			<?php
+			if(isset($_GET["id"])){
+			?>
+			<a class="fancybox fancybox.iframe button" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank">Vista previa</a>
+			<?php
+			}
+			?>
 		</span>
 	</div>
 </div>
-<div class="container-page-edit">
-	<section class="seccion">
+<div class="content-edit"> <!-- antes container-page-edit -->
+	<section class="seccion" style="overflow:initial">
 		<div class="seccion-body">
 			<div class="wrap-input">
 				<label>Titulo de la página</label>
-				<input required placeholder="Escribe el titulo de la página aquí" class="ancho" name="titulo" type="text" id="titulo" required value="<?php if(isset($row)) echo $row['titulo'] ?>" />
+				<input placeholder="Escribe el titulo de la página aquí" class="ancho" name="titulo" type="text" id="titulo" required value="<?php if(isset($row)) echo $row['titulo'] ?>" />
 				<input type="hidden" name="pagina_id" id="pagina_id" value="<?php if(isset($row)) echo $row['id']; else echo "0" ?>" />
 				<input type="hidden" name="mode" id="mode" value="<?= $mode ?>" />
 			</div>
@@ -33,7 +40,7 @@ if(isset($_GET["id"])){
 				<span class="info">
 					Por defecto se establece como menu principal el establecido en las opciones generales. Sin embargo si desea especificar para esta pagina un menu diferente puede cambiarlo desde aqui. Por Ej. para una web que maneje contenido en diferentes idiomas.
 				</span>
-				<select id="menu" name="menu">
+				<select id="menu_page" name="menu">
 					<?php
 					$result = $objDataBase->Ejecutar("SELECT * FROM menus");
 					$menu_id = isset($row) ? $row['menu_id'] : 0;
@@ -55,6 +62,10 @@ if(isset($_GET["id"])){
 			</label>
 			<label class="editor-main-title"><i class="fa fa-th fa-lg" aria-hidden="true"></i> Estructura</label>
 			<div class="estructure">
+			<!--<?php $array_content = json_decode($row['contenido'], true);
+			echo "<pre>";
+			print_r($array_content);
+			echo "</pre>"; ?> -->
 				<script>
 				$(document).ready(function() {
 				  $( ".cols-html" ).sortable({
@@ -80,23 +91,9 @@ if(isset($_GET["id"])){
 								<a href="#" class="showEditBox">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 								</a>
-						    <ul class="box-options">
-						      <li>
-						        <a href="#">
-											<i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
-										</a>
-						        <ul class="box-options-list">
-						          <li>
-						            <a class="addSlide" href="#">Slide</a>
-						          </li>
-						          <li>
-						            <a class="addHtml" href="#">HTML</a>
-						          </li>
-											<li>
-						            <a class="addHtml" href="#">Publicaciones (horizontal)</a>
-						          </li>
-						        </ul>
-						      </li>
+								<a href="#" class="addNewCol">
+						      <i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
+						    </a>
 						    <a class="toggle" href="#">
 						      <span class="arrow-up">&#9650;</span>
 						      <span class="arrow-down">&#9660;</span>
@@ -110,6 +107,10 @@ if(isset($_GET["id"])){
 									<?php
 								  $array_cols =$box['columns'];
 								  foreach ($array_cols as $col) {
+										if(isset($col['col_save_id']) && $col['col_save_id']!="0"){
+											$block_id = $col['col_save_id'];
+											include 'col-custom.php'; //
+										}else{
 										?>
 										<li id="<?= $col['col_id'] ?>" class="col" data-id="<?= $col['col_id'] ?>" data-type="<?= $col['col_type'] ?>" data-values='<?= json_encode ($col['col_values']) ?>' data-class="<?= $col['col_css'] ?>">
 										<?php
@@ -117,7 +118,7 @@ if(isset($_GET["id"])){
 								      case 'html':
 											?>
 											<span class="col-head">
-												<strong>HTML</strong>
+												<strong>HTML - Editor: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
 												<a class="close-column" href="#">
 													<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 												</a>
@@ -128,34 +129,36 @@ if(isset($_GET["id"])){
 												<input type="hidden" class="css_class" id="class_<?= $col['col_id'] ?>" value="<?= $col['col_css'] ?>" />
 											</div>
 											<?php
+												break;
+											case 'htmlraw':
+											?>
+											<span class="col-head">
+												<strong>HTML - Código: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
+												<a class="close-column" href="#">
+													<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+												</a>
+											</span>
+											<div class="col-box-edit">
+												<div class="box-edit box-edit-html" id="box-edit<?= $col['col_id'] ?>"><?= html_entity_decode($col['col_content']) ?></div>
+												<div class="box-edit-tool"><a href="#" class="showEditHtmlRaw">Editar</a></div>
+												<input type="hidden" class="css_class" id="class_<?= $col['col_id'] ?>" value="<?= $col['col_css'] ?>" />
+											</div>
+											<?php
 								        break;
 								      case 'slide':
 											?>
 											<span class="col-head">
-												<strong>Slide</strong>
+												<strong>Slide: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
 												<a class="close-column" href="#" title="Eliminar">
 													<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 												</a>
 											</span>
 											<div class="col-box-edit">
 												<div class="box-edit">
-													<label>
-													  <span>Seleccionar galería</span>
-													  <select class="slide_name" name="slides">
-													    <option value="0">Seleccionar</option>
-													    <?php
-															$q = $objDataBase->Ejecutar("SELECT * FROM albums");
-													    while($r = $q->fetch_assoc()):
-													    ?>
-													    <option <?php if($col['col_content']==$r['id']) echo " selected" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
-													    <?php
-													    endwhile;
-													    ?>
-													  </select>
-													</label>
-													<label> Class CSS:
-														<input type="text" id="class_<?= $col['col_id'] ?>" value="<?= $col['col_css'] ?>" />
-													</label>
+													<div class="box-edit-html" id="box-edit<?= $col['col_id'] ?>">
+														<p style="text-align:center;max-width:100%"><img src="core/pages2/img/slider.png" alt="post" /></p>
+													</div>
+													<div class="box-edit-tool"><a href="#" class="showEditSlide">Editar</a></div>
 												</div>
 											</div>
 											<?php
@@ -163,7 +166,7 @@ if(isset($_GET["id"])){
 											case 'post1':
 											?>
 											<span class="col-head">
-												<strong>Publicaciones</strong>
+												<strong>Publicaciones: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
 												<a class="close-column" href="#" title="Eliminar">
 													<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 												</a>
@@ -182,6 +185,7 @@ if(isset($_GET["id"])){
 										?>
 										</li>
 										<?php
+										}
 								  }?>
 						    </ul>
 						  </div>
@@ -200,8 +204,52 @@ if(isset($_GET["id"])){
 		</div>
 	</section>
 </div>
+<div id="sidebar">
+	<!-- SECCION SUBIR IMAGENES -->
+	<section id="post-sub" class="seccion">
+		<div class="seccion-header">
+			<h3>Subir imagenes</h3>
+			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+		</div>
+		<div class="seccion-body">
+		<?php
+		include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
+		?>
+		</div>
+	</section>
+	<!-- EDITAR ESTILOS ADICIONALES -->
+	<section class="seccion">
+		<div class="seccion-header">
+			<h3>CSS adicionales</h3>
+			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+		</div>
+		<div class="seccion-body">
+			<a href="#"id="editCSSFile">Editar CSS adicionales</a>
+		</div>
+	</section>
+	<!-- EDITAR header - footer -->
+	<section class="seccion">
+		<div class="seccion-header">
+			<h3>Cabecera y pie de página</h3>
+			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+		</div>
+		<div class="seccion-body">
+			<label>
+				<input type="checkbox" value="1" name="header"> <span>Incluir Cabecera de la plantilla</span>
+			</label>
+			<label>
+				<input type="checkbox" value="1" name="footer"> <span>Incluir Pie de página de la plantilla</span>
+			</label>
+		</div>
+	</section>
+</div>
+
 <?php
 include_once 'modal-box-config.php';
 include_once 'modal-html-config.php';
+include_once 'modal-html-raw-config.php';
 include_once 'modal-post1-config.php';
+include_once 'modal-slide-config.php';
+include_once 'modal-css-edit.php';
+include_once 'modal-save-block.php';
 ?>

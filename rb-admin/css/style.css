@@ -3,7 +3,6 @@
 	padding:0;
 	margin:0;
 	box-sizing: border-box;
-	font-family:light;
 	color:#565656;
 }
 code{
@@ -19,6 +18,7 @@ a{
 }
 body{
 	background-color:#F7F7F9;
+	font-family:light;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -45,7 +45,7 @@ p{
     max-width: 400px;
     position: fixed;
     background-color: #FFFDD6;
-    z-index: 3;
+    z-index: 4;
     box-shadow: 1px 1px 20px gray;
     padding: 20px 30px;
     color: gray;
@@ -57,7 +57,7 @@ p{
 	top: 52px;
     position: fixed;
     opacity: 1;
-    z-index: 2;
+    z-index: 3;
     width: calc(100% - 160px);
     background-color: #F7F7F9;
     padding: 6px 10px!important;
@@ -671,7 +671,7 @@ ul#grid{
 }
 /* MENU EDITION STYLES */
 .menu-edition{
-	margin: 20px 15px;
+	margin: 10px 0;
     border: 2px dashed #DEDEDE;
     padding: 10px;
     min-height: 200px;
@@ -948,4 +948,86 @@ ul.options-list li{
 }
 .button-secondary {
   background: rgb(66, 184, 221);
+}
+/* SPLIT BUTTON */
+.x-split-button {
+  position: relative;
+  text-align: left;
+	margin-right: 5px;
+}
+.x-split-button button:first-child{
+	border-top-right-radius: 0!important;
+	border-bottom-right-radius: 0!important;
+	border-right: 1px solid #00a06f!important;
+}
+.x-split-button .x-button-drop{
+	border-top-left-radius: 0!important;
+	border-bottom-left-radius: 0!important;
+	padding: 4px 5px!important;
+}
+.x-button {
+  position: relative;
+
+  float: left;
+  outline: none;
+}
+
+.x-button:hover {
+  cursor: pointer;
+  background: #E0E0E0;
+}
+
+.x-button:active {
+  background: #D3D3D3;
+}
+
+.x-button.x-button-drop {
+  border-left: 0;
+
+}
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed #fff;
+  border-top: 4px solid\9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+.open > .x-button-drop-menu {
+  display: block;
+}
+
+.x-button-drop-menu {
+	position: absolute;
+	top: 22px;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	font-size: 14px;
+	list-style: none;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #E0E0E0;
+	box-shadow: 1px 1px 6px #E0E0E0;
+	border-radius: 4px;
+}
+
+.x-button-drop-menu li a {
+  display: block;
+  padding: 6px 20px;
+  clear: both;
+  font-family: arial;
+  color: #444;
+  text-decoration: none;
+}
+
+.x-button-drop-menu li a:hover {
+  background: #f9f9f9;
 }

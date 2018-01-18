@@ -571,11 +571,9 @@ function rb_get_url_image($article_id, $size = "m", $section = "portada", $showI
 		$dir = "";
 	endif;
 
-	//if($objArticulo->SelectObject( $section, $article_id )){
 	if( rb_select_object_publication( $section, $article_id ) ){
-		//$file = $objArticulo->SelectObject( $section, $article_id );
 		$file = rb_select_object_publication( $section, $article_id );
-		$url_img = $url.$dir_media."/gallery/".$dir.$file;
+		$url_img = $url.$dir_media."/gallery/".$dir.rawurlencode($file); //rawurlencode - convierte espacio en %20 para ubicarlos en el servidor
 		$path_img = ABSPATH.$dir_media."/gallery/".$dir.$file;
 		if(file_exists ($path_img)):
 			return $url_img;
@@ -725,16 +723,26 @@ function rb_path_menu($menu_id){
 	rb_path_menu($Menu['menu_id']);
 	echo $Menu['nombre']."/";
 }
-function rb_display_menu($mainmenu_id, $parent=0, $level=0, $item_selected="") { // ANTES display_children
+//function rb_display_menu($mainmenu_id, $parent=0, $level=0, $item_selected="") { // ANTES display_childrenv- linea original
+function rb_display_menu($mainmenu_id, $params = array()) {
+  //$button_show = array_key_exists('params', $params) ? $params['button_show'] : 0;
+  $button_close = array_key_exists('button_close', $params) ? $params['button_close'] : false;
+  $parent = array_key_exists('parent', $params) ? $params['parent'] : 0;
+  $level = array_key_exists('level', $params) ? $params['level'] : 0;
+  $item_selected = array_key_exists('item_selected', $params) ? $params['item_selected'] : "";
+
   global $objDataBase;
   $result = $objDataBase->Ejecutar("SELECT a.style, a.id, a.nombre, a.url, a.tipo, Deriv1.Count FROM `menus_items` a
     LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM `menus_items` GROUP BY menu_id) Deriv1 ON a.id = Deriv1.menu_id
     WHERE a.menu_id=". $parent." AND mainmenu_id=".$mainmenu_id. " ORDER BY id");
-  $style_menu = " class='rd-navbar-nav' ";
+  $style_menu = " class='navbar-nav' ";
   $style_parent = "";
 
+  /*if($button_show==1){
+    echo '<a href="#" class="menu_show">Show Menu</a>';
+  }*/
   if($parent ==0 && $level ==1) $style_parent = " class=\"parent\"";
-	if($parent >0 && $level > 0) $style_menu = " class=\"rd-navbar-dropdown\"";
+	if($parent >0 && $level > 0) $style_menu = " class=\"navbar-dropdown\"";
     echo "\n<ul".$style_menu.">\n";
     while ($row = $result->fetch_assoc()): //mysql_fetch_assoc($result)
       $tipo = trim($row['tipo']);
@@ -744,13 +752,16 @@ function rb_display_menu($mainmenu_id, $parent=0, $level=0, $item_selected="") {
       if ($row['Count'] > 0) {
         if($level > 1 ) $style_parent = " class=\"parent\"";
         echo "<li id='".$id."-li'><a id='".$id."' class='".$id."' ".$style_parent.$style_selected." href='" . rb_url_link($tipo, $row['url'])  . "'><span>" . $row['nombre'] . "</span></a>";
-        rb_display_menu($mainmenu_id, $row['id'], $level + 1, $item_selected);
+        rb_display_menu($mainmenu_id, array('parent' => $row['id'], 'level' => $level + 1, 'item_selected' => $item_selected) );
         echo "</li>\n";
         $style_parent = "";
       }elseif ($row['Count']==0) {
         echo "<li id='".$id."-li'><a id='".$id."' class='".$id."' ".$style_parent.$style_selected." href='" .rb_url_link($tipo, $row['url']) . "'><span>" . $row['nombre'] . "</span></a></li>\n";
       }//else;
     endwhile;
+    if($button_close){
+      echo '<li class="menu_close"><a href="#">Cerrar</a></li>';
+    }
     echo "</ul>\n";
 }
 
@@ -962,9 +973,6 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
   global $objDataBase;
 	$gallery_html = "";
 	if($id>0){
-		/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-paginas.class.php");
-		$objPagina = new Paginas;*/
-
 		$qp  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
 		$r = $qp->fetch_assoc();
 		if($r['galeria_id']>0):
@@ -985,6 +993,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
       "/\[RUTA_SITIO]/is",
       "/\[RUTA_TEMA]/is",
       "/\[YOUTUBE=\"(.*?)\"]/is",
+      "/\[MENU id=\"(.*?)\"]/e",
       "/\[GALERIA]/is",
       "/\[FORMULARIO]/is",
       /*"/\[FORMULARIO_SERVICIO nombre=\"(.*?)\"]/is",*/
@@ -995,6 +1004,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
       G_SERVER.'/',
       G_URLTHEME.'/',
       '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
+      "rb_display_menu('$1')",
       $gallery_html,
       htmlspecialchars_decode(G_FORM),
       /*rb_showform('$1'),*/
@@ -1324,7 +1334,7 @@ function rb_menu_panel(){
  * 		@$email_content: Contenido del correo
  * 		@$native: Por defecto true, si usa libreria estandar del PHP
  * */
-function rb_mailer($recipient, $subject, $email_content, $native = true, $email_headers_name="", $email_headers_mail=""){
+function rb_mailer($recipient, $subject, $email_content, $native = true, $email_headers_name="", $email_headers_mail=""){ // Verificar funcionamiento
 	//global $objDataBase;
 	// Info de quien envia
 	//require_once( dirname( dirname(__FILE__) ) ."/global.php");
@@ -1640,5 +1650,26 @@ function rb_sidebar($add_sidebar = array()){
     include_once ABSPATH."rb-temas/".G_ESTILO."/".$block;
   }*/
   include_once ABSPATH."rb-temas/".G_ESTILO."/sidebar.php";
+}
+
+function rb_validar_mail($pMail) { // Antes validar_mail, solo usado en registro de usuario
+  if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
+		return true;
+	}else{
+		return false;
+	}
+}
+
+/*
+* Guarda/Actualiza contenido de un archivo. 11-01-18
+*/
+function rb_write_file($file_name, $file_content){
+  $handle = fopen($file_name, 'w') or die('Cannot open file:  '.$file_name);
+  if(fwrite($handle, $file_content)):
+  	fclose($handle);
+  	return true;
+  else:
+    return false;
+  endif;
 }
 ?>

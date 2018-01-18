@@ -26,8 +26,9 @@ function travel_json($matriz, $padre_id = 0, $nivel = 0){  // De array a base de
 		$menu_nivel = $nivel+1;
 		$menu_tipo = $value['type'];
 		$menu_estilo = $value['style'];
+		$menu_img = $value['img'];
 
-		$response = $objDataBase->Insertar("INSERT INTO menus_items (nombre_enlace, nombre, url, menu_id, nivel, mainmenu_id, tipo, style) VALUES ('$menu_nombre_enlace', '$menu_nombre', '$menu_url', $padre_id, $nivel, $menu_menuid, '$menu_tipo', '$menu_estilo')");
+		$response = $objDataBase->Insertar("INSERT INTO menus_items (nombre_enlace, nombre, url, menu_id, nivel, mainmenu_id, tipo, style, img) VALUES ('$menu_nombre_enlace', '$menu_nombre', '$menu_url', $padre_id, $nivel, $menu_menuid, '$menu_tipo', '$menu_estilo', '$menu_img')");
 		if($response['result']) $nuevo_padre = $response['insert_id'];
 		else die("Ocurrio error");
 

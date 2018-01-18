@@ -176,6 +176,13 @@ include_once("tinymce.module.small.php");
       <input class="submit" name="guardar" type="submit" value="Guardar" />
       <input class="submit" name="guardar_volver" type="submit" value="Guardar y Volver" />
       <a href="<?= G_SERVER ?>/rb-admin/?pag=art"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+      <?php
+      if(isset($_GET["id"])){
+        ?>
+        <a class="button fancybox fancybox.iframe" href="<?= G_SERVER ?>/?art=<?= $row['id'] ?>" target="_blank">Vista Preliminar</a>
+        <?php
+      }
+      ?>
       <?= $new_button ?>
       <a id="edit-config" class="edit-config" href="#">Funciones adicionales</a>
     </div>

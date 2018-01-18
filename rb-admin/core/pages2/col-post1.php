@@ -2,9 +2,9 @@
 if(!isset($_GET['temp_id'])) $temp_id = 1;
 else $temp_id = $_GET['temp_id'];
 ?>
-<li id="<?= $temp_id ?>" class="col" data-id="<?= $temp_id ?>" data-type="post1" data-class="" data-values='{"cat":0,"count":3,"ord":"DESC", "tit":"","typ":0}'>
+<li id="<?= $temp_id ?>" class="col" data-id="<?= $temp_id ?>" data-type="post1" data-class="" data-values='{"cat":0,"count":3,"ord":"DESC", "tit":"","typ":0}' data-saved-id="0">
 	<span class="col-head">
-		<strong>Publicaciones</strong>
+		<strong>Publicaciones: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
 		<a class="close-column" href="#" title="Eliminar">
 			<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 		</a>

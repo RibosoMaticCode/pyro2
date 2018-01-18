@@ -23,20 +23,22 @@ $menu_asincrono = true;
 
 		// Cambiar titulo del item
 		$("#subitems").on("keyup", ".menu_title", function (event) {
-		   	//console.log( $(this).val() );
 		   	$(this).closest("li").find(".item-title").html( $(this).val() );
 		   	$(this).closest("li").attr("data-title", $(this).val());
 		});
 
 		// Cambiar estilo del item
 		$("#subitems").on("keyup", ".menu_style", function (event) {
-		   	//console.log( $(this).val() );
 		  	$(this).closest("li").attr("data-style", $(this).val());
+		});
+
+		// Cambiar img del item
+		$("#subitems").on("keyup", ".menu_img", function (event) {
+		  	$(this).closest("li").attr("data-img", $(this).val());
 		});
 
 		// Cambiar estilo del url
 		$("#subitems").on("keyup", ".menu_url", function (event) {
-		   	//console.log( $(this).val() );
 		  	$(this).closest("li").attr("data-url", $(this).val());
 		});
 
@@ -59,11 +61,12 @@ $menu_asincrono = true;
 		        //node.attr()
 		        var retVal = {
 		        	"id": node.attr('data-id'),
-		            "title": node.attr('data-title'),
-		            "style": node.attr('data-style'),
-		            "url": node.attr('data-url'),
-		            "menumain": node.attr('data-menumain'),
-		            "type": node.attr('data-type')
+		          "title": node.attr('data-title'),
+		          "style": node.attr('data-style'),
+							"img": node.attr('data-img'),
+		          "url": node.attr('data-url'),
+		          "menumain": node.attr('data-menumain'),
+		          "type": node.attr('data-type')
 		        };
 		        // Busca en la lista si hay una clase .hidden con elemento li.
 		        node.find("> .sortable > li").each(function() {
@@ -80,8 +83,8 @@ $menu_asincrono = true;
 			$(".menu-edition > ul > li").each(function() {
 				out.push(processOneLi($(this)));
 			});
-
 			console.log(JSON.stringify(out));
+			//return false;
 			$.ajax({
 				type: 'POST',
 				url: '<?= G_SERVER ?>/rb-admin/core/menu/items-save.php',
@@ -91,7 +94,13 @@ $menu_asincrono = true;
 				dataType: 'json'
 			})
 			.done( function (data){
-				window.location.href = '<?=  G_SERVER ?>/rb-admin/index.php?pag=menu&id=<?= $mainmenu_id ?>&m=ok';
+				console.log(data);
+				if(data==1){
+					notify("Actualizando menu");
+					window.location.href = '<?=  G_SERVER ?>/rb-admin/index.php?pag=menu&id=<?= $mainmenu_id ?>&m=ok';
+				}else{
+					notify("Ocurrio un error");
+				}
 			});
 		});
 
@@ -196,21 +205,38 @@ $menu_asincrono = true;
 				});
 
 				function form_html(type, title, last_item, url){
-					var item = '<li class="item" data-id="item'+last_item+'" data-title="'+title+'" data-url="'+url+'" data-menumain="<?= $mainmenu_id ?>" data-type="'+type+'" data-style="">';
-						item += '<div class="header"><span class="item-title">'+title+'</span></div>';
+					switch(type) {
+						case 'per':
+							type_det = "Personalizado";
+						break;
+						case 'pag':
+							type_det = "Pagina";
+						break;
+						case 'art':
+							type_det = "Publicacion de Blog";
+						break;
+						case 'cat':
+							type_det = "Categoria de Blog";
+						break;
+					}
+					var item = '<li class="item" data-id="item'+last_item+'" data-title="'+title+'" data-url="'+url+'" data-menumain="<?= $mainmenu_id ?>" data-type="'+type+'" data-style="" data-img="">';
+						item += '<div class="header"><span class="item-title">'+title+'</span> ['+type_det+']</div>';
 						item += '<a class="more" href="#"><span class="arrow-up" style="display: none;">&#9650;</span><span class="arrow-down">&#9660;</span></a>';
 						item += '';
 
 						item += '<div class="item-body" style="display: none">';
 						item += '	<label title="Titulo del Item" for="nombre">Titulo del Item:';
-						item += ' 		<input id="item-menu-name-'+last_item+'" required autocomplete="off"  name="nombre" class="menu_title" type="text" value="'+title+'" required />';
+						item += ' 		<input id="item-menu-name-'+last_item+'" autocomplete="off"  name="nombre" class="menu_title" type="text" value="'+title+'" required />';
                         item += '	</label>';
                         if(type == "per"){
                         	item += '	<label title="URL" for="nombre">URL (incluir http://):';
-							item += ' 		<input id="item-menu-url-'+last_item+'" required autocomplete="off"  name="url" class="menu_url" type="text" value="'+url+'" required />';
+							item += ' 		<input id="item-menu-url-'+last_item+'" autocomplete="off"  name="url" class="menu_url" type="text" value="'+url+'" required />';
                         	item += '	</label>';
                         }
-	                    item += '   <label>Estilos CSS (id):';
+												item += '	<label>URL de imagen:';
+												item += ' 		<input id="item-menu-img-'+last_item+'" autocomplete="off"  name="img" class="menu_img" type="text" />';
+						                        item += '	</label>';
+	                    item += '   <label>Clase CSS (se aplica a los subitems):';
                        	item += '		<input id="item-menu-css-'+last_item+'" name="estilo" class="menu_style" type="text" value="" />';
                        	item += '	</label>';
                        	item += '<button class="delete">Eliminar</button>';

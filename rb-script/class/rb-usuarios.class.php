@@ -8,13 +8,13 @@ class Usuarios{
  		$this->con=new Conector;
 	}
 
-	function Insertar($campos){
+	/*function Insertar($campos){
 	   //if($this->con->conectar()==true){
 		$conexion = $this->con->conectar();
 		$result = $conexion->query("INSERT INTO usuarios (nickname, password, nombres, apellidos, ciudad, pais, `telefono-movil`, `telefono-fijo`, correo, direccion, tipo, fecharegistro, fecha_activar, ultimoacceso, sexo,photo_id) VALUES ('".$campos[0]."', '".md5($campos[1])."', '".$campos[2]."', '".$campos[3]."', '".$campos[4]."', '".$campos[5]."', '".$campos[6]."', '".$campos[7]."', '".$campos[8]."', '".$campos[9]."', ".$campos[10].", NOW(), ADDDATE(NOW(), INTERVAL 2 DAY), NOW(), '".$campos[11]."', ".$campos[12].")");
 		return $result;
 	   //}
-	}
+	}*/
 
 	function Editar($campos,$id){
 		$conexion = $this->con->conectar();

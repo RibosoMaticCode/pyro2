@@ -31,7 +31,7 @@ class DataBase{
 		if($conexion->query($q)){
 			$resultArray = array('result' => true, 'insert_id' => $conexion->insert_id );
 		}else{
-			$resultArray = array('result' => false, 'insert_id' => $conexion->insert_id, 'error' => $conexion->connect_errno.$conexion->connect_error );
+			$resultArray = array('result' => false, 'insert_id' => $conexion->insert_id, 'error' => $conexion->connect_errno.$conexion->error );
 		}
 		return $resultArray;
 	}
@@ -46,7 +46,7 @@ class DataBase{
 		if($conexion->query($q)){
 			$resultArray = array('result' => true, 'affected_rows' => $conexion->affected_rows );
 		}else{
-			$resultArray = array('result' => false, 'affected_rows' => $conexion->affected_rows, 'error' => $conexion->connect_errno.$conexion->connect_error );
+			$resultArray = array('result' => false, 'affected_rows' => $conexion->affected_rows, 'error' => $conexion->connect_errno.$conexion->error );
 		}
 		return $resultArray;
 	}
@@ -61,8 +61,72 @@ class DataBase{
 		return $conexion->query("UPDATE `$tabla` SET `$campo`=$valor WHERE id=$id");
 	}
 
-	function Insert($table, $data){ // con array - key - value - comming soon
+	function Insert($table, $data){ // con array - key - value
+		$conexion = $this->Conexion();
+		// Columnas
+		$columns = "(";
+		$coma = "";
+		foreach ($data as $key => $value) {
+			$columns .= $coma.$key;
+			$coma = ",";
+		}
+		$columns .= ")";
+		//valores
+		$values = "(";
+		$coma = "";
+		foreach ($data as $key => $value) {
+			$values .= $coma."'".$value."'";
+			$coma = " ,";
+		}
+		$values .= ")";
+		$sentence = "INSERT INTO $table $columns VALUES $values";
+		//echo $sentence;
+		if($conexion->query($sentence)){
+			$resultArray = array('result' => true, 'insert_id' => $conexion->insert_id );
+		}else{
+			$resultArray = array('result' => false, 'error' => $conexion->connect_errno.":".$conexion->error );
+		}
+		return $resultArray;
+	}
 
+	function Update($table, $data, $condition){ // con array - key - value
+		$conexion = $this->Conexion();
+		// Cols to edit
+		$coma = "";
+		$cols_and_vals = "";
+		foreach ($data as $key => $value) {
+			$cols_and_vals .= $coma.$key." = '".$value."'";
+			$coma = ", ";
+		}
+		// Where condition
+		$and = "";
+		$condition_cols_vals = "";
+		foreach ($condition as $key => $value) {
+			$condition_cols_vals .= $and.$key." = '".$value."'";
+			$and = " AND ";
+		}
+
+		$sentence = "UPDATE $table SET $cols_and_vals WHERE $condition_cols_vals";
+		//echo $sentence;
+		if($conexion->query($sentence)){
+			$resultArray = array('result' => true, 'affected_rows' => $conexion->affected_rows );
+		}else{
+			$resultArray = array('result' => false, 'error' => $conexion->connect_errno.":".$conexion->error );
+		}
+		return $resultArray;
+	}
+
+	function Search($data_to_search, $table, $columns){
+		// Busqueda basica
+		// Where condition
+		$conexion = $this->Conexion();
+		$and = "";
+		$cols_vals = "";
+		foreach ($columns as $key) {
+			$cols_vals .= $and.$key." LIKE '%".$data_to_search."%'";
+			$and = " OR ";
+		}
+		return $conexion->query("SELECT * FROM $table WHERE $cols_vals");
 	}
 }
 $objDataBase = new DataBase;

@@ -47,7 +47,7 @@ if(isset($_GET['sec'])){
 				$urlreload='../rb-admin/index.php?pag=art';
 				header('Location: '.$urlreload);
 			else:
-				echo "Error al duplicar dato.";
+				echo "Error al intentar duplicar dato.";
 			endif;
 		break;
 
@@ -64,6 +64,8 @@ if(isset($_GET['sec'])){
 			if( $objDataBase->Ejecutar( "INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, tags, contenido, sidebar, popup, galeria_id, addon, menu_id) VALUES ( NOW() ,'".$campos[0]."','".$campos[1]."',".$campos[2].",'".$campos[3]."','".$campos[4]."',".$campos[5].",".$campos[6].",".$campos[7].",'".$campos[8]."',".$campos[9].")" ) ):
 				$urlreload='../rb-admin/index.php?pag=pages';
 				header('Location: '.$urlreload);
+			else:
+				echo "Error al intentar duplicar.";
 			endif;
 		break;
 	}

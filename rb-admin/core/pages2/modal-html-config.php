@@ -5,7 +5,6 @@
 		<strong>Configuración del contenido</strong>
 	</div>
 	<div class="editor-body">
-		<script type="text/javascript" src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
 			<div class="cols-container">
 				<div class="cols-6-md spacing-right">
 					<label>Class CSS
@@ -29,6 +28,7 @@
 		<input type="hidden" id="control_id" value="" />
 		<input type="hidden" id="control_edit_id" value="" />
 	</div>
+	<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
 	<script>
 	$(function() {
 		tinymce.init({
@@ -38,7 +38,7 @@
 			convert_urls : false,
 			language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',
 			height: 300,
-			//forced_root_block : false,
+			forced_root_block : false,
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor textcolor',
     		'searchreplace visualblocks code fullscreen table',

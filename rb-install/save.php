@@ -6,7 +6,7 @@
 $directory = str_replace('/rb-install/save.php', '', $_SERVER['SCRIPT_NAME']); //obteniendo sub directorio de instalacion
 $opciones_valores = array(
 	"nombresitio" => "Nombre Sitio",
-	"descripcion" => "Descripcion del sitio",
+	"descripcion" => "Gestionado por Pyro CMS",
 	"direccion_url" => "http://",
 	"host" => $_SERVER['HTTP_HOST'],
 	"meta_keywords" => "",

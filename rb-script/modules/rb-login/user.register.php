@@ -10,9 +10,9 @@
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
-require(ABSPATH."global.php");
-require(ABSPATH."rb-script/funciones.php");
-require(ABSPATH."rb-script/class/rb-usuarios.class.php");
+require_once(ABSPATH."global.php");
+require_once(ABSPATH."rb-script/funciones.php");
+require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
 
 // Array de respuesta
 $rspta = array();
@@ -23,10 +23,11 @@ if(isset($_POST)){
 		if($_POST['response']=="ajax") $response = "ajax";
 	endif;
 
-    // VALIDAR DATOS
+  // VALIDAR DATOS
 	//$user=(empty($_POST['usuario']) ? die('[!] Falta Nombre de Usuario') : $_POST['usuario']);
-	$mail = (empty($_POST['usuario']) ? die('[!] Falta Nombre de Usuario') : $_POST['usuario']);
-	$nm = $mail;
+	$mail = (empty($_POST['usuario']) ? die('[!] Falta Correo electronico') : $_POST['usuario']);
+	$nm = (empty($_POST['nombres']) ? die('[!] Falta Nombres') : $_POST['nombres']);
+	//$nm = $mail;
 	$cn1=(empty($_POST['contrasena1']) ? die('[!] Falta Contraseña') : $_POST['contrasena1']);
 	$cn2=(empty($_POST['contrasena2']) ? die('[!] Falta Repetir la contraseña') : $_POST['contrasena2']);
 
@@ -59,7 +60,7 @@ if(isset($_POST)){
 	endif;
 
 	// VALIDANDO ESTRUCTURA DEL CORREO ELECTRONICO
-	if(!validar_mail($mail)):
+	if(!rb_validar_mail($mail)):
 		$msg_error = "Ingrese correctamente su correo";
 		if($response=="ajax"):
 			$rspta = Array(
@@ -77,7 +78,7 @@ if(isset($_POST)){
 
 	// VALIDAR CORREO EXISTENTE DEL USUARIO
 	if($objUsuario->existe('correo',$mail)>0):
-		$qq = $objUsuario->Ejecutar("select access from usuarios where correo='".$mail."'");
+		$qq = $objDataBase->Ejecutar("select access from usuarios where correo='".$mail."'");
 		$rr = mysql_fetch_array($qq);
 		if($rr['access']=='fb'):
 			$msg_error = "El correo electronico esta registrado con tu cuenta de Facebook, logueate con esa cuenta";
@@ -107,28 +108,35 @@ if(isset($_POST)){
 	// SI TODAS LAS VALIDACIONES PASA CON EXITO, GENERAR NICKNAME EN BASE A SU CORREO.
 	$array_mail = explode("@", $mail);
 	$user = $array_mail[0];
-	$q = $objUsuario->Ejecutar("SELECT nickname FROM usuarios WHERE nickname LIKE '%$user%'");
+	$q = $objDataBase->Ejecutar("SELECT nickname FROM usuarios WHERE nickname LIKE '%$user%'");
 	$nums = $q->num_rows;
 	if($nums>0):
 		$user = $user."_".$nums;
 	endif;
 
 	// OTROS VALORES POR DEFECTO
-	if($objUsuario->Insertar(array($user, $cn1, $nm, "", "", "", "", "", $mail, "", "3", "",0,"native",""))){
-		$last_id = mysql_insert_id();
+	//$campos = array($nickname, $pwd, $nm, $ap, $cn, $cr, $tm, $tf, $mail, $di, $tipo, $sex, $photo);
+	$campos = array($user, $cn1, $nm, "", "", "", "", "", $mail, "", "3", "",0);
+	$q = "INSERT INTO usuarios (nickname, password, nombres, apellidos, ciudad, pais, `telefono-movil`, `telefono-fijo`, correo, direccion, tipo, fecharegistro, fecha_activar, ultimoacceso, sexo,photo_id)
+	VALUES ('".$campos[0]."', '".md5($campos[1])."', '".$campos[2]."', '".$campos[3]."', '".$campos[4]."', '".$campos[5]."', '".$campos[6]."', '".$campos[7]."', '".$campos[8]."', '".$campos[9]."', ".$campos[10].", NOW(), ADDDATE(NOW(), INTERVAL 2 DAY), NOW(), '".$campos[11]."', ".$campos[12].")";
+	$result = $objDataBase->Insertar($q);
+  if($result){
+
+    $last_id=$result['insert_id'];
+	/*if($objUsuario->Insertar(array())){
+		$last_id = mysql_insert_id();*/
 
 		// ENVIANDO EMAIL A ADMINISTRADOR - AVISO DE NUEVO USUARIO
-		$q = $objUsuario->Ejecutar("select * from usuarios where nickname='admin'");
-		$r = $->fetch_assoc();
+		$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE nickname='admin'");
+		$r = $q->fetch_assoc();
 		$mail_admin = $r['correo'];
 		//$recipient = $mail_admin;
 		$recipient = trim(G_MAILS);
+    // Set the email subject.
+    $subject = trim(G_TITULO) ." - Usuario Nuevo";
 
-        // Set the email subject.
-        $subject = trim(G_TITULO) ." - Usuario Nuevo";
-
-        // Build the email content.
-        $email_content = "Nombres: <strong>".$nm."</strong><br />";
+    // Build the email content.
+    $email_content = "Nombres: <strong>".$nm."</strong><br />";
 		$email_content .= "E-mail: <strong>".$mail."</strong><br /><br />";
 		if(G_USERACTIVE==2):
 			$email_content .= "Mensaje: Para activar al usuario tiene que ir al panel de administración <br />";
@@ -137,18 +145,18 @@ if(isset($_POST)){
 			$email_content .= "Mensaje: La activación del usuario, esta configurado para que lo haga el mismo usuario. Solo si el usuario tuviera problemas en activar, ustede puede activarlo desde el panel administrativo <br />";
 		elseif(G_USERACTIVE==0):
 			$email_content .= "Mensaje: Usuario nuevo registrado! La activación del usuario esta desactivada. Verifique que no se trate de spam o correo malicioso";
-			$objUsuario->EditarPorCampo_Int('activo',1,$last_id);
+			$objDataBase->EditarPorCampo_Int('activo',1,$last_id);
 		endif;
 		$email_content .= "Este correo se ha enviado a traves de la pagina web";
 
-        // Build the email headers.
-        $email_headers = "MIME-Version: 1.0" . "\r\n";
+    // Build the email headers.
+    $email_headers = "MIME-Version: 1.0" . "\r\n";
 		$email_headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $email_headers .= "From: $nm <$mail>";
+    $email_headers .= "From: $nm <$mail>";
 
-        // Send the email.
-        if (!mail($recipient, $subject, $email_content, $email_headers)):
-        	$msg_error = "Usuario creado, pero hay un error al enviar mail al servidor. Inicie sesión de todas formas";
+  	// Send the email.
+    if (!mail($recipient, $subject, $email_content, $email_headers)):
+      $msg_error = "Usuario creado, pero hay un error al enviar mail al servidor. Inicie sesión de todas formas";
 			if($response=="ajax"):
 				$rspta = Array(
 					"codigo" => "4",
@@ -187,12 +195,12 @@ if(isset($_POST)){
 
 		// Send the email.
 		if (mail($recipient2, $subject2, $email_content2, $email_headers2)):
-	       	// crear coockie para bloquear registro seguido
-	       	setcookie("_register", "no-register", time()+ 1800, "/"); // despues de 30 mins otro registro
+			// crear coockie para bloquear registro seguido
+	    setcookie("_register", "no-register", time()+ 1800, "/"); // despues de 30 mins otro registro
 
-	       	if(G_USERACTIVE==2): // Admin lo activa
-	       		$codigo = "0";
-	       		$msg_error = "Registro correcto, se te envio un correo de confirmación. El administrador revisará tu información y te notificaremos para que puedas acceder a nuestro sitio web";
+	   	if(G_USERACTIVE==2): // Admin lo activa
+				$codigo = "0";
+				$msg_error = "Registro correcto, se te envio un correo de confirmación. El administrador revisará tu información y te notificaremos para que puedas acceder a nuestro sitio web";
 			elseif(G_USERACTIVE==1): // usuario
 				$codigo = "0";
 				$msg_error = "Registro correcto. Pronto recibirás un correo para que puedas activar tu cuenta. Puedes iniciar sesión, pero debes activar tu cuenta para usar todas las caracterisitcas del sitio.";

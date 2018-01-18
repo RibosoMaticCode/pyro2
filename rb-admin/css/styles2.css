@@ -16,7 +16,7 @@
 	background-color:#fff;
 	position: fixed;
   width: 100%;
-  z-index: 2;
+  z-index: 3;
 }
 .logo{
 	background-color:#3A404B;
@@ -87,18 +87,18 @@
 }
 /* PIE DE PAGINA */
 #footer {
-	z-index: 1;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #ccc;
-    height:28px;
-    color: #999;
-    text-align: center;
-    background-color: #fff;
-    font-family: light;
-    font-size: .75em;
+	z-index: 2;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  height:28px;
+  color: #999;
+  text-align: center;
+  background-color: #fff;
+  font-family: light;
+  font-size: .75em;
 }
 
 /* POST - OPCIONES */
@@ -286,11 +286,11 @@
 #editor-html{
 	display: none;
 }*/
-.container-page-edit{
+/*.container-page-edit{
 	margin: 0 auto;
 	max-width: 1100px;
 	width: 100%
-}
+}*/
 .editor-window{
 	position: fixed;
 	width: 100%;
@@ -312,13 +312,17 @@
 .editor-body{
 	padding: 10px;
   background-color: #fbfbfb;
+  position: relative;
+  /*min-height: 300px;*/
 }
 .editor-body input[type="text"],
+.editor-body textarea,
 .editor-body select{
 	width: 100%;
 	padding: 4px 6px;
 	margin: 6px 0;
   border: 1px solid #9E9E9E;
+  word-break:break-all;
 }
 .editor-body label{
 	display: block;
@@ -343,8 +347,8 @@
 }
 .boxes-options li a{
 	padding: 5px 10px;
-    display: block;
-    background-color: #FBFBFB;
+  display: block;
+  background-color: #FBFBFB;
 }
 #boxes > li{
 	list-style-type:none;
@@ -433,6 +437,12 @@
   margin: 5px 2px!important;
   width: 100%;
 }
+.cols-html li.saved{
+  border-color: #607D8B;
+}
+.cols-html li.saved .col-head{
+  background-color: #607D8B
+}
 .box-body .box-edit-options{
 	padding: 50px 60px;
 	text-align: center;
@@ -470,6 +480,7 @@
   width: 100%;
   height: 100%;
   top:0;
+  left:0;
 }
 .box-edit-tool a{
   position: absolute;
@@ -524,7 +535,7 @@ ul.box-options-list{
 }
 
 /* PAGINA INICIAL DE WIDGET */
-.column {
+/*.column {
     width: 25%;
     float: left;
     padding-bottom: 100px;
@@ -552,6 +563,21 @@ ul.box-options-list{
     margin: 0 1em 1em 0;
     height: 50px;
   }
+
 .widgets{
 	padding: 0 10px;
+}*/
+/* NEW EDITOR MENUS */
+#items_menu li{
+  border: 1px gray dotted;
+  padding: 15px;
+  width: 80%;
+}
+
+#editor-css-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

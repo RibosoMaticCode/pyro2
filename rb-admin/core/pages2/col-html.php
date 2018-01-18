@@ -2,9 +2,9 @@
 if(!isset($_GET['temp_id'])) $temp_id = 1;
 else $temp_id = $_GET['temp_id'];
 ?>
-<li id="<?= $temp_id ?>" class="col" data-id="<?= $temp_id ?>" data-type="html" data-values="{}" data-class="">
+<li id="<?= $temp_id ?>" class="col" data-id="<?= $temp_id ?>" data-type="html" data-values="{}" data-class="" data-saved-id="0">
 	<span class="col-head">
-		<strong>HTML</strong>
+		<strong>HTML - Editor: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
 		<a class="close-column" href="#" title="Eliminar">
 			<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 		</a>

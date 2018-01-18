@@ -6,10 +6,8 @@ include 'islogged.php';
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta content="True" name="HandheldFriendly">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 <title><?= $rb_title ?></title>
-
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/style.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/styles2.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/cols.css" />
@@ -22,23 +20,23 @@ include 'islogged.php';
 <!-- modulos css -->
 <?= do_action('panel_header_css') ?>
 
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/func.js"></script>
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>
+<script src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.1.min.js"></script>
+<script src="<?= G_SERVER ?>/rb-admin/js/func.js"></script>
+<script src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>
 
 <!-- modulos js -->
 <?= do_action('panel_header_js') ?>
 
 <!-- Add fancyBox -->
 <link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/resource/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+<script src="<?= G_SERVER ?>/rb-admin/resource/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 <!-- jquery ui -->
 <link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.css">
 
 <!-- Funciones nuevas -->
-<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
+<script src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
 <script>
 	$(document).ready(function() {
 		$(".fancybox").fancybox();

@@ -42,7 +42,7 @@ while ($row = $consulta->fetch_assoc()):
           <a href="content.duplicate.php?id=<?= $row['id'] ?>&sec=art">Duplicar</a>
         </span>
         <span>
-          <a class="fancybox fancybox.iframe" href="<?= rb_url_link('art',$row['id']) ?>" target="_blank">Vista Preliminar</a>
+          <a class="fancybox fancybox.iframe" href="<?= G_SERVER ?>/?art=<?= $row['id'] ?>" target="_blank">Vista Preliminar</a>
         </span>
       </div>
     </td>

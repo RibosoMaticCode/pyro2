@@ -14,7 +14,7 @@ $catpadre = 0;
 $nivel = 0;
 
 $campos = array($nomOcul,$nomVis,$des,$catpadre,$nivel,0);
-$q = "INSERT INTO categorias (nombre_enlace, nombre, descripcion, categoria_id, nivel, photo_id) VALUES ('".$campos[0]."','".$campos[1]."','".$campos[2]."',".$campos[3].",".$campos[4].", $campos[5] )";
+$q = "INSERT INTO categorias (nombre_enlace, nombre, descripcion, categoria_id, nivel, photo_id, acceso) VALUES ('".$campos[0]."','".$campos[1]."','".$campos[2]."',".$campos[3].",".$campos[4].", ".$campos[5]." ,'public' )";
 $result = $objDataBase->Insertar( $q );
 if($result){
 	$ultimo_id= $result['insert_id'];

@@ -64,6 +64,11 @@ if(isset($_GET["id"])){
                 <section class="seccion">
                   <div class="seccion-body">
                     <a class="btn-primary" href="index.php?pag=imgnew&opc=nvo&album_id=<?php echo $row['id'] ?>">Subir imágenes</a>
+                    <label>Como usarlo en codigo PHP:
+                      <code style="font-size:.8em">
+                      &lt;?php<br />$fotos = rb_get_images_from_gallery(<?php echo $row['id'] ?>);<br />foreach ($fotos as $foto) {<br />?&gt;<br />&lt;a href="&lt;?= $foto['url_max'] ?&gt;" title="&lt;?= $foto['title'] ?&gt;"&gt;<br />&lt;img src="&lt;?= $foto['url_min'] ?&gt;"&gt;<br />&lt;/a&gt;<br />&lt;?php<br />}<br />?&gt;
+                    </code>
+                  </label>
                   </div>
                 </section>
               <?php endif ?>

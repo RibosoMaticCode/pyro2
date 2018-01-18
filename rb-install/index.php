@@ -1,7 +1,7 @@
 <?php
 $directory = str_replace('/rb-install/index.php', '', $_SERVER['SCRIPT_NAME']);
-$rm_url = "http://".$_SERVER['SERVER_NAME'];
-$rm_urlinstall = $rm_url.$directory;
+$rm_url = "http://".$_SERVER['SERVER_NAME'].$directory;
+$rm_urlinstall = $rm_url;
 ?>
 <!DOCTYPE html>
 <html lang="es">

@@ -42,18 +42,19 @@ else:
 				<?php else: ?>
 				<div class="frmlogin" id="msj-final" class="msg success" style="display:none;"></div>
 
-				<form id="frmRegister" class="frmlogin" action="<?= $rm_url ?>rb-script/modules/rb-login/user.register.php" method="post" name="login">
+				<form id="frmRegister" class="frmlogin frmlogin-abs" action="<?= $rm_url ?>rb-script/modules/rb-login/user.register.php" method="post" name="login">
 					<div class="cover-imagen-login" style="background:url('<?= rb_photo_login(G_LOGO) ?>') no-repeat center center;background-size:cover;"></div>
 					<h2>Cuenta nueva</h2>
 					<?php if(isset($msg)): ?><p style="text-align: center"> <?= $msg?></p> <?php endif; ?>
 					<div id="msj-frm" style="display: none" class="info"></div>
 
 					<input type="hidden" name="response" value="ajax" />
+					<input type="text" name="nombres" required placeholder="Nombres" />
 					<input type="text" name="usuario" required placeholder="E-mail" />
 					<input type="password" name="contrasena1" required placeholder="Password" />
 					<input type="password" name="contrasena2" required placeholder="Repite Password" />
 					<label>
-						<input type="checkbox" name="terminos"> <a href="<?= rb_url_link('pag','terminos-y-condiciones') ?>">Términos y condiciones de registro</a>
+						<input type="checkbox" name="terminos"> <a class="fancybox fancybox.iframe" href="<?= rb_get_values_options('terms_url') ?>">Términos y condiciones de registro</a>
 					</label>
 					<div class="submit">
 						<button name="login">Registrar</button>

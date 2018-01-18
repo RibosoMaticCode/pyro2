@@ -40,4 +40,21 @@ $(document).ready(function() {
       }
     });
   });
+
+  // Simple CSS Split-button
+  var splitBtn = $('.x-split-button');
+
+  $('button.x-button-drop').on('click', function() {
+    if (!splitBtn.hasClass('open'))
+        splitBtn.addClass('open');
+  });
+
+  $('.x-split-button').click(function(event){
+    event.stopPropagation();
+  });
+
+  $('html').on('click',function() {
+   if (splitBtn.hasClass('open'))
+    splitBtn.removeClass('open');
+  });
 });

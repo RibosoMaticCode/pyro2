@@ -10,8 +10,7 @@ require_once(ABSPATH.'global.php');
 <!-- Load multiples imagenes -->
 <link href="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
 <script src="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
-
-<script type="text/javascript">
+<script>
 $(document).ready(function(){
 	var settings = {
 	    url: "<?= G_SERVER ?>/rb-admin/uploader.php",
@@ -21,6 +20,7 @@ $(document).ready(function(){
 	    urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
 	    allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf",
 	    returnType:"html", //json
+			showStatusAfterSuccess: false,
 		onSuccess:function(files,data,xhr)
 	    {
 	       //$("#status").append("Subido con exito");

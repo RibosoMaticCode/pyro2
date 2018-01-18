@@ -34,6 +34,12 @@ if(isset($_GET["id"])){
             <label title="Titulo de la foto">Titulo:
               <textarea name="title" id="title" style="width:100%;"><?php if(isset($row))echo $row['title'] ?></textarea>
             </label>
+            <label>Como referenciar en el código PHP: <br />
+              <code>&lt;?= G_SERVER ?&gt;/rb-media/gallery/<?= $row['src'] ?></code>
+            </label>
+            <label>Como referenciar en contenido BBCODE: <br />
+              <code>[RUTA_SITIO]rb-media/gallery/<?= $row['src'] ?></code>
+            </label>
           </div>
         </div>
       </div>

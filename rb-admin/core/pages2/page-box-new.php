@@ -19,23 +19,9 @@ else $temp_id = $_GET['temp_id'];
     <a href="#" class="showEditBox">
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </a>
-    <ul class="box-options">
-      <li>
-        <a href="#">
-          <i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
-        </a>
-        <ul class="box-options-list">
-          <li>
-            <a class="addSlide" href="#">Slide</a>
-          </li>
-          <li>
-            <a class="addHtml" href="#">HTML</a>
-          </li>
-          <li>
-            <a class="addPost1" href="#">Publicaciones (horizontal)</a>
-          </li>
-        </ul>
-      </li>
+    <a href="#" class="addNewCol">
+      <i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
+    </a>
     <a class="toggle" href="#">
       <span class="arrow-up">&#9650;</span>
       <span class="arrow-down">&#9660;</span>

@@ -51,16 +51,22 @@ endif;
 // VALIDAMOS SI TRABAJAMOS CON ENLACES AMIGABLES
 if(G_ENL_AMIG):
 	// -- Si opcion enlaces amigables e ingresa de manera tradicional, direccionarlo a enlaces amigables.
-	//Direccionar en caso de publicacion
+	//Direccionar a publicacion
 	if ( isset($_GET['art']) ):
 		$Post = rb_show_post( $_GET['art'] );
 		header( 'Location: '.$Post['url'] );
 		exit();
 	endif;
 
+	// Direccionar a pagina
+	if ( isset($_GET['p']) ):
+		$Page = rb_show_specific_page( $_GET['p'] );
+		header( 'Location: '.G_SERVER.'/'.$Page['titulo_enlace'].'/');
+		exit();
+	endif;
+
 	// Direccionamientos pendientes
-	/*if ( isset($_GET['p']) ) $PageId = $_GET['p'];
-	if ( isset($_GET['cat']) ):
+	/*if ( isset($_GET['cat']) ):
 		$CategoryId = $_GET['cat'];
 		if ( isset($_GET['page']) ) $Page = $_GET['page'];
 	endif;
@@ -235,16 +241,17 @@ if(isset($_GET['pa'])){
 	if($NextPage > $TotalPage) $NextPage = 0;
 	if($CurrentPage == $TotalPage) $LastPage = 0;
 
-	$rm_title = $Categoria['nombre']." | ".G_TITULO;
-	$rm_title_page = $Categoria['nombre'];
-	$rm_metakeywords =  $Categoria['nombre'];
-	$rm_metadescription =  $Categoria['descripcion'];
-	$rm_metaauthor = G_METAAUTHOR;
-	$rm_url_page = rb_url_link('cat', $categoria_id);
+	define('rm_title', $Categoria['nombre']." | ".G_TITULO);
+	define('rm_title_page', $Categoria['nombre']);
+	define('rm_metakeywords',  $Categoria['nombre']);
+	define('rm_metadescription',  $Categoria['descripcion']);
+	define('rm_metaauthor', G_METAAUTHOR);
+	define('rm_url_page', rb_url_link('cat', $categoria_id));
 
 	$Photo = rb_get_photo_from_id( $Categoria['photo_id'] );
 	if($Photo) $rm_url_page_img = $rm_url."rb-media/gallery/".$Photo['src'];
 
+	$Posts = rb_get_post_by_category($categoria_id, false, true);
 	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/category.php';
 	if(file_exists( $file )) require_once( $file );
 	else die( message_error($file));

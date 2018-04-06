@@ -8,6 +8,8 @@ if(isset($_GET["id"])){
 }else{
 	$mode = "new";
 }
+$show_header = isset($row) ? $row['show_header'] : 0;
+$show_footer = isset($row) ? $row['show_footer'] : 0;
 ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script src="<?= G_SERVER ?>/rb-admin/core/pages2/func.js"></script>
@@ -235,10 +237,18 @@ if(isset($_GET["id"])){
 		</div>
 		<div class="seccion-body">
 			<label>
-				<input type="checkbox" value="1" name="header"> <span>Incluir Cabecera de la plantilla</span>
+				<?php
+				$checkedh = "";
+				if($show_header==1) $checkedh = " checked ";
+				?>
+				<input type="checkbox" value="1" name="sheader" id="sheader" <?= $checkedh ?>> <span>Incluir Cabecera de la plantilla</span>
 			</label>
 			<label>
-				<input type="checkbox" value="1" name="footer"> <span>Incluir Pie de página de la plantilla</span>
+				<?php
+				$checkedf = "";
+				if($show_footer==1) $checkedf = " checked ";
+				?>
+				<input type="checkbox" value="1" name="sfooter" id="sfooter" <?= $checkedf ?>> <span>Incluir Pie de página de la plantilla</span>
 			</label>
 		</div>
 	</section>

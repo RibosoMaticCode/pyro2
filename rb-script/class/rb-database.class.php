@@ -117,16 +117,17 @@ class DataBase{
 	}
 
 	function Search($data_to_search, $table, $columns){
-		// Busqueda basica
-		// Where condition
+		// Busqueda avanzada
 		$conexion = $this->Conexion();
-		$and = "";
 		$cols_vals = "";
+		$coma = "";
 		foreach ($columns as $key) {
-			$cols_vals .= $and.$key." LIKE '%".$data_to_search."%'";
-			$and = " OR ";
+			$cols_vals .= $coma.$key;
+			$coma = ", ";
 		}
-		return $conexion->query("SELECT * FROM $table WHERE $cols_vals");
+		//return $conexion->query("SELECT *, MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) AS score FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) ORDER BY score ASC");
+ 		//die ("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION)");
+		return $conexion->query("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION)");
 	}
 }
 $objDataBase = new DataBase;

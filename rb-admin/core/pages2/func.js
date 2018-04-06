@@ -211,6 +211,8 @@ $(document).ready(function() {
     var content_to_edit = box_edit_html.html();
     var content_to_edit_id = box_edit_html.attr('id');
     $('#htmlraw-control_edit_id').val(content_to_edit_id);
+    //console.log(content_to_edit);
+    editor1.setValue(content_to_edit); // Set values to ACE editor
     $('#htmlraw_text').val(content_to_edit);
     //tinymce.activeEditor.setContent(content_to_edit);
     var css_class = $(this).closest(".col").attr('data-class');
@@ -427,10 +429,20 @@ $(document).ready(function() {
     final_string_content += boxesmain_string_start + all_columns_string + boxesmain_string_end;
     console.log(final_string_content); // no es necesario pasar a json en js antes JSON.stringify
     //return false;
+    if ($('#sheader').is(':checked')) {
+			sheader = 1;
+		}else{
+			sheader = 0;
+		}
+    if ($('#sfooter').is(':checked')) {
+			sfooter = 1;
+		}else{
+			sfooter = 0;
+		}
     $.ajax({
       url: "core/pages2/page.save.php",
       method: 'post',
-      data: "title="+pagina_title+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace
+      data: "title="+pagina_title+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&sh="+sheader+"&sf="+sfooter
     })
     .done(function( data ) {
       if(data.resultado=="ok"){

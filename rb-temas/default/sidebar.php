@@ -1,5 +1,13 @@
 <aside class="wrap-sidebar <?= class_col_2 ?>">
-  <section class="box-sidebar">
+  <section class="box search clear">
+    <form class="frmsearch" action="<?= G_SERVER ?>" method="get">
+      <label>
+        <input type="text" name="s" />
+      </label>
+      <button>Buscar</button>
+    </form>
+  </section>
+  <section class="box box-sidebar">
     <h3>Publicaciones</h3>
     <ul>
       <?php

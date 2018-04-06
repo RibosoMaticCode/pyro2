@@ -72,7 +72,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         </div>
         <!-- Apariencia -->
         <div class="cols-container">
-          <h3 class="subtitle">Apariencia</h3>
+          <h3 class="subtitle">Funciones avanzadas</h3>
           <div class="cols-6-md col-padding">
             <label title="Campos personalizados" for="style">Campos personalizados:
               <span class="info">Estos campos aparecerán en la seccion Publicaciones, permiten añadir valores adicionales a los pre-establecidos.</span>
@@ -193,6 +193,10 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </label>
             <label>Base para paginado:
               <input type="text" name="base_pag" value="<?= rb_get_values_options('base_page') ?>" />
+            </label>
+            <label>URL inicial por defecto del Gestor:
+              <span class="info">Por defecto la pagina inicial es index.php, pero se puede modificar aqui. <code><?= G_SERVER ?>/rb-admin/</code></span>
+              <input  name="index_custom" type="text" value="<?= rb_get_values_options('index_custom') ?>" />
             </label>
             <label>Alcance del sitio web:</label>
             <!--<span class="info"></span>-->

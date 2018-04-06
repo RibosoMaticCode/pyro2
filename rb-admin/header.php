@@ -11,6 +11,7 @@ include 'islogged.php';
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/style.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/styles2.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/cols.css" />
+<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/form.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/table.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/responsive.css" />
 <link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/menu.css" />
@@ -39,7 +40,22 @@ include 'islogged.php';
 <script src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
 <script>
 	$(document).ready(function() {
+		// fancyBox simple
 		$(".fancybox").fancybox();
+
+		// Fancybox advanced Form
+		$('.fancyboxForm').fancybox({
+			//closeBtn    : false, // hide close button
+			closeClick  : false, // prevents closing when clicking INSIDE fancybox
+			helpers     : {
+				// prevents closing when clicking OUTSIDE fancybox
+				overlay : {closeClick: false}
+			},
+			keys : {
+				// prevents closing when press ESC button
+				close  : null
+			}
+	  });
 
 		// scroll then menu top fixed
 		var num = 64; //number of pixels before modifying styles
@@ -103,19 +119,13 @@ include 'islogged.php';
 		$("#message").animate({ "top": "+=50px", "opacity" : 1 }, "slow" );
 		$("#message").delay(2000).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
 	}
-	/*var light_box = function(thisObj, msj){
-		thisObj.addClass('input_red');
-		thisObj.focus();
-		thisObj.nextAll().remove();
-		thisObj.after('<span style="color:red;font-size:.8em;">'+msj+'</span>');
-	}*/
+	
 	var validateInputText = function(thisObj, msj){
 		if( thisObj.val() == ""){
 			thisObj.addClass('input_red');
 			thisObj.focus();
 			thisObj.nextAll().remove();
 			thisObj.after('<span style="color:red;font-size:.8em;">'+msj+'</span>');
-			//return false;
 			event.preventDefault();
 		}else{
 			thisObj.removeClass('input_red');

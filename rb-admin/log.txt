@@ -8,13 +8,18 @@ Web: ribosomatic.com
 
 Licencia: ../rb-admin/licencia.txt
 
+version 2.0.4 pyro2 (abril 18)
+-------------------
+- Index del gestor puede apuntar a ruta personalizada dentro del gestor, a un modulo especifico por ejemplo.
+- Menu de los modulos, pueden mantenerse contraidos o expandidos si se desean.
+- Añadido campo index_custom a tabla mysql opciones.
+
 version 2.0.3 pyro2 (dic 17)
 -------------------
 - Instalador funcional, incluso en directorios secundarios.
 - Instalador crear el archivo htaccess por defecto.
 - Plantilla default para un proyecto Basico
 - Barra de acceso rapido en el frontend - function: <?php rb_show_bar_admin() ?> luego de body tag.
-- Sidebar acepta widgets - en proceso
 - Mejoras en funcion rb_header, rb_footer, rb_sidebar
 - Mejoras en el Editor de paginas
 - Buscador funcional basico

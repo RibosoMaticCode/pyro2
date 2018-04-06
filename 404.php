@@ -8,7 +8,7 @@ require_once 'global.php';
     <style>
       @font-face {
         font-family: condensed-regular;
-        src: url('../rb-admin/fonts/RobotoCondensed-Regular.ttf');
+        src: url('<?= G_SERVER ?>/rb-admin/fonts/RobotoCondensed-Regular.ttf');
       }
       *{
         padding: 0;
@@ -17,7 +17,7 @@ require_once 'global.php';
         font-family: condensed-regular;
       }
       body{
-        background-image: url('../rb-script/images/bg-404.jpg');
+        background-image: url('<?= G_SERVER ?>/rb-script/images/bg-404.jpg');
       }
       .e404{
         position: absolute;
@@ -35,7 +35,7 @@ require_once 'global.php';
     </style>
   </head>
   <body>
-    <img class="e404" src="rb-script/images/404.png" alt="Error 404" />
+    <img class="e404" src="<?= G_SERVER ?>/rb-script/images/404.png" alt="Error 404" />
     <a class="return_link" href="<?= G_SERVER ?>">Regresar a la página principal</a>
   </body>
 </html>

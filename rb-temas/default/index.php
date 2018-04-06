@@ -23,4 +23,4 @@
     <?php rb_sidebar() ?>
   </div>
 </div>
-<?php rb_footer() ?>
+<?php rb_footer(array('footer-allpages.php')) ?>

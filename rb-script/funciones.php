@@ -767,6 +767,9 @@ function rb_display_menu($mainmenu_id, $params = array()) {
 
 function rb_numadia($num){
 	switch($num){
+    case 0:
+			return "Domingo";
+			break;
 		case 1:
 			return "Lunes";
 			break;
@@ -784,9 +787,6 @@ function rb_numadia($num){
 			break;
 		case 6:
 			return "Sabado";
-			break;
-		case 7:
-			return "Domingo";
 			break;
 	}
 }
@@ -993,7 +993,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
       "/\[RUTA_SITIO]/is",
       "/\[RUTA_TEMA]/is",
       "/\[YOUTUBE=\"(.*?)\"]/is",
-      "/\[MENU id=\"(.*?)\"]/e",
+      //"/\[MENU id=\"(.*?)\"]/e", /e modifer obsoleto
       "/\[GALERIA]/is",
       "/\[FORMULARIO]/is",
       /*"/\[FORMULARIO_SERVICIO nombre=\"(.*?)\"]/is",*/
@@ -1004,7 +1004,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
       G_SERVER.'/',
       G_URLTHEME.'/',
       '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
-      "rb_display_menu('$1')",
+      //"rb_display_menu('$1')",
       $gallery_html,
       htmlspecialchars_decode(G_FORM),
       /*rb_showform('$1'),*/
@@ -1105,12 +1105,15 @@ function rb_show_menu($menu_panel, $subitem_selected="0", $item_selected="index"
 		$style_parent_css = "";
 		$cover_parent_item = ' class="menu-item" ';
 		if($item['show']==false) continue;
+    if(isset($item['extend']) && $item['extend']==true){
+      $style_parent_css = ' class="selected-parent" ';
+			$cover_parent_item = "";
+    }
 		if($item['key']==$item_selected){
 			$style_parent_css = ' class="selected-parent" ';
 			$cover_parent_item = "";
 		}
-		echo '<li '.$style_parent_css.'>
-		';
+		echo '<li '.$style_parent_css.'>';
 		echo '<a '.$cover_parent_item.' href="'.$item['url'].'">';
 		echo '<img class="img-icon-menu" src="'.$item['url_imagen'].'" alt="Inicio">';
 		echo '<span class="text">'.$item['nombre'].'</span>';
@@ -1605,7 +1608,7 @@ function rb_show_bar_admin(){
 */
 function rb_header($add_header = array()){
   global $show_header;
-  if(isset($show_header) && $show_header==0) return false;
+  //if(isset($show_header) && $show_header==0) return false;
 
   if ( !defined('ABSPATH') )
   	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
@@ -1623,7 +1626,7 @@ function rb_header($add_header = array()){
 */
 function rb_footer($add_footer = array()){
   global $show_footer;
-  if(isset($show_footer) && $show_footer==0) return false;
+  //if(isset($show_footer) && $show_footer==0) return false;
 
   if ( !defined('ABSPATH') )
   	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');

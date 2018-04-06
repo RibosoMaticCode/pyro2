@@ -74,7 +74,22 @@ a{
 	clear:both;
 }
 /* DEFAULT THEME */
-
+/* frmsearch */
+.frmsearch label{
+	float:left;
+	width: 80%;
+}
+.frmsearch input[type="text"]{
+	width: 98%;
+}
+.frmsearch button{
+	float: right;
+	width: 20%;
+}
+/* sidebar */
+.box{
+	margin-bottom: 10px;
+}
 /* background home */
 .bg-intro{
   /*background: url('../img/intro.jpg');
@@ -128,66 +143,4 @@ a{
 }
 .inner-footer{
   padding: 20px 0;
-}
-/* post list index */
-.wrap-posts-list article h2 a{
-  font-size: 1.3em;
-  padding: 5px 0 15px;
-  margin-bottom: 5px;
-  display: block;
-  line-height: 40px;
-}
-.wrap-posts-list article .image-star{
-  width: 100%;
-}
-.wrap-posts-list article{
-  margin-bottom: 40px;
-}
-.wrap-posts-list article p {
-  padding: 4px 0;
-  line-height: 28px;
-}
-/* body blocks width */
-.block-content h1{
-  margin: 0 0 45px;
-  text-transform: uppercase;
-  font-size: 1.4em;
-  color:gray;
-}
-.block-content{
-  margin-top: 55px;
-  margin-bottom: 55px;
-}
-.block-left-content{ /* SIDEBAR RIGHT */
-  width: 60%;
-  float: left;
-}
-.block-right-sidebar{
-  width: 35%;
-  float: right;
-}
-.block-right-content{ /* SIDEBAR LEFT */
-  width: 60%;
-  float: right;
-}
-.block-left-sidebar{
-  width: 35%;
-  float: left;
-}
-.block-full{
-	width: 100%;
-}
-/* sidebar */
-.box-sidebar h3{
-  text-transform: uppercase;
-  font-size: 1.1em;
-  margin-bottom: 5px;
-}
-.box-sidebar section{
-  margin-bottom: 30px;
-}
-.box-sidebar li {
-  list-style-type: none;
-  padding: 6px 0;
-  border-bottom: 1px solid #c7c7c7;
 }

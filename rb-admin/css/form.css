@@ -2,7 +2,7 @@
 .form input[type="password"],
 .form select,
 .form textarea{
-	font-size:1em;
+	font-size:.85em;
 	padding:5px;
   border: 1px solid #CCCCCC;
   margin:5px 0;
@@ -20,12 +20,15 @@
 }
 .form button{
 	color: #fff;
-  background-color: #4CAF50;
   padding: 5px 15px;
   border-radius: 4px;
-  font-size: 1em;
-  margin-right: 5px;
+  font-size: .9em;
   display: inline-block;
   border: 0;
-  font-weight: bold;
+}
+.form button[type="submit"]{
+	background-color: #4CAF50;
+}
+.form button[type="button"]{
+	background-color: #9E9E9E;
 }

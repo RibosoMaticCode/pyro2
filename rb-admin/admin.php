@@ -4,8 +4,8 @@ require('../global.php');
 include 'islogged.php';
 
 // redirect
-$url_to_redirect = G_SERVER.$_SERVER['REQUEST_URI'];
-
+//$url_to_redirect = G_SERVER.$_SERVER['REQUEST_URI'];
+$url_to_redirect = "http://".G_HOSTNAME.$_SERVER['REQUEST_URI']; // Sin website funciona con HTTPS, podria haber problemas.
 $menu_panel = array();
 require_once ABSPATH."rb-script/funciones.php";
 require_once ABSPATH."rb-script/class/rb-usuarios.class.php";

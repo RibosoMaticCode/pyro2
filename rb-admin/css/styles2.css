@@ -16,7 +16,7 @@
 	background-color:#fff;
 	position: fixed;
   width: 100%;
-  z-index: 3;
+  z-index: 5;
 }
 .logo{
 	background-color:#3A404B;
@@ -26,13 +26,14 @@
 	position: relative;
 }
 .logo h1{
-	font-size:1em;
+	font-size:.9em;
 	text-align:center;
 	padding:5px;
 	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
+  width:100%;
 }
 .logo h1 a{
 	color:#fff;
@@ -87,7 +88,7 @@
 }
 /* PIE DE PAGINA */
 #footer {
-	z-index: 2;
+	z-index: 4;
   position: fixed;
   bottom: 0;
   left: 0;

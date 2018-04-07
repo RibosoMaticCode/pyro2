@@ -44,8 +44,7 @@ $path_module = G_SERVER."/rb-script/modules/rb-editfile/";
 				<div class="cols-8-md">
 					<form id="file_form" action="<?= G_SERVER ?>/rb-admin/modules/editfile/save.change.php" method="post">
 					<div style="position:relative; min-height:500px">
-						<textarea id="textarea" name="file_content" rows="30" style="display:none;"></textarea>
-						<!--<textarea name="file_content" rows="8" ></textarea>-->
+						<textarea id="textarea" name="file_content" rows="30"></textarea>
 						<div id="editor-css-content"></div>
 					</div>
 					<input type="text" id="file_name" name="file_name" readonly />
@@ -72,7 +71,7 @@ $(document).ready(function() {
 	var editor = ace.edit("editor-css-content");
 	editor.getSession().setMode("ace/mode/php");
 
-	var textarea = $('textarea[name="file_name"]');
+	var textarea = $('textarea[name="file_content"]');
 	editor.getSession().on("change", function () {
 			textarea.val(editor.getSession().getValue());
 	});

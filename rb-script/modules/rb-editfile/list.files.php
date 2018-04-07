@@ -18,7 +18,7 @@ function list_file($carpeta){
 }
 if(isset($_GET['dir'])):
 	echo "<li>Regresar</li>";
-	list_file($_GET['dir']);
+	list_file($_GET['dir']."/");
 else:
 	list_file($dir_style);
 endif;

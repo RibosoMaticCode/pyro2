@@ -174,7 +174,7 @@ $(document).ready(function() {
                             <select name="tipo" id="tipo">
                               <option value="0">[Ninguno]</option>
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles");
+                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles ORDER BY nombre");
                 while($r = $q->fetch_assoc()):
                 ?>
                 <option <?= isset($row) && $row['tipo']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>

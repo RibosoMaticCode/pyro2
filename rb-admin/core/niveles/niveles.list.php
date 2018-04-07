@@ -1,5 +1,5 @@
 <?php
-$colOrder = "id"; // column name table
+$colOrder = "nombre"; // column name table
 $Ord = "ASC"; // A-Z
 
 $result = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles ORDER BY $colOrder $Ord");
@@ -14,7 +14,8 @@ while ($row = $result->fetch_assoc()):
 			</div>
 		</td>
 		<td><?= $row['nivel_enlace'] ?></td>
-		<td><?= $row['permisos'] ?></td>
+		<td><?= $row['subnivel_enlace'] ?></td>
+		<td><?= $row['descripcion'] ?></td>
 	</tr>
 <?php
 endwhile;

@@ -10,8 +10,15 @@ $menu_panel = array();
 require_once ABSPATH."rb-script/funciones.php";
 require_once ABSPATH."rb-script/class/rb-usuarios.class.php";
 
-//$menu_panel = rb_menu_panel(); // funcion
-$menu_panel = json_decode(rb_get_values_options('menu_panel'), true); // from base datos
+// Verificar si permisos del usuario, tienen una estructura de menu personalizada
+$q_permisos = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE id=".G_USERNIVELID);
+$r_permisos = $q_permisos->fetch_assoc();
+if(strlen($r_permisos['permisos'])>0){
+	$menu_panel = json_decode($r_permisos['permisos'], true);
+}else{
+	// Sino cargamos estructura del menu de las opciones del sistema
+	$menu_panel = json_decode(rb_get_values_options('menu_panel'), true);
+}
 
 // CREA ESTRUCTURA DE CARPETA PARA GUARDAR MEDIOS AL PRIMER INICIO
 define('RAIZ', dirname(dirname(__FILE__)) . '/');

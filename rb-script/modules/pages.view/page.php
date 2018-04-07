@@ -1,6 +1,6 @@
 <?php
 if($Page['show_header']==1) rb_header(['header-all.php']);
-else rb_header()
+else rb_header();
 ?>
 <div class="wrap-content">
 <?php
@@ -54,6 +54,10 @@ foreach ($array_content['boxes'] as $box) {
   echo '<div class="cols">';
   $array_cols =$box['columns'];
   foreach ($array_cols as $col) {
+    if(isset($col['col_save_id']) && $col['col_save_id']!="0"){
+      $block_id = $col['col_save_id'];
+      include 'page.blocks.php'; //
+    }else{
     switch ($col['col_type']) {
       case 'html':
         echo '<div class="'.$col['col_css'].'">';
@@ -152,6 +156,7 @@ foreach ($array_content['boxes'] as $box) {
         <?php*/
         echo '</div>';
         break;
+    }
     }
   }
   echo '</div>'; //end cols

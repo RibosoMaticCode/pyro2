@@ -673,7 +673,7 @@ function rb_show_half_post($content,$link) { // antes -> more_content
 	}
 }
 /* OBTIENE TITULO SEGUN TIPO DE USUARIO*/
-function rb_get_user_type($type){
+/*function rb_get_user_type($type){ // obsoleta - QUITAR DE PROXIMAS VERSIONES
 	switch($type):
 		case 1:
 			return "Administrador";
@@ -685,7 +685,7 @@ function rb_get_user_type($type){
 			return "Usuario Final";
 		break;
 	endswitch;
-}
+}*/
 /*
 La funcion extrae un fragmento de texto del contenido del post.
 */
@@ -1023,12 +1023,19 @@ function rb_showvisiblename($acceso){
 			return "Publico (no requiere login)"; break;
 	endswitch;
 }
-
+// Retorna nombre del nivel de usuario
 function rb_shownivelname($nivel_id){
 	global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id = $nivel_id");
 	$r = $q->fetch_assoc();
 	return $r['nombre'];
+}
+// Retorna un array con los datos del nivel de usuario
+function rb_show_nivel_data($nivel_id){
+	global $objDataBase;
+	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE id = $nivel_id");
+	$r = $q->fetch_assoc();
+	return $r;
 }
 
 function rb_niveltoname($niveles){

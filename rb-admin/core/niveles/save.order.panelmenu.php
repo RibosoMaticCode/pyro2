@@ -1,12 +1,21 @@
 <?php
+header('Content-type: application/json; charset=utf-8');
 // Recibimos items del menu principal con nuevo orden, y si esta oculto o no.
 $obj = json_decode($_GET['mydata'], true);
 
-require_once '../rb-script/funciones.php';
-// Consultamos el menu principal en json desde la base de datos
+// ID del nivel
+$nivel_id = $_GET['nivel_id'];
+
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once(ABSPATH.'rb-script/funciones.php');
+require_once(ABSPATH."rb-script/class/rb-database.class.php");
+
+// Consultamos el menu gestor en json desde la base de datos
 $menu_main_json = rb_get_values_options('menu_panel');
 
-// pasamos json a un array en php
+// pasamos menu gestor json a un array en php
 $menu_main_array = json_decode($menu_main_json, true);
 
 // recorrer $obj, el nuevo orden del menu principal
@@ -28,9 +37,19 @@ foreach ($menu_main_array as $key => $row){
 }
 array_multisort($orden, SORT_ASC, $menu_main_array);
 
-//verificar:
-print_r($menu_main_array);
+// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
+$valores = [
+  'permisos' => json_encode($menu_main_array)
+];
 
-//Guardando nueva estructura de menu
-rb_set_values_options('menu_panel', json_encode($menu_main_array));
+//Guardando nueva estructura de menu, en los permisos del nivel de usuario
+$r = $objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
+if($r['result']){
+  $arr = ['resultado' => true, 'contenido' => 'Estructura del menu actualizada' ];
+}else{
+  $arr = ['resultado' => false, 'contenido' => $r['error']];
+}
+
+// Retornando datos de respuesta en formato json
+die(json_encode($arr));
 ?>

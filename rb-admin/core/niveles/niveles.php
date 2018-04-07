@@ -86,6 +86,7 @@ $(document).ready(function() {
 					<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
 					<th>Nombre</th>
 					<th>Nivel key</th>
+					<th>Sub-Nivel key</th>
 					<th>Detalles</th>
 				</tr>
 			</thead>

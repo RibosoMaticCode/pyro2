@@ -60,7 +60,7 @@
 					event.preventDefault();
 					$('.menu').hide();
 				});
-				// Formularios Cotizacion
+				// Formulario Contacto
 				$('#fcontact').submit(function (){
 					event.preventDefault();
 					$.ajax({
@@ -70,23 +70,10 @@
 					})
 					.done(function( data ) {
 						if(data==1){
-							alert("La informacion fue enviada con exito");
-							location.reload();
-						}
-					});
-				});
-				// Formularios Solilcitud
-				$('#form_coti').submit(function (){
-					event.preventDefault();
-					$.ajax({
-						method: "post",
-						url: "<?= rm_urltheme ?>mailer-solicitud.php",
-						data: $( this ).serialize()
-					})
-					.done(function( data ) {
-						if(data==1){
-							alert("La solicitud fue enviada con exito");
-							location.reload();
+						    $('#fcontact').slideUp();
+							$('.result').html('<h2 style="color:green">Mensaje enviado. Nos pondremos en contacto pronto.');
+						}else{
+						    $('.result').html('<h2 style="color:red">Algo salio mal. Intenta mas tarde');
 						}
 					});
 				});

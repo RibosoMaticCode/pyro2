@@ -1,13 +1,20 @@
 <?php
+// Incluir varibales globales
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(__FILE__))) . '/');
+
+include_once ABSPATH.'global.php';
+
 // Destinatarios :
 $recipient = "jesusvld@gmail.com";
 $cc = "dweb@emocion.pe";
 
 // Configuracion
 $subject = "Formulario de Contacto";
-$from_name = "American Service";
-$mail_no_reply = "no-reply@americanperu.com";
-$mail_reply = "info@americanperu.com";
+$from_name = G_TITULO;
+$mail_no_reply = "no-reply@".G_HOSTNAME;
+$mail_reply = "info@".G_HOSTNAME;
+
 // Variables
 $nom = $_POST['nom'];
 $ape = $_POST['ape'];

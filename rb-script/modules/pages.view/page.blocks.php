@@ -37,6 +37,16 @@ switch ($col['col_type']) {
     }
     echo '</div>';
     break;
+	case 'galleries':
+		echo '<div class="'.$col['col_css'].'">';
+		$show_by_file = $col['col_values']['quantity'];
+		$Galleries = rb_list_galleries();
+		echo 'Galerias';
+		foreach ($Galleries as $Gallery) {
+			echo $Gallery['nombre']."<br />";
+		}
+		echo '</div>';
+		break;
   case 'post1':
     echo '<div class="'.$col['col_css'].'">';
     /*?>

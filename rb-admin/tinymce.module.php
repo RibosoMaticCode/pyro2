@@ -7,6 +7,7 @@ include 'islogged.php';
 		selector: '.mce_tiny',
 		entity_encoding : "raw",
 		convert_urls : false,
+		extended_valid_elements: "i[class], span, span[class]",
 		language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',
 	  	height: 500,
 	  	plugins: [

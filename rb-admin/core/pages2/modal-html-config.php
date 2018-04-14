@@ -39,7 +39,7 @@
 			language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',
 			height: 300,
 			forced_root_block : false,
-			extended_valid_elements: "i, span",
+			extended_valid_elements: "i[class], span, span[class]",
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor textcolor',
     		'searchreplace visualblocks code fullscreen table',

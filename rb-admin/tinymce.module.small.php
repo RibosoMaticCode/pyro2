@@ -8,6 +8,7 @@ include 'islogged.php';
 	tinymce.init({
 		selector: '.mceEditor',
 		entity_encoding : "raw",
+		extended_valid_elements: "i[class], span, span[class]",
 		/*relative_urls: false,*/
 		convert_urls : false,
 		language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',

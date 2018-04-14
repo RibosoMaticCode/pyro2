@@ -92,6 +92,19 @@ $(document).ready(function() {
     });
   });
 
+  // Añadir Columna para galleries
+  $("#boxes").on("click", ".addGalleries", function (event) {
+    event.preventDefault();
+    var box_edit = $(this).closest(".item").find(".cols-html");
+    var box_id = $(this).closest(".item").attr('data-id');
+    $.ajax({
+        url: "core/pages2/col-galleries.php?temp_id="+box_id+"galleries"+uniqueId()
+    })
+    .done(function( data ) {
+      box_edit.append(data);
+    });
+  });
+
   // Añadir Columan para HTML Editor
   //var k = 0
   $("#boxes").on("click", ".addHtml", function (event) {
@@ -185,6 +198,7 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
+  // ******************** MOSTRAR LOS EDITORES DE CADA BLOQUE / COLUMNA *********************
   // Mostrar Editor HTML
   $("#boxes").on("click", ".showEditHtml", function (event) {
     $(".bg-opacity").show();
@@ -245,7 +259,7 @@ $(document).ready(function() {
     var slide_values_string = $(this).closest(".col").attr('data-values');
 
     var pva = JSON.parse(slide_values_string);
-    $('#slide_id').val(slide_id);
+    $('#slide_id').val(slide_id); // Asignar ID UNICO del bloque a input oculto en el editor-configurador
     console.log(pva.gallery_id);
     $('#slide_gallery').val(pva.gallery_id);
     if(pva.show_title==1){
@@ -257,6 +271,25 @@ $(document).ready(function() {
 
     $(".bg-opacity").show();
     $("#editor-slide").show();
+    event.preventDefault();
+  });
+
+  // Mostrar Editor de Galerias
+  $("#boxes").on("click", ".showEditGalleries", function (event) {
+    // --- Capturando valores del bloque
+    var galleries_id = $(this).closest(".col").attr('data-id');
+    var galleries_class = $(this).closest(".col").attr('data-class');
+    var galleries_values_string = $(this).closest(".col").attr('data-values');
+
+    var pva = JSON.parse(galleries_values_string);
+    $('#galleries_id').val(galleries_id);
+    console.log(pva.quantity);
+
+    $('#galleries_quantity').val(pva.quantity);
+    $('#galleries_class').val(galleries_class);
+
+    $(".bg-opacity").show();
+    $("#editor-galleries").show();
     event.preventDefault();
   });
 
@@ -396,6 +429,7 @@ $(document).ready(function() {
             col_values = "{}";
           break;
           case 'slide':
+          case 'galleries':
             htmlt_content_col = "";
             col_values = $(elemento).attr('data-values');
           break;

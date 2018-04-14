@@ -126,6 +126,20 @@
   padding: 6px 0;
   border-bottom: 1px solid #c7c7c7;
 }
+/* GALERIAS DE IMAGENES */
+.rb-gallery-container {
+    display: flex;
+}
+.rb-gallery-container div{
+  padding: 5px 8px;
+}
+.rb-gallery-container div img{
+  max-width: 100%;
+}
+.rb-gallery-photos{
+  width:100%;
+  display: none;
+}
 
 @media screen and (max-width: 425px) {
   .post-0{

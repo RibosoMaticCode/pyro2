@@ -84,6 +84,59 @@ foreach ($array_content['boxes'] as $box) {
         }
         echo '</div>';
         break;
+      case 'galleries':
+        ?>
+        <script>
+        $(document).ready(function() {
+          $('.rb-cover-galleries').on('click', '.back_gallery',function() {
+            $('.rb-cover-galleries').show();
+            $('.rb-gallery-photos').hide();
+          });
+
+          $('.gallery_show').click(function(event){
+            event.preventDefault();
+            var gallery_id = $(this).attr('data-galleryid');
+
+            $.ajax({
+                method: "GET",
+                url: "<?= G_SERVER ?>/rb-script/modules/pages.view/show.gallery.ajax.php?gallery_id="+gallery_id,
+            }).done(function( data ) {
+              $('.rb-cover-galleries').hide();
+              $('.rb-gallery-photos').html(data);
+              $('.rb-gallery-photos').show();
+            });
+          });
+        });
+        </script>
+        <?php
+        echo '<div class="rb-cover-galleries '.$col['col_css'].'">';
+        $show_by_file = $col['col_values']['quantity'];
+        $Galleries = rb_list_galleries();
+        $CountGalleries = count($Galleries);
+        $porcent_width = round(100/$show_by_file,2);
+        $i=1;
+        foreach ($Galleries as $Gallery) {
+          if($i==1){
+            echo '<div class="rb-gallery-container">';
+          }
+          echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">';
+          echo '<img src="'.$Gallery['url_bgimagetn'].'" alt="Portada Galeria" />';
+          echo '<h2>'.$Gallery['nombre']."</h2>";
+          echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">Ver galeria</a>';
+          echo '</div>';
+          if($i==$CountGalleries || $i==$show_by_file){
+            echo '</div>';
+            $i=1;
+          }else{
+            $i++;
+          }
+        }
+        echo '</div>';
+        ?>
+        <div class="rb-gallery-photos">
+        </div>
+        <?php
+        break;
       case 'post1':
         echo '<div class="'.$col['col_css'].'">';
         /*?>

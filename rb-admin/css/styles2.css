@@ -335,6 +335,18 @@
   display: block;
   margin-bottom: 5px;
 }
+ul._box-options-list li {
+    width: 20%;
+    text-align: center;
+    border: 1px solid #dadada;
+    padding: 5px 0;
+    float: left;
+}
+
+ul._box-options-list {
+    max-height: 400px;
+    overflow: auto;
+}
 .editor-footer {
   border-top: 1px solid #c7c7c7;
   background-color: #f1f1f1;

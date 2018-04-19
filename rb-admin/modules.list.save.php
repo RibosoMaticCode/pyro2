@@ -27,19 +27,32 @@ if(isset($_GET['action']) && $_GET['action']=='active'):
 			// cargar menu del gestor (json) de la base de datos y lo pasamos a un array php
 			$menu_panel_array = json_decode(rb_get_values_options('menu_panel'), true);
 
-			//echo "<pre>";
-			//print_r($menu_panel_array);
-			//print_r($menu);
+			// Añadimos menu(s) del modulo al Menu Principal
 			$menu_panel_array = array_merge($menu_panel_array, $menu);
-			//print_r($menu_panel_array);
-			//echo "</pre>";
-			//die();
 
 			// añade el menu del modulo
 			//$menu_panel_array[$rb_module_unique] = $menu; // La variable $rb_module_unique, se encuentra en el archivo inicial del modulo, y especifica un nombre unico para modulo y menu
 
 			// actualiza el menu_panel ahora incluyendo el menu del modulo
 			rb_set_values_options('menu_panel', json_encode($menu_panel_array));
+
+			// ACTUALIZAR MENU DE CADA NIVEL DE USUARIO, AÑADIENDO EL MENU DEL MODULO NUEVO
+			$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
+			// Recorremos todos los niveles que tiene menus
+			while($row= $q->fetch_assoc()):
+				$nivel_id = $row['id'];
+				$menu_panel_nivel = json_decode($row['permisos'], true);
+				// añade el menu(s) del modulo al menu principal
+				$menu_panel_nivel = array_merge($menu_panel_nivel, $menu);
+			endwhile;
+
+			// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
+			$valores = [
+			  'permisos' => json_encode($menu_panel_nivel)
+			];
+
+			//Guardando nueva estructura de menu, en los permisos del nivel de usuario
+			$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
 		}
 	}
 endif;
@@ -54,18 +67,38 @@ if(isset($_GET['action']) && $_GET['action']=='desactive'):
 		// Cargar modulo para quitar el menu o menus, caso lo hubiera
 		require_once $module_ruta;
 		if(isset($menu)){
+			// ACTUALIZAR MENU PRINCIPAL DE LA BASE DE DATOS POR DEFECTO
 			// cargar menu_panel(json) de la base de datos en un array
 			$menu_panel_array = json_decode(rb_get_values_options('menu_panel'), true);
 
-			// elimina el menu(s) del modulo
+			// elimina el menu(s) del modulo del menu principal
 			foreach ($menu as $key => $value) {
-				//echo $key."<br />";
-				//unset($menu_panel_array[$rb_module_unique]);
 				unset($menu_panel_array[$key]);
 			}
 
 			// actualiza el menu_panel ahora incluyendo el menu del modulo
 			rb_set_values_options('menu_panel', json_encode($menu_panel_array));
+
+			// ACTUALIZAR MENU DE CADA NIVEL
+			$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
+			// Recorremos todos los niveles que tiene menus
+			while($row= $q->fetch_assoc()):
+				$nivel_id = $row['id'];
+				$menu_panel_nivel = json_decode($row['permisos'], true);
+				// elimina el menu(s) del modulo del menu principal
+				foreach ($menu as $key => $value) {
+					unset($menu_panel_nivel[$key]);
+				}
+			endwhile;
+
+			// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
+			$valores = [
+			  'permisos' => json_encode($menu_panel_nivel)
+			];
+
+			//Guardando nueva estructura de menu, en los permisos del nivel de usuario
+			$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
+
 		}
 	}
 endif;

@@ -4,6 +4,13 @@ require_once('rb-script/funciones.php');
 require_once('rb-script/class/rb-database.class.php');
 require_once('rb-script/class/rb-usuarios.class.php');
 
+require_once 'rb-admin/hook.php';
+// Carga formato js de la base de datos
+$modules_prev = rb_get_values_options('modules_load');
+// Convierte json a array
+$array_modules = json_decode($modules_prev, true);
+require_once 'rb-admin/modules.list.php';
+
 // VARIABLES CON DATOS DE CABECERA GENERALES
 define('rm_titlesite', G_TITULO);
 define('rm_subtitle', G_SUBTITULO);
@@ -294,6 +301,7 @@ if(isset($_GET['pa'])){
 
 		define('rm_title', rm_longtitle);
 		define('rm_metadescription', G_METADESCRIPTION);
+		define('rm_metaauthor', "Blackpyro");
 		$rm_menu_name = "m-inicio";
 
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/index.php';

@@ -1,4 +1,4 @@
-Blackpyro CMS - Gestor Basico de Contenidos
+BlackPyro CMS - Gestor Basico de Contenidos
 ===========================================
 Desarrollo: Jesus Liñan < jesusvld@gmail.com >
 
@@ -11,8 +11,11 @@ Licencia: ../rb-admin/licencia.txt
 version 2.0.4 pyro2 (abril 18)
 -------------------
 - Index del gestor puede apuntar a ruta personalizada dentro del gestor, a un modulo especifico por ejemplo.
+- Añadido campo index_custom a tabla mysql opciones, para ruta personalizada
 - Menu de los modulos, pueden mantenerse contraidos o expandidos si se desean.
-- Añadido campo index_custom a tabla mysql opciones.
+- Funciones gancho (hook) tambien desde la plantilla o tema.
+- Estructura de menu de cada nivel tiene mejor gestion. Se añade o quite modulo, no se altera su funcionamiento.
+- Se añade widget Galeria para el Editor Visual de Paginas.
 
 version 2.0.3 pyro2 (dic 17)
 -------------------

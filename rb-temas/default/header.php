@@ -19,6 +19,7 @@
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles-add.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/responsive.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-admin/css/frontend-bar.css">
+
 		<link rel="shortcut icon" href="<?= rm_urltheme ?>favicon.ico">
 		<link rel="apple-touch-icon" href="<?= rm_urltheme ?>apple-touch-icon.png">
 		<!-- jquery -->
@@ -35,6 +36,11 @@
   	<link rel="stylesheet" href="<?= rm_urltheme ?>res/camera/css/camera.css">
 		<script src="<?= rm_urltheme ?>res/camera/scripts/jquery.easing.1.3.js"></script>
 		<script src="<?= rm_urltheme ?>res/camera/scripts/camera.min.js"></script>
+
+		<!-- start modulos adicionales -->
+		<?= do_action('theme_header') ?>
+		<!-- end modulos adicionales -->
+		
 		<script>
 			$(document).ready(function() {
 				$(".fancy").fancybox();

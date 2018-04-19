@@ -1,5 +1,6 @@
 .form input[type="text"],
 .form input[type="password"],
+.form input[type="email"],
 .form select,
 .form textarea{
 	font-size:.85em;

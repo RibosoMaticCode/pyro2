@@ -45,7 +45,7 @@ p{
     max-width: 400px;
     position: fixed;
     background-color: #FFFDD6;
-    z-index: 6;
+    z-index: 8050; /* Debe sopreponerse a todo */
     box-shadow: 1px 1px 20px gray;
     padding: 20px 30px;
     color: gray;

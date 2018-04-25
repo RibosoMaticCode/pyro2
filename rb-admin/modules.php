@@ -104,7 +104,8 @@ $seccion = 'modules-list'; // pintar boton del menu
 													        'Status'      => 'Status',
 													        'Tags'        => 'Tags',
 													        'TextDomain'  => 'Text Domain',
-													        'DomainPath'  => 'Domain Path'
+													        'DomainPath'  => 'Domain Path',
+																	'PluginURI' => 'Plugin URI'
 														);
 														//echo $carpeta.$archivo."<br />";
 
@@ -128,13 +129,13 @@ $seccion = 'modules-list'; // pintar boton del menu
 																		<?php }elseif($action==1){ ?>
 																			<span><a href="modules.list.save.php?action=desactive&name=<?= $data['Name'] ?>&path=<?= $carpeta.$archivo ?>">Desactivar</a></span>
 																		<?php } ?>
-																		<span><a href="#" style="color:red;">Eliminar</a></span>
 																	</div>
 																</td>
 																<td <?= $style ?>>
 																	<p><?= $data['Description'] ?></p>
-																	<p><?= $carpeta.$archivo ?></p>
-																	<span class="info">Versión: <?= $data['Version'] ?></p>
+																	<p><a target="_blank" href="<?= $data['PluginURI'] ?>">Soporte</a></p>
+																	<!--<?= $carpeta.$archivo ?>-->
+																	<span class="info">Versión: <?= $data['Version'] ?></span>
 																</td>
 															</tr>
 															<?php

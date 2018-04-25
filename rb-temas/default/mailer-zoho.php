@@ -1,5 +1,7 @@
 <?php
 // Zoho script mailer functional
+// Pruebas hechas en constructora aya
+
 $recipient = "informes@cunajardincalifornia.edu.pe";
 $website = "Cuna Jardin California";
 $website_url = "cunajardincalifornia.edu.pe";
@@ -46,7 +48,7 @@ $msg="This is a multi-part message in MIME format.
 Content-Type: multipart/alternative; boundary=\"_2_$boundary\"
 
 --_2_$boundary
-Content-Type: text/plain; charset=\"iso-8859-1\"
+Content-Type: text/plain; charset=\"utf-8\"
 Content-Transfer-Encoding: 7bit
 
 $email_content

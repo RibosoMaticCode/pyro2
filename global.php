@@ -25,6 +25,9 @@ define('G_VERSION', rb_get_values_options('version'));
 //nombre del servidor http
 define('G_SERVER', rb_get_values_options('direccion_url'));
 
+//nombre del servidor http
+define('G_DIR_MODULES_URL', G_SERVER."/rb-script/modules/");
+
 //si el sitio esta en un directorio
 define('G_DIRECTORY', rb_get_values_options('directorio_url'));
 

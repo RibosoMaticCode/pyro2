@@ -1,6 +1,6 @@
 <div id="sidebar-left">
   <ul class="buttons-edition">
-    <li><a class="btn-primary fancyboxForm fancybox.ajax" href="<?= $rb_module_url ?>newedit.suscriptor.php">Nuevo</a></li>
+    <li><a class="btn-primary fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php">Nuevo</a></li>
   </ul>
 </div>
 <div class="wrap-content-list">

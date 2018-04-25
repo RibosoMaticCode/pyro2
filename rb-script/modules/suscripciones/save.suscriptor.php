@@ -11,9 +11,16 @@ $id = $_POST['id'];
 
 $valores = [
   'nombres' => $_POST['nombres'],
-	'correo' => $_POST['correo'],
+	'correo' => trim($_POST['correo']),
   'fecha' => date('Y-m-d G:i:s')
 ];
+
+// Validar mail
+$q = $objDataBase->Ejecutar("SELECT * FROM suscriptores WHERE correo='".$valores['correo']."'");
+if($q->num_rows > 0){
+	$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.' ];
+	die(json_encode($arr));
+}
 
 if($id==0){ // Nuevo
 	$r = $objDataBase->Insert('suscriptores', $valores);

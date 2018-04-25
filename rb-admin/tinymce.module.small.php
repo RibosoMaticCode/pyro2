@@ -12,7 +12,7 @@ include 'islogged.php';
 		/*relative_urls: false,*/
 		convert_urls : false,
 		language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',
-	  	height: 500,
+	  	height: 350,
 	  	plugins: [
 	    	'advlist autolink lists link image charmap print preview anchor',
 	    	'searchreplace visualblocks code fullscreen',

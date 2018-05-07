@@ -27,7 +27,7 @@ require_once ABSPATH.'rb-script/funciones.php';
 	<div class="editor-body">
   <ul class="_box-options-list">
     <li>
-      <a class="addSlide" href="#">Slide / Galeria</a>
+      <a class="addSlide" href="#">Slide</a>
     </li>
     <li>
       <a class="addHtml" href="#">HTML - Editor</a>
@@ -40,6 +40,9 @@ require_once ABSPATH.'rb-script/funciones.php';
     </li>
 		<li>
 			<a class="addGalleries" href="#">Galerías</a>
+		</li>
+		<li>
+			<a class="addYoutube1" href="#">Videos Youtube</a>
 		</li>
     <?php
     $q = $objDataBase->Ejecutar("SELECT * FROM bloques");

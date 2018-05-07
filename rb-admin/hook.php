@@ -71,6 +71,7 @@ function do_action($ubicacion){ // De acuerdo a la ubicacion añade las funcione
 
   // Recorremos la lista de funciones, y vamos haciendo una sumatoria de su contenido, el cual retornaremos como cadena
   foreach($list_func as $hook) {
+    if(!function_exists($hook['funcion'])) die("Funcion: ".$hook['funcion']." no definida");
   	$content .= call_user_func($hook['funcion']); // Antes segundo parametro era: $content
 		//$content .= $hook['funcion'];
   }

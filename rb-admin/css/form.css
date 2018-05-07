@@ -31,5 +31,9 @@
 	background-color: #4CAF50;
 }
 .form button[type="button"]{
-	background-color: #9E9E9E;
+	/*background-color: #9E9E9E;*/
+}
+.form span {
+	font-size: .9em;
+	font-weight: bold;
 }

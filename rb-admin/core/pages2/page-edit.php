@@ -183,6 +183,24 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 											</div>
 											<?php
 								        break;
+											case 'youtube1':
+											?>
+											<span class="col-head">
+												<strong>Youtube Videos: <span class="col-save-title"></span><a href="#" class="showEditBlock">Guardar</a></strong>
+												<a class="close-column" href="#" title="Eliminar">
+													<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+												</a>
+											</span>
+											<div class="col-box-edit">
+												<div class="box-edit">
+													<div class="box-edit-html" id="box-edit<?= $col['col_id'] ?>">
+														<p style="text-align:center;max-width:100%"><img src="core/pages2/img/slider.png" alt="post" /></p>
+													</div>
+													<div class="box-edit-tool"><a href="#" class="showEditYoutube1">Editar</a></div>
+												</div>
+											</div>
+											<?php
+												break;
 											case 'post1':
 											?>
 											<span class="col-head">
@@ -279,6 +297,7 @@ include_once 'modal-html-raw-config.php';
 include_once 'modal-post1-config.php';
 include_once 'modal-slide-config.php';
 include_once 'modal-galleries-config.php';
+include_once 'modal-youtube1-config.php';
 include_once 'modal-css-edit.php';
 include_once 'modal-save-block.php';
 ?>

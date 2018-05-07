@@ -105,6 +105,19 @@ $(document).ready(function() {
     });
   });
 
+  // Añadir Columna para galleries
+  $("#boxes").on("click", ".addYoutube1", function (event) {
+    event.preventDefault();
+    var box_edit = $(this).closest(".item").find(".cols-html");
+    var box_id = $(this).closest(".item").attr('data-id');
+    $.ajax({
+        url: "core/pages2/col-youtube1.php?temp_id="+box_id+"yt"+uniqueId()
+    })
+    .done(function( data ) {
+      box_edit.append(data);
+    });
+  });
+
   // Añadir Columan para HTML Editor
   //var k = 0
   $("#boxes").on("click", ".addHtml", function (event) {
@@ -293,6 +306,26 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
+  // Mostrar Editor de Youtube1
+  $("#boxes").on("click", ".showEditYoutube1", function (event) {
+    // --- Capturando valores del bloque
+    var youtube1_id = $(this).closest(".col").attr('data-id');
+    var youtube1_class = $(this).closest(".col").attr('data-class');
+    var youtube1_values_string = $(this).closest(".col").attr('data-values');
+
+    var pva = JSON.parse(youtube1_values_string);
+    $('#youtube1_id').val(youtube1_id);
+    console.log(pva.quantity);
+
+    $('#youtube1_videos').val(pva.videos);
+    $('#youtube1_quantity').val(pva.quantity);
+    $('#youtube1_class').val(youtube1_class);
+
+    $(".bg-opacity").show();
+    $("#editor-youtube1").show();
+    event.preventDefault();
+  });
+
   // Mostrar Editor de Bloque
   $("#boxes").on("click", ".showEditBox", function (event) {
     var box_id = $(this).closest(".item").attr('data-id');
@@ -430,6 +463,7 @@ $(document).ready(function() {
           break;
           case 'slide':
           case 'galleries':
+          case 'youtube1':
             htmlt_content_col = "";
             col_values = $(elemento).attr('data-values');
           break;

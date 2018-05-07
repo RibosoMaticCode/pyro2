@@ -141,6 +141,16 @@
   display: none;
 }
 
+/* GRID DE VIDEOS YOUTUBE */
+.rb-youtube-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.rb-youtube-grid div {
+    padding: 10px;
+}
+
 @media screen and (max-width: 425px) {
   .post-0{
     display: block;

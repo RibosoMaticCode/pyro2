@@ -65,7 +65,8 @@ function rb_return_post_array($qa){
 		$PostsArray[$i]['id'] = $Posts['id'];
     $PostsArray[$i]['titulo_id'] = $Posts['titulo_enlace'];
 		$PostsArray[$i]['autor_id'] = $Posts['autor_id'];
-		$PostsArray[$i]['autor_names'] = $Posts['id'];
+    $User = rb_get_user_info($Posts['autor_id']);
+		$PostsArray[$i]['autor_names'] = $User['nombrecompleto'];
 		$PostsArray[$i]['titulo'] = $Posts['titulo'];
 		$PostsArray[$i]['contenido'] = $Posts['contenido'];
 		$PostsArray[$i]['video_embed'] = $Posts['video_embed'];
@@ -226,7 +227,7 @@ function rb_get_category_info($category){
 	$num_reg = $qc->num_rows;
 	if($num_reg==0):
 		//Probamos con el Id
-		$qc  = $objDataBase->Consultar("SELECT * FROM categorias WHERE id=$category");
+		$qc  = $objDataBase->Ejecutar("SELECT * FROM categorias WHERE id=$category");
 		if(!$qc) return false;
 	endif;
 	$CategoriesArray = array();
@@ -1682,4 +1683,13 @@ function rb_write_file($file_name, $file_content){
     return false;
   endif;
 }
+
+/* Evitar cache */
+function rb_disabled_cache(){
+  header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+  header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+  header("Cache-Control: no-store, no-cache, must-revalidate");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  header("Pragma: no-cache");
+  }
 ?>

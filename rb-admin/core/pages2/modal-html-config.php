@@ -28,62 +28,24 @@
 		<input type="hidden" id="control_id" value="" />
 		<input type="hidden" id="control_edit_id" value="" />
 	</div>
-	<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+	<?php
+	include_once("../rb-admin/tinymce/tinymce.config.php");
+	?>
 	<script>
 	$(function() {
-		tinymce.init({
-			selector: '#ta',
-			entity_encoding : "raw",
-			menubar: false,
-			convert_urls : false,
-			language_url : '<?= G_SERVER ?>/rb-admin/tinymce/langs/es_MX.js',
-			height: 300,
-			forced_root_block : false,
-			extended_valid_elements: "i[class], span, span[class]",
-			plugins: [
-				'advlist autolink lists link image charmap print preview anchor textcolor',
-    		'searchreplace visualblocks code fullscreen table',
-    		'insertdatetime media table contextmenu paste code'
-			],
-			toolbar: 'insert | table |  formatselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code',
-			content_css: '//www.tinymce.com/css/codepen.min.css',
-			file_browser_callback   : function(field_name, url, type, win) {
-				if (type == 'file') {
-					var cmsURL       = 'gallery.explorer.tinymce.php?type=file';
-				} else if (type == 'image') {
-					var cmsURL       = 'gallery.explorer.tinymce.php?type=image';
-				}
-
-				tinymce.activeEditor.windowManager.open({
-					file            : cmsURL,
-					title           : 'Selecciona una imagen',
-					width           : 860,
-					height          : 600,
-					resizable       : "yes",
-					inline          : "yes",
-					close_previous  : "yes"
-				}, {
-					window  : win,
-					input   : field_name
-				});
-			}
-		});
-
 	  $('#btn1').click(function() {
 			// Enviando los valores
 			// - Contenido
 			var control_id = $('#control_id').val();
 			$('#'+ control_id).attr('data-class', $('#class_css').val());
-
 			var control_edit_id = $('#control_edit_id').val();
 			$('#'+control_edit_id).html(tinymce.activeEditor.getContent());
 			// - Nombre de la clase
 			//var css_box_id = $('#css_box_id').val();
-
 			//$('#'+css_box_id).val($('#class_css').val());
-
 			$('.bg-opacity, #editor-html').hide();
 	  });
+		
 		$('#btn2').click(function() {
 			$('.bg-opacity, #editor-html').hide();
 	  });

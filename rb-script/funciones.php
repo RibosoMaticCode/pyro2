@@ -1123,7 +1123,7 @@ function rb_show_menu($menu_panel, $subitem_selected="0", $item_selected="index"
 		}
 		echo '<li '.$style_parent_css.'>';
 		echo '<a '.$cover_parent_item.' href="'.$item['url'].'">';
-		echo '<img class="img-icon-menu" src="'.$item['url_imagen'].'" alt="Inicio">';
+		echo '<img class="img-icon-menu" src="'.$item['url_imagen'].'" alt="Icon Menu">';
 		echo '<span class="text">'.$item['nombre'].'</span>';
 		echo '</a>';
 		if( !is_null($item['item']) ){
@@ -1133,9 +1133,14 @@ function rb_show_menu($menu_panel, $subitem_selected="0", $item_selected="index"
 				echo '<li>';
 				$style_css = "";
 				if($subitem['key']==$subitem_selected){
-					$style_css = ' class="selected" ';
+					$style_css .= 'selected ';
 				}
-				echo '<a id="'.$subitem['key'].'" '.$style_css.' title="'.$subitem['nombre'].'" href="'.$subitem['url'].'">';
+        if(isset($subitem['css'])){
+          $style_css .= $subitem['css'];
+          //$style_parent_css = ' class="selected-parent" ';
+    			//$cover_parent_item = "";
+        }
+				echo '<a id="'.$subitem['key'].'" class="'.$style_css.'" title="'.$subitem['nombre'].'" href="'.$subitem['url'].'">';
 				echo '<span class="text">';
 				echo $subitem['nombre'];
 				echo '</span>';
@@ -1146,8 +1151,7 @@ function rb_show_menu($menu_panel, $subitem_selected="0", $item_selected="index"
 			echo '</ul>';
 			// rb_show_menu($item['item']); -> Recursividad si fuera necesario
 		}
-		echo '</li>
-		';
+		echo '</li>';
 	}
 	//echo '</ul>';
 }

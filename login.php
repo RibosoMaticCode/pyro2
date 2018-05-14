@@ -25,7 +25,7 @@ $rspta = array();
 
 // 1.- SI EL USUARIO SE LOGUEA .. EMPEZAMOS A VALIDAR SUS DATOS
 if(isset($_POST['login'])){
-	$user = trim($_POST['usuario']); // nombre usuario, correo ó telefono-movil
+	$user = trim($_POST['usuario']); // nombre usuario, correo ó telefono-movil. addslashes en versiones antiguas
 	$pwd = trim($_POST['contrasena']);
 	$remember = isset($_POST['remember']) ? 1 : 0;
 	setcookie("login_remember", $remember, time()+3600);

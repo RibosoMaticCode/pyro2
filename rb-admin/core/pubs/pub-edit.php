@@ -28,7 +28,7 @@ if(isset($_GET["id"])){
   $new_button = '';
   $count_attr = 0;
 }
-include_once("tinymce.module.small.php");
+include_once("../rb-admin/tinymce/tinymce.config.php");
 
 //Obtener cantidad de atributos
 ?>

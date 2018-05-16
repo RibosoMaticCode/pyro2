@@ -125,8 +125,7 @@ class DataBase{
 			$cols_vals .= $coma.$key;
 			$coma = ", ";
 		}
-		//return $conexion->query("SELECT *, MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) AS score FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) ORDER BY score ASC");
- 		//die ("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION)");
+		// campo score para ver prioridad de resultado: "SELECT *, MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) AS score FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) ORDER BY score DESC";
 		return $conexion->query("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION)");
 	}
 }

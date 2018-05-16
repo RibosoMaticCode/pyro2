@@ -9,8 +9,8 @@
 		<link rel="stylesheet" href="<?= $rm_url ?>rb-admin/css/cols.css">
 		<link rel="stylesheet" href="<?= $rm_url ?>rb-admin/css/login.css">
 		<!-- favicon from template -->
-		<link rel="shortcut icon" href="<?= $rm_urltheme ?>favicon.ico">
-		<link rel="apple-touch-icon" href="<?= $rm_urltheme ?>apple-touch-icon.png">
+		<link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
+		<link rel="apple-touch-icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<script src="<?= $rm_url ?>rb-admin/js/jquery-1.11.1.min.js"></script>
 		<!-- Add fancyBox -->
 		<link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />

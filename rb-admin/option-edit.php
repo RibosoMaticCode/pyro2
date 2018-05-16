@@ -1,5 +1,4 @@
 <?php
-include_once("tinymce.module.small.php");
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 ?>
 <form name="options-form" method="post" action="option-save.php">
@@ -39,6 +38,16 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </label>
             <label title="Author" for="author">Meta Author (para Buscadores):
               <input  name="author" type="text" value="<?= rb_get_values_options('meta_author') ?>" />
+            </label>
+            <label>Favicon:
+              <script>
+              $(document).ready(function() {
+                $(".explorer-file").filexplorer({
+                  inputHideValue: "<?=  rb_get_values_options('favicon') ?>"
+                });
+              });
+              </script>
+              <input name="favicon" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('favicon') ); echo $photos['src']; ?>" />
             </label>
           </div>
         </div>

@@ -4,6 +4,8 @@ include 'islogged.php';
 <!DOCTYPE HTML>
 <html class="bg-main" lang="es">
 <head>
+	<link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
+	<link rel="apple-touch-icon" href="<?= rb_favicon(G_FAVICON) ?>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta content="True" name="HandheldFriendly">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
@@ -119,7 +121,7 @@ include 'islogged.php';
 		$("#message").animate({ "top": "+=50px", "opacity" : 1 }, "slow" );
 		$("#message").delay(2000).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
 	}
-	
+
 	var validateInputText = function(thisObj, msj){
 		if( thisObj.val() == ""){
 			thisObj.addClass('input_red');

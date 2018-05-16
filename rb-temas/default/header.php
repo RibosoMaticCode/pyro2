@@ -20,8 +20,8 @@
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/responsive.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-admin/css/frontend-bar.css">
 
-		<link rel="shortcut icon" href="<?= rm_urltheme ?>favicon.ico">
-		<link rel="apple-touch-icon" href="<?= rm_urltheme ?>apple-touch-icon.png">
+		<link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
+		<link rel="apple-touch-icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<!-- jquery -->
 	  <script src="<?= rm_urltheme ?>js/jquery-1.11.2.min.js"></script>
 		<script src="<?= rm_urltheme ?>js/jquery-migrate-1.2.1.js"></script>
@@ -40,7 +40,7 @@
 		<!-- start modulos adicionales -->
 		<?= do_action('theme_header') ?>
 		<!-- end modulos adicionales -->
-		
+
 		<script>
 			$(document).ready(function() {
 				$(".fancy").fancybox();

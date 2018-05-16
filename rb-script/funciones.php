@@ -289,12 +289,21 @@ function rb_get_photo_details_from_id($photo_id){
 
 function rb_photo_login($photo_id){ // logo image login (antes: rb_url_photo_from_id)
   global $objDataBase;
-	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	$objFoto = new Fotos;*/
 	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
 	$Photos = $q->fetch_assoc();
 	if($Photos['src']==""):
 		return G_SERVER."/rb-admin/img/user-default.png";
+	else:
+		return G_SERVER."/rb-media/gallery/".$Photos['src'];
+	endif;
+}
+
+function rb_favicon($photo_id){
+  global $objDataBase;
+	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
+	$Photos = $q->fetch_assoc();
+	if($Photos['src']==""):
+		return G_SERVER."/rb-script/images/blackpyro-logo.png";
 	else:
 		return G_SERVER."/rb-media/gallery/".$Photos['src'];
 	endif;

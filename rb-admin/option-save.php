@@ -54,6 +54,7 @@ rb_set_values_options('linkregister',$linkregister);
 rb_set_values_options('mainmenu_id',$mainmenu_id);
 rb_set_values_options('t_width',$t_width);
 rb_set_values_options('t_height',$t_height);
+rb_set_values_options('favicon', $_POST['favicon_id']);
 rb_set_values_options('logo', $_POST['logo_id']);
 rb_set_values_options('background-image', $_POST['bgimage_id']);
 rb_set_values_options('terms_url', $_POST['terms_url']);

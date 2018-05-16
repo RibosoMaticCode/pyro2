@@ -62,7 +62,8 @@ $opciones_valores = array(
 	"sidebar" => "0",
 	"sidebar_pos" => "left",
 	"terms_url" => "",
-	"index_custom" => ""
+	"index_custom" => "",
+	"favicon" => "0"
 );
 
 require_once("../rb-script/funciones.php");

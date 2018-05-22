@@ -42,7 +42,7 @@ if(isset($_GET['type'])):
 						while ($row = $q->fetch_assoc()):
 							?>
 							<li>
-								<a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">
+								<a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#" data-type="<?= $row['type'] ?>">
 									<?php
 									if(rb_file_type($row['type']) == "image"):
 										echo '<img class="thumb" src="'.G_SERVER.'/rb-media/gallery/tn/'.utf8_encode($row['tn_src']).'" data-filename="'.utf8_encode($row['tn_src']).'" />';

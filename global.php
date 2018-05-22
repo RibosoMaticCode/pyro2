@@ -91,6 +91,9 @@ define('G_SLIDEMAIN', rb_get_values_options('slide_main'));
 // logo
 define('G_LOGO', rb_get_values_options('logo'));
 
+// favicon
+define('G_FAVICON', rb_get_values_options('favicon'));
+
 // background-image login
 define('G_BGLOGIN', rb_get_values_options('background-image'));
 

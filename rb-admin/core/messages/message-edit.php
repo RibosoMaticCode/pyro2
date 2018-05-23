@@ -1,5 +1,5 @@
 <?php
-include_once("tinymce.module.small.php");
+include_once("tinymce/tinymce.config.php");
 ?>
 <form id="edit-form" name="edit-form" method="post" action="core/messages/message-save.php">
   <div id="toolbar">

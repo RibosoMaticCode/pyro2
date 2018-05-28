@@ -63,7 +63,9 @@ $opciones_valores = array(
 	"sidebar_pos" => "left",
 	"terms_url" => "",
 	"index_custom" => "",
-	"favicon" => "0"
+	"favicon" => "0",
+	"message_config_restrict" => '{"send_users":"0", "receive_users": "0", "admin_users":"0", "notify": 0}',
+	"user_superadmin" => '{"admin":"1"}'
 );
 
 require_once("../rb-script/funciones.php");

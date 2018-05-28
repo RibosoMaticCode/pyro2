@@ -15,7 +15,7 @@ $(function() {
       'searchreplace visualblocks code fullscreen table',
       'insertdatetime media table contextmenu paste code'
     ],
-    toolbar: 'insert | table |  formatselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code',
+    toolbar: 'insert | table |  formatselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat code',
     content_css: '//www.tinymce.com/css/codepen.min.css',
     file_browser_callback   : function(field_name, url, type, win) {
       if (type == 'file') {

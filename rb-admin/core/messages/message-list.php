@@ -11,7 +11,13 @@ if(isset($_GET['opc'])){
   }
 }else{
   // RECIBIDOS
-  $result = $objDataBase->Ejecutar("SELECT u.nombres, m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo FROM mensajes m, mensajes_usuarios mu, usuarios u WHERE m.id = mu.mensaje_id AND u.id = m.remitente_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 ORDER BY fecha_envio DESC LIMIT 10");
+	//$retenido_string_col = "";
+	//if(G_USERTYPE=="admin") $retenido_string_col = " AND mu.retenido=0";
+	$q = "SELECT m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo, mu.retenido FROM mensajes m, mensajes_usuarios mu
+		WHERE m.id = mu.mensaje_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 AND mu.retenido=0 ORDER BY fecha_envio DESC";
+	$result = $objDataBase->Ejecutar( $q );
+
+	//echo G_USERTYPE;
 }
 while ($row = $result->fetch_assoc()){
   $style = "";
@@ -33,6 +39,12 @@ while ($row = $result->fetch_assoc()){
       <input id="message-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" data-mode="<?= $mod ?>" data-uid="<?= G_USERID ?>" />
     </td>
 		<td>
+			<?php
+			/*$aprobado = "";
+			if(isset($row['retenido']) && $row['retenido']==0 && $row['remitente_id']==0){
+				$aprobado = " [Aprobado]";
+			}*/
+			?>
 			<a href="?pag=men&opc=view&mod=<?= $mod ?>&id=<?= $row['id'] ?>"><?= $row['asunto'] ?></a>
 		</td>
 		<?php
@@ -51,7 +63,16 @@ while ($row = $result->fetch_assoc()){
 			<?php
 	  }else{
 			?>
-	    <td><?= $row['nombres'] ?></td>
+	    <td>
+				<?php
+				if($row['remitente_id']==0){
+					echo "Gestor de Contenido ";
+				}else{
+					$Usuario = rb_get_user_info($row['remitente_id']);
+					echo $Usuario['nombrecompleto'];
+				}
+				?>
+			</td>
 			<?php
 	  }
 		?>

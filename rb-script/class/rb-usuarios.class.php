@@ -88,24 +88,39 @@ class Usuarios{
 		$conexion = $this->con->conectar();
 	 	//Verificar si esta activo antes de la fecha final de activacion, son 48 horas desde que se registro
 			$result = $conexion->query("SELECT activo, (NOW() > fecha_activar) AS diferencia FROM usuarios WHERE nickname = '$nickname'");
-		    if($result->num_rows>0):
-		    	$r = $result->fetch_assoc();
-			 	if($r['activo']==0 && $r['diferencia']==1) return 0;
-				else return 1;
+		  if($result->num_rows>0):
+		   	$r = $result->fetch_assoc();
+			 	if($r['activo']==0 && $r['diferencia']==1){
+					return 2; // Inactivo y a tiempo de activar la cuenta
+				}elseif($r['activo']==0 && $r['diferencia']==0){
+					return 1; // Inactivo, pero con tiempo vencido para activar cuenta
+				}else{
+					return 0;
+				}
 			endif;
 
 			$result = $conexion->query("SELECT activo, (NOW() > fecha_activar) AS diferencia FROM usuarios WHERE correo = '$nickname'");
-		    if($result->num_rows>0):
+		  if($result->num_rows>0):
 			 	$r = $result->fetch_assoc();
-				if($r['activo']==0 && $r['diferencia']==1) return 0;
-				else return 1;
+				if($r['activo']==0 && $r['diferencia']==1){
+					return 2;
+				}elseif($r['activo']==0 && $r['diferencia']==0){
+					return 1;
+				}else{
+					return 0;
+				}
 			endif;
 
 			$result = $conexion->query("SELECT activo, (NOW() > fecha_activar) AS diferencia FROM usuarios WHERE `telefono-movil` = '$nickname'");
-		    if($result->num_rows>0):
+		  if($result->num_rows>0):
 				$r = $result->fetch_assoc();
-				if($r['activo']==0 && $r['diferencia']==1) return 0;
-				else return 1;
+				if($r['activo']==0 && $r['diferencia']==1){
+					return 2;
+				}elseif($r['activo']==0 && $r['diferencia']==0){
+					return 1;
+				}else{
+					return 0;
+				}
 			endif;
 	}
 

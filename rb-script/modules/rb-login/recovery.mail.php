@@ -6,17 +6,17 @@ function mailer_recovery($name_site, $email, $server, $host){
 	$message = "Haga clic en el siguiente enlace para ingresar una nueva<br /><br />$server/login.php?mail=$email&recovery=reset";
 
 	// Set the email subject.
-	$subject = $name_site." - Recuperar Contrasena";
+	$subject = "Recuperar Contraseña";
 
 	// Build the email content.
-	$email_content = "Usted solicito un restablecer su contrasena<br />";
+	$email_content = "Usted solicito restablecer su contrasena<br />";
 	$email_content .= "Correo electronico: $email<br /><br />";
 	$email_content .= "Mensaje:\n$message<br /><br />";
 	$email_content .= "--<br />";
-	$email_content .= "Este e-mail se ha enviado desde ".$name_site." - No reenvie este mensaje";
+	$email_content .= "Este e-mail se ha enviado automaticamente por el gestor de contenidos. No responda este mensaje";
 
 	// Build the email headers.
-	$email_headers = "From: $name_site <no-reply@".$_SERVER['HTTP_HOST']."> \r\n";
+	$email_headers = "From: $name_site <no-reply@".$host."> \r\n";
 	$email_headers .= "MIME-Version: 1.0\r\n";
 	$email_headers .= "Content-Type: text/html; UTF-8\r\n";
 

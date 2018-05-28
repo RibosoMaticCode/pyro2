@@ -111,7 +111,7 @@ define('G_USERACTIVE', rb_get_values_options('user_active_admin'));
 define('G_ALCANCE', rb_get_values_options('alcance'));
 
 // Zona horaria por defecto
-date_default_timezone_set('UTC');
+date_default_timezone_set('America/Lima'); // Versiones futuras sera modificable
 
 //variable global para sesion activa
 session_start();

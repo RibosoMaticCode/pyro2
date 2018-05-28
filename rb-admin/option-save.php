@@ -1,6 +1,42 @@
 <?php
-require_once("../global.php");
-require_once("../rb-script/funciones.php");
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
+
+require_once ABSPATH."global.php";
+require_once ABSPATH."rb-script/funciones.php";
+
+/* usuarios que sera notificado */
+$user_superadmin_string = "";
+if( isset($_POST['user_superadmin']) ){
+  $user_superadmin = $_POST['user_superadmin'];
+  $user_superadmin_string = '{"admin":"'.implode(',', $user_superadmin).'"}';
+}else {
+	$user_superadmin_string = '{"admin":"1"}';
+}
+
+/* ==== RESTRICCION DE ENVIO DE MENSAJES INTERNOS ==== */
+$user_send_string = "0";
+if( isset($_POST['user_send']) ){
+  $user_send = $_POST['user_send'];
+  $user_send_string = implode(',', $user_send);
+}
+$user_receive_string = "0";
+if( isset($_POST['user_receive']) ){
+  $user_receive = $_POST['user_receive'];
+  $user_receive_string = implode(',', $user_receive);
+}
+$user_admin_string = "0";
+if( isset($_POST['user_admin']) ){
+  $user_admin = $_POST['user_admin'];
+  $user_admin_string = implode(',', $user_admin);
+}
+$send_copy = 0;
+if( isset($_POST['sendcopy']) ){
+  $send_copy = $_POST['sendcopy'];
+}
+
+$string_json_restric = '{"send_users":"'.$user_send_string.'", "receive_users": "'.$user_receive_string.'", "admin_users":"'.$user_admin_string.'", "notify": '.$send_copy.'}';
+/* ==== RESTRICCION DE ENVIO DE MENSAJES INTERNOS ==== */
 
 $nombresitio = $_POST['nombresitio'];
 //quitar "/" final de direccion
@@ -84,6 +120,10 @@ rb_set_values_options('nivel_user_register', $_POST['nivel_user_register']);
 rb_set_values_options('alcance', $_POST['alcance']);
 rb_set_values_options('sidebar', $_POST['sidebar']);
 rb_set_values_options('sidebar_pos', $_POST['sidebar_pos']);
+
+rb_set_values_options('message_config_restrict', $string_json_restric);
+rb_set_values_options('user_superadmin', $user_superadmin_string);
+
 $urlreload=G_SERVER."/rb-admin/index.php?pag=opc&m=ok";
 header('Location: '.$urlreload);
 ?>

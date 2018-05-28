@@ -1677,13 +1677,17 @@ function rb_sidebar($add_sidebar = array()){
 }
 
 function rb_validar_mail($pMail) { // Antes validar_mail, solo usado en registro de usuario
-  if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
+  /*if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
 		return true;
 	}else{
 		return false;
-	}
+	}*/
+  if (filter_var($pMail, FILTER_VALIDATE_EMAIL)) {
+    return true;
+  }else{
+    return false;
+  }
 }
-
 /*
 * Guarda/Actualiza contenido de un archivo. 11-01-18
 */

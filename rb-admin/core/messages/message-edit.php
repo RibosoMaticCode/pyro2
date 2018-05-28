@@ -37,7 +37,8 @@ include_once("tinymce/tinymce.config.php");
               while($r_user = $q_user->fetch_assoc()){
                 ?>
                 <label class="label_checkbox">
-                  <input type="checkbox" value="<?php echo $r_user['id'] ?>" name="users[]" /> <?php echo $r_user['nombres']." ".$r_user['apellidos'] ?> [<?= rb_shownivelname($r_user['tipo']) ?>]
+                  <input type="hidden" value="<?= $r_user['tipo'] ?>" name="users_nivel_id[<?= $r_user['id'] ?>]" />
+                  <input type="checkbox" value="<?= $r_user['id'] ?>" name="users[]" /> <?= $r_user['nombres']." ".$r_user['apellidos'] ?> [<?= rb_shownivelname($r_user['tipo']) ?>]
                 </label>
                 <?php
               }
@@ -50,5 +51,5 @@ include_once("tinymce/tinymce.config.php");
     <input name="section" value="men" type="hidden" />
     <input name="mode" value="new" type="hidden" />
     <!--<input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />-->
-    <input name="remitente_id" value="<?php echo G_USERID ?>" type="hidden" />
+    <input name="remitente_id" value="<?= G_USERID ?>" type="hidden" />
 </form>

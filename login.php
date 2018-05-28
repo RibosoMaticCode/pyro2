@@ -6,6 +6,7 @@
 require_once("global.php");
 require_once("rb-script/funciones.php");
 require_once("rb-script/class/rb-usuarios.class.php");
+require_once("rb-script/class/rb-database.class.php");
 
 $url_panel = rb_get_values_options('direccion_url').'/rb-admin';
 $url_panel_usuario = rb_get_values_options('direccion_url').''; //
@@ -46,7 +47,7 @@ if(isset($_POST['login'])){
 			die( json_encode ($rspta) );
 		endif;
 
-	//verificar nombre de usuario
+	//verificar existencia del usuario
 	}elseif($objUsuario->existe('nickname',$user)==0 && $objUsuario->existe('correo',$user)==0 && $objUsuario->existe('telefono-movil',$user)==0){
 		$msg="El usuario no existe";
 		$msgok = 2;
@@ -54,19 +55,6 @@ if(isset($_POST['login'])){
 
 		if($response=="ajax"):
 			header("Content-Type: application/json", true);
-			$rspta = Array(
-				"codigo" => $msgok,
-				"mensaje" => $msg
-			);
-			die( json_encode ($rspta) );
-		endif;
-	//verificar activacion de usuario = sino activado antes de fecha activacion mostrar mensaje
-	}elseif($objUsuario->verificar_activacion($user)==0){
-		$msg="Venció la fecha para activar la cuenta, consulte con el administrador de la web";
-		define('G_MESSAGELOGIN', $msg);
-		$msgok = 3;
-
-		if($response=="ajax"):
 			$rspta = Array(
 				"codigo" => $msgok,
 				"mensaje" => $msg
@@ -87,6 +75,38 @@ if(isset($_POST['login'])){
 			);
 			die( json_encode ($rspta) );
 		endif;
+
+		// Verificar su cuenta esta activada
+		}elseif($objUsuario->verificar_activacion($user)==1){
+			$msg="La cuenta aun no esta activada. Revisa tu correo o pide al administrador que la active.";
+			define('G_MESSAGELOGIN', $msg);
+			$msgok = 3;
+
+			if($response=="ajax"):
+				$rspta = Array(
+					"codigo" => $msgok,
+					"mensaje" => $msg
+				);
+				die( json_encode ($rspta) );
+			endif;
+
+			//verificar activacion de usuario = sino activado antes de fecha activacion mostrar mensaje
+			}elseif($objUsuario->verificar_activacion($user)==2){
+				$msg="Venció la fecha para activar la cuenta. Tendras que iniciar el proceso de registro nuevamente";
+				define('G_MESSAGELOGIN', $msg);
+				$msgok = 3;
+
+				// Aprovechamos a eliminar esta cuenta, ya que nunca se activo.
+				$usuario = $objUsuario->mostrar($user,md5($pwd));
+				$objDataBase->Ejecutar("DELETE FROM usuarios WHERE id=".$usuario['id']);
+
+				if($response=="ajax"):
+					$rspta = Array(
+						"codigo" => $msgok,
+						"mensaje" => $msg
+					);
+					die( json_encode ($rspta) );
+				endif;
 	}else{
 		// Si loguea y da exito
 		if(!empty($_POST['redirect'])) $url_panel = $_POST['redirect'];
@@ -167,11 +187,11 @@ if(isset($_POST['recovery'])){
 				$objDataBase->Ejecutar("UPDATE usuarios SET recovery=1 WHERE correo = '$mail'");
 
 				// msje del proceso efectuado
-				$msg="se enviaron instrucciones a su correo para restablecer su contrase&ntilde;a, revise carpeta SPAM por si las dudas :-)";
+				$msg="Se enviaron instrucciones a su correo para restablecer su contrase&ntilde;a, revise carpeta SPAM por si las dudas :-)";
 				define('G_MESSAGELOGIN', $msg);
 			}else{
 				// msje del proceso mal
-				$msg="ocurrio un error al intentar enviar el correo. intente de nuevo";
+				$msg="Ocurrio un error al intentar enviar el correo. Intente de nuevo";
 				define('G_MESSAGELOGIN', $msg);
 			}
 		}
@@ -273,7 +293,9 @@ if(isset($_GET['active'])){
 	$md5user = rb_encrypt_decrypt('decrypt',trim($_GET['active']));
 
 	if($objUsuario->existe('correo',$md5user)==0):
-		header('Location: '.G_SERVER.'/rb-script/message.php?title=No existe el usuario&desc=Registrese en nuestra web... Sera redireccionado&img=message.error.png');
+		//header('Location: '.G_SERVER.'/rb-script/message.php?title=No existe el usuario&desc=Registrese en nuestra web... Sera redireccionado&img=message.error.png');
+		echo "<h2 style='text-align:center'>No existe el usuario</h2>";
+		echo "<p style='text-align:center'><a href='".G_SERVER."/login.php?reg'>Registrese en nuestra web</a></p>";
 	else:
 		$q = $objDataBase->Ejecutar("SELECT id, activo FROM usuarios WHERE correo='$md5user'");
 		$r = $q->fetch_assoc();
@@ -281,15 +303,21 @@ if(isset($_GET['active'])){
 
 		die();*/
 		if($r['activo']==1):
-			header('Location: '.G_SERVER.'/rb-script/message.php?title=Usuario ya está activo&desc=Vaya la web e inicie sesión.&img=message.warning.png');
+			//header('Location: '.G_SERVER.'/rb-script/message.php?title=Usuario ya está activo&desc=Vaya la web e inicie sesión.&img=message.warning.png');
+			echo "<h2 style='text-align:center'>Usuario ya está activo</h2>";
+			echo "<p style='text-align:center'><a href='".G_SERVER."/login.php'>Inicie sesión</a></p>";
 			exit();
 		endif;
 
 		if($objDataBase->EditarPorCampo_Int("usuarios","activo", 1,$r['id'])):
-			header('Location: '.G_SERVER.'/rb-script/message.php?title=Su cuenta ahora esta activa!&desc=Vaya la web e inicie sesión... Sera redireccionado&img=message.good.png');
+			//header('Location: '.G_SERVER.'/rb-script/message.php?title=Su cuenta ahora esta activa!&desc=Vaya la web e inicie sesión... Sera redireccionado&img=message.good.png');
+			echo "<h2 style='text-align:center'>Su cuenta ahora esta activa</h2>";
+			echo "<p style='text-align:center'><a href='".G_SERVER."/login.php'>Inicie sesión</a></p>";
 			exit();
 		else:
-			header('Location: '.G_SERVER.'/rb-script/message.php?title=Ocurrió un error :(&desc=Intentelo más tarde... Sera redireccionado&img=message.error.png');
+			echo "<h2 style='text-align:center;color:red'>Ocurrió un error :\'(</h2>";
+			echo "<p style='text-align:center'>Intentelo más tarde. Si problema persiste registrese nuevamente.</p>";
+			//header('Location: '.G_SERVER.'/rb-script/message.php?title=Ocurrió un error :(&desc=Intentelo más tarde... Sera redireccionado&img=message.error.png');
 			exit();
 		endif;
 	endif;

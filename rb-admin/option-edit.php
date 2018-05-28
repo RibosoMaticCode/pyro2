@@ -282,6 +282,18 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="linkregister" type="radio" value="0" <?php if(rb_get_values_options('linkregister')=='0') echo "checked=\"checked\""?> />
               No permitir, solo crear Usuario Nuevo desde Panel Administrativo
             </label>
+            <label>Usuarios admins que seran notificados de usuarios nuevos</label>
+            <div class="cols-6-md col-padding">
+              <label>Lista de usuarios admin:</label>
+              <?php
+              $qa = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
+              while($ra = $qa->fetch_assoc()):
+                ?>
+                <label><input type="checkbox" name="user_superadmin[]" value="<?= $ra['id'] ?>" /> <?= $ra['nombres'] ?> <?= $ra['apellidos'] ?></label>
+                <?php
+              endwhile;
+              ?>
+            </div>
           </div>
         </div>
         <!-- redes sociales -->
@@ -337,60 +349,56 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
           <div class="cols-6-md col-padding">
           </div>
         </div>
-      </div>
-      <?php
-        // DESTRIPAR VALOR JSON DE modules_options
-        $json_modules = rb_get_values_options('modules_options');
-        $array_modules = json_decode($json_modules, true);
-        //print_r($array_modules); // solo para verificar transformacion de json a array
-        ?>
-        <!--<label>Modulos visibles</label>
-        <span class="info">Los módulos serán funcionales siempre y cuando esten configurado en la plantilla. Mas información consular a Soporte.</span>
-        <div class="cols-container">
-          <div class="cols-3-md">
-            <label>
-              <input type="checkbox" name="modules[post]" value="1" <?php if($array_modules['post']==1) echo "checked" ?> /> Publicaciones
-            </label>
-            <label>
-              <input type="checkbox" name="modules[cat]" value="1" <?php if($array_modules['cat']==1) echo "checked" ?> /> Categorias
-            </label>
-            <label>
-              <input type="checkbox" name="modules[pag]" value="1" <?php if($array_modules['pag']==1) echo "checked" ?> /> Páginas
-            </label>
+        <!-- fin maps -->
+        <!-- config mensajes -->
+        <div class="box-config">
+          <h3 class="subtitle">Configuracion de mensajes internos</h3>
+          <p>Puede establecer verificaciones previas entre niveles de usuarios.</p>
+          <div class="cols-container">
+            <label>Restricción</label>
+            <div class="cols-6-md col-padding">
+              <label>De:</label>
+              <?php
+              $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE nivel_enlace <> 'admin'");
+              while($r = $q->fetch_assoc()):
+                ?>
+                <label><input type="checkbox" name="user_send[]" value="<?= $r['id'] ?>" /> <?= $r['nombre'] ?></label>
+                <?php
+              endwhile;
+              ?>
+            </div>
+            <div class="cols-6-md col-padding">
+              <label>A:</label>
+              <?php
+              $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE nivel_enlace <> 'admin'");
+              while($r = $q->fetch_assoc()):
+                ?>
+                <label><input type="checkbox" name="user_receive[]" value="<?= $r['id'] ?>" /> <?= $r['nombre'] ?></label>
+                <?php
+              endwhile;
+              ?>
+            </div>
           </div>
-          <div class="cols-3-md">
-            <label>
-              <input type="checkbox" name="modules[com]" value="1" <?php if($array_modules['com']==1) echo "checked" ?> /> Comentarios
-            </label>
-            <label>
-              <input type="checkbox" name="modules[file]" value="1" <?php if($array_modules['file']==1) echo "checked" ?> /> Archivos
-            </label>
-            <label>
-              <input type="checkbox" name="modules[gal]" value="1" <?php if($array_modules['gal']==1) echo "checked" ?> /> Galeria
-            </label>
-          </div>
-            <div class="cols-3-md">
-            <label>
-              <input type="checkbox" name="modules[usu]" value="1" <?php if($array_modules['usu']==1) echo "checked" ?> /> Usuarios
-            </label>
-            <label>
-              <input type="checkbox" name="modules[mess]" value="1" <?php if($array_modules['mess']==1) echo "checked" ?> /> Mensajes
-            </label>
-            <label>
-              <input type="checkbox" name="modules[men]" value="1" <?php if($array_modules['men']==1) echo "checked" ?> /> Editor de menus
-            </label>
-          </div>
-          <div class="cols-3-md">
+          <div class="cols-container">
+            <label>Avisar / Aprobar</label>
+            <div class="cols-6-md col-padding">
+              <label>Lista de usuarios admin:</label>
+              <?php
+              $q = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
+              while($r = $q->fetch_assoc()):
+                ?>
+                <label><input type="checkbox" name="user_admin[]" value="<?= $r['id'] ?>" /> <?= $r['nombres'] ?> <?= $r['apellidos'] ?></label>
+                <?php
+              endwhile;
+              ?>
+            </div>
+            <div class="cols-6-md col-padding">
+              <label><input type="checkbox" name="sendcopy" value="1"> Una vez aprobado, enviar notificacion al destinatario por correo electronico </label>
+            </div>
           </div>
         </div>
-                  <label>
-                      Código de formulario de contacto <br />
-                      <span class="info">
-                        La ruta del archivo que procesa y envia el mail es <code><?= G_SERVER ?>/rb-script/mailer.v2.php</code>, copia y pega en la atributo <strong>action</strong> del codigo del formulario.
-                      </span>
-                      <textarea name="form_code" rows="10"><?= rb_get_values_options('form_code') ?></textarea>
-                </label>-->
-                <!-- redes -->
+      </div>
+    <!--</div>-->
     </section>
   </div>
   <div id="sidebar"></div>

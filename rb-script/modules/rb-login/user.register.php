@@ -31,6 +31,21 @@ if(isset($_POST)){
 	$cn1=(empty($_POST['contrasena1']) ? die('[!] Falta Contraseña') : $_POST['contrasena1']);
 	$cn2=(empty($_POST['contrasena2']) ? die('[!] Falta Repetir la contraseña') : $_POST['contrasena2']);
 
+	// VALIDANDO LOGINTUD DE LA CONTRASEÑA
+	//http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
+	/*if (!preg_match('/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/', $cn1)){
+		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.";
+		if($response=="ajax"):
+			$rspta = Array(
+				"codigo" => "1",
+				"mensaje" => $msg_error
+			);
+			die( json_encode ($rspta) );
+		else:
+			die($msg_error);
+		endif;
+	}*/
+
 	// VALIDANDO CONTRASEÑAS IGUALES
 	if($cn1 != $cn2):
 		$msg_error = "Las contraseñas no coinciden, verifique";
@@ -79,7 +94,7 @@ if(isset($_POST)){
 	// VALIDAR CORREO EXISTENTE DEL USUARIO
 	if($objUsuario->existe('correo',$mail)>0):
 		$qq = $objDataBase->Ejecutar("select access from usuarios where correo='".$mail."'");
-		$rr = mysql_fetch_array($qq);
+		$rr = $qq->fetch_assoc();
 		if($rr['access']=='fb'):
 			$msg_error = "El correo electronico esta registrado con tu cuenta de Facebook, logueate con esa cuenta";
 			if($response=="ajax"):
@@ -115,64 +130,78 @@ if(isset($_POST)){
 	endif;
 
 	// OTROS VALORES POR DEFECTO
-	//$campos = array($nickname, $pwd, $nm, $ap, $cn, $cr, $tm, $tf, $mail, $di, $tipo, $sex, $photo);
-	$campos = array($user, $cn1, $nm, "", "", "", "", "", $mail, "", "3", "",0);
-	$q = "INSERT INTO usuarios (nickname, password, nombres, apellidos, ciudad, pais, `telefono-movil`, `telefono-fijo`, correo, direccion, tipo, fecharegistro, fecha_activar, ultimoacceso, sexo,photo_id)
-	VALUES ('".$campos[0]."', '".md5($campos[1])."', '".$campos[2]."', '".$campos[3]."', '".$campos[4]."', '".$campos[5]."', '".$campos[6]."', '".$campos[7]."', '".$campos[8]."', '".$campos[9]."', ".$campos[10].", NOW(), ADDDATE(NOW(), INTERVAL 2 DAY), NOW(), '".$campos[11]."', ".$campos[12].")";
-	$result = $objDataBase->Insertar($q);
-  if($result){
+	$nivel_id_new_user = rb_get_values_options('nivel_user_register');
+	$now = date('Y-m-d G:i:s');
+	$date_2d_s =  strtotime($now."+ 2 days");
+	$date_2d = date('Y-m-d G:i:s', $date_2d_s);
 
-    $last_id=$result['insert_id'];
-	/*if($objUsuario->Insertar(array())){
-		$last_id = mysql_insert_id();*/
+	$active = 0;
+	if(G_USERACTIVE==0) $active = 1;
 
-		// ENVIANDO EMAIL A ADMINISTRADOR - AVISO DE NUEVO USUARIO
-		$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE nickname='admin'");
-		$r = $q->fetch_assoc();
-		$mail_admin = $r['correo'];
-		//$recipient = $mail_admin;
-		$recipient = trim(G_MAILS);
-    // Set the email subject.
-    $subject = trim(G_TITULO) ." - Usuario Nuevo";
+	$valores = [
+		'nickname' => $user,
+		'password' => md5($cn1),
+		'nombres' => $nm,
+		'correo' => $mail,
+		'tipo' => $nivel_id_new_user,
+		'fecharegistro' => date('Y-m-d G:i:s'),
+		'fecha_activar' => $date_2d,
+		'ultimoacceso' => date('Y-m-d G:i:s'),
+		'photo_id' => 0,
+		'activo' => $active
+	];
 
-    // Build the email content.
-    $email_content = "Nombres: <strong>".$nm."</strong><br />";
-		$email_content .= "E-mail: <strong>".$mail."</strong><br /><br />";
-		if(G_USERACTIVE==2):
-			$email_content .= "Mensaje: Para activar al usuario tiene que ir al panel de administración <br />";
-			$email_content .= "<a href='".G_SERVER."/rb-admin/index.php?pag=usu&opc=edt&id=".$last_id."'>Activar usuario</a><br />";
-		elseif(G_USERACTIVE==1):
-			$email_content .= "Mensaje: La activación del usuario, esta configurado para que lo haga el mismo usuario. Solo si el usuario tuviera problemas en activar, ustede puede activarlo desde el panel administrativo <br />";
-		elseif(G_USERACTIVE==0):
-			$email_content .= "Mensaje: Usuario nuevo registrado! La activación del usuario esta desactivada. Verifique que no se trate de spam o correo malicioso";
-			$objDataBase->EditarPorCampo_Int('activo',1,$last_id);
-		endif;
-		$email_content .= "Este correo se ha enviado a traves de la pagina web";
+	// Users admins que seran notificados
+	$msg_response_admin = "";
+	$superadmins = json_decode(rb_get_values_options('user_superadmin'), true);
+	$array_admins = explode(",", $superadmins['admin']);
 
-    // Build the email headers.
-    $email_headers = "MIME-Version: 1.0" . "\r\n";
-		$email_headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $email_headers .= "From: $nm <$mail>";
+	$r = $objDataBase->Insert('usuarios', $valores);
+	if($r['result']){
+		// crear coockie para bloquear registro seguido
+		setcookie("_register", "no-register", time()+ 120, "/"); // despues de 2 mins otro registro
+		$last_id = $r['insert_id'];
 
-  	// Send the email.
-    if (!mail($recipient, $subject, $email_content, $email_headers)):
-      $msg_error = "Usuario creado, pero hay un error al enviar mail al servidor. Inicie sesión de todas formas";
-			if($response=="ajax"):
-				$rspta = Array(
-					"codigo" => "4",
-					"mensaje" => $msg_error
-				);
-				die( json_encode ($rspta) );
-			else:
-				die($msg_error);
+		// ENVIANDO EMAIL A ADMINISTRADORES - AVISO DE NUEVO USUARIO
+		foreach ($array_admins as $user_admin_id) {
+			$admin = rb_get_user_info( $user_admin_id );
+			$recipient = $admin['correo'];
+	    // Set the email subject.
+	    $subject = "Notificación de nuevo usuario";
+
+	    // Build the email content.
+			$email_content = "Datos del nuevo usuario:<br />";
+	    $email_content .= "Nombres: <strong>".$nm."</strong><br />";
+			$email_content .= "E-mail: <strong>".$mail."</strong><br /><br />";
+			if(G_USERACTIVE==2):
+				$email_content .= "Mensaje: Para activar al usuario tiene que ir al panel de administración <br />";
+				$email_content .= "<a href='".G_SERVER."/rb-admin/index.php?pag=usu'>Activar usuario</a><br />";
+			elseif(G_USERACTIVE==1):
+				$email_content .= "Mensaje: La activación del usuario, esta configurado para que lo haga el mismo usuario. Solo si el usuario tuviera problemas en activar, usted puede activarlo desde el panel administrativo <br />";
+			elseif(G_USERACTIVE==0):
+				$email_content .= "Mensaje: Usuario nuevo registrado! La activación del usuario esta desactivada. Verifique que no se trate de spam o correo malicioso. <br />";
+				$objDataBase->EditarPorCampo_Int('usuarios', 'activo', 1, $last_id);
 			endif;
-		endif;
+			$email_content .= "<br />Este correo se ha enviado automaticamente por el gestor de contenidos. No responda.";
 
-		// ENVIAR MAIL AL USUARIO
+	    // Build the email headers.
+	    $email_headers = "MIME-Version: 1.0" . "\r\n";
+			$email_headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+	    $email_headers .= "From: ".trim(G_TITULO)." <no-reply@".G_HOSTNAME.">";
+
+	  	// Send the email.
+	    if (mail($recipient, $subject, $email_content, $email_headers)):
+	      $msg_response_admin .= "|SendMailAdmin:".$recipient;
+			else:
+				$msg_response_admin .= "|NoSendMailTo:".$recipient;
+			endif;
+		}
+
+		// ENVIAR MAIL AL USUARIO NUEVO REGISTRADO
 		$recipient2 = $mail;
 
 		// Set the email subject.
-		$subject2 = trim(G_TITULO) ." - Registro de datos";
+		$subject2 = "Bienvenido a ".trim(G_TITULO);
 
 		// Build the email content.
 		if(G_USERACTIVE==2): // Admin lo activa
@@ -187,47 +216,42 @@ if(isset($_POST)){
 			$email_content2 = "<h2>Gracias por registrarte en nuestra web</h2>";
 		endif;
 
-
 		// Build the email headers.
 		$email_headers2 = "MIME-Version: 1.0" . "\r\n";
 		$email_headers2 .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-		$email_headers2 .= "From: ".G_TITULO." <".G_MAILSENDER.">";
+		$email_headers2 .= "From: ".trim(G_TITULO)." <no-reply@".G_HOSTNAME.">";
 
 		// Send the email.
+		$msg_response_mail_user = "";
 		if (mail($recipient2, $subject2, $email_content2, $email_headers2)):
-			// crear coockie para bloquear registro seguido
-	    setcookie("_register", "no-register", time()+ 1800, "/"); // despues de 30 mins otro registro
-
-	   	if(G_USERACTIVE==2): // Admin lo activa
-				$codigo = "0";
-				$msg_error = "Registro correcto, se te envio un correo de confirmación. El administrador revisará tu información y te notificaremos para que puedas acceder a nuestro sitio web";
-			elseif(G_USERACTIVE==1): // usuario
-				$codigo = "0";
-				$msg_error = "Registro correcto. Pronto recibirás un correo para que puedas activar tu cuenta. Puedes iniciar sesión, pero debes activar tu cuenta para usar todas las caracterisitcas del sitio.";
-			elseif(G_USERACTIVE==0): // activado por defecto
-				$codigo = "0";
-				$msg_error = "Bienvenido! Puedes iniciar sesión. <a href='".G_SERVER."/login.php'>Loguearse</a></p>";
-			endif;
-			if($response=="ajax"):
-				$rspta = Array(
-					"codigo" => $codigo,
-					"mensaje" => $msg_error
-				);
-				die( json_encode ($rspta) );
-			else:
-				die($msg_error);
-			endif;
+	   	$msg_response_mail_user = "Correo enviado a usuario";
 		else:
-			$msg_error = "Usuario creado, pero hay un error al enviar mail al usuario. Inicie sesión de todas formas.";
-			if($response=="ajax"):
-				$rspta = Array(
-					"codigo" => "4",
-					"mensaje" => $msg_error
-				);
-				die( json_encode ($rspta) );
-			else:
-				die($msg_error);
-			endif;
+			$msg_response_mail_user = "Usuario creado, pero hay un error al enviar mail al usuario.";
+		endif;
+
+		// Armando el mensaje luego del registro
+		if(G_USERACTIVE==2): // Admin lo activa
+			//$codigo = "0";
+			$msg_success = "<p>Registro correcto, se te envio un correo de confirmación. El administrador revisará tu información y te notificaremos para que puedas acceder a nuestro sitio web</p>";
+		elseif(G_USERACTIVE==1): // usuario
+			//$codigo = "0";
+			$msg_success = "<p>Registro correcto. Pronto recibirás un correo para que puedas activar tu cuenta.</p><p style='text-align:center'><a href='".G_SERVER."'>Volver a la web</a></p>";
+		elseif(G_USERACTIVE==0): // activado por defecto
+			//$codigo = "0";
+			$msg_success = "<p>Bienvenido! Puedes iniciar sesión. <a href='".G_SERVER."/login.php'>Loguearse</a></p>";
+		endif;
+
+		// Armar respuest aqui:
+		if($response=="ajax"):
+			$rspta = Array(
+				"codigo" => "0",
+				"mensaje" => $msg_success,
+				"mensaje_envios_admin" => $msg_response_admin,
+				"mensaje_envio_usuario" => $msg_response_mail_user
+			);
+			die( json_encode ($rspta) );
+		else:
+			die($msg_error);
 		endif;
 	}else{
 		$msg_error = "Error al registrar en la base de datos. El usuario no se pudo registrar.";
@@ -241,7 +265,7 @@ if(isset($_POST)){
 			die($msg_error);
 		endif;
 	}
-}else{
+}else{ // ELSE POST
 	$msg_error = "No se recibieron los datos desde el formulario";
 	if($response=="ajax"):
 		$rspta = Array(

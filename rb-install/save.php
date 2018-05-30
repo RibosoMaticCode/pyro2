@@ -3,6 +3,11 @@
 * Instalador: Establece valores iniciales em la tabla Opciones
 * Ultima actualizacion : 24-01-17
 */
+require_once("../rb-script/funciones.php");
+require_once("../rb-script/class/rb-database.class.php");
+
+$key_web = randomPassword(12,1,"lower_case,upper_case,numbers,special_symbols");
+
 $directory = str_replace('/rb-install/save.php', '', $_SERVER['SCRIPT_NAME']); //obteniendo sub directorio de instalacion
 $opciones_valores = array(
 	"nombresitio" => "Nombre Sitio",
@@ -66,10 +71,8 @@ $opciones_valores = array(
 	"favicon" => "0",
 	"message_config_restrict" => '{"send_users":"0", "receive_users": "0", "admin_users":"0", "notify": 0}',
 	"user_superadmin" => '{"admin":"1"}'
+	"key_web" => $key_web
 );
-
-require_once("../rb-script/funciones.php");
-require_once("../rb-script/class/rb-database.class.php");
 
 if(isset($_POST)):
 	$sitio_titulo = $_POST['sitio_titulo'];

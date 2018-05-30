@@ -258,6 +258,10 @@ if(isset($_POST['newpass'])){
 	$pwd=(empty($_POST['pass1']) ? die('[!] Ingrese una contrasena') : $_POST['pass1']);
 	$pwd1=(empty($_POST['pass2']) ? die('[!] Ingrese una contrasena') : $_POST['pass2']);
 
+	// Validar solidez
+	if( !rb_valid_pass($pwd) ) die("La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.");
+	if( !rb_valid_pass($pwd1) ) die("La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.");
+
 	if($pwd!=$pwd1){
 		die('[!] Las contrasenas no coinciden. Intente de nuevo.');
 	}

@@ -109,29 +109,6 @@ function rb_set_values_options($option, $new_value){
 	return $q;
 }
 
-function rb_encrypt_decrypt($action, $string) {
-  //https://naveensnayak.wordpress.com/2013/03/12/simple-php-encrypt-and-decrypt/e
-  $output = false;
-
-  $encrypt_method = "AES-256-CBC";
-  $secret_key = 'This is my secret key';
-  $secret_iv = 'This is my secret iv';
-
-  // hash
-  $key = hash('sha256', $secret_key);
-
-  // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-  $iv = substr(hash('sha256', $secret_iv), 0, 16);
-
-  if( $action == 'encrypt' ) {
-    $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-    $output = base64_encode($output);
-  }elseif( $action == 'decrypt' ){
-    $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-  }
-  return $output;
-}
-
 function rb_post_related_by_category($Post_id, $Category_id,  $Limit = 5){
   global $objDataBase;
 	$qa = $objDataBase->Ejecutar("SELECT a.* FROM articulos a, articulos_categorias ac, categorias c WHERE a.id=ac.articulo_id AND ac.categoria_id=c.id AND a.activo='A' AND c.id = ".$Category_id." AND a.id <> ".$Post_id." ORDER BY RAND() LIMIT $Limit");
@@ -1709,4 +1686,83 @@ function rb_disabled_cache(){
   header("Cache-Control: post-check=0, pre-check=0", false);
   header("Pragma: no-cache");
   }
+
+/* Pass valid */
+function rb_valid_pass($pass){
+  //http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
+  if (preg_match('/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/', $pass)){
+    return true; // Valido
+  }else{
+    return false;
+  }
+}
+
+/* SECURITY - SEGURIDAD */
+
+function rb_encrypt_decrypt($action, $string, $secret_key='oW%c76+jb2', $secret_iv='A)2!u467a^') {
+  //https://naveensnayak.wordpress.com/2013/03/12/simple-php-encrypt-and-decrypt/e
+  $output = false;
+
+  $encrypt_method = "AES-256-CBC";
+  /*$secret_key = 'This is my secret key';
+  $secret_iv = 'This is my secret iv';*/
+
+  // hash
+  $key = hash('sha256', $secret_key);
+
+  // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+  $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+  if( $action == 'encrypt' ) {
+    $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+    $output = base64_encode($output);
+  }elseif( $action == 'decrypt' ){
+    $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+  }
+  return $output;
+}
+
+function random($length, $chars = ''){ // Genera un valor aleatorio - NO USADO AUN
+	if (!$chars) {
+		$chars = implode(range('a','f'));
+		$chars .= implode(range('0','9'));
+	}
+	$shuffled = str_shuffle($chars);
+	return substr($shuffled, 0, $length);
+}
+function randomPassword($length,$count, $characters) { // Genera un valor aleatorio para cada instalacion de Pyro CMS
+
+// $length - the length of the generated password
+// $count - number of passwords to be generated
+// $characters - types of characters to be used in the password
+
+// define variables used within the function
+    $symbols = array();
+    $passwords = array();
+    $used_symbols = '';
+    $pass = '';
+
+// an array of different character types
+    $symbols["lower_case"] = 'abcdefghijklmnopqrstuvwxyz';
+    $symbols["upper_case"] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $symbols["numbers"] = '1234567890';
+    $symbols["special_symbols"] = '!?~@#-_+<>[]{}';
+
+    $characters = split(",",$characters); // get characters types to be used for the passsword
+    foreach ($characters as $key=>$value) {
+        $used_symbols .= $symbols[$value]; // build a string with all characters
+    }
+    $symbols_length = strlen($used_symbols) - 1; //strlen starts from 0 so to get number of characters deduct 1
+
+    for ($p = 0; $p < $count; $p++) {
+        $pass = '';
+        for ($i = 0; $i < $length; $i++) {
+            $n = rand(0, $symbols_length); // get a random character from the string with all characters
+            $pass .= $used_symbols[$n]; // add the character to the password string
+        }
+        $passwords[] = $pass;
+    }
+
+    return $passwords; // return the generated password
+}
 ?>

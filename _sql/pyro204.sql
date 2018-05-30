@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-05-2018 a las 17:04:50
+-- Tiempo de generación: 30-05-2018 a las 17:19:04
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -350,7 +350,8 @@ CREATE TABLE `usuarios` (
   `youtube` tinytext NOT NULL,
   `bio` tinytext NOT NULL,
   `grupo_id` smallint(5) NOT NULL,
-  `meta` tinytext NOT NULL
+  `meta` tinytext NOT NULL,
+  `user_key` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

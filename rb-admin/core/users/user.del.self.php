@@ -10,32 +10,30 @@ $key_web = rb_get_values_options('key_web'); // podria ser key de la sesion de u
 
 $user_id_enc = $_POST['user_id'];
 $user_key = $_POST['user_key'];
-$pass_admin = md5($_POST['pwd_adm']);
+$pass_user = md5($_POST['pwd_user']);
 
 header('Content-type: application/json; charset=utf-8');
 
+// Desencriptamos el id del usuario
+$user_id = rb_encrypt_decrypt("decrypt", $user_id_enc, $user_key, $key_web);
+
 // Verificar password de este usuario
-$result_admin = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id = ".G_USERID);
-$Admin = $result_admin->fetch_assoc();
+$result_user = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id = ".$user_id);
+$User = $result_user->fetch_assoc();
+
+if($User['nickname']=="admin"){
+	$arr = array('result' => 0, 'message' => 'El usuario "admin" no puede eliminarse del sistema' );
+	die(json_encode($arr));
+}
 
 // Si password admins es valido
-if($pass_admin==$Admin['password']){
-
-	// Desencriptamos el id del usuario
-	$user_id = rb_encrypt_decrypt("decrypt", $user_id_enc, $user_key, $key_web);
-
-	// Verificamos que no sea en admin = 1
-	$r = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id = $user_id");
-	$row = $r->fetch_assoc();
-	if($row['nickname']=="admin"){
-	  $arr = array('result' => 0, 'message' => 'El usuario "admin" no puede eliminarse del sistema' );
-	  die(json_encode($arr));
-	}
+if($pass_user==$User['password']){
 
 	// Procedemos a borrar
 	$r = $objDataBase->Ejecutar("DELETE FROM usuarios WHERE id = $user_id");
 	if($r){
-	  $arr = array('result' => 1, 'message' => "El usuario fue eliminado" );
+		// Cerrar session y todo lo demas
+	  $arr = array('result' => 1, 'message' => "Su cuenta fue eliminada. Cerraremos la sesión." );
 	  die(json_encode($arr));
 	}else{
 	  $arr = array('result' => 0, 'message' => G_SERVER );

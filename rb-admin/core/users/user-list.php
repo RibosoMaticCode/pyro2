@@ -5,6 +5,8 @@ $regMostrar = $_COOKIE['user_show_items'];
 $colOrder = "nickname"; // column name table
 $Ord = "ASC"; // A-Z
 
+$key_web = rb_get_values_options('key_web'); // podria ser key de la sesion de usuario
+
 if(isset($_GET['page']) && ($_GET['page']>0)){
   $RegistrosAEmpezar=($_GET['page']-1)*$regMostrar;
 }else{
@@ -33,14 +35,16 @@ while ( $row = $result->fetch_assoc() ):
       <?= $row['nombres'] ?> <?= $row['apellidos'] ?>
       <div class="options">
         <span><a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=usu&amp;opc=edt&amp;id=<?= $row['id'] ?>">Editar</a></span>
-        <span><a style="color:red" class="del-item" data-id="<?= $row['id'] ?>" href="#" title="Eliminar">Eliminar</a></span></td>
+        <span><a style="color:red" class="fancyboxForm fancybox.ajax"
+          data-id="" href="<?= G_SERVER ?>/rb-admin/core/users/user.del.auth.php?user_key=<?= $row['user_key'] ?>&user_id=<?= rb_encrypt_decrypt("encrypt", $row['id'], $row['user_key'], $key_web) ?>"
+          title="Eliminar la cuenta">Eliminar</a></span></td>
       </div>
     </td>
     <td><?= $row['correo'] ?></td>
     <td><?= show_nivel($row['tipo']) ?></td>
     <td>
       <?php
-      if($row['activo']==0) echo '<a href="user.active.php?id='.$row['id'].'">¿Activar?</a>';
+      if($row['activo']==0) echo '<a href="'.G_SERVER.'/rb-admin/core/users/user-active.php?id='.$row['id'].'">¿Activar?</a>';
       else echo "Activo";
       ?>
     </td>

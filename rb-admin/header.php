@@ -123,7 +123,7 @@ include 'islogged.php';
 	}
 
 	var validateInputText = function(thisObj, msj){
-		if( thisObj.val() == ""){
+		if( (thisObj.val()).trim() == ""){
 			thisObj.addClass('input_red');
 			thisObj.focus();
 			thisObj.nextAll().remove();
@@ -133,6 +133,14 @@ include 'islogged.php';
 			thisObj.removeClass('input_red');
 			thisObj.nextAll().remove();
 		}
+	}
+
+	var pointInputText = function(thisObj, msj){
+		thisObj.addClass('input_red');
+		thisObj.focus();
+		thisObj.nextAll().remove();
+		thisObj.after('<span style="color:red;font-size:.8em;">'+msj+'</span>');
+		event.preventDefault();
 	}
 </script>
 </head>

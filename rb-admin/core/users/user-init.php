@@ -49,11 +49,11 @@ $(document).ready(function() {
   // DELETE ITEM
   $('.del-item').click(function( event ){
     var item_id = $(this).attr('data-id');
-    var eliminar = confirm("[?] Esta a punto de eliminar este usuario. Continuar?");
-
-  	if ( eliminar ) {
+    //var eliminar = confirm("[?] Esta a punto de eliminar este usuario. Continuar?");
+    var pass_admin = prompt("Solo usuarios nivel ADMIN, pueden eliminar cuentas. \nPor favor ingresa tu contraseña");
+  	if (pass_admin != null) {
   		$.ajax({
-  			url: 'core/users/user-del.php?id='+item_id,
+  			url: 'core/users/user-del.php?user_id='+item_id+'&pwd_adm='+pass_admin,
   			cache: false,
   			type: "GET",
   			success: function(data){

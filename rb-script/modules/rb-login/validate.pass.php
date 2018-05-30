@@ -1,8 +1,12 @@
 <?php
-//http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
-$pass = $_GET['pass'];
-$pass = mb_convert_encoding($pass, "UTF-8");
-if (preg_match('/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/', $pass)){
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once(ABSPATH."global.php");
+require_once(ABSPATH."rb-script/funciones.php");
+
+$pass = trim($_GET['pass']);
+if ( rb_valid_pass($pass) ){
   echo "1"; // Valido
 }else{
   echo "0";

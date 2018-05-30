@@ -9,8 +9,8 @@ function mailer_recovery($name_site, $email, $server, $host){
 	$subject = "Recuperar Contraseña";
 
 	// Build the email content.
-	$email_content = "Usted solicito restablecer su contrasena<br />";
-	$email_content .= "Correo electronico: $email<br /><br />";
+	$email_content = "Usted solicito restablecer su contraseña<br />";
+	$email_content .= "Correo electrónico: $email<br /><br />";
 	$email_content .= "Mensaje:\n$message<br /><br />";
 	$email_content .= "--<br />";
 	$email_content .= "Este e-mail se ha enviado automaticamente por el gestor de contenidos. No responda este mensaje";

@@ -31,49 +31,6 @@ if(isset($_POST)){
 	$cn1=(empty($_POST['contrasena1']) ? die('[!] Falta Contraseña') : $_POST['contrasena1']);
 	$cn2=(empty($_POST['contrasena2']) ? die('[!] Falta Repetir la contraseña') : $_POST['contrasena2']);
 
-	// VALIDANDO LOGINTUD DE LA CONTRASEÑA
-	//http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
-	/*if (!preg_match('/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/', $cn1)){
-		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.";
-		if($response=="ajax"):
-			$rspta = Array(
-				"codigo" => "1",
-				"mensaje" => $msg_error
-			);
-			die( json_encode ($rspta) );
-		else:
-			die($msg_error);
-		endif;
-	}*/
-
-	// VALIDANDO CONTRASEÑAS IGUALES
-	if($cn1 != $cn2):
-		$msg_error = "Las contraseñas no coinciden, verifique";
-		if($response=="ajax"):
-			$rspta = Array(
-				"codigo" => "1",
-				"mensaje" => $msg_error
-			);
-			die( json_encode ($rspta) );
-		else:
-			die($msg_error);
-		endif;
-	endif;
-
-	// VALIDANDO TERMINOS Y CONDICIONES
-	if(!isset($_POST['terminos'])) :
-		$msg_error = "No se acepto terminos y condiciones";
-		if($response=="ajax"):
-			$rspta = Array(
-				"codigo" => "2",
-				"mensaje" => $msg_error
-			);
-			die( json_encode ($rspta) );
-		else:
-			die($msg_error);
-		endif;
-	endif;
-
 	// VALIDANDO ESTRUCTURA DEL CORREO ELECTRONICO
 	if(!rb_validar_mail($mail)):
 		$msg_error = "Ingrese correctamente su correo";
@@ -120,6 +77,62 @@ if(isset($_POST)){
 		endif;
 	endif;
 
+	// VALIDANDO LOGINTUD DE LA CONTRASEÑA
+	//http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
+	if ( !rb_valid_pass($cn1) ){
+		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
+		if($response=="ajax"):
+			$rspta = Array(
+				"codigo" => "1",
+				"mensaje" => $msg_error
+			);
+			die( json_encode ($rspta) );
+		else:
+			die($msg_error);
+		endif;
+	}
+
+	if ( !rb_valid_pass($cn2) ){
+		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
+		if($response=="ajax"):
+			$rspta = Array(
+				"codigo" => "1",
+				"mensaje" => $msg_error
+			);
+			die( json_encode ($rspta) );
+		else:
+			die($msg_error);
+		endif;
+	}
+
+	// VALIDANDO CONTRASEÑAS IGUALES
+	if($cn1 != $cn2):
+		$msg_error = "Las contraseñas no coinciden, verifique";
+		if($response=="ajax"):
+			$rspta = Array(
+				"codigo" => "1",
+				"mensaje" => $msg_error
+			);
+			die( json_encode ($rspta) );
+		else:
+			die($msg_error);
+		endif;
+	endif;
+
+	// VALIDANDO TERMINOS Y CONDICIONES
+	if(!isset($_POST['terminos'])) :
+		$msg_error = "No se acepto terminos y condiciones";
+		if($response=="ajax"):
+			$rspta = Array(
+				"codigo" => "2",
+				"mensaje" => $msg_error
+			);
+			die( json_encode ($rspta) );
+		else:
+			die($msg_error);
+		endif;
+	endif;
+
 	// SI TODAS LAS VALIDACIONES PASA CON EXITO, GENERAR NICKNAME EN BASE A SU CORREO.
 	$array_mail = explode("@", $mail);
 	$user = $array_mail[0];
@@ -148,7 +161,8 @@ if(isset($_POST)){
 		'fecha_activar' => $date_2d,
 		'ultimoacceso' => date('Y-m-d G:i:s'),
 		'photo_id' => 0,
-		'activo' => $active
+		'activo' => $active,
+		'user_key' => md5(microtime().rand())
 	];
 
 	// Users admins que seran notificados

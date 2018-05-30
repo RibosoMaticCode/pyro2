@@ -219,3 +219,7 @@ button[disabled]{
 	position: absolute;
 	display: none;
 }
+.notify {
+    font-size: .85em;
+    color: red;
+}

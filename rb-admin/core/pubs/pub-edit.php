@@ -20,7 +20,8 @@ if(isset($_GET["id"])){
   $cons_art = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fechamod, DATE_FORMAT(fecha_creacion, '%d-%m-%Y') as fechadmY FROM articulos WHERE id=$id");
   $row= $cons_art->fetch_assoc();
   $mode = "update";
-  $new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=art&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
+  //$new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=art&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
+  $new_button = '<a class="button" href="'.G_SERVER.'/rb-admin/?pag=art&opc=nvo">Nuevo</a>';
   $qattr = $objDataBase->Ejecutar("SELECT * FROM articulos_articulos WHERE articulo_id_padre =". $row['id']);
   $count_attr = $qattr->num_rows;
 }else{
@@ -175,7 +176,8 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
     <div id="toolbar-buttons">
       <input class="submit" name="guardar" type="submit" value="Guardar" />
       <input class="submit" name="guardar_volver" type="submit" value="Guardar y Volver" />
-      <a href="<?= G_SERVER ?>/rb-admin/?pag=art"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+      <!--<a href="<?= G_SERVER ?>/rb-admin/?pag=art"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>-->
+      <a href="<?= G_SERVER ?>/rb-admin/?pag=art" class="button">Cancelar</a>
       <?php
       if(isset($_GET["id"])){
         ?>

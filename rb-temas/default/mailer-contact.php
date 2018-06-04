@@ -1,56 +1,104 @@
 <?php
+// Habilitar allow_url_fopen=on en PHP.ini
+header('Content-type: application/json; charset=utf-8');
+
 // Incluir varibales globales
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(__FILE__))) . '/');
 
-include_once ABSPATH.'global.php';
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/funciones.php';
+
+$recaptcha_use = false;
+$recaptcha_msg = "";
+
+//Usa captcha?
+if( isset($_POST['g-recaptcha-response']) ){
+	$recaptcha_use = true;
+	$secret = rb_get_values_options('secretkey'); // get DB
+
+	$post_data = http_build_query(
+    array(
+        'secret' => $secret,
+        'response' => $_POST['g-recaptcha-response'],
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+    )
+	);
+	$opts = array('http' =>
+    array(
+        'method'  => 'POST',
+        'header'  => 'Content-type: application/x-www-form-urlencoded',
+        'content' => $post_data
+    )
+	);
+
+	$context  = stream_context_create($opts);
+  $rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+
+  $arr = json_decode($rsp, true);
+  if($arr['success']==""){
+  	$recaptcha_msg = 'spam';
+
+  }
+  if($arr['success']==1){
+  	$recaptcha_msg = 'done';
+  }
+}
+
+// Si respuesta del recaptcha es spam, termina todo
+if($recaptcha_msg=="spam"){
+	$rspmail = [
+		'result' => false,
+		'msg' => 'El captcha no es valido',
+		'recaptcha' => $recaptcha_use,
+	];
+	die(json_encode($rspmail));
+}
+
+$values = $_POST['valores'];
+
+if(isset($values['Terminos']) && $values['Terminos']==0){
+	die("No se aceptaron terminos");
+}
+
+// Armando mensaje
+$email_content = "Informacion del mensaje:<br /><br />";
+foreach ($values as $key => $value) {
+	$email_content .= $key.": <br />".$value."<br /><br />";
+}
+$email_content .= "--<br />El e-mail fue enviado a través del formulario de la web.";
 
 // Destinatarios :
-$recipient = "jesusvld@gmail.com";
-$cc = "dweb@emocion.pe";
+$recipient = rb_get_values_options('mail_destination'); //"dweb@emocion.pe";
+//$cc = "dweb@emocion.pe"; -> copia, habilitar luego
 
-// Configuracion
+// Configuracion del cabecera
 $subject = "Formulario de Contacto";
-$from_name = G_TITULO;
-$mail_no_reply = "no-reply@".G_HOSTNAME;
-$mail_reply = "info@".G_HOSTNAME;
-
-// Variables
-$nom = $_POST['nom'];
-$ape = $_POST['ape'];
-$emp = $_POST['emp'];
-$tel = $_POST['tel'];
-$email = $_POST['mail'];
-$dir = $_POST['dir'];
-$inter = $_POST['opc'];
-$mes = $_POST['message'];
-
-// Set the email subject.
-
-
-// Build the email content.
-$email_content = "Informacion del mensaje:<br />";
-$email_content .= "Nombres: <strong>$nom $ape</strong><br />";
-$email_content .= "Empresa: <strong>$emp</strong><br />";
-$email_content .= "Telefono: <strong>$tel</strong><br />";
-$email_content .= "E-mail: <strong>$email</strong><br />";
-$email_content .= "Direccion: <strong>$dir</strong><br />";
-$email_content .= "Interesado en: <strong>$inter</strong><br />";
-$email_content .= "Mensaje: <br /><strong>$mes</strong><br />";
-$email_content .= "<br /><br />--<br />El e-mail fue enviado a través del formulario de contacto en la web.";
+$from_name = rb_get_values_options('name_sender');
+$mail_no_reply = rb_get_values_options('mail_sender');
+//$mail_reply = "info@".G_HOSTNAME; -> correo de respuesta, habilitar luego
 
 // Build the email headers. // El que envia es el sender no el usuario
 $email_headers = "From: $from_name <$mail_no_reply> \r\n";
-$email_headers .= "Cc: $cc \r\n";
-$email_headers .= "Reply-To: <$mail_reply>\r\n";
+//$email_headers .= "Cc: $cc \r\n"; --> Futuras versiones
+//$email_headers .= "Reply-To: <$mail_reply>\r\n"; --> Futuras versiones
 $email_headers .= "MIME-Version: 1.0\r\n";
 $email_headers .= "Content-Type: text/html; UTF-8\r\n";
 
 // Send the email.
 if (mail($recipient, $subject, $email_content, $email_headers)) {
-	echo "1";
+	$rspmail = [
+		'result' => true,
+		'msg' => 'Envio correcto del correo',
+		'recaptcha' => $recaptcha_use,
+		'recaptcha_msg' => $recaptcha_msg
+	];
+	die(json_encode($rspmail));
 } else {
-	http_response_code(500);
-	echo "Oops! Algo salio mal y no pudimos enviar tu mensaje.";
+	$rspmail = [
+		'result' => false,
+		'msg' => 'Oops! Algo salio mal y no pudimos enviar tu mensaje.',
+	];
+	die(json_encode($rspmail));
 }
 ?>

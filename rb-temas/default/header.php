@@ -75,11 +75,13 @@
 						data: $( this ).serialize()
 					})
 					.done(function( data ) {
-						if(data==1){
-						    $('#fcontact').slideUp();
-							$('.result').html('<h2 style="color:green">Mensaje enviado. Nos pondremos en contacto pronto.');
+						if(data.result){
+							console.log(data);
+						  $('#fcontact').slideUp();
+							$('.result').html('<h2 style="color:green">'+data.msg+'</h2>');
 						}else{
-						    $('.result').html('<h2 style="color:red">Algo salio mal. Intenta mas tarde');
+							console.log(data);
+						  $('.result').html('<h2 style="color:red">'+data.msg+'</h2>');
 						}
 					});
 				});

@@ -23,7 +23,7 @@ $opciones_valores = array(
 	"background-image" => "0",
 	"mail_destination" => "",
 	"objetos" => "",
-	"mail_sender" => "",
+	"mail_sender" => "no-reply@".$_SERVER['HTTP_HOST'],
 	"initial" => "0",
 	"post_by_category" => "15",
 	"t_width" => "280",
@@ -103,8 +103,8 @@ if(isset($_POST)):
 		/* VALORES INICIALES PARA EL BLOG */
 		rb_set_values_options( "nombresitio", $sitio_titulo);
 		rb_set_values_options( "direccion_url", $sitio_url);
-		rb_set_values_options( "mail_destination", $usuario_correo);
-		rb_set_values_options( "mail_sender", $usuario_correo);
+		rb_set_values_options( "mail_destination", $usuario_correo); // correo que le llega forms de contacto
+		rb_set_values_options( "name_sender", $sitio_titulo); // Nombre en el correo 
 
 		// Niveles de usuarios
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (1, 'Administrador', 'admin', 'Administra y gestiona la configuración de TODO el sitio web')");

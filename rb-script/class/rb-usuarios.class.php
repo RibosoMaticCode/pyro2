@@ -86,6 +86,13 @@ class Usuarios{
 
 	function verificar_activacion($nickname){
 		$conexion = $this->con->conectar();
+		// Si esta activo el usuario no hay mas verificaciones que hacer
+		$result = $conexion->query("SELECT activo FROM usuarios WHERE nickname = '$nickname' OR correo='$nickname' OR `telefono-movil` = '$nickname'");
+		$r = $result->fetch_assoc();
+		if($r['activo']==1){
+			return 0;
+		}
+
 	 	//Verificar si esta activo antes de la fecha final de activacion, son 48 horas desde que se registro
 			$result = $conexion->query("SELECT activo, (NOW() > fecha_activar) AS diferencia FROM usuarios WHERE nickname = '$nickname'");
 		  if($result->num_rows>0):

@@ -77,7 +77,7 @@ foreach ($array_content['boxes'] as $box) {
             ?>
             <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
               <?php if($col['col_values']['show_title']==1): ?>
-                <div class="camera_caption"><?= $foto['title'] ?></div>
+                <div class="camera_caption"><?= rb_BBCodeToGlobalVariable($foto['title']) ?></div>
               <?php endif ?>
             </div>
             <?php

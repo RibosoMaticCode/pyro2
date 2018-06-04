@@ -42,17 +42,17 @@ if(isset($_GET['action']) && $_GET['action']=='active'):
 			while($row= $q->fetch_assoc()):
 				$nivel_id = $row['id'];
 				$menu_panel_nivel = json_decode($row['permisos'], true);
-				// añade el menu(s) del modulo al menu principal
+				// añade el menu(s) del modulo al menu principal del usuario
 				$menu_panel_nivel = array_merge($menu_panel_nivel, $menu);
+
+				// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
+				$valores = [
+				  'permisos' => json_encode($menu_panel_nivel)
+				];
+
+				//Guardando nueva estructura de menu, en los permisos del nivel de usuario
+				$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
 			endwhile;
-
-			// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
-			$valores = [
-			  'permisos' => json_encode($menu_panel_nivel)
-			];
-
-			//Guardando nueva estructura de menu, en los permisos del nivel de usuario
-			$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
 		}
 	}
 endif;
@@ -89,16 +89,15 @@ if(isset($_GET['action']) && $_GET['action']=='desactive'):
 				foreach ($menu as $key => $value) {
 					unset($menu_panel_nivel[$key]);
 				}
+				
+				// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
+				$valores = [
+				  'permisos' => json_encode($menu_panel_nivel)
+				];
+
+				//Guardando nueva estructura de menu, en los permisos del nivel de usuario
+				$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
 			endwhile;
-
-			// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
-			$valores = [
-			  'permisos' => json_encode($menu_panel_nivel)
-			];
-
-			//Guardando nueva estructura de menu, en los permisos del nivel de usuario
-			$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
-
 		}
 	}
 endif;

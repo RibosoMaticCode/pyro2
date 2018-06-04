@@ -60,12 +60,30 @@ if(isset($_GET['sec'])){
 			$nums = $qr->num_rows;
 			$new_link =  rb_cambiar_nombre($r['titulo'])."-".$nums;
 
-			$campos = array( $r['titulo'] , $new_link , $r['autor_id'] ,  $r['tags'] ,  $r['contenido'] , $r['sidebar'] , $r['popup'] , $r['galeria_id'] , $r['addon'], $r['menu_id'] );
-			if( $objDataBase->Ejecutar( "INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, tags, contenido, sidebar, popup, galeria_id, addon, menu_id) VALUES ( NOW() ,'".$campos[0]."','".$campos[1]."',".$campos[2].",'".$campos[3]."','".$campos[4]."',".$campos[5].",".$campos[6].",".$campos[7].",'".$campos[8]."',".$campos[9].")" ) ):
+			$campos = [
+				'fecha_creacion' => date('Y-m-d G:i:s'),
+				'titulo'=> $r['titulo'],
+				'titulo_enlace'=> $new_link,
+				'autor_id'=> $r['autor_id'],
+				'tags'=> $r['tags'],
+				'contenido'=> $r['contenido'],
+				'sidebar'=> $r['sidebar'],
+				'popup'=> $r['popup'],
+				'galeria_id'=> $r['galeria_id'],
+				'addon'=> $r['addon'],
+				'menu_id'=> $r['menu_id'],
+				'show_header' => $r['show_header'],
+				'show_footer' => $r['show_footer']
+			];
+
+			$row = $objDataBase->Insert( 'paginas', $campos );
+			if($row['result']):
+				//echo $row['insert_id'];
 				$urlreload='../rb-admin/index.php?pag=pages';
 				header('Location: '.$urlreload);
 			else:
-				echo "Error al intentar duplicar.";
+				echo $row['error'];
+				//echo "Error al intentar duplicar.";
 			endif;
 		break;
 	}

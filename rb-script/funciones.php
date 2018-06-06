@@ -956,15 +956,16 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		imagedestroy($smaller_image);
 		imagedestroy($square_image);
 }
-function rb_BBCodeToGlobalVariable($texto,$id=0){
+
+function rb_BBCodeToGlobalVariable($texto,$id=1){
   global $objDataBase;
 	$gallery_html = "";
 	if($id>0){
-		$qp  = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
+		$qp  = $objDataBase->Ejecutar("SELECT * FROM albums WHERE id=$id");
 		$r = $qp->fetch_assoc();
-		if($r['galeria_id']>0):
+		if($r['id']>0):
 			$gallery_html .= '<ul class="gallery">';
-			$Fotos = rb_get_images_from_gallery($r['galeria_id']);
+			$Fotos = rb_get_images_from_gallery($r['id']);
 			foreach ($Fotos as $Foto):
 				$gallery_html .= '<li>';
 			 	$gallery_html .= '<a class="fancy" title="'.$Foto['description'].'" rel="gallery" href="'.$Foto['url_max'].'">';
@@ -992,11 +993,16 @@ function rb_BBCodeToGlobalVariable($texto,$id=0){
       G_URLTHEME.'/',
       '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
       //"rb_display_menu('$1')",
-      $gallery_html,
+      'Galeria:'.$gallery_html,
       htmlspecialchars_decode(G_FORM),
       /*rb_showform('$1'),*/
       '<iframe frameborder="0" height="$2" src="'.G_SERVER.'/rb-script/map.php?ubicacion='.G_TITULO.'&coordenadas=$1&alto=$2" class="img-responsive"></iframe>'
    	);
+
+    /*echo "<pre>"; // test
+    print_r($bbcode);
+    print_r($html);
+    echo "</pre>";*/
 
    	$texto = preg_replace($bbcode, $html, $texto);
    	return $texto;
@@ -1764,5 +1770,35 @@ function randomPassword($length,$count, $characters) { // Genera un valor aleato
     }
 
     return $passwords; // return the generated password
+}
+
+function rb_shortcode($content){
+  // Aun NO TRABAJA CON FUNCIONES Y PARAMETROS
+  global $shortcodes;
+
+  // Si no hay shortcodes, no pasais nada
+  if( count($shortcodes)==0){
+    return $content;
+  }
+
+  $code = array();
+  $html = array();
+
+  foreach ($shortcodes as $key => $value) {
+    array_push($code, "/\[".$key."]/is");
+  }
+
+  foreach ($shortcodes as $key => $value) {
+    $func = $key;
+    $html_content = do_shortcode($func);
+    array_push($html, $html_content);
+  }
+  /*echo "<pre>"; // test
+  print_r($code);
+  print_r($html);
+  echo "</pre>"; */
+
+  $content_html = preg_replace($code, $html, $content);
+  return $content_html;
 }
 ?>

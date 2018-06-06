@@ -16,6 +16,7 @@ version 2.0.4 pyro2 (abril 18)
 - Funciones gancho (hook) tambien desde la plantilla o tema.
 - Estructura de menu de cada nivel tiene mejor gestion. Se añade o quite modulo, no se altera su funcionamiento.
 - Se añade widget Galeria para el Editor Visual de Paginas.
+- Añadida funcion add_shortcode y do_shortcode, para agregar funcionalidad html dentro de las paginas.
 
 version 2.0.3 pyro2 (dic 17)
 -------------------

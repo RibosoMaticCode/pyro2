@@ -78,4 +78,21 @@ function do_action($ubicacion){ // De acuerdo a la ubicacion añade las funcione
 
  	return $content; // Antes echo - investigar el problema
 }
+
+/* SHORTCODES -- Fragmentos de codigo a las paginas o contenidos de paginas */
+/* Tema de parametros, NO FUNCIONAL, a falta de investigacion */
+function add_shortcode($name, $func, $params=[]) {
+  // Agregar nombre del shortcode y funcion que lo acompaña, al array principal publico $shortcodes
+  global $shortcodes;
+  $shortcodes[$name]=[
+      'func' => $func,
+      'params' => $params
+  ];
+}
+
+// De acuerdo al nombre del shortcode, ejecutamos la funcion asociada
+function do_shortcode($name){
+  global $shortcodes;
+  return call_user_func_array( $shortcodes[$name]['func'], $shortcodes[$name]['params']);
+}
 ?>

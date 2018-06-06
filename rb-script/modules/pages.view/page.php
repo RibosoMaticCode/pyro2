@@ -61,12 +61,12 @@ foreach ($array_content['boxes'] as $box) {
       switch ($col['col_type']) {
         case 'html':
           echo '<div class="'.$col['col_css'].'">';
-          echo rb_BBCodeToGlobalVariable(html_entity_decode($col['col_content']));
+          echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($col['col_content'])));
           echo '</div>';
           break;
         case 'htmlraw':
           echo '<div class="'.$col['col_css'].'">';
-          echo rb_BBCodeToGlobalVariable(html_entity_decode($col['col_content']));
+          echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($col['col_content'])));
           echo '</div>';
           break;
         case 'slide':

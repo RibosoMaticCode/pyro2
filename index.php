@@ -1,10 +1,10 @@
 <?php
-require_once('global.php');
-require_once('rb-script/funciones.php');
-require_once('rb-script/class/rb-database.class.php');
-require_once('rb-script/class/rb-usuarios.class.php');
-
 require_once 'rb-admin/hook.php';
+require_once 'global.php';
+require_once 'rb-script/funciones.php';
+require_once 'rb-script/class/rb-database.class.php';
+require_once 'rb-script/class/rb-usuarios.class.php';
+
 // Carga formato js de la base de datos
 $modules_prev = rb_get_values_options('modules_load');
 // Convierte json a array

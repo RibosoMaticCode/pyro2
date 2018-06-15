@@ -2,7 +2,7 @@
 <?php if (!in_array("home", $array_help_close)): ?>
 <div class="help" data-name="home">
   <h1>Bienvenido!</h1>
-  <p>Esta es la página inicial del gestor de contenidos. Puedes agregar accesos directos a esta seccion.</p>
+  <p>Esta es la página inicial del gestor de contenidos.</p>
 </div>
 <?php endif ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>

@@ -65,7 +65,7 @@ $path_module = G_SERVER."/rb-script/modules/rb-editfile/";
 		</div>
 	</section>
 </div>
-<script src="http://ajaxorg.github.io/ace-builds/src/ace.js" charset="utf-8"></script>
+<script src="https://ajaxorg.github.io/ace-builds/src/ace.js" charset="utf-8"></script>
 <script>
 $(document).ready(function() {
 	var editor = ace.edit("editor-css-content");

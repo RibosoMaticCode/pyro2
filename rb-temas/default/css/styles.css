@@ -81,6 +81,20 @@ a{
 	clear:both;
 }
 /* DEFAULT THEME */
+/* button menu */
+.bg{
+	width:100%;
+	height:100vh;
+	background-color: #000;
+	opacity: .8;
+	position: fixed;
+	z-index:1;
+	display: none;
+}
+.CoverBtnOpenMenu,
+.CoverBtnCloseMenu{
+	display: none!important;
+}
 /* frmsearch */
 .frmsearch label{
 	float:left;

@@ -70,8 +70,8 @@ $opciones_valores = array(
 	"index_custom" => "",
 	"favicon" => "0",
 	"message_config_restrict" => '{"send_users":"0", "receive_users": "0", "admin_users":"0", "notify": 0}',
-	"user_superadmin" => '{"admin":"1"}'
-	"key_web" => $key_web
+	"user_superadmin" => '{"admin":"1"}',
+	"key_web" => $key_web[0]
 );
 
 if(isset($_POST)):
@@ -104,7 +104,7 @@ if(isset($_POST)):
 		rb_set_values_options( "nombresitio", $sitio_titulo);
 		rb_set_values_options( "direccion_url", $sitio_url);
 		rb_set_values_options( "mail_destination", $usuario_correo); // correo que le llega forms de contacto
-		rb_set_values_options( "name_sender", $sitio_titulo); // Nombre en el correo 
+		rb_set_values_options( "name_sender", $sitio_titulo); // Nombre en el correo
 
 		// Niveles de usuarios
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (1, 'Administrador', 'admin', 'Administra y gestiona la configuración de TODO el sitio web')");

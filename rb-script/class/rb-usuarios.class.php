@@ -75,7 +75,7 @@ class Usuarios{
 		if (!$sentencia->execute()) {
 		    echo "Falló la ejecución: (" . $sentencia->errno . ") " . $sentencia->error;
 		}
-		$result = $sentencia->get_result();
+		$sentencia->get_result(); //<-- da error en versiones anteriores
 		//Verificaciones
 		//print_r ($sentencia);
 

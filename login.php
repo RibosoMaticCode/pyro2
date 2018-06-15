@@ -3,10 +3,16 @@
  * Cambios rb-temas/'.G_ESTILO.'/ por rb-script/
  * para que archivos de login y recuperacion este en carpeta rb-script, en vez del tema
  */
-require_once("global.php");
-require_once("rb-script/funciones.php");
-require_once("rb-script/class/rb-usuarios.class.php");
-require_once("rb-script/class/rb-database.class.php");
+require_once 'rb-admin/hook.php';
+require_once 'global.php';
+require_once 'rb-script/funciones.php';
+require_once 'rb-script/class/rb-usuarios.class.php';
+require_once 'rb-script/class/rb-database.class.php';
+
+// Cargar los modulos externos
+$modules_prev = rb_get_values_options('modules_load');
+$array_modules = json_decode($modules_prev, true);
+require_once 'rb-admin/modules.list.php';
 
 $url_panel = rb_get_values_options('direccion_url').'/rb-admin';
 $url_panel_usuario = rb_get_values_options('direccion_url').''; //

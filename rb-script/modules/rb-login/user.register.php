@@ -223,7 +223,11 @@ if(isset($_POST)){
 			$email_content2 .= "--\nEste correo se ha enviado a traves de la pagina web";
 		elseif(G_USERACTIVE==1): // Usuario se activa
 			$email_content2 = "<h2>Gracias por registrarte en nuestra web</h2>";
-			$email_content2 .= "<p>Para activar tu cuenta, haz clic en siguiente vinculo: <a href='".G_SERVER."/login.php?active=".rb_encrypt_decrypt('encrypt', $recipient2)."'>".G_SERVER."/login.php?active=".rb_encrypt_decrypt('encrypt', $recipient2)."</a></p>";
+			$email_content2 .= "<p>Puedes acceder a tu cuenta con tu correo registrado y la contraseña<p>";
+			$email_content2 .= "<p>También puede hacerlo con este nombre de usuario (generado automaticamente por el sistema):<p>";
+			$email_content2 .= "<p>".$user."<p>";
+			$email_content2 .= "<p>Finalmente, <p>";
+			$email_content2 .= "<p>para activar tu cuenta, haz clic en siguiente vinculo: <a href='".G_SERVER."/login.php?active=".rb_encrypt_decrypt('encrypt', $recipient2)."'>".G_SERVER."/login.php?active=".rb_encrypt_decrypt('encrypt', $recipient2)."</a></p>";
 			$email_content2 .= "<p>---</p>";
 			$email_content2 .= "<p>Este correo se ha enviado a traves de la pagina web</p>";
 		elseif(G_USERACTIVE==0):
@@ -246,10 +250,10 @@ if(isset($_POST)){
 		// Armando el mensaje luego del registro
 		if(G_USERACTIVE==2): // Admin lo activa
 			//$codigo = "0";
-			$msg_success = "<p>Registro correcto, se te envio un correo de confirmación. El administrador revisará tu información y te notificaremos para que puedas acceder a nuestro sitio web</p>";
+			$msg_success = "<p>Registro correcto! Se te envio un correo de confirmación. El administrador revisará tu información y te notificaremos para que puedas acceder a nuestro sitio web</p>";
 		elseif(G_USERACTIVE==1): // usuario
 			//$codigo = "0";
-			$msg_success = "<p>Registro correcto. Pronto recibirás un correo para que puedas activar tu cuenta.</p><p style='text-align:center'><a href='".G_SERVER."'>Volver a la web</a></p>";
+			$msg_success = "<p>Registro correcto! Pronto recibirás un correo para que puedas activar tu cuenta. Recuerda revisar en la carpeta No deseados también :)</p><p style='text-align:center'><a href='".G_SERVER."'>Volver a la web</a></p>";
 		elseif(G_USERACTIVE==0): // activado por defecto
 			//$codigo = "0";
 			$msg_success = "<p>Bienvenido! Puedes iniciar sesión. <a href='".G_SERVER."/login.php'>Loguearse</a></p>";

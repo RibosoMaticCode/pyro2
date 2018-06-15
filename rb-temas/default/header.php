@@ -37,6 +37,8 @@
 		<script src="<?= rm_urltheme ?>res/camera/scripts/jquery.easing.1.3.js"></script>
 		<script src="<?= rm_urltheme ?>res/camera/scripts/camera.min.js"></script>
 
+		<script src="<?= rm_urltheme ?>js/add.js"></script>
+
 		<!-- start modulos adicionales -->
 		<?= do_action('theme_header') ?>
 		<!-- end modulos adicionales -->
@@ -58,13 +60,13 @@
 					});
 				}
 				// Menu
-				$('.BtnOpen').click(function(event){
+				$('.BtnOpenMenu').click(function(event){
 					event.preventDefault();
-					$('.menu').show();
+					$('.bg, .menu').show();
 				});
-				$('.BtnClose').click(function(event){
+				$('.BtnCloseMenu').click(function(event){
 					event.preventDefault();
-					$('.menu').hide();
+					$('.bg, .menu').hide();
 				});
 				// Formulario Contacto
 				$('#fcontact').submit(function (){
@@ -89,4 +91,5 @@
 		</script>
 	</head>
 	<body>
+		<div class="bg"></div>
 		<?php //rb_show_bar_admin() ?>

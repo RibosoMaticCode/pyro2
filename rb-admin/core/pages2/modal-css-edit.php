@@ -21,7 +21,7 @@ fclose($myfile);
 			<button type="button" class="button" id="editor-css-btn-cancel">Cancelar</button>
 		</div>
 	</form>
-	<script src="http://ajaxorg.github.io/ace-builds/src/ace.js" charset="utf-8"></script>
+	<script src="https://ajaxorg.github.io/ace-builds/src/ace.js" charset="utf-8"></script>
 	<script>
 	    var editor = ace.edit("editor-css-content");
 	    //editor.setTheme("ace/theme/monokai");

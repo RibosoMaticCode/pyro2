@@ -32,7 +32,7 @@ if( isset($_POST['user_admin']) ){
 }
 $send_copy = 0;
 if( isset($_POST['sendcopy']) ){
-  $send_copy = $_POST['sendcopy'];
+  $send_copy = 1; // $_POST['sendcopy'];
 }
 
 $string_json_restric = '{"send_users":"'.$user_send_string.'", "receive_users": "'.$user_receive_string.'", "admin_users":"'.$user_admin_string.'", "notify": '.$send_copy.'}';

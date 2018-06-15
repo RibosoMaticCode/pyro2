@@ -1,7 +1,7 @@
 /* VALORES POR DEFECTO */
 @font-face{
 	font-family: regular;
-	src: url('../fonts/Roboto-Light.ttf');
+	src: url('../../../rb-admin/fonts/Roboto-Light.ttf');
 }
 *{
 	padding:0;
@@ -206,6 +206,7 @@ button[disabled]{
     margin: 15px auto;
     text-align:  center;
     max-width: 70%;
+		border-radius: 5px;
 }
 .terms a.btnCancel{
 	float: right;
@@ -218,8 +219,60 @@ button[disabled]{
 	z-index: 1;
 	position: absolute;
 	display: none;
+	top:0;
 }
 .notify {
     font-size: .85em;
     color: red;
+}
+#msj-frm {
+    background-color: #ea7067;
+    border: 1px solid #F44336;
+    color: #fff;
+    padding: 15px 25px;
+    position:  absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    font-size: 1.2em;
+    font-weight: bold;
+		text-align: center;
+}
+/* RESPONSIVE */
+@media screen and (max-width: 425px) {
+	#msj-frm{
+		width:80%;
+	}
+	.frmlogin{
+		margin: 0;
+	}
+	.frmlogin-abs{
+		transform:translate(0,0);
+		position:initial;
+		max-width:initial;
+		border:0;
+		box-shadow:0 0 0;
+	}
+	.version{
+		position: absolute;
+		bottom:0;
+		right:0;
+		padding: 5px;
+	}
+	.tooltip .tooltiptext{
+		left:0;
+		bottom: 100%;
+		top: initial;
+	}
+	.tooltip .tooltiptext::after { /* flechita */
+		top: initial;
+		left: 10%;
+		margin-left: -5px;
+		border-color: #555555 transparent transparent transparent!important;
+		top:100%;
+	}
+	.terms{
+		max-width:350px!important;
+	}
 }

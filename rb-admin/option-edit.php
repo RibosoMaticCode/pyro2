@@ -275,21 +275,31 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <label>Permitir registrar nuevo usuario desde la página web</label>
             <span class="info">Puede incluir un link para registrarse en la página de inicio de sesión ó no.</span>
             <label class="lbl-listoptions">
+              <input name="linkregister" type="radio" value="2" <?php if(rb_get_values_options('linkregister')=='2') echo "checked=\"checked\""?> />
+              Permitir, pero ocultar link de registro en la página de Inicio de Sesión
+            </label>
+            <label class="lbl-listoptions">
               <input name="linkregister" type="radio" value="1" <?php if(rb_get_values_options('linkregister')=='1') echo "checked=\"checked\""?> />
-              Permitir e incluir link en la página de Inicio de Sesión
+              Permitir y mostrar link en la página de Inicio de Sesión
             </label>
             <label class="lbl-listoptions">
               <input name="linkregister" type="radio" value="0" <?php if(rb_get_values_options('linkregister')=='0') echo "checked=\"checked\""?> />
-              No permitir, solo crear Usuario Nuevo desde Panel Administrativo
+              No permitir, solo crear nuevos usuarios desde Panel Administrativo
             </label>
             <label>Usuarios admins que seran notificados de usuarios nuevos</label>
             <div class="cols-6-md col-padding">
               <label>Lista de usuarios admin:</label>
               <?php
+              $superadmins = json_decode(rb_get_values_options('user_superadmin'), true);
+            	$array_admins_ids = explode(",", $superadmins['admin']);
               $qa = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
               while($ra = $qa->fetch_assoc()):
+                $checkbox = "";
+                if( in_array( $ra['id'] , $array_admins_ids) ){
+                  $checkbox = " checked ";
+                }
                 ?>
-                <label><input type="checkbox" name="user_superadmin[]" value="<?= $ra['id'] ?>" /> <?= $ra['nombres'] ?> <?= $ra['apellidos'] ?></label>
+                <label><input type="checkbox" name="user_superadmin[]" value="<?= $ra['id'] ?>" <?= $checkbox ?> /> <?= $ra['nombres'] ?> <?= $ra['apellidos'] ?></label>
                 <?php
               endwhile;
               ?>
@@ -354,6 +364,13 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         <div class="box-config">
           <h3 class="subtitle">Configuracion de mensajes internos</h3>
           <p>Puede establecer verificaciones previas entre niveles de usuarios.</p>
+          <?php
+          $message_config = json_decode(rb_get_values_options('message_config_restrict'), true);
+          $array_senders_ids = explode(",", $message_config['send_users']);
+          $array_receivers_ids = explode(",", $message_config['receive_users']);
+          $array_admins_ids = explode(",", $message_config['admin_users']);
+          $notify = $message_config['notify'];
+          ?>
           <div class="cols-container">
             <label>Restricción</label>
             <div class="cols-6-md col-padding">
@@ -361,8 +378,12 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <?php
               $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE nivel_enlace <> 'admin'");
               while($r = $q->fetch_assoc()):
+                $checkbox = "";
+                if( in_array( $r['id'] , $array_senders_ids) ){
+                  $checkbox = " checked ";
+                }
                 ?>
-                <label><input type="checkbox" name="user_send[]" value="<?= $r['id'] ?>" /> <?= $r['nombre'] ?></label>
+                <label><input type="checkbox" name="user_send[]" value="<?= $r['id'] ?>" <?= $checkbox ?> /> <?= $r['nombre'] ?></label>
                 <?php
               endwhile;
               ?>
@@ -372,8 +393,12 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <?php
               $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE nivel_enlace <> 'admin'");
               while($r = $q->fetch_assoc()):
+                $checkbox = "";
+                if( in_array( $r['id'] , $array_receivers_ids) ){
+                  $checkbox = " checked ";
+                }
                 ?>
-                <label><input type="checkbox" name="user_receive[]" value="<?= $r['id'] ?>" /> <?= $r['nombre'] ?></label>
+                <label><input type="checkbox" name="user_receive[]" value="<?= $r['id'] ?>" <?= $checkbox ?> /> <?= $r['nombre'] ?></label>
                 <?php
               endwhile;
               ?>
@@ -386,14 +411,23 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <?php
               $q = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
               while($r = $q->fetch_assoc()):
+                $checkbox = "";
+                if( in_array( $r['id'] , $array_admins_ids) ){
+                  $checkbox = " checked ";
+                }
                 ?>
-                <label><input type="checkbox" name="user_admin[]" value="<?= $r['id'] ?>" /> <?= $r['nombres'] ?> <?= $r['apellidos'] ?></label>
+                <label><input type="checkbox" name="user_admin[]" value="<?= $r['id'] ?>" <?= $checkbox ?> /> <?= $r['nombres'] ?> <?= $r['apellidos'] ?></label>
                 <?php
               endwhile;
               ?>
             </div>
             <div class="cols-6-md col-padding">
-              <label><input type="checkbox" name="sendcopy" value="1"> Una vez aprobado, enviar notificacion al destinatario por correo electronico </label>
+              <?php
+              if( $notify == 1){
+                $checkbox = " checked ";
+              }
+              ?>
+              <label><input type="checkbox" name="sendcopy" <?= $checkbox ?>> Una vez aprobado, enviar notificacion al destinatario por correo electronico </label>
             </div>
           </div>
         </div>

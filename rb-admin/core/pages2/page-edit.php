@@ -1,3 +1,4 @@
+<h2 class="title">Editor Visual de Páginas (v.0.1)</h2>
 <?php
 $mode;
 if(isset($_GET["id"])){

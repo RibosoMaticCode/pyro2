@@ -56,14 +56,14 @@ a{
   border: 0px;
 	min-height: 300px;
 }
-.inner-content .cols{
+/*.inner-content .cols{
     display: flex;
 }
 .inner-content .cols > div{
 	list-style-type: none;
 	float: left;
 	width:100%;
-}
+}*/
 .inner-content table{
 	margin: 0 auto;
 }

@@ -213,7 +213,7 @@ if(isset($_GET['pa'])){
 		$rm_menu_name = $Page['addon'];
 		$rm_url_page = rb_url_link('pag', $Page['id']);
 
-		$file = ABSPATH.'rb-script/modules/pages.view/page.php';
+		$file = ABSPATH.'rb-script/modules/pages.view3/page.php';
 		if(file_exists( $file )): require_once( $file );rb_set_read_post($Page['id'], 'paginas');
 		else: die( message_error($file));
 		endif;
@@ -315,7 +315,7 @@ if(isset($_GET['pa'])){
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 	  define('rm_metakeywords', $Page['tags']);
 
-	  $file = ABSPATH.'rb-script/modules/pages.view/page.php';
+	  $file = ABSPATH.'rb-script/modules/pages.view3/page.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}

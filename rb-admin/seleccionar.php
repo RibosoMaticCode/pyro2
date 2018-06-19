@@ -84,8 +84,6 @@ switch($pag){
 				printf(" No tiene permiso de Administrador ");
 				break;
 			endif;
-
-			//echo '<h2 class="title">Sub Menús</h2>';
 			$sec="menu";
 			if(isset($_GET['opc'])){
 				$opc=$_GET['opc'];
@@ -102,7 +100,7 @@ switch($pag){
 			printf(" No tiene permiso de Administrador ");
 			break;
 		endif;
-		echo '<h2 class="title">Editor Visual de Páginas (v.0.1)</h2>';
+		//echo '';
         $sec="pages";
         if(isset($_GET['opc'])){
             $opc=$_GET['opc'];
@@ -112,12 +110,33 @@ switch($pag){
         switch($opc){
             case "nvo":
             case "edt":
-                include('core/pages2/page-edit.php');
+                include('core/pages3/page-edit.php');
                 break;
             default:
-                include('core/pages2/page-init.php');
+                include('core/pages3/page-init.php');
         }
     break;
+	case "pages2":
+		if($userType != "admin"):
+			printf(" No tiene permiso de Administrador ");
+			break;
+		endif;
+	//echo '';
+	      $sec="pages";
+	      if(isset($_GET['opc'])){
+	          $opc=$_GET['opc'];
+	      }else{
+	          $opc="";
+	     }
+	      switch($opc){
+	          case "nvo":
+	          case "edt":
+	              include('core/pages2/page-edit.php');
+	              break;
+	          default:
+	              include('core/pages2/page-init.php');
+	      }
+	  break;
 	case "gal":
 		echo '<h2 class="title">Galerías</h2>';
 		$sec="gal";
@@ -148,9 +167,6 @@ switch($pag){
 			case "nvo":
 				include('core/files/file-new.php');
 				break;
-			/*case "edt":
-				include('edit.php');
-				break;*/
 			default:
 				include('core/files/file-init.php');
 		}
@@ -166,12 +182,9 @@ switch($pag){
 			case "nvo":
 				include('core/galleries/img-new.php');
 				break;
-			/*default:
-				include('secciones.php');*/
 		}
 	break;
 	case "img":
-
 		$sec="img";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -199,8 +212,6 @@ switch($pag){
 			case "edt":
 				include('core/files/file-edit.php');
 				break;
-			/*default:
-				include('secciones.php');*/
 		}
 		break;
 	case "com":

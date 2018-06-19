@@ -15,7 +15,8 @@
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/cols.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/font-awesome.css">
-		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view/styles-page.css">
+		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page.css">
+		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page-responsive.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles-add.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/responsive.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-admin/css/frontend-bar.css">

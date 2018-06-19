@@ -1,4 +1,4 @@
-<h2 class="title">Editor Visual de Páginas (v.0.1)</h2>
+<h2 class="title">Editor Visual de Páginas (v.0.2)</h2>
 <?php if (!in_array("pag", $array_help_close)): ?>
 <div class="help" data-name="pag">
 <h4>Información</h4>

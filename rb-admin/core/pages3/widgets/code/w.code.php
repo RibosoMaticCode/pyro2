@@ -13,7 +13,7 @@ if(isset($data_saved_id)){
 }else{
 	$data_saved_id = 0;
 	$name_save = "";
-	$option_saved = '<a href="#" class="showEditBlock"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a>';
+	$option_saved = '<span class="col-save-title"></span><a href="#" class="showEditBlock"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a>';
 }
 ?>
 <li id="<?= $widget_id ?>" class="widget <?= $class_save?>" data-id="<?= $widget_id ?>" data-type="htmlraw" data-class="<?php if(isset($widget)) echo $widget['widget_class'] ?>"
@@ -35,7 +35,7 @@ if(isset($data_saved_id)){
 			}
 			?>
 			<div class="box-edit-html" id="box-edit<?= $widget_id ?>"><?= $content ?></div>
-			<div class="box-edit-tool"><a href="#" class="showEditHtmlRaw">Editar</a></div>
+			<div class="box-edit-tool"><a href="#" class="showEditHtmlRaw" title="Clic para editar"><span>Editar</span></a></div>
 			<input type="hidden" class="css_class" id="class_<?= $widget_id ?>" value="" />
 		</div>
 	</div>

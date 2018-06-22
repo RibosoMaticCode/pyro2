@@ -124,6 +124,9 @@ rb_set_values_options('sidebar_pos', $_POST['sidebar_pos']);
 rb_set_values_options('message_config_restrict', $string_json_restric);
 rb_set_values_options('user_superadmin', $user_superadmin_string);
 
+rb_set_values_options('block_header_ids', $_POST['block_header_id']);
+rb_set_values_options('block_footer_ids', $_POST['block_footer_id']);
+
 $urlreload=G_SERVER."/rb-admin/index.php?pag=opc&m=ok";
 header('Location: '.$urlreload);
 ?>

@@ -13,9 +13,7 @@ $rm_urlinstall = $rm_url;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 		<link rel="shortcut icon" href="favicon.ico">
 		<link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-		<link rel="stylesheet" href="<?= $rm_url ?>/rb-admin/css/cols.css">
-		<link rel="stylesheet" href="<?= $rm_url ?>/rb-admin/css/login.css">
+		<link rel="stylesheet" href="<?= $rm_url ?>/rb-script/modules/rb-login/login.css">
 	</head>
 
 	<body>

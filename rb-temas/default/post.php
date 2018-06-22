@@ -1,4 +1,4 @@
-<?php rb_header(array('header-allpages.php')) ?>
+<?php rb_header(array('header-allpages.php'), false) ?>
 <div class="wrap-content">
   <div class="inner-content clear block-content">
     <div class="wrap-posts-list <?= class_col_1 ?>">
@@ -14,4 +14,4 @@
     <?php rb_sidebar() ?>
   </div>
 </div>
-<?php rb_footer(array('footer-allpages.php')) ?>
+<?php rb_footer(array('footer-allpages.php'), false) ?>

@@ -332,7 +332,8 @@
   font-size: .9em;
 }
 .editor-body label span{
-  display: block;
+  /*display: block;*/
+  margin-left: 8px;
   margin-bottom: 5px;
 }
 ul._box-options-list li {
@@ -450,12 +451,12 @@ ul._box-options-list {
   margin: 5px 2px!important;
   width: 100%;
 }
-.cols-html li.saved{
+/*.cols-html li.saved{
   border-color: #607D8B;
 }
 .cols-html li.saved .col-head{
   background-color: #607D8B
-}
+}*/
 .box-body .box-edit-options{
 	padding: 50px 60px;
 	text-align: center;
@@ -486,7 +487,6 @@ ul._box-options-list {
 .box-edit-tool{
 	position: absolute;
 	background-color: #000;
-	padding: 6px 40px;
 	display: none;
   opacity: .6;
 	z-index: 2;
@@ -497,12 +497,19 @@ ul._box-options-list {
 }
 .box-edit-tool a{
   position: absolute;
-  left: 50%;
-	top:50%;
-	transform:translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  text-align: center;
   color:#fff;
   font-weight: bold;
   font-size: 1.2em;
+}
+.box-edit-tool a span {
+    left: 50%;
+    top: 50%;
+    position:  absolute;
+    transform: translate(-50%, -50%);
+    color: #fff;
 }
 .col-box-edit{
 	position: relative;

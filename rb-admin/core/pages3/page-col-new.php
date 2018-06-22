@@ -2,7 +2,7 @@
 if(!isset($_GET['temp_id'])) $temp_id = 1;
 else $temp_id = $_GET['temp_id'];
 ?>
-<li id="col<?= $temp_id ?>" class="col" data-id="col<?= $temp_id ?>" data-type="col" data-class="" data-values="{}">
+<li id="col<?= $temp_id ?>" class="col" data-id="col<?= $temp_id ?>" data-type="col" data-class="" data-values="{}" data-save-id="">
   <div class="col-header">
     <strong>Columna</strong>
     <a href="#" class="showEditCol">

@@ -18,7 +18,7 @@ $data_saved_id = $row['id'];
 $name_save = $row['nombre'];
 switch ($widget['widget_type']) {
 	case 'html':
-		include_once 'widgets/editor/w.editor.php';
+		include 'widgets/editor/w.editor.php';
 		break;
 	case 'htmlraw':
 		include 'widgets/code/w.code.php';

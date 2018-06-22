@@ -1606,21 +1606,310 @@ function rb_show_bar_admin(){
     </div></div>';
   endif;
 }
+
+function rb_show_block($box){ //Muestra bloque
+  global $objDataBase;
+  if(isset($box['box_save_id'])){
+    $box_save_id = $box['box_save_id'];
+  }else{
+    $box_save_id = 0;
+  }
+
+  if($box_save_id > 0){
+    //$box_save_id = $box['box_save_id'];
+    // Consultar los datos del bloque
+    $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=$box_save_id");
+    $boxsave = $qb->fetch_assoc();
+    $box = json_decode($boxsave['contenido'], true);
+    /*$box_saved_css = " saved";
+    $box_save_title = '<span class="box-save-title">'.$boxsave['nombre'].'</span>';*/
+  }else{
+    $box_save_id = 0;
+    /*$box_saved_css = "";
+    $box_save_title = '<a href="#" class="SaveBox"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a><span class="box-save-title"></span>';*/
+  }
+
+  //Bloque externo
+  $ext_class = isset($box['boxext_class']) ? $box['boxext_class'] : "";
+  $ext_parallax = isset($box['boxext_values']['extparallax']) ? $box['boxext_values']['extparallax'] : "";
+  $style_extbgcolor = isset($box['boxext_values']['bgcolor']) ? "background-color:".$box['boxext_values']['bgcolor'].";" : "";
+  $style_extbgimage = isset($box['boxext_values']['bgimage']) ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxext_values']['bgimage']).");background-position:center;background-size:cover;" : "";
+  $style_extpaddingtop = isset($box['boxext_values']['paddingtop']) ? "padding-top:".$box['boxext_values']['paddingtop'].";" : "";
+  $style_extpaddingright = isset($box['boxext_values']['paddingright']) ? "padding-right:".$box['boxext_values']['paddingright'].";" : "";
+  $style_extpaddingbottom = isset($box['boxext_values']['paddingbottom']) ? "padding-bottom:".$box['boxext_values']['paddingbottom'].";" : "";
+  $style_extpaddingleft = isset($box['boxext_values']['paddingleft']) ? "padding-left:".$box['boxext_values']['paddingleft'].";" : "";
+
+  //Parallax
+  if($ext_parallax==1){
+    $ext_class .= " parallax-window";
+    $addons = ' data-parallax="scroll" data-image-src="'.rb_BBCodeToGlobalVariable($box['boxext_values']['bgimage']).'" ';
+    $styles_ext = $style_extbgcolor.$style_extpaddingtop.$style_extpaddingright.$style_extpaddingbottom.$style_extpaddingleft;
+  //Estilos
+  }elseif($ext_parallax==0){
+    $styles_ext = $style_extbgcolor.$style_extbgimage.$style_extpaddingtop.$style_extpaddingright.$style_extpaddingbottom.$style_extpaddingleft;
+    $addons = '';
+  }
+
+  echo '<div class="'.$ext_class.' clear" style="'.$styles_ext.'" '.$addons.'>';
+  //BLoque interno
+  $default_class = "inner-content "; // default
+  $style_inwidth = ""; // default
+  if(isset($box['boxin_values']['width']) && $box['boxin_values']['width']=="yes"){
+    $default_class = "full-content ";
+    $style_inwidth = "";
+  }elseif(isset($box['boxin_values']['width']) && $box['boxin_values']['width']!="yes" && $box['boxin_values']['width']!=""){
+    $default_class = "inner-content";
+    $style_inwidth = "width:".$box['boxin_values']['width'].";margin:0 auto;";
+  }elseif(isset($box['boxin_values']['width']) && $box['boxin_values']['width']==""){
+    $default_class = "inner-content ";
+    $style_inwidth = "";
+  }
+  $in_class = isset($box['boxin_class']) ? $box['boxin_class'] : "";
+  $style_inbgcolor = isset($box['boxin_values']['bgcolor']) ? "background-color:".$box['boxin_values']['bgcolor'].";" : "";
+  $style_inbgimage = isset($box['boxin_values']['bgimage']) ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxin_values']['bgimage']).");background-position:center;background-size:cover;" : "";
+  $style_inheight = isset($box['boxin_values']['height']) ? "height:".$box['boxin_values']['height'].";" : "";
+  $style_inpaddingtop = isset($box['boxin_values']['paddingtop']) ? "padding-top:".$box['boxin_values']['paddingtop'].";" : "";
+  $style_inpaddingright = isset($box['boxin_values']['paddingright']) ? "padding-right:".$box['boxin_values']['paddingright'].";" : "";
+  $style_inpaddingbottom = isset($box['boxin_values']['paddingbottom']) ? "padding-bottom:".$box['boxin_values']['paddingbottom'].";" : "";
+  $style_inpaddingleft = isset($box['boxin_values']['paddingleft']) ? "padding-left:".$box['boxin_values']['paddingleft'].";" : "";
+
+  $styles_in = $style_inheight.$style_inbgcolor.$style_inbgimage.$style_inpaddingtop.$style_inpaddingright.$style_inpaddingbottom.$style_inpaddingleft.$style_inwidth;
+
+  echo '<div class="'.$default_class.' '.$in_class.' clear" style="'.$styles_in.'">';
+  echo '<div class="cols">';
+  $array_cols =$box['columns'];
+  foreach ($array_cols as $col):
+    $col_class = "";
+    if(isset($col['col_class'])){
+      $col_class = " ".$col['col_class'];
+    }
+    echo '<div class="col'.$col_class.'">';
+    // Widgets
+    $array_widgets =$col['widgets'];
+    foreach ($array_widgets as $widget) {
+      if(isset($widget['widget_save_id']) && $widget['widget_save_id']!="0"){
+        $block_id = $widget['widget_save_id'];
+        include ABSPATH.'rb-script/modules/pages.view3/widgets.customs.php'; //
+      }else{
+        switch ($widget['widget_type']) {
+          case 'html':
+            echo '<div class="'.$widget['widget_class'].'">';
+            echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
+            echo '</div>';
+            break;
+          case 'htmlraw':
+            echo '<div class="'.$widget['widget_class'].'">';
+            echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
+            echo '</div>';
+            break;
+          case 'slide':
+            echo '<div class="'.$widget['widget_class'].'">';
+            $gallery_id = $widget['widget_values']['gallery_id'];
+            $fotos = rb_get_images_from_gallery($gallery_id);
+            foreach ($fotos as $foto) {
+              ?>
+              <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
+                <?php if($widget['widget_values']['show_title']==1): ?>
+                  <div class="camera_caption"><?= rb_BBCodeToGlobalVariable($foto['title']) ?></div>
+                <?php endif ?>
+              </div>
+              <?php
+            }
+            echo '</div>';
+            break;
+          case 'youtube1':
+            $yt_list = explode(",", $widget['widget_values']['videos']);
+            $count_yt_list = count($yt_list);
+            $count_by_row = $widget['widget_values']['quantity'];
+            ?>
+            <div class="<?= $widget['widget_class'] ?> rb-youtube-grid">
+              <?php
+              $width = round(100 / $count_by_row, 2);
+              $i=0;
+              while($i<$count_yt_list):
+                ?>
+                <div style="width:<?= $width?>%">
+                  <iframe width="100%" height="275" src="https://www.youtube.com/embed/<?= $yt_list[$i] ?>?modestbranding=0&autohide=1&showinfo=0" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
+                </div>
+                <?php
+                $i++;
+              endwhile;
+              ?>
+            </div>
+            <?php
+            break;
+          case 'galleries':
+            ?>
+            <script>
+            $(document).ready(function() {
+              $('.rb-cover-galleries').on('click', '.back_gallery',function() {
+                $('.rb-cover-galleries').show();
+                $('.rb-gallery-photos').hide();
+              });
+
+              $('.gallery_show').click(function(event){
+                event.preventDefault();
+                var gallery_id = $(this).attr('data-galleryid');
+
+                $.ajax({
+                    method: "GET",
+                    url: "<?= G_SERVER ?>/rb-script/modules/pages.view/show.gallery.ajax.php?gallery_id="+gallery_id,
+                }).done(function( data ) {
+                  $('.rb-cover-galleries').hide();
+                  $('.rb-gallery-photos').html(data);
+                  $('.rb-gallery-photos').show();
+                });
+              });
+            });
+            </script>
+            <?php
+            echo '<div class="rb-cover-galleries '.$widget['widget_class'].'">';
+            $show_by_file = $widget['widget_values']['quantity'];
+            $Galleries = rb_list_galleries();
+            $CountGalleries = count($Galleries);
+            $porcent_width = round(100/$show_by_file,2);
+            $i=1;
+            foreach ($Galleries as $Gallery) {
+              if($i==1){
+                echo '<div class="rb-gallery-container">';
+              }
+              echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">';
+              echo '<img src="'.$Gallery['url_bgimagetn'].'" alt="Portada Galeria" />';
+              echo '<h2>'.$Gallery['nombre']."</h2>";
+              echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">Ver galeria</a>';
+              echo '</div>';
+              if($i==$CountGalleries || $i==$show_by_file){
+                echo '</div>';
+                $i=1;
+              }else{
+                $i++;
+              }
+            }
+            echo '</div>';
+            ?>
+            <div class="rb-gallery-photos">
+            </div>
+            <?php
+            break;
+          case 'post1':
+            echo '<div class="'.$widget['widget_class'].'">';
+            /*?>
+            <div class="cols">
+            <?php*/
+            // Destripar configuracion
+            $category_id = $widget['widget_values']['cat'];
+            $num_posts = $widget['widget_values']['count'];
+            $ord = $widget['widget_values']['ord'];
+            $tit = $widget['widget_values']['tit'];
+            $typ = $widget['widget_values']['typ'];
+
+            if($tit!=""){
+              ?>
+              <h2><?= $tit ?></h2>
+              <?php
+            }
+            if($typ==0 || $typ==1){
+              ?>
+              <div class="post-<?= $typ ?>">
+              <?php
+              $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
+              foreach ($Posts as $PostRelated) {
+                ?>
+                <div>
+                  <img src="<?= $PostRelated['url_img_por_min']  ?>" alt="img" />
+                  <h3><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h3>
+                  <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
+                </div>
+                <?php
+              }
+              ?>
+              </div>
+              <?php
+            }
+            if($typ==2 || $typ==3){
+              ?>
+              <div class="post-<?= $typ ?>">
+              <?php
+              $i=1;
+              $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
+              foreach ($Posts as $PostRelated) {
+                if($i==1){
+                  ?>
+                  <div class="left">
+                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_por_min']  ?>)">
+                    </div>
+                    <h2><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h2>
+                    <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
+                  </div>
+                  <?php
+                }else{
+                  ?>
+                  <div class="right">
+                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_por_min']  ?>)">
+                    </div>
+                    <h3><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h3>
+                    <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
+                  </div>
+                  <?php
+                }
+                $i++;
+              }
+              ?>
+              </div>
+              <?php
+            }
+            /*?>
+            </div>
+            <?php*/
+            echo '</div>';
+            break;
+        }
+      }
+    }
+    echo '</div>';// end col or coverwidgets
+  endforeach; // end columns
+  echo '</div>'; //end cols
+  echo '</div>'; //end inner box
+  echo '</div>'; //end outer box
+}
 /*
 * Muestra la cabecera de la plantilla, por defecto el archivo se llama header.php, tambien se puede adicional algunos otros,
 * los cuales se incluyen DESPUES de header.php
 */
-function rb_header($add_header = array()){
-  global $show_header;
-  //if(isset($show_header) && $show_header==0) return false;
+function rb_header($add_header = array(), $page=true){
+  global $show_header, $block_header_id;
+  global $objDataBase;
 
   if ( !defined('ABSPATH') )
   	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
 
   require_once ABSPATH."global.php";
   include_once ABSPATH."rb-temas/".G_ESTILO."/header.php";
-  foreach ($add_header as $header) {
-    include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
+
+  if($page){
+    // Si es pagina
+    if($show_header==1){
+      foreach ($add_header as $header) {
+        include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
+      }
+    }elseif($show_header==2){
+      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$block_header_id);
+      $boxsave = $qb->fetch_assoc();
+      $box = json_decode($boxsave['contenido'], true);
+      rb_show_block($box);
+    }
+  }else{
+    // Si son paginas de las plantilla
+    if(G_BLOCK_HEADER>1){
+      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".G_BLOCK_HEADER);
+      $boxsave = $qb->fetch_assoc();
+      $box = json_decode($boxsave['contenido'], true);
+      rb_show_block($box);
+    }else{
+      foreach ($add_header as $header) {
+        include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
+      }
+    }
   }
 }
 
@@ -1628,16 +1917,39 @@ function rb_header($add_header = array()){
 * Muestra el pie de la plantilla, por defecto el archivo se llama footer.php, tambien se puede adicional algunos otros,
 * los cuales se incluyen ANTES de footer.php
 */
-function rb_footer($add_footer = array()){
-  global $show_footer;
-  //if(isset($show_footer) && $show_footer==0) return false;
+function rb_footer($add_footer = array(), $page=true){
+  global $show_footer, $block_footer_id;
+  global $objDataBase;
 
   if ( !defined('ABSPATH') )
   	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
 
   require_once ABSPATH."global.php";
-  foreach ($add_footer as $footer) {
-    include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
+
+  if($page){
+    // Si es pagina
+    if($show_footer==1){
+      foreach ($add_footer as $footer) {
+        include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
+      }
+    }elseif($show_footer==2){
+      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$block_footer_id);
+      $boxsave = $qb->fetch_assoc();
+      $box = json_decode($boxsave['contenido'], true);
+      rb_show_block($box);
+    }
+  }else{
+    // Si son paginas de las plantilla
+    if(G_BLOCK_FOOTER>1){
+      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".G_BLOCK_FOOTER);
+      $boxsave = $qb->fetch_assoc();
+      $box = json_decode($boxsave['contenido'], true);
+      rb_show_block($box);
+    }else{
+      foreach ($add_header as $header) {
+        include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
+      }
+    }
   }
   include_once ABSPATH."rb-temas/".G_ESTILO."/footer.php";
 }
@@ -1754,7 +2066,7 @@ function randomPassword($length,$count, $characters) { // Genera un valor aleato
     $symbols["numbers"] = '1234567890';
     $symbols["special_symbols"] = '!?~@#-_+<>[]{}';
 
-    $characters = split(",",$characters); // get characters types to be used for the passsword
+    $characters = explode(",",$characters); // get characters types to be used for the passsword
     foreach ($characters as $key=>$value) {
         $used_symbols .= $symbols[$value]; // build a string with all characters
     }

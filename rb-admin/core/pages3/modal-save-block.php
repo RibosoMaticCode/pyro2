@@ -1,9 +1,8 @@
-<!-- MODAL WINDOWS BLOCK EDITOR AND CONFIGURATION -->
-<!-- ========================================== -->
+<!-- EDITOR AND CONFIGURATION: WIDGET -->
 <div id="editor-block" class="editor-window">
 	<form id="frm-block">
 		<div class="editor-header">
-			<strong>Guardar bloque</strong>
+			<strong>Guardar Widget</strong>
 		</div>
 		<input type="hidden" name="block_id" id="block_id" value="0" />
 		<div class="editor-body">

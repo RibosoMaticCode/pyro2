@@ -10,7 +10,7 @@ $(document).ready(function() {
 if(!isset($_GET['temp_id'])) $temp_id = 1;
 else $temp_id = $_GET['temp_id'];
 ?>
-<li id="box<?= $temp_id ?>" class="box" data-id="box<?= $temp_id ?>" data-type="box" data-extclass="" data-extvalues="{}" data-inclass="" data-invalues="{}">
+<li id="box<?= $temp_id ?>" class="box" data-id="box<?= $temp_id ?>" data-type="box" data-extclass="" data-extvalues="{}" data-inclass="" data-invalues="{}" data-saved-id="">
   <div class="box-header">
     <strong>Bloque</strong>
     <a href="#" class="showEditBox">
@@ -22,6 +22,7 @@ else $temp_id = $_GET['temp_id'];
     <a href="#" class="SaveBox">
       <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
     </a>
+    <span class="box-save-title"></span>
     <!--<a class="toggle" href="#">
       <span class="arrow-up">&#9650;</span>
       <span class="arrow-down">&#9660;</span>

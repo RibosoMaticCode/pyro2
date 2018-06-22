@@ -210,6 +210,8 @@ if(isset($_GET['pa'])){
 
 		$show_header = $Page['show_header'];
 		$show_footer = $Page['show_footer'];
+		$block_header_id = $Page['header_custom_id'];
+		$block_footer_id = $Page['footer_custom_id'];
 		$rm_menu_name = $Page['addon'];
 		$rm_url_page = rb_url_link('pag', $Page['id']);
 
@@ -314,6 +316,11 @@ if(isset($_GET['pa'])){
 		define('rm_metadescription', ''); //rb_fragment_text($Page['contenido'],30, false)
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 	  define('rm_metakeywords', $Page['tags']);
+
+		$show_header = $Page['show_header'];
+		$show_footer = $Page['show_footer'];
+		$block_header_id = $Page['header_custom_id'];
+		$block_footer_id = $Page['footer_custom_id'];
 
 	  $file = ABSPATH.'rb-script/modules/pages.view3/page.php';
 		if(file_exists( $file )) require_once( $file );

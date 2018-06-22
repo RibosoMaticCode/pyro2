@@ -128,7 +128,7 @@
 <script>
 $(document).ready(function() {
 	// Aceptando cambios
-	$('#boxform-btn-accept').click(function() {
+	$('#boxform-btn-accept').click(function(event) {
 		// Armar la cadena JSON PARA data-values
 		var box_id = $('#eb_id').val();
 		var extparallax = 0;
@@ -159,7 +159,7 @@ $(document).ready(function() {
 		$('.bg-opacity, #editor-box').hide();
 	});
 	// Cancelando cambios
-	$('#boxform-btn-cancel').click(function() {
+	$('#boxform-btn-cancel').click(function(event) {
 		$('.bg-opacity, #editor-box').hide();
 	});
 });

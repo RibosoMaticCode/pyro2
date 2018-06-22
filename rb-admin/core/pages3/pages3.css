@@ -62,10 +62,12 @@
   color: #607D8B;
 }
 /* widget save link */
-.widgets li.saved{
+.widgets li.saved,
+#boxes li.saved{
   border-color: #90A4AE;
 }
-.widgets li.saved .widget-header{
+.widgets li.saved .widget-header,
+#boxes li.saved .box-header{
   background-color: #90A4AE;
 }
 span.col-save-title {

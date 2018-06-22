@@ -27,6 +27,7 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 			}
 			?>
 			<a class="button" href="#"id="editCSSFile">Editar CSS adicionales</a>
+			<a class="button" href="#"id="showConfigPage">Mas configuraciones</a>
 		</span>
 	</div>
 </div>
@@ -80,14 +81,38 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 					// Testing
 					/*echo "<pre>";
 					print_r($array_content);
-					echo "</pre>";
-					die();*/
-					//die($row['contenido']);
-					foreach ($array_content['boxes'] as $box) {
+					echo "</pre>";*/
+					//die();
+					foreach ($array_content['boxes'] as $boxes => $box) {
+						//echo "Save ID:".$box['box_save_id'];
+						if(isset($box['box_save_id'])){
+					    $box_save_id = $box['box_save_id'];
+					  }else{
+					    $box_save_id = 0;
+					  }
+					  if($box_save_id > 0){
+						//if($box['box_save_id']>0){
+							//$box_save_id = $box['box_save_id'];
+							// Consultar los datos del bloque
+							$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=$box_save_id");
+							$boxsave = $qb->fetch_assoc();
+							$box = json_decode($boxsave['contenido'], true);
+							$box_saved_css = " saved";
+							$box_save_title = '<span class="box-save-title">'.$boxsave['nombre'].'</span>';
+							/*echo "<pre>";
+							print_r($box);
+							echo "</pre>";*/
+						}else{
+							$box_save_id = 0;
+							$box_saved_css = "";
+							$box_save_title = '<a href="#" class="SaveBox"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a><span class="box-save-title"></span>';
+							/*print_r($box);*/
+						}
 						?>
-						<li id="<?= $box['box_id'] ?>" class="box" data-id="<?= $box['box_id'] ?>" data-type="box"
+						<li id="<?= $box['box_id'] ?>" class="box <?= $box_saved_css ?>" data-id="<?= $box['box_id'] ?>" data-type="box"
 							data-extclass="<?= $box['boxext_class'] ?>" data-extvalues='<?= json_encode ($box['boxext_values']) ?>'
-							data-inclass="<?= $box['boxin_class'] ?>" data-invalues='<?= json_encode ($box['boxin_values']) ?>'>
+							data-inclass="<?= $box['boxin_class'] ?>" data-invalues='<?= json_encode ($box['boxin_values']) ?>'
+							data-saved-id="<?= $box_save_id ?>">
 						  <div class="box-header">
 						    <strong>Bloque</strong>
 								<a href="#" class="showEditBox">
@@ -96,9 +121,11 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 								<a href="#" class="addNewCol">
 						      <i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
 						    </a>
-								<a href="#" class="SaveBox">
+								<?= $box_save_title ?>
+								<!--<a href="#" class="SaveBox">
 						      <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
 						    </a>
+								<span class="box-save-title"></span>-->
 						    <!--<a class="toggle" href="#">
 						      <span class="arrow-up">&#9650;</span>
 						      <span class="arrow-down">&#9660;</span>
@@ -186,57 +213,114 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 		</div>
 	</section>
 </div>
+<!-- start config page -->
+<div id="page-config" class="editor-window">
+	<div class="editor-header">
+		<strong>Más configuraciones</strong>
+	</div>
+	<div class="editor-body">
+		<!-- SECCION SUBIR IMAGENES -->
+		<section id="post-sub" class="seccion">
+			<div class="seccion-header">
+				<h3>Subir imagenes</h3>
+				<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+			</div>
+			<div class="seccion-body">
+			<?php
+			include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
+			?>
+			</div>
+		</section>
+		<!-- SECCION CABECERA FOOTER SHOW -->
+		<section id="page-config" class="seccion">
+			<div class="seccion-header">
+				<h3>Cabecera y pie de página</h3>
+				<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+			</div>
+			<div class="seccion-body cols-container">
+				<div class="cols-6-md">
+					<h4>Cabecera</h4>
+					<label>
+						<input type="radio" name="sheader" value="0"> <span>Ninguna</span>
+					</label>
+					<label>
+						<input type="radio" name="sheader" value="1"> <span>Incluir de la plantilla</span>
+					</label>
+					<label>
+						<input type="radio" name="sheader" value="2"> <span>Personalizada</span>
+						<select name="sheader_custom_id">
+						<?php
+						$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=1");
+				    while($boxsave = $qb->fetch_assoc()):
+							?>
+							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
+							<?php
+						endwhile;
+						?>
+						</select>
+					</label>
+				</div>
+				<div class="cols-6-md">
+					<h4>Pie de Pagina</h4>
+					<label>
+						<input type="radio" name="sfooter" value="0"> <span>Ninguna</span>
+					</label>
+					<label>
+						<input type="radio" name="sfooter" value="1"> <span>Incluir de la plantilla</span>
+					</label>
+					<label>
+						<input type="radio" name="sfooter" value="2"> <span>Personalizada</span>
+						<select name="sfooter_custom_id">
+						<?php
+						$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=2");
+				    while($boxsave = $qb->fetch_assoc()):
+							?>
+							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
+							<?php
+						endwhile;
+						?>
+						</select>
+					</label>
+				</div>
+				<!--<label>
+					<?php
+					$checkedh = "";
+					if($show_header==1) $checkedh = " checked ";
+					?>
+					<input type="checkbox" value="1" name="sheader" id="sheader" <?= $checkedh ?>> <span>Incluir Cabecera de la plantilla</span>
+				</label>
+				<label>
+					<?php
+					$checkedf = "";
+					if($show_footer==1) $checkedf = " checked ";
+					?>
+					<input type="checkbox" value="1" name="sfooter" id="sfooter" <?= $checkedf ?>> <span>Incluir Pie de página de la plantilla</span>
+				</label>-->
 
-<div id="sidebar" style="display:none;">
-	<!-- SECCION SUBIR IMAGENES -->
-	<section id="post-sub" class="seccion">
-		<div class="seccion-header">
-			<h3>Subir imagenes</h3>
-			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-		</div>
-		<div class="seccion-body">
-		<?php
-		include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
-		?>
-		</div>
-	</section>
-	<!-- EDITAR ESTILOS ADICIONALES -->
-	<section class="seccion">
-		<div class="seccion-header">
-			<h3>CSS adicionales</h3>
-			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-		</div>
-		<div class="seccion-body">
-			<a href="#"id="editCSSFile">Editar CSS adicionales</a>
-		</div>
-	</section>
-	<!-- EDITAR header - footer -->
-	<section class="seccion">
-		<div class="seccion-header">
-			<h3>Cabecera y pie de página</h3>
-			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-		</div>
-		<div class="seccion-body">
-			<label>
-				<?php
-				$checkedh = "";
-				if($show_header==1) $checkedh = " checked ";
-				?>
-				<input type="checkbox" value="1" name="sheader" id="sheader" <?= $checkedh ?>> <span>Incluir Cabecera de la plantilla</span>
-			</label>
-			<label>
-				<?php
-				$checkedf = "";
-				if($show_footer==1) $checkedf = " checked ";
-				?>
-				<input type="checkbox" value="1" name="sfooter" id="sfooter" <?= $checkedf ?>> <span>Incluir Pie de página de la plantilla</span>
-			</label>
-		</div>
-	</section>
+			</div>
+		</section>
+	</div>
+	<div class="editor-footer">
+		<input type="hidden" id="eb_id" value="" />
+		<button class="button" id="page-config-btn-cancel">Cerrar</button>
+	</div>
 </div>
-
+<script>
+$(document).ready(function() {
+	// Mostrar el config page
+	$('#showConfigPage').click(function(event) {
+		$('.bg-opacity, #page-config').show();
+	});
+	// Cerrar el config page
+	$('#page-config-btn-cancel').click(function(event) {
+		$('.bg-opacity, #page-config').hide();
+	});
+});
+</script>
+<!-- end config page -->
 <?php
 include_once 'modal-box-config.php';
+include_once 'modal-col-config.php';
 include_once 'widgets/slide/w.slide.conf.php';
 include_once 'widgets/code/w.code.conf.php';
 include_once 'widgets/editor/w.editor.conf.php';
@@ -244,5 +328,6 @@ include_once 'widgets/gallery/w.gallery.conf.php';
 include_once 'widgets/youtube/w.youtube.conf.php';
 include_once 'widgets/pubs/w.pubs.conf.php';
 include_once 'modal-css-edit.php';
-include_once 'modal-save-block.php';
+include_once 'modal-save-block.php';//widget
+include_once 'modal-save-box.php';
 ?>

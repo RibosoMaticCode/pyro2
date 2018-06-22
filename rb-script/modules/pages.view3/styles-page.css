@@ -3,12 +3,68 @@
   display: flex;
 	position: relative;
 }
+.cols::before {
+  display: table;
+  content: " ";
+}
+.cols::after{
+	display: table;
+  content: " ";
+	clear:both;
+}
 .cols > div{
-	list-style-type: none;
-	float: left;
 	width:100%;
 }
-/* STYLE 0, 1 - POSTS */
+/* cols 12 grid */
+.col-1-md{
+	width:calc( 8.3333% * 1 );
+  float:left; /* en caso usar para otros elementos */
+}
+.col-2-md{
+	width:calc( 8.3333% * 2 );
+  float:left;
+}
+.col-3-md{
+	width:calc( 8.3333% * 3 );
+  float:left;
+}
+.col-4-md{
+	width:calc( 8.3333% * 4 );
+  float:left;
+}
+.col-5-md{
+	width:calc( 8.3333% * 5 );
+  float:left;
+}
+.col-6-md{
+	width:calc( 8.3333% * 6 );
+  float:left;
+}
+.col-7-md{
+	width:calc( 8.3333% * 7 );
+  float:left;
+}
+.col-8-md{
+	width:calc( 8.3333% * 8 );
+  float:left;
+}
+.col-9-md{
+	width:calc( 8.3333% * 9 );
+  float:left;
+}
+.col-10-md{
+	width:calc( 8.3333% * 10 );
+  float:left;
+}
+.col-11-md{
+	width:calc( 8.3333% * 11 );
+  float:left;
+}
+.col-12-md{
+	width:calc( 8.3333% * 12 );
+  float:left;
+}
+
 .post-0{
 	display: flex;
 }

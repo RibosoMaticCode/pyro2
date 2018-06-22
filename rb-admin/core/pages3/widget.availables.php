@@ -36,9 +36,6 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/youtube/w.youtube.init.php';
 	<div class="editor-body">
   <ul class="_box-options-list">
 		<?php
-		// test load widgets
-		/*print_r($widgets);
-		die();*/
 		foreach ($widgets as $widget => $data) {
 			?>
 			<li>
@@ -46,7 +43,7 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/youtube/w.youtube.init.php';
 	    </li>
 			<?php
 		}
-    $q = $objDataBase->Ejecutar("SELECT * FROM bloques");
+    $q = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=0");
     while($r = $q->fetch_assoc()):
     ?>
     <li>

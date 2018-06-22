@@ -158,6 +158,33 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               endwhile;
               ?>
             </select>
+
+            <label>Bloque de cabecera personalizado</label>
+            <select name="block_header_id">
+              <option value="0">Ninguno</option>
+              <?php
+              $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=1");
+  				    while($boxsave = $qb->fetch_assoc()):
+  							?>
+  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
+  							<?php
+  						endwhile;
+              ?>
+            </select>
+
+            <label>Bloque de pie de pagina personalizado</label>
+            <select name="block_footer_id">
+              <option value="0">Ninguno</option>
+              <?php
+              $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=2");
+  				    while($boxsave = $qb->fetch_assoc()):
+  							?>
+  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
+  							<?php
+  						endwhile;
+              ?>
+            </select>
+
             <label>Tamaño de miniatura de imagen</label>
             <div class="cols-container">
               <div class="cols-6-md">

@@ -1,4 +1,4 @@
-<?php rb_header(array('header-initial.php')) ?>
+<?php rb_header(['header-initial.php'], false) ?>
 <div class="wrap-content">
   <div class="inner-content clear block-content">
     <h1>Ultimas publicaciones</h1>
@@ -23,4 +23,4 @@
     <?php rb_sidebar() ?>
   </div>
 </div>
-<?php rb_footer(array('footer-allpages.php')) ?>
+<?php rb_footer(['footer-allpages.php'], false) ?>

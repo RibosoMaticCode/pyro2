@@ -1893,18 +1893,24 @@ function rb_header($add_header = array(), $page=true){
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
       }
     }elseif($show_header==2){
-      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$block_header_id);
-      $boxsave = $qb->fetch_assoc();
-      $box = json_decode($boxsave['contenido'], true);
-      rb_show_block($box);
+      $block_header_id_arrays = explode(",",$block_header_id);
+      foreach ($block_header_id_arrays as $key => $value) {
+        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
+        $boxsave = $qb->fetch_assoc();
+        $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }
     }
   }else{
     // Si son paginas de las plantilla
-    if(G_BLOCK_HEADER>1){
-      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".G_BLOCK_HEADER);
-      $boxsave = $qb->fetch_assoc();
-      $box = json_decode($boxsave['contenido'], true);
-      rb_show_block($box);
+    if(G_BLOCK_HEADER!="0"){
+      $block_header_id_arrays = explode(",",G_BLOCK_HEADER);
+      foreach ($block_header_id_arrays as $key => $value) {
+        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
+        $boxsave = $qb->fetch_assoc();
+        $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }
     }else{
       foreach ($add_header as $header) {
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
@@ -1933,18 +1939,24 @@ function rb_footer($add_footer = array(), $page=true){
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
       }
     }elseif($show_footer==2){
-      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$block_footer_id);
-      $boxsave = $qb->fetch_assoc();
-      $box = json_decode($boxsave['contenido'], true);
-      rb_show_block($box);
+      $block_footer_id_arrays = explode(",",$block_footer_id);
+      foreach ($block_footer_id_arrays as $key => $value) {
+        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
+        $boxsave = $qb->fetch_assoc();
+        $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }
     }
   }else{
     // Si son paginas de las plantilla
-    if(G_BLOCK_FOOTER>1){
-      $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".G_BLOCK_FOOTER);
-      $boxsave = $qb->fetch_assoc();
-      $box = json_decode($boxsave['contenido'], true);
-      rb_show_block($box);
+    if(G_BLOCK_FOOTER!="0"){
+      $block_footer_id_arrays = explode(",",G_BLOCK_FOOTER);
+      foreach ($block_footer_id_arrays as $key => $value) {
+        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
+        $boxsave = $qb->fetch_assoc();
+        $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }
     }else{
       foreach ($add_header as $header) {
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;

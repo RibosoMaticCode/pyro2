@@ -9,8 +9,10 @@ if(isset($_GET["id"])){
 }else{
 	$mode = "new";
 }
-$show_header = isset($row) ? $row['show_header'] : 0;
-$show_footer = isset($row) ? $row['show_footer'] : 0;
+$shead = isset($row) ? $row['show_header'] : 0;
+$sfoot = isset($row) ? $row['show_footer'] : 0;
+$hcustid = $row['header_custom_id'];
+$fcustid = $row['footer_custom_id'];
 ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script src="<?= G_SERVER ?>/rb-admin/core/pages3/func.js"></script>
@@ -240,15 +242,18 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 			<div class="seccion-body cols-container">
 				<div class="cols-6-md">
 					<h4>Cabecera</h4>
+					<?php
+					//$shead = isset($row) ? $row['show_header'] : 0;
+					?>
 					<label>
-						<input type="radio" name="sheader" value="0"> <span>Ninguna</span>
+						<input type="radio" name="sheader" value="0" <?php if($shead==0) echo "checked" ?>> <span>Ninguna</span>
 					</label>
 					<label>
-						<input type="radio" name="sheader" value="1"> <span>Incluir de la plantilla</span>
+						<input type="radio" name="sheader" value="1" <?php if($shead==1) echo "checked" ?>> <span>Incluir de la plantilla</span>
 					</label>
 					<label>
-						<input type="radio" name="sheader" value="2"> <span>Personalizada</span>
-						<select name="sheader_custom_id">
+						<input type="radio" name="sheader" value="2" <?php if($shead==2) echo "checked" ?>> <span>Personalizada</span>
+						<!--<select name="_sheader_custom_id">
 						<?php
 						$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=1");
 				    while($boxsave = $qb->fetch_assoc()):
@@ -257,20 +262,24 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 							<?php
 						endwhile;
 						?>
-						</select>
+					</select>-->
+						<input name="sheader_custom_id" type="text" value="<?= $hcustid  ?>" />
 					</label>
 				</div>
 				<div class="cols-6-md">
 					<h4>Pie de Pagina</h4>
+					<?php
+					//$sfoot = isset($row) ? $row['show_footer'] : 0;
+					?>
 					<label>
-						<input type="radio" name="sfooter" value="0"> <span>Ninguna</span>
+						<input type="radio" name="sfooter" value="0" <?php if($sfoot==0) echo "checked" ?>> <span>Ninguna</span>
 					</label>
 					<label>
-						<input type="radio" name="sfooter" value="1"> <span>Incluir de la plantilla</span>
+						<input type="radio" name="sfooter" value="1" <?php if($sfoot==1) echo "checked" ?>> <span>Incluir de la plantilla</span>
 					</label>
 					<label>
-						<input type="radio" name="sfooter" value="2"> <span>Personalizada</span>
-						<select name="sfooter_custom_id">
+						<input type="radio" name="sfooter" value="2" <?php if($sfoot==2) echo "checked" ?>> <span>Personalizada</span>
+						<!--<select name="_sfooter_custom_id">
 						<?php
 						$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=2");
 				    while($boxsave = $qb->fetch_assoc()):
@@ -279,7 +288,8 @@ $show_footer = isset($row) ? $row['show_footer'] : 0;
 							<?php
 						endwhile;
 						?>
-						</select>
+					</select>-->
+						<input name="sfooter_custom_id" type="text" value="<?= $fcustid  ?>" />
 					</label>
 				</div>
 				<!--<label>

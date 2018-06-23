@@ -71,7 +71,9 @@ $opciones_valores = array(
 	"favicon" => "0",
 	"message_config_restrict" => '{"send_users":"0", "receive_users": "0", "admin_users":"0", "notify": 0}',
 	"user_superadmin" => '{"admin":"1"}',
-	"key_web" => $key_web[0]
+	"key_web" => $key_web[0],
+	"block_header_ids" => "0",
+	"block_footer_ids" => "0"
 );
 
 if(isset($_POST)):

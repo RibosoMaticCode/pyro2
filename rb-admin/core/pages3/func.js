@@ -452,9 +452,9 @@ $(document).ready(function() {
 			sfooter = 0;
 		}*/
     sheader = $( "input[name$='sheader']:checked" ).val();
-    h_cust_id = $( "select[name$='sheader_custom_id']" ).val();
+    h_cust_id = $( "input[name$='sheader_custom_id']" ).val();
     sfooter = $( "input[name$='sfooter']:checked" ).val();
-    f_cust_id = $( "select[name$='sfooter_custom_id']" ).val();
+    f_cust_id = $( "input[name$='sfooter_custom_id']" ).val();
 
     console.log(sheader+":"+h_cust_id);
     console.log(sfooter+":"+f_cust_id);

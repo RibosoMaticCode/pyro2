@@ -160,30 +160,32 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </select>
 
             <label>Bloque de cabecera personalizado</label>
-            <select name="block_header_id">
-              <option value="0">Ninguno</option>
+            <!--<select name="block_header_id">
+              <option value="0">0:Ninguno</option>
               <?php
               $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=1");
   				    while($boxsave = $qb->fetch_assoc()):
   							?>
-  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
+  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['id'] ?>:<?= $boxsave['nombre'] ?></option>
   							<?php
   						endwhile;
               ?>
-            </select>
+            </select>-->
+            <input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />
 
             <label>Bloque de pie de pagina personalizado</label>
-            <select name="block_footer_id">
-              <option value="0">Ninguno</option>
+            <!--<select name="block_footer_id">
+              <option value="0">0:Ninguno</option>
               <?php
               $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=2");
   				    while($boxsave = $qb->fetch_assoc()):
   							?>
-  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
+  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['id'] ?>:<?= $boxsave['nombre'] ?></option>
   							<?php
   						endwhile;
               ?>
-            </select>
+            </select>-->
+            <input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />
 
             <label>Tamaño de miniatura de imagen</label>
             <div class="cols-container">

@@ -19,7 +19,7 @@
 			<label>
 				<input type="radio" value="2" name="box_type" /><span>Pie de pagina</span>
 			</label>
-			<textarea name="box_content" id="box_content" style="display:block" height="4"></textarea>
+			<textarea name="box_content" id="box_content" style="display:none" height="4"></textarea>
 		</div>
 		<div class="editor-footer">
 			<button type="submit" class="btn-primary" id="box-btnaccept">Guardar</button>

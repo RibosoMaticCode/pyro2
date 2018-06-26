@@ -11,6 +11,8 @@ version 2.0.5 pyro2 (junio 18)
 -------------------
 - Seudo diseñador de pagina version 0.3. Independizando widgets.
 - Arreglos varios en seguridad.
+- Generador de copia de seguridad en mysql
+- Correccion en codificacion UTF-8 archivos y base de datos.
 
 version 2.0.4 pyro2 (abril 18)
 -------------------

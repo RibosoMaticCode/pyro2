@@ -14,7 +14,7 @@ $array_post_options = json_decode($json_post_options, true);
 		$(".explorer").empty();
 	});
 
-	$( "#frm-posts-options" ).submit(function() {
+	$( "#frm-posts-options" ).submit(function(event) {
 		event.preventDefault();
 		$.ajax({
 			data: $( "#frm-posts-options" ).serialize(),
@@ -51,7 +51,7 @@ $seccion = $_GET['s'];
 switch($seccion):
 	case 'posts':
 		?>
-		<form id="frm-posts-options" action="post.options.save.php" method="post">
+		<form id="frm-posts-options" class="form" action="post.options.save.php" method="post">
 			<div class="cols-container">
 				<div class="cols-6-md">
 					<label>
@@ -142,6 +142,36 @@ switch($seccion):
 		<button id="btnSaveOpc" class="btn-submit">Guardar cambios</button>
 		</form>
 		<div id="frm-posts-options-result"></div>
+
+		<div class="cover-form-fields-custom" style="padding:10px 30px">
+			<form id="frm_fields_cust" class="form">
+				<label title="Campos personalizados" for="style">Campos personalizados:
+					<span class="info">Estos campos permiten añadir valores adicionales a las publicaciones. Separa por coma. Luego de guardar require actualizar la pagina.</span>
+					<input name="objetos" type="text" value="<?= rb_get_values_options('objetos') ?>" />
+				</label>
+				<button type="submit" class="btn-submit">Guardar campos</button>
+			</form>
+			<div id="cover-form-fields-custom-result"></div>
+		</div>
+		<script>
+		$(document).ready(function() {
+			$('#frm_fields_cust').submit(function(event){
+				event.preventDefault();
+				$.ajax({
+					type: 'post',
+					url: 'core/pubs/pub-fields-save.php',
+					data: $( this ).serialize(),
+					beforeSend: function(){
+						$('#img_loading').show();
+					}
+				})
+				.done( function (data){
+					$('#img_loading').hide();
+					console.log(data);
+				});
+			});
+		});
+		</script>
 		<?php
 	break;
 endswitch;

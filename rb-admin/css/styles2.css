@@ -249,6 +249,9 @@
 	width: 100%;
 	border-bottom: 1px solid #d2d2d2;
 }
+.search-bar input[type="text"] { /* filter */
+    padding: 5px;
+}
 .explorer-statusbar{
 	border-top: 1px solid #C1C1C1;
   padding: 0 5px 0 5px;

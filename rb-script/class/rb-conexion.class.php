@@ -16,7 +16,7 @@ class Conector{
 
 	function conectar() {
 		$mysqli = new mysqli($this->Servidor, $this->Usuario, $this->Clave, $this->BaseDatos);
-
+		$mysqli->set_charset("utf8");
 		if ($mysqli->connect_error) {
 	    die('Error de Conexión (' . $mysqli->connect_errno . ') '
 				. $mysqli->connect_error);

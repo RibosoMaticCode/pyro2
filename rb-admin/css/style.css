@@ -410,6 +410,9 @@ section.seccion .popup {
 	display:inline-block;
 	list-style-type:none;
 }
+.buttons-edition li input[type="text"] {
+    padding: 4px;
+}
 /* PAGINATION */
 .navs table{
 	width:100%;
@@ -498,6 +501,14 @@ table.tsmall textarea{
 }
 
 /**** EXPLORADOR DE ARCHIVOS *****/
+/* Load image */
+#img_loading {
+    position: fixed;
+    z-index:9997;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .bg-opacity{
 	background-color:#000;
 	opacity:0.7;
@@ -505,7 +516,7 @@ table.tsmall textarea{
 	height:100vh;
 	position:fixed;
 	display:none;
-	z-index:9997;
+	z-index:9996;
 }
 
 .cover-input-dialog{

@@ -113,6 +113,8 @@ define('G_ALCANCE', rb_get_values_options('alcance'));
 define('G_BLOCK_HEADER', rb_get_values_options('block_header_ids'));
 define('G_BLOCK_FOOTER', rb_get_values_options('block_footer_ids'));
 
+define('G_KEYWEB', rb_get_values_options('key_web'));
+
 // Zona horaria por defecto
 date_default_timezone_set('America/Lima'); // Versiones futuras sera modificable
 

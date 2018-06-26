@@ -1,4 +1,72 @@
 <?php
+//https://davidwalsh.name/backup-mysql-database-php
+function rb_backup_data($tables="*"){
+  $response = false;
+  global $objDataBase;
+  $objDataBase->Ejecutar('SET NAMES utf8');
+  $objDataBase->Ejecutar('SET CHARACTER SET utf8');
+  //get all of the tables
+	if($tables == '*'){
+		$tables = array();
+		$result = $objDataBase->Ejecutar('SHOW TABLES');
+		while($row = $result->fetch_row()){
+			$tables[] = $row[0];
+		}
+	}else{
+		$tables = is_array($tables) ? $tables : explode(',',$tables);
+	}
+
+  $return = "";
+  //cycle through
+	foreach($tables as $table){
+		$result = $objDataBase->Ejecutar('SELECT * FROM '.$table);
+		$num_fields = $result->field_count;
+    //echo $num_fields; // numero de campos-columnas de cada tabla
+
+		//$return.= 'DROP TABLE `'.$table.'`;'; ??
+    $result2 = $objDataBase->Ejecutar('SHOW CREATE TABLE '.$table);
+		$row2 = $result2->fetch_row();//mysql_fetch_row(mysql_query('SHOW CREATE TABLE '.$table));
+		$return.= "\n\n".$row2[1].";\n\n";
+
+		for ($i = 0; $i < $num_fields; $i++) {
+			while($row = $result->fetch_row()){
+				$return.= 'INSERT INTO '.$table.' VALUES(';
+				for($j=0; $j < $num_fields; $j++) {
+					$row[$j] = addslashes($row[$j]);
+          //$row[$j] = utf8_encode($row[$j]); // Convierte a UTF8 -- no necesaria por que la base datos trabaja con UTF8
+          $row[$j] = preg_replace("/[\r\n|\n|\r]+/", PHP_EOL, $row[$j]);
+					if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+					if ($j < ($num_fields-1)) { $return.= ','; }
+				}
+				$return.= ");\n";
+			}
+		}
+		$return.="\n\n\n";
+	}
+  //die($return);
+  if(trim(G_KEYWEB)==""){
+    $key_web = randomPassword(12,1,"lower_case,upper_case,numbers,special_symbols");
+    $dir_backup = $key_web[0];
+  }else{
+    $key_web = G_KEYWEB;
+  }
+
+  $path_backup = $_SERVER['DOCUMENT_ROOT'].G_DIRECTORY."/".$key_web."/";
+  $url_backup = G_SERVER.G_DIRECTORY."/".$key_web."/";
+
+  if (!file_exists($path_backup)) {
+    mkdir($path_backup, 0777, true);
+  }
+
+	//save file
+  $filename = 'db-backup-'.time().'.sql';
+	$handle = fopen($path_backup.$filename,'w+');
+	fwrite($handle,$return);
+	fclose($handle);
+  $response = true;
+
+  return ["response" =>$response, "filename" => $filename, "url_backup" => $url_backup];
+}
 // paginado de listado ->
 // Parametros: Pagina actual, total de elementos, link de retorno, elementos a mostrar
 function rb_paged_list($pag_act, $total, $link_section, $nums_show){

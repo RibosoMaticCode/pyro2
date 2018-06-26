@@ -19,7 +19,7 @@ $(document).ready(function(){
 	    formData: {"albumid":"0", "user_id" : "<?= G_USERID ?>"},
 	    urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
 	    allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf",
-	    returnType:"html", //json
+	    returnType:"json", //json
 			showStatusAfterSuccess: false,
 		onSuccess:function(files,data,xhr)
 	    {

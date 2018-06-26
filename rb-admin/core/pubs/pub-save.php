@@ -147,8 +147,10 @@ $mode=$_POST['mode'];
 			if($externo>0){
 				foreach($array_externo as $externo){
 					$nombre_ext = $externo['tipo'];
-					$objDataBase->Ejecutar( "UPDATE objetos SET contenido = '".$externo['contenido']."' WHERE articulo_id = $id AND tipo = 'objeto' AND nombre = '$nombre_ext'" );
-					if( mysql_affected_rows() == 0 ) $objDataBase->Ejecutar("INSERT INTO objetos (nombre, contenido, tipo, articulo_id) VALUES ('".$nombre_ext."','".$externo['contenido']."','objeto',$id)");
+					$r = $objDataBase->Ejecutar( "UPDATE objetos SET contenido = '".$externo['contenido']."' WHERE articulo_id = $id AND tipo = 'objeto' AND nombre = '$nombre_ext'" );
+
+					if( $r->affected_rows == 0 ) 
+						$objDataBase->Ejecutar("INSERT INTO objetos (nombre, contenido, tipo, articulo_id) VALUES ('".$nombre_ext."','".$externo['contenido']."','objeto',$id)");
 				}
 			}
 			// eliminamos atributos anteriores

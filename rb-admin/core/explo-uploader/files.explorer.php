@@ -59,6 +59,15 @@ $controlHideId = $_GET['controlHideId'];
 		    $('#imgsingallery').html(html_response);
 		});
 	});
+
+	// Filter files
+	$('#search_box').keyup(function(){
+		var valThis = $(this).val();
+    $('.gallery>li').each(function(){
+			var text = $(this).find('span').text().toLowerCase();
+			(text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+   	});
+	});
 </script>
 <div class="explorer-header">
 	<h3>Explorar archivos</h3>
@@ -70,10 +79,10 @@ $controlHideId = $_GET['controlHideId'];
 </div>
 <div class="explorer-body">
 	<!-- L I S T A D O   I M A G E N E S  -->
-	<!--<div class="search-bar">
-		<input type="text" placeholder="Archivo a buscar" />
-	</div>-->
 	<div class="gallery-list">
+		<div class="search-bar">
+			<input type="text" id="search_box" placeholder="Archivo a buscar" />
+		</div>
 		<div id="imgsingallery" class="flibrary">
 			<?php
 			require_once 'files.explorer.refresh.php'

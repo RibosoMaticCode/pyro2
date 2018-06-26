@@ -24,11 +24,23 @@ if(isset($_GET['type'])):
 				win.document.getElementById(input).value = '<?= G_SERVER ?>/rb-media/gallery/' + $(this).data('filename');
 				top.tinymce.activeEditor.windowManager.close();
 			});
+
+			// Filter files
+			$('#search_box').keyup(function(){
+				var valThis = $(this).val();
+		    $('.gallery>li').each(function(){
+					var text = $(this).find('span').text().toLowerCase();
+					(text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+		   	});
+			});
 		});
 		</script>
 	</head>
 	<body>
 		<div class="explorer-body">
+			<div class="search-bar">
+				<input type="text" id="search_box" placeholder="Archivo a buscar" />
+			</div>
 			<div id="photos">
 				<div class="explorer-body-inner">
 					<div id="assetResults" class="flibrary">

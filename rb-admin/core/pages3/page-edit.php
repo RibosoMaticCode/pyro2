@@ -11,8 +11,8 @@ if(isset($_GET["id"])){
 }
 $shead = isset($row) ? $row['show_header'] : 0;
 $sfoot = isset($row) ? $row['show_footer'] : 0;
-$hcustid = $row['header_custom_id'];
-$fcustid = $row['footer_custom_id'];
+$hcustid = isset($row) ? $row['header_custom_id'] : 0;
+$fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script src="<?= G_SERVER ?>/rb-admin/core/pages3/func.js"></script>
@@ -83,8 +83,8 @@ $fcustid = $row['footer_custom_id'];
 					// Testing
 					/*echo "<pre>";
 					print_r($array_content);
-					echo "</pre>";*/
-					//die();
+					echo "</pre>";
+					die();*/
 					foreach ($array_content['boxes'] as $boxes => $box) {
 						//echo "Save ID:".$box['box_save_id'];
 						if(isset($box['box_save_id'])){

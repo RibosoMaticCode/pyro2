@@ -63,6 +63,15 @@ $rg= $qg->fetch_assoc();
         }
 
         var uploadObj = $("#mulitplefileuploader").uploadFile(settings);
+
+        // Filter files
+        $('#search_box').keyup(function(){
+          var valThis = $(this).val();
+          $('.gallery>li').each(function(){
+            var text = $(this).find('span').text().trim().toLowerCase();
+            (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+          });
+        });
       });
       </script>
       </div>
@@ -81,11 +90,14 @@ $rg= $qg->fetch_assoc();
         <h3>Seleccionar imagenes de Biblioteca de medios</h3>
       </div>
       <div class="seccion-body">
+        <div class="search-bar">
+  				<input type="text" id="search_box" placeholder="Archivo a buscar" />
+  			</div>
         <div class="flibrary">
           <form action="core/galleries/img-add.php" method="POST" name="library">
             <input type="hidden" name="album_id" value="<?= $album_id ?>" />
             <input type="hidden" name="section" value="imgnew" />
-            <ul class="wrap-grid">
+            <ul class="gallery wrap-grid">
             <?php
 
             while($r= $q->fetch_assoc()):
@@ -95,6 +107,7 @@ $rg= $qg->fetch_assoc();
               <div class="cover-img">
               <input class="checkbox" type="checkbox" name="items[]" value="<?= $r['id']?>" /> <br />
               <img class="thumb" src="<?= G_SERVER ?>/rb-media/gallery/tn/<?= $r['src'] ?>" /><br />
+              <span><?= $r['src'] ?></span>
               </div>
             </label>
             </li>

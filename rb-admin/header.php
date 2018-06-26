@@ -156,6 +156,7 @@ function msgOk($text){
 }
 if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 ?>
+<img id="img_loading" src="<?= G_SERVER ?>/rb-script/images/loading.gif" alt="loading" style="display:none" />
 <div id="message"></div>
 <div class="bg-opacity"></div>
 <div class="explorer"></div>

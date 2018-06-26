@@ -1,4 +1,5 @@
 <?php
+header('Content-type: application/json; charset=utf-8');
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
@@ -18,7 +19,7 @@ $sh = $_POST['sh'];
 $sf = $_POST['sf'];
 $hcust_id = $_POST['h_cust_id'];
 $fcust_id = $_POST['f_cust_id'];
-header('Content-type: application/json; charset=utf-8');
+
 if($mode=="new"):
 	$q = "INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, contenido, menu_id, show_header, show_footer, header_custom_id, footer_custom_id ) VALUES (NOW(), '$titulo', '$titulo_enlace', $autor_id, '$contenido', $menu_id, $sh, $sf, '$hcust_id', '$fcust_id')";
 	$result = $objDataBase->Insertar($q);

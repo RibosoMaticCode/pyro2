@@ -12,7 +12,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
   <div class="content-centered">
     <section class="seccion">
       <div class="seccion-body">
-        <!-- bloque 1 -->
+        <!-- Datos generales -->
         <div class="cols-container">
           <h3 class="subtitle">Datos del sitio web</h3>
           <div class="cols-6-md col-padding">
@@ -39,6 +39,12 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <label title="Author" for="author">Meta Author (para Buscadores):
               <input  name="author" type="text" value="<?= rb_get_values_options('meta_author') ?>" />
             </label>
+          </div>
+        </div>
+        <!-- Apariencia -->
+        <div class="cols-container">
+          <h3 class="subtitle">Apariencia</h3>
+          <div class="cols-6-md col-padding">
             <label>Favicon:
               <script>
               $(document).ready(function() {
@@ -48,48 +54,6 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               });
               </script>
               <input name="favicon" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('favicon') ); echo $photos['src']; ?>" />
-            </label>
-          </div>
-        </div>
-        <!-- revisar -->
-        <div class="cols-container">
-          <h3 class="subtitle">Manejo de correos</h3>
-          <div class="cols-6-md col-padding">
-            <label title="Corre(os) que reciben los formularios de contacto" for="style">Correo receptor:
-              <span class="info">El correo que recibe los formularios de contacto. Puede especificar varios, separelo por coma.</span>
-              <input  name="mails" type="text" value="<?= rb_get_values_options('mail_destination') ?>" />
-            </label>
-            <label>Nombre de quien emite correo:
-              <span class="info">El nombre de quien envia alguna respuesta al usuario final, visitante, etc.</span>
-              <input  name="namesender" type="text" value="<?= rb_get_values_options('name_sender') ?>" />
-            </label>
-            <label title="Correo que envia información de registro" for="style">Correo emisor:
-              <span class="info">El correo que envia alguna respuesta al usuario final, visitante, etc.</span>
-              <input  name="mailsender" type="text" value="<?= rb_get_values_options('mail_sender') ?>" />
-            </label>
-          </div>
-          <div class="cols-6-md col-padding">
-            <label>
-              ¿Usar librería externa para enviar correos?:
-              <input type="text" name="lib_mail_native" value="<?= rb_get_values_options('lib_mail_native') ?>" />
-            </label>
-            <label>
-              Api key de librería externa:
-              <input type="text" name="sendgridapikey" value="<?= rb_get_values_options('sendgridapikey') ?>" />
-            </label>
-          </div>
-        </div>
-        <!-- Apariencia -->
-        <div class="cols-container">
-          <h3 class="subtitle">Funciones avanzadas</h3>
-          <div class="cols-6-md col-padding">
-            <label title="Campos personalizados" for="style">Campos personalizados:
-              <span class="info">Estos campos aparecerán en la seccion Publicaciones, permiten añadir valores adicionales a los pre-establecidos.</span>
-              <input  name="objetos" type="text" value="<?= rb_get_values_options('objetos') ?>" />
-            </label>
-            <label title="Numero de Items por Página" for="style">Numero de Publicaciones por Página:
-              <span class="info">Cantidad de publicaciones a mostrar en el index (por defecto) y por categoria.</span>
-              <input  name="post_by_category" type="text" value="<?= rb_get_values_options('post_by_category') ?>" />
             </label>
             <label>Logo:
               <script>
@@ -111,22 +75,6 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </script>
               <input name="bgimage" type="text" class="explorer-bgimage" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('background-image') ); echo $photos['src']; ?>" />
             </label>
-            <label>URL terminos y condiciones:
-              <span class="info">Esta se muestra en la seccion de registro de usuarios</span>
-              <input  name="terms_url" type="text" value="<?= rb_get_values_options('terms_url') ?>" />
-            </label>
-            <label title="Menu Principal" for="menu">Menu Principal: <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=menus">Nuevo menú</a>
-              <span class="info">Dependiendo de la plantilla instalada, el menú que eliga figurara en la parte superior de la web.</span>
-              <select name="menu">
-                <option value="0">Ninguno</option>
-                <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM menus ORDER BY nombre");
-                while($r = $q->fetch_assoc()):
-                  ?><option <?php if( rb_get_values_options('mainmenu_id') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option><?php
-                endwhile;
-                ?>
-              </select>
-            </label>
             <label title="Tema" for="tema">Plantilla del Sitio Web:
               <span class="info">Las plantillas temas se guardan en la carpeta raiz <code>rb-temas</code></span>
               <select  name="tema">
@@ -134,6 +82,8 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 <?php rb_list_themes('../rb-temas/',rb_get_values_options('tema')) ?>
               </select>
             </label>
+          </div>
+          <div class="cols-6-md col-padding">
             <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web? <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Nueva página</a></label>
             <span class="info">Puede elegir una en particular ó dejar por defecto según el tema instalado</span>
             <select  name="inicial">
@@ -146,46 +96,46 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               endwhile;
               ?>
             </select>
-
-            <label>Slide/Galería de Página Inicial <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=album">Nuevo slide</a></label>
-            <span class="info">Esto dependerá si su plantilla incluye y/o permite cambiar Slide/Galería.</span>
-            <select name="slide">
-              <option value="0">Ninguno</option>
-              <?php
-              $q = $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY nombre");
-              while($r = $q->fetch_assoc()):
-                ?><option <?php if( rb_get_values_options('slide_main') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option><?php
-              endwhile;
-              ?>
-            </select>
-
             <label>Bloque de cabecera personalizado</label>
-            <!--<select name="block_header_id">
-              <option value="0">0:Ninguno</option>
-              <?php
-              $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=1");
-  				    while($boxsave = $qb->fetch_assoc()):
-  							?>
-  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['id'] ?>:<?= $boxsave['nombre'] ?></option>
-  							<?php
-  						endwhile;
-              ?>
-            </select>-->
             <input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />
 
             <label>Bloque de pie de pagina personalizado</label>
-            <!--<select name="block_footer_id">
-              <option value="0">0:Ninguno</option>
-              <?php
-              $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=2");
-  				    while($boxsave = $qb->fetch_assoc()):
-  							?>
-  							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['id'] ?>:<?= $boxsave['nombre'] ?></option>
-  							<?php
-  						endwhile;
-              ?>
-            </select>-->
             <input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />
+          </div>
+        </div>
+        <!-- Correos -->
+        <div class="cols-container">
+          <h3 class="subtitle">Manejo de correos</h3>
+          <div class="cols-6-md col-padding">
+            <label title="Corre(os) que reciben los formularios de contacto" for="style">Correo receptor:
+              <span class="info">El correo que recibe los formularios de contacto. Puede especificar varios, separelo por coma.</span>
+              <input  name="mails" type="text" value="<?= rb_get_values_options('mail_destination') ?>" />
+            </label>
+            <label>Nombre de quien emite correo:
+              <span class="info">El nombre de quien envia alguna respuesta al usuario final, visitante, etc.</span>
+              <input  name="namesender" type="text" value="<?= rb_get_values_options('name_sender') ?>" />
+            </label>
+            <label title="Correo que envia información de registro" for="style">Correo emisor:
+              <span class="info">El correo que envia alguna respuesta al usuario final, visitante, etc.</span>
+              <input  name="mailsender" type="text" value="<?= rb_get_values_options('mail_sender') ?>" />
+            </label>
+          </div>
+          <div class="cols-6-md col-padding">
+          </div>
+        </div>
+        <!-- Funciones avanzadas -->
+        <div class="cols-container">
+          <h3 class="subtitle">Funciones avanzadas</h3>
+          <div class="cols-6-md col-padding">
+            <label title="Numero de Items por Página" for="style">Numero de Publicaciones por Página:
+              <span class="info">Cantidad de publicaciones a mostrar en el index (por defecto) y por categoria.</span>
+              <input  name="post_by_category" type="text" value="<?= rb_get_values_options('post_by_category') ?>" />
+            </label>
+
+            <label>URL terminos y condiciones:
+              <span class="info">Esta se muestra en la seccion de registro de usuarios</span>
+              <input  name="terms_url" type="text" value="<?= rb_get_values_options('terms_url') ?>" />
+            </label>
 
             <label>Tamaño de miniatura de imagen</label>
             <div class="cols-container">
@@ -203,7 +153,36 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </div>
               <div class="cols-6-md"></div>
             </div>
-
+            <label>Alcance del sitio web:</label>
+            <!--<span class="info"></span>-->
+            <label class="lbl-listoptions">
+              <input name="alcance" type="radio" value="0" <?php if(rb_get_values_options('alcance')=='0') echo "checked=\"checked\""?> />
+              Publico - acceso directo al index y otras partes del sitio
+            </label>
+            <label class="lbl-listoptions">
+              <input name="alcance" type="radio" value="1" <?php if(rb_get_values_options('alcance')=='1') echo "checked=\"checked\""?> />
+              Privado - para acceder al index tendra que loguearse previamente
+            </label>
+            <label>Barra lateral de blog</label>
+            <span class="info">Configuracion de visualizacion de la barra lateral.</span>
+            <label class="lbl-listoptions">
+              <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
+              Ocultar
+            </label>
+            <label class="lbl-listoptions">
+              <input name="sidebar" type="radio" value="1" <?php if(rb_get_values_options('sidebar')=='1') echo "checked=\"checked\""?> />
+              Mostrar
+            </label>
+            <div style="padding-left:15px">
+              <label class="lbl-listoptions">
+                <input name="sidebar_pos" type="radio" value="right" <?php if(rb_get_values_options('sidebar_pos')=='right') echo "checked=\"checked\""?> />
+                A la derecha
+              </label>
+              <label class="lbl-listoptions">
+                <input name="sidebar_pos" type="radio" value="left" <?php if(rb_get_values_options('sidebar_pos')=='left') echo "checked=\"checked\""?> />
+                A la izquierda
+              </label>
+            </div>
           </div>
           <div class="cols-6-md col-padding">
             <label>Enlace amigable para el sitio web:</label>
@@ -236,36 +215,28 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <span class="info">Por defecto la pagina inicial es index.php, pero se puede modificar aqui. <code><?= G_SERVER ?>/rb-admin/</code></span>
               <input  name="index_custom" type="text" value="<?= rb_get_values_options('index_custom') ?>" />
             </label>
-            <label>Alcance del sitio web:</label>
-            <!--<span class="info"></span>-->
-            <label class="lbl-listoptions">
-              <input name="alcance" type="radio" value="0" <?php if(rb_get_values_options('alcance')=='0') echo "checked=\"checked\""?> />
-              Publico - acceso directo al index y otras partes del sitio
+            <label>Copia de seguridad DB:
+              <a href="#" class="gen_backup_sql" download="Backup_database">Generar copia</a>
             </label>
-            <label class="lbl-listoptions">
-              <input name="alcance" type="radio" value="1" <?php if(rb_get_values_options('alcance')=='1') echo "checked=\"checked\""?> />
-              Privado - para acceder al index tendra que loguearse previamente
-            </label>
-            <label>Barra lateral de blog</label>
-            <span class="info">Configuracion de visualizacion de la barra lateral.</span>
-            <label class="lbl-listoptions">
-              <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
-              Ocultar
-            </label>
-            <label class="lbl-listoptions">
-              <input name="sidebar" type="radio" value="1" <?php if(rb_get_values_options('sidebar')=='1') echo "checked=\"checked\""?> />
-              Mostrar
-            </label>
-            <div style="padding-left:15px">
-              <label class="lbl-listoptions">
-                <input name="sidebar_pos" type="radio" value="right" <?php if(rb_get_values_options('sidebar_pos')=='right') echo "checked=\"checked\""?> />
-                A la derecha
-              </label>
-              <label class="lbl-listoptions">
-                <input name="sidebar_pos" type="radio" value="left" <?php if(rb_get_values_options('sidebar_pos')=='left') echo "checked=\"checked\""?> />
-                A la izquierda
-              </label>
-            </div>
+            <script>
+            //$(document).ready(function() {
+              $('.gen_backup_sql').click(function(event){
+                event.preventDefault();
+                $.ajax({
+        					type: 'GET',
+        					url: '<?= G_SERVER ?>/rb-script/backup.php',
+                  beforeSend: function(){
+                    $('#img_loading, .bg-opacity').show();
+                  }
+        				})
+        				.done( function (data){
+                  $('#img_loading, .bg-opacity').hide();
+        					console.log(data);
+                  window.location.href = data.url_backup+data.filename;
+        				});
+              });
+            //});
+            </script>
           </div>
         </div>
         <!-- gestion de usuarios -->

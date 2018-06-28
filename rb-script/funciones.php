@@ -1232,7 +1232,7 @@ function rb_show_menu($menu_panel, $subitem_selected="0", $item_selected="index"
  * */
 function rb_add_specific_item_menu($item_padre, $data){
 	global $menu_panel;
-	array_push($menu_panel[$item_padre]['item'], $data );
+  if(isset($menu_panel)) array_push($menu_panel[$item_padre]['item'], $data );
 }
 
 /* Busca dentro del Menu del Panel (en cada menu hijo), el modulo que se activara cuando el menu este desplegado
@@ -2026,8 +2026,8 @@ function rb_footer($add_footer = array(), $page=true){
         rb_show_block($box);
       }
     }else{
-      foreach ($add_header as $header) {
-        include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
+      foreach ($add_footer as $footer) {
+        include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
       }
     }
   }
@@ -2165,8 +2165,12 @@ function randomPassword($length,$count, $characters) { // Genera un valor aleato
 }
 
 function rb_shortcode($content){
-  // Aun NO TRABAJA CON FUNCIONES Y PARAMETROS
+  // Shortcode, es un array que contiene las funciones a ejecutar y sus parametros (por defecto vacios)
   global $shortcodes;
+
+  /*echo "<pre>";
+  print_r($shortcodes);
+  echo "</pre>";*/
 
   // Si no hay shortcodes, no pasais nada
   if( count($shortcodes)==0){
@@ -2176,21 +2180,35 @@ function rb_shortcode($content){
   $code = array();
   $html = array();
 
+  // Recorremos cada elemento del array $shortcodes, y pasamos en key-tag a array $code
   foreach ($shortcodes as $key => $value) {
-    array_push($code, "/\[".$key."]/is");
+    // Primero verificar si tiene parametros
+    $params = $value['params'];
+    $params_string = "";
+    foreach ($params as $param => $value) {
+      $params_string .= " ".$param."=\"".$value."\"";
+    }
+    array_push($code, "/\[".$key.$params_string."]/is");
   }
 
+  /*echo "<pre>"; // test code and parameters
+  print_r($code);
+  echo "</pre>";*/
+
+  // Recorremos nuevamente cada elemento de array $shortcodes, y pasamos la ejecucion de su funcion a array $html
   foreach ($shortcodes as $key => $value) {
+    // Primero verificar si tiene parametros
+    $params = $value['params'];
     $func = $key;
-    $html_content = do_shortcode($func);
+    $html_content = do_shortcode($func, $params);
     array_push($html, $html_content);
   }
   /*echo "<pre>"; // test
   print_r($code);
   print_r($html);
-  echo "</pre>"; */
+  echo "</pre>";*/
 
-  $content_html = preg_replace($code, $html, $content);
+  $content_html = preg_replace($code, $html, $content); // Reemplazamos cada key-tag, conla ejecucion de la funcion
   return $content_html;
 }
 ?>

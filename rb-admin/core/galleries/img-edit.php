@@ -1,5 +1,5 @@
 <?php
-include_once("tinymce.module.small.php");
+include_once("../rb-admin/tinymce/tinymce.config.php");
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 
 $mode;
@@ -36,9 +36,9 @@ if(isset($_GET["id"])){
                         <label style="display: none" title="Selecciona la imagen" for="nombre">Selecciona tu archivo:
                         <input  name="fupload" type="file" />
                         </label>
-                        <label title="Titulo de la foto">Titulo:
+                        <label title="Descripcion de la foto">Descripcion:
                           <!-- class="mceEditor" -->
-                        <textarea name="title" id="title" style="width:100%;"><?php if(isset($row))echo $row['title'] ?></textarea>
+                        <textarea name="title" class="mceEditor" id="title" style="width:100%;"><?php if(isset($row))echo $row['title'] ?></textarea>
                         </label>
                         <!--<label title="URL">URL:
                           <input type="text" name="url" id="url" value="<?php if(isset($row))echo $row['url'] ?>" />
@@ -48,6 +48,9 @@ if(isset($_GET["id"])){
                   <div class="wrap-input">
           <h3 class="subtitle">Enlazar imagen con:</h3>
           <div class="subform">
+            <label>
+              <input <?php if(isset($row) && $row['tipo']=="") echo " checked " ?> type="radio" name="tipo" value="" /> <span>Ninguno</span><br/>
+            </label>
           <label>
             <input <?php if(isset($row) && $row['tipo']=="art") echo " checked " ?> type="radio" name="tipo" value="art" /> <span>Publicación</span><br/>
             <select name="articulo" >

@@ -1,0 +1,24 @@
+.estructure {
+    position: relative;
+    min-height: 100px;
+}
+
+a.editCodeForm {
+    position:  absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.4em;
+    z-index: 2;
+    font-weight: bold;
+}
+
+.shadow {
+    position:  absolute;
+    z-index: 2;
+    background-color: #000;
+    opacity: .7;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+}

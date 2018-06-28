@@ -8,6 +8,7 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 <script>
 	$( "#close" ).click(function( event ) {
 		event.preventDefault();
+		$('#img_loading').hide();
 		$(".bg-opacity").hide();
 		$(".explorer").hide();
    	$(".explorer").empty();

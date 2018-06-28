@@ -267,14 +267,21 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
       <div class="seccion-body">
         <div id="featured-image">
           <!-- A C T U A L I Z A R -->
-          <?php if(isset($row)):?>
+          <?php // if(isset($row)):?>
             <table id="t_imagen" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="40%"><strong>Imagen de Portada</strong><br />
                   <span class="info">Sirve como imagen de fondo, para slideshow, por lo general una imagen grande.</span>
                 </td>
                 <td>
-                  <input name="portada" type="text" id="portada" class="explorer-file" readonly value="<?= rb_image_exists( SelectObject( "portada" , $row['id'] , 'image' ) ) ? SelectObject( "portada" , $row['id'] , 'image' ) : '' ?>" />
+                  <script>
+                  $(document).ready(function() {
+                    $(".explorer-back").filexplorer({
+                      inputHideValue: "<?= isset($row) ? $row['img_back'] : 0 ?>"
+                    });
+                  });
+                  </script>
+                  <input name="img_back" type="text" id="img_back" class="explorer-back" readonly value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['img_back'] : 0 ); echo $photos['src']; ?>" />
                 </td>
               </tr>
               <tr>
@@ -282,12 +289,19 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
                   <span class="info">Sirve como imagen que identifica a la publicación o artículo.</span>
                 </td>
                 <td>
-                  <input name="secundaria" type="text" id="logo" class="explorer-file" readonly value="<?= rb_image_exists( SelectObject( "logo" , $row['id'] , 'image' ) ) ? SelectObject( "logo" , $row['id'] , 'image' ) : '' ?>" />
+                  <script>
+                  $(document).ready(function() {
+                    $(".explorer-profile").filexplorer({
+                      inputHideValue: "<?= isset($row) ? $row['img_profile'] : 0 ?>"
+                    });
+                  });
+                  </script>
+                  <input name="img_profile" type="text" id="img_profile" class="explorer-profile" readonly value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['img_profile'] : 0 ); echo $photos['src']; ?>" />
                 </td>
               </tr>
             </table>
           <!-- N U E V O -->
-          <?php else: ?>
+          <?php /*else: ?>
             <table id="t_imagen" width="100%">
               <tr>
                 <td width="40%">Imagen de Portada<br />
@@ -306,7 +320,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
                 </td>
               </tr>
             </table>
-          <?php endif; ?>
+          <?php endif;*/ ?>
         </div>
       </div>
     </section>

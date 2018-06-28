@@ -417,6 +417,9 @@ section.seccion .popup {
 .navs table{
 	width:100%;
 }
+.navs table td {
+    text-align: right;
+}
 .pagination{
 	background-color:#fff;
 	overflow:hidden;

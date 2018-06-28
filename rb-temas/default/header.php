@@ -74,7 +74,7 @@
 					event.preventDefault();
 					$.ajax({
 						method: "post",
-						url: "<?= rm_urltheme ?>mailer-contact.php",
+						url: "<?= rm_url ?>/rb-script/modules/rb-mailer/mailer.array.recaptcha.php",
 						data: $( this ).serialize()
 					})
 					.done(function( data ) {

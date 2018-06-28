@@ -81,18 +81,19 @@ function do_action($ubicacion){ // De acuerdo a la ubicacion añade las funcione
 
 /* SHORTCODES -- Fragmentos de codigo a las paginas o contenidos de paginas */
 /* Tema de parametros, NO FUNCIONAL, a falta de investigacion */
-function add_shortcode($name, $func, $params=[]) {
+function add_shortcode($key, $func, $params=[]) {
   // Agregar nombre del shortcode y funcion que lo acompaña, al array principal publico $shortcodes
   global $shortcodes;
-  $shortcodes[$name]=[
+  $shortcodes[$key]=[
       'func' => $func,
       'params' => $params
   ];
 }
 
 // De acuerdo al nombre del shortcode, ejecutamos la funcion asociada
-function do_shortcode($name){
+function do_shortcode($key, $params=[]){ // Por defecto parametros vacios
   global $shortcodes;
-  return call_user_func_array( $shortcodes[$name]['func'], $shortcodes[$name]['params']);
+  //return call_user_func_array( $shortcodes[$key]['func'], $params ); // los parametros se pasan como un array, pero internamente se manejan sus valores por separados
+  return call_user_func( $shortcodes[$key]['func'], $params ); // Los parametro se pasan como variables (incluidas array asociativos), y se maneja segun el tipo de variable.
 }
 ?>

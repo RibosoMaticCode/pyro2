@@ -21,6 +21,7 @@ include 'islogged.php';
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/resource/nestable/nestable.css" />
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/pages3/pages3.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/forms/forms.edit.css" />
 	<!-- modulos css -->
 	<?= do_action('panel_header_css') ?>
 

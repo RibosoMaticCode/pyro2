@@ -112,11 +112,12 @@
           // Funcion para mostrar la ventana explorador de imagenes
 			    showNextImage = function(event){
 			    	event.preventDefault();
+            $('#img_loading').show();
+            $(".bg-opacity").show();
 			    	var controlHideId = name_control+"_id";
 					  var controlShowId = name_control;
 			    	$.post( "../rb-admin/core/explo-uploader/files.explorer.php?controlShowId="+controlShowId+"&controlHideId="+controlHideId , function( data ) {
   					 	$('.explorer').html(data);
-  						$(".bg-opacity").show();
   						$(".explorer").fadeIn(500);
   					});
 			    };
@@ -130,9 +131,10 @@
 			    	var photo = $( '#'+controlShowId+"_id" ).val();
             console.log(photo);
   					if(photo > 0){
+              $('#img_loading').show();
+              $(".bg-opacity").show();
               $.post( "../rb-admin/core/explo-uploader/files.explorer.view.php?file_id="+photo , function( data ) {
     					 	$('.explorer').html(data);
-    						$(".bg-opacity").show();
     						$(".explorer").fadeIn(500);
     					});
   					}

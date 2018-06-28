@@ -21,6 +21,7 @@ $controlHideId = $_GET['controlHideId'];
 <script>
 	$( "#close" ).click(function( event ) {
 		event.preventDefault();
+		$('#img_loading').hide();
 		$(".bg-opacity").hide();
 		$(".explorer").hide();
    	$(".explorer").empty();

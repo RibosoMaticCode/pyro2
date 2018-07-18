@@ -147,10 +147,19 @@ require ABSPATH.'rb-temas/'.G_ESTILO.'/urls.php';
 
 // ARCHIVOS DIRECTOS
 if(isset($_GET['pa'])){
+	// VALORES DE CABECERA DEL POST
+	define('rm_title_page' , "Panel de usuario");
+	define('rm_title' , "Panel de usuario | ".G_TITULO );
+	define('rm_metadescription' , rb_get_values_options('descripcion') );
+	define('rm_metaauthor' , G_TITULO." - ".G_VERSION);
+	$css_add = [
+		'/rb-script/modules/rb-userpanel/paneluser.css'
+	];
+	define('rm_css', $css_add);
+
 	// Si accede a panel y no esta logueado, manda al index
 	if($_GET['pa']=="panel" && G_ACCESOUSUARIO==0):
-		header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
-
+		header('Location: '. rb_get_values_options('direccion_url') );
 	// Si accede a panel y esta logueado, lleva al modulo externo para el panel
 	elseif($_GET['pa']=="panel" && G_ACCESOUSUARIO==1):
 		$rm_menu_name = "";
@@ -159,6 +168,7 @@ if(isset($_GET['pa'])){
 	else:
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$_GET['pa'].'.php';
 		if(file_exists( $file )) require_once( $file );
+		else header('Location: '.G_SERVER.'/404.php');
 	endif;
 // PUBLICACIONES
 }elseif(isset( $PostId )){
@@ -200,7 +210,7 @@ if(isset($_GET['pa'])){
 			$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$PageId.'.php';
 			if(file_exists( $file )) require_once( $file );
 		endif;
-		header('Location: '.G_SERVER.'/404.php');
+		//header('Location: '.G_SERVER.'/404.php');
 	}else{ // Asignando valores a la pagina del sistema
 	  define('rm_title', $Page['titulo']." | ".G_TITULO);
 		define('rm_title_page', $Page['titulo']);

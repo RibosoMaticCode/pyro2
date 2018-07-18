@@ -33,6 +33,15 @@
 .form button[type="button"]{
 	background-color: #9E9E9E;
 }
-.form span {
-	/*font-weight: bold;*/
+.form span.label {
+	padding:5px 0;
+	margin:5px 0;
+	display: block;
+	margin: 5px 0;
+	font-family: condensed-regular;
+	color: #000;
+}
+input:disabled {
+    background-color: #f7f7f7!important;
+    background-image: none!important;
 }

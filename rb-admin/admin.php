@@ -53,7 +53,8 @@ if(G_ACCESOUSUARIO==0){
 }else{
 	if(isset($_SESSION['type'])){
 		if($_SESSION['type']=="user-front"){
-			die("Usted no cuenta con acceso a esta seccion. <a href='".G_SERVER."'>Sacame de aqui</a>");
+			//die("Usted no cuenta con acceso a esta seccion. <a href='".G_SERVER."'>Sacame de aqui</a>");
+			header('Location: '.G_SERVER.'/404.php');
 		}
 	}
 	$userType = $_SESSION['type'];

@@ -1,15 +1,13 @@
 <?php
 $rm_menu = "cuenta";
-$rm_title = "Panel Usuario - ".G_ESTILO;
 $rm_slide = false;
-require_once ABSPATH.'rb-temas/'.G_ESTILO.'/header.php';
+rb_header(['header-allpages.php'], false);
+$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=".G_USERID);
+$UsuarioItem = $q->fetch_assoc();
 ?>
-<?php
-$q = $objArticulo->Consultar("select * from usuarios where id=".$rm_userid);
-$UsuarioItem = mysql_fetch_array($q);
-?>
+<div class="winfloat" style="display: none"></div>
 		<div class="wrap-content">
-			<div class="inner-content intrader-index-block-in in-page">
+			<div class="inner-content">
 		<!--<div id="panel" class="contact">
 			<div class="container">-->
 
@@ -44,7 +42,7 @@ $UsuarioItem = mysql_fetch_array($q);
 						});
 					</script>
 					<div class="cols-container">
-						<div class="cols-2-sm buttons" style="padding: 0">
+						<div class="cols-2-md buttons" style="padding: 0">
 							<ul class="menu-user">
 								<li>
 									<a href="#" id="data" class="selected">Mis datos</a>
@@ -54,16 +52,16 @@ $UsuarioItem = mysql_fetch_array($q);
 								</li>
 							</ul>
 						</div>
-						<div class="cols-10-sm" style="border-left:1px solid #eaeaea">
+						<div class="cols-10-md" style="border-left:1px solid #eaeaea">
 							<div class="history">
 								<h3>Notificaciones</h3>
 								<?php require 'panel.notifications.php' ?>
 							</div>
 							<?php
 							function show_nivel($nivel_id){
-								$objUsuario = new Usuarios;
-								$q = $objUsuario->Consultar("SELECT nombre FROM usuarios_niveles WHERE id=$nivel_id");
-								$r = mysql_fetch_array($q);
+								global $objDataBase;
+								$q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id=$nivel_id");
+								$r = $q->fetch_assoc();
 								return $r['nombre'];
 							}
 							?>
@@ -71,7 +69,7 @@ $UsuarioItem = mysql_fetch_array($q);
 								<h3>Datos del usuario</h3>
 								<p>Nivel: <?= show_nivel($UsuarioItem['tipo']) ?></p>
 								<?php if(G_USERTYPE=="admin" || G_USERTYPE=="user-panel"): ?>
-								<p><a href="<?= $rm_url ?>rb-admin/">Administrar contenidos</a></p>
+								<p><a href="<?= rm_url ?>rb-admin/">Administrar contenidos</a></p>
 								<?php endif ?>
 								<?php require 'panel.user.php' ?>
 							</div>
@@ -81,4 +79,4 @@ $UsuarioItem = mysql_fetch_array($q);
 				</div>
 			</div>
 		</div>
-<?php require_once ABSPATH.'rb-temas/'.G_ESTILO.'/footer.php' ?>
+<?php rb_footer(['footer-allpages.php'], false) ?>

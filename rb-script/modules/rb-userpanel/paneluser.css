@@ -1,0 +1,240 @@
+/* PANEL USUARIO */
+.info-active{
+    background-color: red;
+    color: #fff;
+    padding: 3px 10px;
+    font-size: .5em!important;
+    position: absolute;
+    right: 10px;
+}
+.btn-back{
+	position:absolute;
+	padding:8px 10px;
+	right:20px;
+	top:80px;
+	font-size:.85em;
+	border-radius:5px;
+	border:1px solid #00557F;
+}
+.user{
+	position:relative;
+}
+.user h3{
+	padding:10px 0;
+}
+.user h1{
+	padding:15px 10px;
+	position:relative
+}
+
+.frmuser{
+	max-width:500px;
+	width:100%;
+}
+.history,
+.data,
+.works{
+	background-color:#fff;
+	padding:5px 20px;
+	border-left: 1px solid #eaeaea;
+	margin-top: -1px;
+}
+.history{
+	display:none;
+}
+.no-read{
+	font-weight:bold
+}
+.menu-user{
+	margin-top:10px;
+}
+.menu-user li{
+	list-style-type: none;
+	height:44px;
+	position:relative;
+}
+.menu-user li a{
+	padding:12px 10px;
+	display:block;
+}
+.menu-user li a.selected{
+	position:absolute;
+	width:101%;
+	background-color:#fff;
+	border-top: 1px solid #eaeaea;
+	border-bottom: 1px solid #eaeaea;
+	border-left: 1px solid #eaeaea;
+}
+
+/* FORMULARIO */
+.frm{
+	max-width:500px;
+	width:100%;
+	margin:0 auto;
+	padding:5px;
+}
+.frm label{
+	width:100%;
+	display:block;
+	padding:4px 0;
+}
+.frm .col {
+    float: left;
+    width: 50%;
+    padding:5px;
+}
+.frm input[type="text"],
+.frm input[type="email"],
+.frm input[type="tel"],
+.frm input[type="password"],
+.frm textarea{
+    width: 100%;
+    padding: 8px 6px;
+    font-size: .9em;
+    color: gray;
+    border: 1px solid #CACACA;
+    outline: none;
+    background-color: #FBFBFB;
+}
+.frm input:focus{
+	border:1px solid #FF7585;
+}
+.frm .title{
+	display:block;
+	text-align:center;
+	padding:4px 0;
+}
+.frm .frm-foot{
+	text-align:center;
+	padding:5px 0;
+	margin-top:15px;
+}
+/* TABLA */
+.datagrid table {
+	border-collapse: collapse;
+	text-align: left;
+	width: 100%;
+}
+.datagrid {
+	font-size: .9em;
+	background: #fff;
+	overflow: hidden;
+	border: 1px solid #E6E6E6;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-bottom: 20px;
+}
+.datagrid table td, .datagrid table th {
+	padding: 6px 10px;
+}
+.datagrid table thead th {
+	background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4897bb), color-stop(1, #1067ad) );
+	background: -moz-linear-gradient( center top, #FF9EA9 5%, #FF8997 100% );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');
+	color: #FFFFFF;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+.datagrid table thead th:first-child {
+	border: none;
+}
+.datagrid table tbody td {
+	border-left: 1px solid #ECECEC;
+	border-bottom: 1px solid #ECECEC;
+	font-weight: normal;
+}
+.datagrid table tbody .alt td {
+	background: #E1EEf4;
+	color: #00557F;
+}
+.datagrid table tbody td:first-child {
+	border-left: none;
+}
+.datagrid table tbody tr:last-child td {
+	/*border-bottom: none;*/
+}
+.datagrid table tfoot td div {
+	border-top: 1px solid #006699;
+	background: #E1EEf4;
+}
+.datagrid table tfoot td {
+	padding: 8px 12px;
+	background: #fff;
+}
+.datagrid table tfoot td div {
+	padding: 2px;
+}
+.datagrid table tfoot td ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	text-align: right;
+}
+.datagrid table tfoot  li {
+	display: inline;
+}
+.datagrid table tfoot li a {
+	text-decoration: none;
+	display: inline-block;
+	padding: 2px 8px;
+	margin: 1px;
+	color: #FFFFFF;
+	border: 1px solid #006699;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );
+	background: -moz-linear-gradient( center top, #006699 5%, #00557F 100% );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');
+	background-color: #006699;
+}
+.datagrid table tfoot ul.active, .datagrid table tfoot ul a:hover {
+	text-decoration: none;
+	border-color: #00557F;
+	color: #FFFFFF;
+	background: none;
+	background-color: #006699;
+}
+div.dhtmlx_window_active, div.dhx_modal_cover_dv {
+	position: fixed !important;
+}
+
+.table-head{
+	font-size:.85em;
+}
+.table-head td{
+	padding:4px 2px;
+}
+.datagrid table td img{
+	max-width:80px;
+}
+.datagrid table td .del{
+	color:red;
+	font-size:.85em;
+}
+.datagrid table .tleft,
+.datagrid table .tcenter,
+.datagrid table .tright{
+	display:block;
+}
+.datagrid table .tleft,
+	text-align:left;
+}
+.datagrid table .tcenter{
+	text-align:center;
+}
+.datagrid table .tright{
+	text-align:right;
+}
+.winfloat{
+  width:90%;
+  min-height: 200px;
+  position: absolute;
+  z-index: 9998;
+  transform:translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  background: #fff;
+  max-width: 500px;
+}

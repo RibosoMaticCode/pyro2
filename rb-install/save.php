@@ -67,7 +67,10 @@ $opciones_valores = array(
 	"user_superadmin" => '{"admin":"1"}',
 	"key_web" => $key_web[0],
 	"block_header_ids" => "0",
-	"block_footer_ids" => "0"
+	"block_footer_ids" => "0",
+	"show_terms_register" => "0",
+	"pass_security" => "0",
+	"more_fields_register" => '{"nombres":"Nombres"}'
 );
 
 if(isset($_POST)):
@@ -119,6 +122,8 @@ if(isset($_POST)):
 			$content_string .= "<IfModule mod_rewrite.c>
 				RewriteEngine On
 				RewriteBase $dir/
+				#RewriteCond %{HTTP_HOST} ^www.domain-here.com [NC]
+        #RewriteRule ^(.*)$ http://domain-here.com/$1 [L,R=301]
 				RewriteRule ^index\.php$ - [L]
 				RewriteCond %{REQUEST_FILENAME} !-f
 				RewriteCond %{REQUEST_FILENAME} !-d

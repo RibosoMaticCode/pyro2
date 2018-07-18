@@ -122,6 +122,11 @@ rb_set_values_options('user_superadmin', $user_superadmin_string);
 rb_set_values_options('block_header_ids', $_POST['block_header_id']);
 rb_set_values_options('block_footer_ids', $_POST['block_footer_id']);
 
+rb_set_values_options('show_terms_register', $_POST['show_terms_register']);
+rb_set_values_options('pass_security', $_POST['pass_security']);
+rb_set_values_options('more_fields_register', $_POST['more_fields_register']);
+rb_set_values_options('after_login_url', trim($_POST['after_login_url']));
+
 $urlreload=G_SERVER."/rb-admin/index.php?pag=opc&m=ok";
 header('Location: '.$urlreload);
 ?>

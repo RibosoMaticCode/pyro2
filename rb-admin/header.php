@@ -24,22 +24,17 @@ include 'islogged.php';
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/forms/forms.edit.css" />
 	<!-- modulos css -->
 	<?= do_action('panel_header_css') ?>
-
 	<script src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.1.min.js"></script>
 	<script src="<?= G_SERVER ?>/rb-admin/js/func.js"></script>
 	<script src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>
-
 	<!-- modulos js -->
 	<?= do_action('panel_header_js') ?>
-
 	<!-- Add fancyBox -->
 	<link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 	<script src="<?= G_SERVER ?>/rb-admin/resource/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
 	<script src="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
 	<!-- jquery ui -->
 	<link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.css">
-
 	<!-- Funciones nuevas -->
 	<script src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
 	<script>
@@ -62,7 +57,7 @@ include 'islogged.php';
 		  });
 
 			// scroll then menu top fixed
-			var num = 64; //number of pixels before modifying styles
+			var num = 50; //number of pixels before modifying styles
 			$(window).bind('scroll', function () {
 				if ($(window).scrollTop() > num) {
 					$('#toolbar').addClass('fixed');

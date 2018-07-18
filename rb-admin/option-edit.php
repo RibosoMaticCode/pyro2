@@ -270,6 +270,31 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="user_active_admin" type="radio" value="0" <?php if(rb_get_values_options('user_active_admin')=='0') echo "checked=\"checked\""?> />
               El usuario nuevo no necesita activar su cuenta
             </label>
+
+            <span class="info">Mostrar link de terminos y condiciones en formulario de registro</span>
+            <label class="lbl-listoptions">
+              <input name="show_terms_register" type="radio" value="0" <?php if(rb_get_values_options('show_terms_register')==0) echo "checked=\"checked\""?> />
+              No mostrar
+            </label>
+            <label class="lbl-listoptions">
+              <input name="show_terms_register" type="radio" value="1" <?php if(rb_get_values_options('show_terms_register')==1) echo "checked=\"checked\""?> />
+              Mostrar
+            </label>
+
+            <span class="info">Validar contraseña segura en formularios de registro de usuarios</span>
+            <label class="lbl-listoptions">
+              <input name="pass_security" type="radio" value="0" <?php if(rb_get_values_options('pass_security')==0) echo "checked=\"checked\""?> />
+              Contraseñas no seguras
+            </label>
+            <label class="lbl-listoptions">
+              <input name="pass_security" type="radio" value="1" <?php if(rb_get_values_options('pass_security')==1) echo "checked=\"checked\""?> />
+              Contraseñas seguras
+            </label>
+
+            <label>Campos adicionales en formulario de registro:
+              <span class="info">Se acepta formato JSON. Valor por defecto: {"nombres":"Nombres"}</span>
+              <input name="more_fields_register" type="text" value='<?= rb_get_values_options('more_fields_register') ?>' />
+            </label>
           </div>
           <div class="cols-6-md col-padding">
             <label>Permitir registrar nuevo usuario desde la página web</label>
@@ -287,23 +312,28 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               No permitir, solo crear nuevos usuarios desde Panel Administrativo
             </label>
             <label>Usuarios admins que seran notificados de usuarios nuevos</label>
-            <div class="cols-6-md col-padding">
-              <label>Lista de usuarios admin:</label>
-              <?php
-              $superadmins = json_decode(rb_get_values_options('user_superadmin'), true);
-            	$array_admins_ids = explode(",", $superadmins['admin']);
-              $qa = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
-              while($ra = $qa->fetch_assoc()):
-                $checkbox = "";
-                if( in_array( $ra['id'] , $array_admins_ids) ){
-                  $checkbox = " checked ";
-                }
-                ?>
-                <label><input type="checkbox" name="user_superadmin[]" value="<?= $ra['id'] ?>" <?= $checkbox ?> /> <?= $ra['nombres'] ?> <?= $ra['apellidos'] ?></label>
+            <div class="cols-container">
+              <div class="cols-6-md col-padding">
+                <label>Lista de usuarios admin:</label>
                 <?php
-              endwhile;
-              ?>
+                $superadmins = json_decode(rb_get_values_options('user_superadmin'), true);
+              	$array_admins_ids = explode(",", $superadmins['admin']);
+                $qa = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
+                while($ra = $qa->fetch_assoc()):
+                  $checkbox = "";
+                  if( in_array( $ra['id'] , $array_admins_ids) ){
+                    $checkbox = " checked ";
+                  }
+                  ?>
+                  <label><input type="checkbox" name="user_superadmin[]" value="<?= $ra['id'] ?>" <?= $checkbox ?> /> <?= $ra['nombres'] ?> <?= $ra['apellidos'] ?></label>
+                  <?php
+                endwhile;
+                ?>
+              </div>
             </div>
+            <label>A donde dirigir al usuario final, luego de iniciar sesion:
+              <input name="after_login_url" type="text" value='<?= rb_get_values_options('after_login_url') ?>' />
+            </label>
           </div>
         </div>
         <!-- redes sociales -->

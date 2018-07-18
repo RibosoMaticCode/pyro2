@@ -2,25 +2,25 @@
 	$(document).ready(function(){
 		$('#userdata').submit(function() {
 			$.ajax({
-				data:  $('#userdata').serialize(), 
+				data:  $('#userdata').serialize(),
 				type: "POST",
-				dataType: "html",
-				url: "<?= $rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php"
+				dataType: "json",
+				url: "<?= rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php"
 			})
-			.done(function( msg ) {
-				if(msg == "Exito") {
-					alert("Datos actualizados");
+			.done(function( data ) {
+				if(data) {
+					alert(data.message);
 				}else{
-			    	alert(msg);
-			    }
-			});			 
+			    alert(data.message);
+			  }
+			});
 			return false;
 		});
 	});
 </script>
 	<div class="content-right content-right-add">
-		<form id="userdata" class="frm" action="<?= $rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php" method="post">
-			
+		<form id="userdata" class="frm" action="<?= rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php" method="post">
+
 			<label class="col"><span>Nombres:</span>
 				<input class="itext" type="text" id="nom" name="nom" value="<?= $UsuarioItem['nombres'] ?>"  />
 			</label>
@@ -44,7 +44,7 @@
 			</label>
 			<div style="clear:both"></div>
 			<span class="info">Sino deseas cambiar la contraseña, deje los campos siguientes vacios.</span>
-			
+
 			<h3>Cambiar contrase&ntilde;a</h3>
 			<?php
 			if(isset($_GET['msg'])){
@@ -66,7 +66,7 @@
 			<input type="hidden" id="userid" name="userid" value="<?= $UsuarioItem['id'] ?>" />
 			<div class="frm-foot">
 				<input class="btn-comment" type="submit" name="newpass" value="Guardar Datos" />
-			</div>			
+			</div>
 		</form>
 		<div style="clear:both"></div>
-	</div>  
+	</div>

@@ -1,4 +1,13 @@
 <?php
+function rb_css_list($css_list){
+  if(!isset($css_list)) return;
+  require_once ABSPATH."global.php";
+  $css_list_string = "";
+  foreach ($css_list as $value) {
+    $css_list_string .= "<link rel='stylesheet' href='".G_SERVER.$value."'>\n";
+  }
+  return $css_list_string;
+}
 //https://davidwalsh.name/backup-mysql-database-php
 function rb_backup_data($tables="*"){
   $response = false;
@@ -1981,6 +1990,9 @@ function rb_header($add_header = array(), $page=true){
       }
     }else{
       foreach ($add_header as $header) {
+        if(!file_exists(ABSPATH."rb-temas/".G_ESTILO."/".$header))
+          continue;
+
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
       }
     }
@@ -2027,6 +2039,9 @@ function rb_footer($add_footer = array(), $page=true){
       }
     }else{
       foreach ($add_footer as $footer) {
+        if(!file_exists(ABSPATH."rb-temas/".G_ESTILO."/".$footer))
+          continue;
+
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
       }
     }

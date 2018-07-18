@@ -15,7 +15,11 @@ $array_modules = json_decode($modules_prev, true);
 require_once 'rb-admin/modules.list.php';
 
 $url_panel = rb_get_values_options('direccion_url').'/rb-admin';
-$url_panel_usuario = rb_get_values_options('direccion_url').''; //
+if(rb_get_values_options('after_login_url')!=""):
+	$url_panel_usuario = rb_BBCodeToGlobalVariable(rb_get_values_options('after_login_url'));
+else:
+	$url_panel_usuario = rb_get_values_options('direccion_url');
+endif;
 
 $rm_title = G_TITULO;
 $rm_subtitle = G_SUBTITULO;

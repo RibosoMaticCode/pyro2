@@ -41,7 +41,7 @@ switch($pag){
 			switch($opc){
 				case "nvo":
 					if($userType != "admin"):
-						printf(" No tiene permiso de Administrador ");
+						printf(" Sección no disponible ");
 						break;
 					endif;
 					include('core/users/user-edit.php');
@@ -51,7 +51,7 @@ switch($pag){
 					break;
 				default:
 					if($userType != "admin"):
-						printf(" No tiene permiso de Administrador ");
+						printf(" Sección no disponible ");
 						break;
 					endif;
 					include('core/users/user-init.php');
@@ -59,7 +59,7 @@ switch($pag){
 	break;
 	case "menus":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 
@@ -81,7 +81,7 @@ switch($pag){
 		break;
 		case "menu":
 			if($userType != "admin"):
-				printf(" No tiene permiso de Administrador ");
+				printf(" Sección no disponible ");
 				break;
 			endif;
 			$sec="menu";
@@ -97,7 +97,7 @@ switch($pag){
 			break;
   case "pages":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 		//echo '';
@@ -118,7 +118,7 @@ switch($pag){
     break;
 	case "pages2":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 	//echo '';
@@ -216,7 +216,7 @@ switch($pag){
 		break;
 	case "com":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 
@@ -237,7 +237,7 @@ switch($pag){
 		break;
 	case "cat":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 
@@ -287,7 +287,7 @@ switch($pag){
 		break;
 	case "opc":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 		echo '<h2 class="title">Opciones de Configuración</h2>';
@@ -295,21 +295,21 @@ switch($pag){
 		break;
 	case "modules":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 		include_once 'modules.php';
 	break;
 	case "nivel":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 		include_once 'core/niveles/niveles.php';
 	break;
 	case "editfile":
 		if($userType != "admin"):
-			printf(" No tiene permiso de Administrador ");
+			printf(" Sección no disponible ");
 			break;
 		endif;
 		include_once ABSPATH.'rb-script/modules/rb-editfile/editfile.php';

@@ -23,13 +23,26 @@ if(isset($_POST)){
 		if($_POST['response']=="ajax") $response = "ajax";
 	endif;
 
-  // VALIDAR DATOS
-	//$user=(empty($_POST['usuario']) ? die('[!] Falta Nombre de Usuario') : $_POST['usuario']);
+  // VALIDAR DATOS DE CAMPOS OBLIGATORIOS
 	$mail = (empty($_POST['usuario']) ? die('[!] Falta Correo electronico') : $_POST['usuario']);
-	$nm = (empty($_POST['nombres']) ? die('[!] Falta Nombres') : $_POST['nombres']);
-	//$nm = $mail;
 	$cn1=(empty($_POST['contrasena1']) ? die('[!] Falta Contraseña') : $_POST['contrasena1']);
-	$cn2=(empty($_POST['contrasena2']) ? die('[!] Falta Repetir la contraseña') : $_POST['contrasena2']);
+
+	// Habilitado repetir contraseña?
+	$repit_pass_register = rb_get_values_options('repit_pass_register');
+	if($repit_pass_register==1) $cn2=(empty($_POST['contrasena2']) ? die('[!] Falta Repetir la contraseña') : $_POST['contrasena2']);
+	else $cn2 = $cn1;
+
+	// Ver si hay campos adicionales a registrar
+	$fields = rb_get_values_options('more_fields_register');
+	$array_fields = json_decode($fields, true);
+	$array_fields_value = [];
+	foreach ($array_fields as $key => $value) {
+		/*?>
+		<input type="text" name="<?= $key ?>" required placeholder="<?= $value ?>" autocomplete="off" />
+		<?php*/
+		$array_fields_value[$key] = (empty($_POST[ $key ]) ? die('[!] Falta '.$value) : $_POST[ $key ]);
+	}
+	//$nm = (empty($_POST['nombres']) ? die('[!] Falta Nombres') : $_POST['nombres']);
 
 	// VALIDANDO ESTRUCTURA DEL CORREO ELECTRONICO
 	if(!rb_validar_mail($mail)):
@@ -79,31 +92,34 @@ if(isset($_POST)){
 
 	// VALIDANDO LOGINTUD DE LA CONTRASEÑA
 	//http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
-	if ( !rb_valid_pass($cn1) ){
-		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
-		if($response=="ajax"):
-			$rspta = Array(
-				"codigo" => "1",
-				"mensaje" => $msg_error
-			);
-			die( json_encode ($rspta) );
-		else:
-			die($msg_error);
-		endif;
-	}
+	$pass_security = rb_get_values_options('pass_security');
+	if($pass_security == 1):
+		if ( !rb_valid_pass($cn1) ){
+			$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
+			if($response=="ajax"):
+				$rspta = Array(
+					"codigo" => "1",
+					"mensaje" => $msg_error
+				);
+				die( json_encode ($rspta) );
+			else:
+				die($msg_error);
+			endif;
+		}
 
-	if ( !rb_valid_pass($cn2) ){
-		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
-		if($response=="ajax"):
-			$rspta = Array(
-				"codigo" => "1",
-				"mensaje" => $msg_error
-			);
-			die( json_encode ($rspta) );
-		else:
-			die($msg_error);
-		endif;
-	}
+		if ( !rb_valid_pass($cn2) ){
+			$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
+			if($response=="ajax"):
+				$rspta = Array(
+					"codigo" => "1",
+					"mensaje" => $msg_error
+				);
+				die( json_encode ($rspta) );
+			else:
+				die($msg_error);
+			endif;
+		}
+	endif;
 
 	// VALIDANDO CONTRASEÑAS IGUALES
 	if($cn1 != $cn2):
@@ -120,16 +136,19 @@ if(isset($_POST)){
 	endif;
 
 	// VALIDANDO TERMINOS Y CONDICIONES
-	if(!isset($_POST['terminos'])) :
-		$msg_error = "No se acepto terminos y condiciones";
-		if($response=="ajax"):
-			$rspta = Array(
-				"codigo" => "2",
-				"mensaje" => $msg_error
-			);
-			die( json_encode ($rspta) );
-		else:
-			die($msg_error);
+	$show_terms_register = rb_get_values_options('show_terms_register');
+	if($show_terms_register == 1):
+		if(!isset($_POST['terminos'])) :
+			$msg_error = "No se acepto terminos y condiciones";
+			if($response=="ajax"):
+				$rspta = Array(
+					"codigo" => "2",
+					"mensaje" => $msg_error
+				);
+				die( json_encode ($rspta) );
+			else:
+				die($msg_error);
+			endif;
 		endif;
 	endif;
 
@@ -154,7 +173,6 @@ if(isset($_POST)){
 	$valores = [
 		'nickname' => $user,
 		'password' => md5($cn1),
-		'nombres' => $nm,
 		'correo' => $mail,
 		'tipo' => $nivel_id_new_user,
 		'fecharegistro' => date('Y-m-d G:i:s'),
@@ -176,6 +194,11 @@ if(isset($_POST)){
 		setcookie("_register", "no-register", time()+ 120, "/"); // despues de 2 mins otro registro
 		$last_id = $r['insert_id'];
 
+		// Añadir resto de campos
+		foreach ($array_fields_value as $key => $value) {
+			$objDataBase->EditarPorCampo('usuarios', $key, $value, $last_id);
+		}
+
 		// ENVIANDO EMAIL A ADMINISTRADORES - AVISO DE NUEVO USUARIO
 		foreach ($array_admins as $user_admin_id) {
 			$admin = rb_get_user_info( $user_admin_id );
@@ -185,7 +208,10 @@ if(isset($_POST)){
 
 	    // Build the email content.
 			$email_content = "Datos del nuevo usuario:<br />";
-	    $email_content .= "Nombres: <strong>".$nm."</strong><br />";
+			if(isset($array_fields_value['nombres'])):
+				$nm = $array_fields_value['nombres'];
+		    $email_content .= "Nombres: <strong>".$nm."</strong><br />";
+			endif;
 			$email_content .= "E-mail: <strong>".$mail."</strong><br /><br />";
 			if(G_USERACTIVE==2):
 				$email_content .= "Mensaje: Para activar al usuario tiene que ir al panel de administración <br />";
@@ -219,8 +245,10 @@ if(isset($_POST)){
 
 		// Build the email content.
 		if(G_USERACTIVE==2): // Admin lo activa
-			$email_content2 = "Gracias por registrarte en nuestra web, pronto nos pondremos en contacto contigo.\n\n";
-			$email_content2 .= "--\nEste correo se ha enviado a traves de la pagina web";
+			$email_content2 = "<h2>Gracias por registrarte en nuestra web</h2>";
+			$email_content2 .= "<p>Pronto nos pondremos en contacto contigo</p>";
+			$email_content2 .= "<p>---</p>";
+			$email_content2 .= "<p>Este correo se ha enviado automaticamente desde la pagina web</p>";
 		elseif(G_USERACTIVE==1): // Usuario se activa
 			$email_content2 = "<h2>Gracias por registrarte en nuestra web</h2>";
 			$email_content2 .= "<p>Puedes acceder a tu cuenta con tu correo registrado y la contraseña<p>";
@@ -229,9 +257,13 @@ if(isset($_POST)){
 			$email_content2 .= "<p>Finalmente, <p>";
 			$email_content2 .= "<p>para activar tu cuenta, haz clic en siguiente vinculo: <a href='".G_SERVER."/login.php?active=".rb_encrypt_decrypt('encrypt', $recipient2)."'>".G_SERVER."/login.php?active=".rb_encrypt_decrypt('encrypt', $recipient2)."</a></p>";
 			$email_content2 .= "<p>---</p>";
-			$email_content2 .= "<p>Este correo se ha enviado a traves de la pagina web</p>";
-		elseif(G_USERACTIVE==0):
+			$email_content2 .= "<p>Este correo se ha enviado automaticamente desde la pagina web</p>";
+		elseif(G_USERACTIVE==0): // Usuario no necesita activacion
 			$email_content2 = "<h2>Gracias por registrarte en nuestra web</h2>";
+			$email_content2 .= "<p>Puedes acceder a tu cuenta con tu correo registrado y la contraseña.<p>";
+			$email_content2 .= "<p>Haz clic en este <a href='".G_SERVER."/login.php'>link para acceder</a>.<p>";
+			$email_content2 .= "<p>---</p>";
+			$email_content2 .= "<p>Este correo se ha enviado automaticamente desde la pagina web</p>";
 		endif;
 
 		// Build the email headers.

@@ -1,6 +1,6 @@
 <article>
 						<?php
-						$qm = $objMensaje->Consultar("SELECT m.id, m.contenido, DATE_FORMAT(m.fecha_envio,'%d-%m-%Y') as fecha, TIME_FORMAT(m.fecha_envio,'%H:%i:%s') as hora, u.nombres, m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo FROM mensajes m, mensajes_usuarios mu, usuarios u WHERE m.id = mu.mensaje_id AND u.id = m.remitente_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 ORDER BY fecha_envio DESC LIMIT 20");
+						$qm = $objDataBase->Ejecutar("SELECT m.id, m.contenido, DATE_FORMAT(m.fecha_envio,'%d-%m-%Y') as fecha, TIME_FORMAT(m.fecha_envio,'%H:%i:%s') as hora, u.nombres, m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo FROM mensajes m, mensajes_usuarios mu, usuarios u WHERE m.id = mu.mensaje_id AND u.id = m.remitente_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 ORDER BY fecha_envio DESC LIMIT 20");
 						?>
 						<div class="datagrid">
 						<table>
@@ -14,10 +14,10 @@
 							</thead>
 							<tbody>
 							<?php
-							while ($row = mysql_fetch_array($qm)){
+							while ($row = $qm->fetch_assoc()){
 								$style = "";
 								$mod = "";
-								
+
 								// si estamos en la opcion de enviados
 								if(isset($_GET['opc']) && $_GET['opc'] == "send"){
 									$style = "";
@@ -33,7 +33,7 @@
 								echo "	<tr id='fila-".$row['id']."' $style> ";
 								echo "<td><span>".$row['fecha']."<br />".$row['hora']."</span></td>";
 								if(isset($_GET['opc']) && $_GET['opc'] == "send"){
-									echo "<td>";	
+									echo "<td>";
 									$coma = "";
 									$q = $objUsuario->destinatarios_del_mensaje($row['id']);
 									while($r = mysql_fetch_array($q)){
@@ -62,27 +62,28 @@
 									var message_id = $(this).attr('id');
 									var fila_id = "#fila-"+message_id;
 									var msjread_id = "#msjread-"+message_id;
-									
+
 									$.ajax({
-		  								url: "<?= $rm_url ?>rb-script/modules/rb-userpanel/message.view.php?message_id="+message_id+"&user_id=<?= G_USERID ?>"
+		  								url: "<?= rm_url ?>rb-script/modules/rb-userpanel/message.view.php?message_id="+message_id+"&user_id=<?= G_USERID ?>"
 									})
-		  							.done(function( data ) {
-		    							if(data.resultado=="ok"){
-		    								$( "#bg" ).show();
+		  						.done(function( data ) {
+										if(data.resultado){
+											$( ".bg" ).show();
 											$( ".winfloat" ).html(data.contenido);
 											$( ".winfloat" ).show();
-											
-											 $(fila_id).removeClass('no-read');
-											 $(msjread_id).html("Leído");
-		  								}else{
-		  									$(".winfloat").html("Ocurrio un problema! Intentelo más tarde");
-		  								}
-		  							});
-		  							$( "#bg" ).click(function(event) {
-										$("#bg").fadeOut();
+
+											$(fila_id).removeClass('no-read');
+											$(msjread_id).html("Leído");
+		  							}else{
+		  								$(".winfloat").html("Ocurrio un problema! Intentelo más tarde");
+		  							}
+		  						});
+
+		  						$( ".bg" ).click(function(event) {
+										$(".bg").fadeOut();
 										$(".winfloat").hide();
 									});
-								})
+								});
 							})
 							</script>
 						</article>

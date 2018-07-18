@@ -67,7 +67,7 @@ class DataBase{
 		$columns = "(";
 		$coma = "";
 		foreach ($data as $key => $value) {
-			$columns .= $coma.$key;
+			$columns .= $coma."`".$key."`";
 			$coma = ",";
 		}
 		$columns .= ")";
@@ -95,14 +95,14 @@ class DataBase{
 		$coma = "";
 		$cols_and_vals = "";
 		foreach ($data as $key => $value) {
-			$cols_and_vals .= $coma.$key." = '".$value."'";
+			$cols_and_vals .= $coma."`".$key."` = '".$value."'";
 			$coma = ", ";
 		}
 		// Where condition
 		$and = "";
 		$condition_cols_vals = "";
 		foreach ($condition as $key => $value) {
-			$condition_cols_vals .= $and.$key." = '".$value."'";
+			$condition_cols_vals .= $and."`".$key."` = '".$value."'";
 			$and = " AND ";
 		}
 

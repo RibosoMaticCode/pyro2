@@ -18,7 +18,7 @@ $valores = [
 // Validar mail
 $q = $objDataBase->Ejecutar("SELECT * FROM suscriptores WHERE correo='".$valores['correo']."'");
 if($q->num_rows > 0){
-	$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.' ];
+	$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.', 'continue' => true ];
 	die(json_encode($arr));
 }
 

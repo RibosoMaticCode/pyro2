@@ -103,7 +103,7 @@ if($mode=="new"){
 		'fecha_activar' => $date_2d,
 		'ultimoacceso' => date('Y-m-d G:i:s'),
 		'sexo' => $sex,
-		'photo_id' => 0,
+		'photo_id' => $photo,
 		'activo' => 0,
 		'user_key' => md5(microtime().rand())
 	];
@@ -174,7 +174,7 @@ if($mode=="new"){
 		'direccion' => $di,
 		'tipo' => $tipo,
 		'sexo' => $sex,
-		'photo_id' => 0
+		'photo_id' => $photo
 	];
 
 	$r = $objDataBase->Update('usuarios', $valores, ["id" => $id]);

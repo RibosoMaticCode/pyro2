@@ -18,7 +18,10 @@ define('rm_longtitle' , G_TITULO . ( G_SUBTITULO=="" ? "" :  " - ".G_SUBTITULO )
 define('rm_url', G_SERVER."/" );
 define('rm_urltheme', G_URLTHEME."/");
 define('rm_datetoday', date("Y-m-d"));
-define('rm_mainmenu', G_MAINMENU);
+//define('rm_mainmenu', G_MAINMENU);
+
+// Verifica en los modulos si hay alguna URL personalizada que direccione a otro lado
+do_action('call_modules_url');
 
 // definiendo clases para el sidebar
 $show_sidebar = rb_get_values_options('sidebar');
@@ -86,14 +89,17 @@ if(G_ENL_AMIG):
 		exit();
 	endif;
 
-	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
-  $requestURI = explode("/", $requestURI);
-	//$requestURI = explode( '/', $_SERVER['REQUEST_URI'] );
+	// Analizamos URL amigable y destripamos sus elementos:
 
-	// Eliminamos los espacios del principio y final y recalculamos los índices del vector.
+	// Si la web estuviera instalada en un subdirectorio distinto a la raiz
+	// debemos obviarlo antes de destriparlo :-)
+	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
+	// Pasamos la URL a un array que contenga sus elementos delimitados por la barra (slash)
+  $requestURI = explode("/", $requestURI);
+	// Indexamos numericamente el array para mas facil consultar
 	$requestURI = array_values( array_filter( $requestURI ) );
 	$numsItemArray = count($requestURI);
-
+	// Empezamos a hacer las comparaciones
 	if( $numsItemArray > 0 ):
 		// Si es Post - Articulos - Publicacion
 		if( $requestURI[0] == G_BASEPUB ):
@@ -145,25 +151,26 @@ endif;
 // URL adicionales definidos por la plantilla
 require ABSPATH.'rb-temas/'.G_ESTILO.'/urls.php';
 
-// ARCHIVOS DIRECTOS
+// ARCHIVOS DIRECTOS, PAGINAS PERSONALIZADAS
 if(isset($_GET['pa'])){
-	// VALORES DE CABECERA DEL POST
-	define('rm_title_page' , "Panel de usuario");
-	define('rm_title' , "Panel de usuario | ".G_TITULO );
-	define('rm_metadescription' , rb_get_values_options('descripcion') );
-	define('rm_metaauthor' , G_TITULO." - ".G_VERSION);
-	$css_add = [
-		'/rb-script/modules/rb-userpanel/paneluser.css'
-	];
-	define('rm_css', $css_add);
-
 	// Si accede a panel y no esta logueado, manda al index
 	if($_GET['pa']=="panel" && G_ACCESOUSUARIO==0):
 		header('Location: '. rb_get_values_options('direccion_url') );
+
 	// Si accede a panel y esta logueado, lleva al modulo externo para el panel
 	elseif($_GET['pa']=="panel" && G_ACCESOUSUARIO==1):
+		define('rm_title_page' , "Panel de usuario");
+		define('rm_title' , "Panel de usuario | ".G_TITULO );
+		//define('rm_metadescription' , rb_get_values_options('descripcion') );
+		define('rm_metadescription' , "Panel del usuario. Puede editar sus datos personales y recibir notificaciones del sistema aqui." );
+		define('rm_metaauthor' , G_TITULO." - ".G_VERSION);
+		$css_add = [
+			'/rb-script/modules/rb-userpanel/paneluser.css'
+		];
+		define('rm_css', $css_add);
 		$rm_menu_name = "";
 		require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
+
 	// Si es cualquier pagina, la carga respectivamente
 	else:
 		$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$_GET['pa'].'.php';
@@ -197,6 +204,7 @@ if(isset($_GET['pa'])){
 // PAGINAS
 }elseif( isset( $PageId ) ){
 	$Page = rb_show_specific_page( $PageId );
+	if(!$Page) header('Location: '.G_SERVER.'/404.php');
 	if($Page==false){ // Sino es una pagina del sistema sino una pagina externa independiente html/php
 		if($PageId=="panel" && G_ACCESOUSUARIO==0):
 			header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));

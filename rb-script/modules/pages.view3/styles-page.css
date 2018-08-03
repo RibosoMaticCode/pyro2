@@ -183,6 +183,9 @@
   border-bottom: 1px solid #c7c7c7;
 }
 /* GALERIAS DE IMAGENES */
+.rb-wrap-galleries {
+    padding: 20px 15px;
+}
 .rb-gallery-container {
     display: flex;
 }

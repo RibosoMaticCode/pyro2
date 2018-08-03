@@ -1,0 +1,124 @@
+.staff_photo{
+  max-width: 95%;
+  height:690px;
+  /*margin:0 auto;*/
+  background-size: cover;
+  background-position: top;
+}
+.staff_info{
+  max-width: 95%;
+  margin:0 auto;
+  line-height: 26px;
+  font-size: .95em;
+
+}
+.staff_info p{
+  font-family: malgun!important;
+  font-size: .95em;
+}
+.staff-list li{
+  display: inline-block;
+  width: 16.2%;
+}
+.staff-list li .staff-box{
+  position: relative;
+  max-width: 95%;
+  margin: 0 auto;
+  height: 200px;
+  background-size: cover;
+  background-position: top;
+  display: block;
+}
+.staff-title{
+  position: absolute;
+  bottom:10px;
+  color:#fff;
+  right: 0;
+  opacity: 0;
+  padding-right: 10px;
+  text-align: right;
+  line-height: 25px;
+}
+.staff-title *{
+  color:#fff;
+}
+.staff-shadow{
+  position: absolute;
+  width: 100%;
+  height:100%;
+  background-color: #730000;
+  opacity: 0;
+}
+.staff-box:hover .staff-shadow{
+  opacity: .6;
+}
+.staff-box:hover .staff-title{
+  opacity: 1;
+}
+.staff-box .staff-shadow,
+.staff-box .staff-title{
+  -webkit-transition:all 100ms linear;
+  -moz-transition:all 100ms linear;
+  -o-transition:all 100ms linear;
+  -ms-transition:all 100ms linear;
+  transition:all 100ms linear;
+}
+.staff_details i.fa {
+    background-color: #44a9dc;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    position: relative;
+    vertical-align:  middle;
+}
+
+.staff_details i.fa:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+ul.staff_details {
+    margin-left: 15px;
+}
+
+ul.staff_details li {
+    list-style-type: none;
+    padding-bottom: 5px;
+}
+
+a.staff_back {
+    text-transform: uppercase;
+    margin-top: 20px;
+    display:  inline-block;
+    font-size: 1.8em;
+    font-weight: bold;
+    font-family: bebas!important;
+}
+
+a.staff_back i {
+    color: #44a9dc;
+    font-size: 1.4em;
+    vertical-align: middle;
+    margin-top: -5px;
+}
+.staff_top{
+  margin-bottom: 20px;
+}
+.staff_top h1{
+  margin: 0;
+  font-size: 2.4em;
+  line-height: 34px;
+  font-family: bebas!important;
+}
+.staff_top h3 {
+    text-transform: uppercase;
+    font-family: bebas!important;
+    font-size: 2em;
+}
+.staff-title h3 {
+  font-size: 1em;
+  line-height: 18px;
+  text-transform: uppercase;
+}

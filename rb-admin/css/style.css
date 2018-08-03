@@ -270,9 +270,10 @@ section.seccion {
 .seccion-body pre {
     word-wrap: break-word;
     white-space: pre-wrap;
-    border: 1px solid #d4d4d4;
-    background-color: whitesmoke;
-    padding: 5px;
+    border: 0;
+    background-color: #37474F;
+    padding: 10px;
+    color: #fff;
 }
 section.seccion .more{
     position: absolute;

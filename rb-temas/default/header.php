@@ -6,21 +6,21 @@
 		<meta name="description" content="<?= rm_metadescription ?>">
 		<meta name="author" content="<?= rm_metaauthor ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
-
 		<meta property="og:title" content="<?= rm_title ?>"/>
 		<meta property="og:image" content="<?= rm_urltheme ?>img/default.png"/>
 		<meta property="og:site_name" content="<?= rm_titlesite ?>"/>
 		<meta property="og:description" content="<?= rm_metadescription ?>" />
-
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/cols.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/font-awesome.css">
-		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page.css">
-		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page-responsive.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles-add.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/responsive.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-admin/css/frontend-bar.css">
-
+		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page.css">
+		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page-responsive.css">
+		<?php if(defined('rm_css')): ?>
+ 		<?= rb_css_list(rm_css) ?>
+		<?php endif ?>
 		<link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<link rel="apple-touch-icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<!-- jquery -->
@@ -37,13 +37,11 @@
   	<link rel="stylesheet" href="<?= rm_urltheme ?>res/camera/css/camera.css">
 		<script src="<?= rm_urltheme ?>res/camera/scripts/jquery.easing.1.3.js"></script>
 		<script src="<?= rm_urltheme ?>res/camera/scripts/camera.min.js"></script>
-
+		<!-- functions js additional -->
 		<script src="<?= rm_urltheme ?>js/add.js"></script>
-
 		<!-- start modulos adicionales -->
 		<?= do_action('theme_header') ?>
 		<!-- end modulos adicionales -->
-
 		<script>
 			$(document).ready(function() {
 				$(".fancy").fancybox();
@@ -70,7 +68,7 @@
 					$('.bg, .menu').hide();
 				});
 				// Formulario Contacto
-				$('#fcontact').submit(function (){
+				/*$('#fcontact').submit(function (){
 					event.preventDefault();
 					$.ajax({
 						method: "post",
@@ -87,7 +85,7 @@
 						  $('.result').html('<h2 style="color:red">'+data.msg+'</h2>');
 						}
 					});
-				});
+				});*/
 			});
 		</script>
 	</head>

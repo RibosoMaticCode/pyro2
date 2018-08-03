@@ -125,14 +125,6 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH."rb-script/class/rb-database.class.php";
 $objDataBase = new DataBase;
 
-/*function rb_header($header_template=""){ // REVISAR
-  if($header_template==""){
-    include_once ABSPATH.'rb-temas/'.G_ESTILO.'/header.php';
-  }elseif($header_template!=""){
-    include_once ABSPATH.'rb-temas/'.G_ESTILO.'/'.$header_template;
-  }
-}*/
-
 /* CAPTURA CONSULTA Y ENVIA UN ARRAY CON DATOS DE LA PUBLICACION - TODA CONSULTA DE LISTADO DE POST DEBE USAR ESTA FUNCION*/
 function rb_return_post_array($qa){
 	$PostsArray = array();
@@ -1817,6 +1809,7 @@ function rb_show_block($box){ //Muestra bloque
             break;
           case 'galleries':
             ?>
+            <img style="display:none" src='<?= G_SERVER ?>/rb-script/modules/pages.view3/spinner.gif' alt="spinner" />
             <script>
             $(document).ready(function() {
               $('.rb-cover-galleries').on('click', '.back_gallery',function() {
@@ -1830,19 +1823,24 @@ function rb_show_block($box){ //Muestra bloque
 
                 $.ajax({
                     method: "GET",
-                    url: "<?= G_SERVER ?>/rb-script/modules/pages.view/show.gallery.ajax.php?gallery_id="+gallery_id,
+                    url: "<?= G_SERVER ?>/rb-script/modules/pages.view3/show.gallery.ajax.php?gallery_id="+gallery_id,
+                    beforeSend: function() {
+                      $('.rb-cover-galleries').hide();
+                      $('.rb-gallery-photos').show();
+                      $('.rb-gallery-photos').html("<img src='<?= G_SERVER ?>/rb-script/modules/pages.view3/spinner.gif' />");
+                    },
                 }).done(function( data ) {
-                  $('.rb-cover-galleries').hide();
                   $('.rb-gallery-photos').html(data);
-                  $('.rb-gallery-photos').show();
                 });
               });
             });
             </script>
+            <div class="rb-wrap-galleries">
             <?php
             echo '<div class="rb-cover-galleries '.$widget['widget_class'].'">';
             $show_by_file = $widget['widget_values']['quantity'];
-            $Galleries = rb_list_galleries();
+            $groupname = $widget['widget_values']['group'];
+            $Galleries = rb_list_galleries(0, $groupname);
             $CountGalleries = count($Galleries);
             $porcent_width = round(100/$show_by_file,2);
             $i=1;
@@ -1865,6 +1863,7 @@ function rb_show_block($box){ //Muestra bloque
             echo '</div>';
             ?>
             <div class="rb-gallery-photos">
+            </div>
             </div>
             <?php
             break;
@@ -1964,7 +1963,7 @@ function rb_header($add_header = array(), $page=true){
   include_once ABSPATH."rb-temas/".G_ESTILO."/header.php";
 
   if($page){
-    // Si es pagina
+    // Si es pagina generada por el sistema
     if($show_header==1){
       foreach ($add_header as $header) {
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
@@ -2013,7 +2012,7 @@ function rb_footer($add_footer = array(), $page=true){
   require_once ABSPATH."global.php";
 
   if($page){
-    // Si es pagina
+    // Si es pagina generada por el sistema
     if($show_footer==1){
       foreach ($add_footer as $footer) {
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;

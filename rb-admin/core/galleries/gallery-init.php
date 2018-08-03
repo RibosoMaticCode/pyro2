@@ -1,7 +1,7 @@
 <?php if (!in_array("gal", $array_help_close)): ?>
 <div class="help" data-name="gal">
   <h4>Información</h4>
-  <p>Las <strong>Galerías</strong> permiten agrupar u organizar solo imágenes. Se puede asociar con alguna gallerylicacion ó Pagina.</p>
+  <p>Las <strong>Galerías</strong> permiten agrupar u organizar solo imágenes. Se puede asociar con alguna Publicacion ó Pagina.</p>
 </div>
 <?php endif ?>
 <script>
@@ -86,10 +86,11 @@ $(document).ready(function() {
                 <thead>
                     <tr>
                       <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-                      <th width="250px;"><h3>Nombre</h3></th>
-                      <th><h3>Descripción</h3></th>
-                        <th width="250px;"><h3>Fecha</h3></th>
-                        <th width="30px;"><h3>Imagenes</h3></th>
+                      <th width="80px"><h3>Portada</h3></th>
+                      <th><h3>Nombre</h3></th>
+                      <th width="250px;"><h3>Grupo</h3></th>
+                      <th width="250px;"><h3>Fecha</h3></th>
+                      <th width="30px;"><h3>Imagenes</h3></th>
                     </tr>
                 </thead>
                 <tbody id="itemstable">

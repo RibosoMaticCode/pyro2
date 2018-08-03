@@ -1,4 +1,14 @@
 /* ESTRUCTURAS PRINCIPALES */
+/* CLEAR */
+.clear::before{
+	display: table;
+  content: " ";
+}
+.clear::after{
+	display: table;
+  content: " ";
+	clear:both;
+}
 /* FONTS AWESOME */
 .fa {
   display: inline-block;
@@ -483,6 +493,10 @@ ul._box-options-list {
 	position: relative;
 	z-index: 1;
 }
+.box-edit-html img{
+  max-width: 100%;
+  height: auto;
+}
 .box-edit-html:hover + .box-edit-tool,
 .box-edit-tool:hover{
 	display: block;
@@ -514,13 +528,13 @@ ul._box-options-list {
     transform: translate(-50%, -50%);
     color: #fff;
 }
-.col-box-edit{
+/*.col-box-edit{
 	position: relative;
 }
 .col-box-edit img{
   max-width: 100%;
   height: auto;
-}
+}*/
 /* MENU DE CADA BOX */
 ul.box-options{
 	float: right;

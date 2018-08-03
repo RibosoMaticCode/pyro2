@@ -121,6 +121,9 @@ if(isset($_POST)):
 			//$content_string .= "RewriteEngine On\n";
 			$content_string .= "<IfModule mod_rewrite.c>
 				RewriteEngine On
+				#Redirect www to without www
+				#RewriteCond %{HTTP_HOST} ^www.domain.com [NC]
+        #RewriteRule ^(.*)$ http://domain.com/$1 [L,R=301]
 				RewriteBase $dir/
 				#RewriteCond %{HTTP_HOST} ^www.domain-here.com [NC]
         #RewriteRule ^(.*)$ http://domain-here.com/$1 [L,R=301]

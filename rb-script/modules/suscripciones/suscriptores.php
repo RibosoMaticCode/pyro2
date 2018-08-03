@@ -1,3 +1,4 @@
+<h2 class="title">Suscriptores</h2>
 <div id="sidebar-left">
   <ul class="buttons-edition">
     <li><a class="btn-primary fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php">Nuevo</a></li>

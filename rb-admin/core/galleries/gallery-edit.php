@@ -45,7 +45,7 @@ if(isset($_GET["id"])){
                       <input maxlength="200"  name="grupo" type="text" value="<?php if(isset($row)) echo $row['galeria_grupo'] ?>" />
                     </label>
 
-                    <label>Imagen de fondo:
+                    <label>Imagen de portada:
                       <script>
                       $(document).ready(function() {
                         $(".explorer-file").filexplorer({

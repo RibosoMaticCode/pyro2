@@ -3,7 +3,7 @@
 $widget = [
   'link_action' => 'addHtmlRaw',
   'dir' => 'code',
-  'name' => 'HTML Código',
+  'name' => 'Código',
   'desc' => 'Editor de HTML',
   'filejs' => 'file.js'
 ];

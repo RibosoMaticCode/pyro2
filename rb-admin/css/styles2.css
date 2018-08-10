@@ -151,7 +151,6 @@
 }
 .explorer-body{
 	overflow:hidden;
-	/*max-height:500px;*/
 	font-family:regular;
 	position:relative;
 	min-height:450px;
@@ -230,7 +229,6 @@
   height: 130px;
 }
 .explorer-body ul.gallery li:hover{
-	/*border:1px solid gray;*/
 	box-shadow: 0 0 5px gray;
 }
 .explorer-body #return-more-photos{
@@ -296,15 +294,6 @@
 .editor-main-title i{
   color:#fff;
 }
-/*#editor-box,
-#editor-html{
-	display: none;
-}*/
-/*.container-page-edit{
-	margin: 0 auto;
-	max-width: 1100px;
-	width: 100%
-}*/
 .editor-window{
 	position: fixed;
 	width: 100%;
@@ -345,9 +334,10 @@
   font-size: .9em;
 }
 .editor-body label span{
-  /*display: block;*/
-  margin-left: 8px;
   margin-bottom: 5px;
+}
+.editor-body .info{
+	margin:0;
 }
 ul._box-options-list li {
     width: 20%;
@@ -464,12 +454,6 @@ ul._box-options-list {
   margin: 5px 2px!important;
   width: 100%;
 }
-/*.cols-html li.saved{
-  border-color: #607D8B;
-}
-.cols-html li.saved .col-head{
-  background-color: #607D8B
-}*/
 .box-body .box-edit-options{
 	padding: 50px 60px;
 	text-align: center;
@@ -528,13 +512,7 @@ ul._box-options-list {
     transform: translate(-50%, -50%);
     color: #fff;
 }
-/*.col-box-edit{
-	position: relative;
-}
-.col-box-edit img{
-  max-width: 100%;
-  height: auto;
-}*/
+
 /* MENU DE CADA BOX */
 ul.box-options{
 	float: right;
@@ -567,43 +545,9 @@ ul.box-options-list{
   box-shadow:1px 1px 5px gray;
 }
 .box-options-list li{
-	/*padding: 3px 15px;*/
 	display: block;
 }
 
-/* PAGINA INICIAL DE WIDGET */
-/*.column {
-    width: 25%;
-    float: left;
-    padding-bottom: 100px;
-  }
-  .portlet {
-    margin: 0 1em 1em 0;
-    padding: 0.3em;
-  }
-  .portlet-header {
-    padding: 0.2em 0.3em;
-    margin-bottom: 0.5em;
-    position: relative;
-  }
-  .portlet-toggle {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    margin-top: -8px;
-  }
-  .portlet-content {
-    padding: 0.4em;
-  }
-  .portlet-placeholder {
-    border: 1px dotted black;
-    margin: 0 1em 1em 0;
-    height: 50px;
-  }
-
-.widgets{
-	padding: 0 10px;
-}*/
 /* NEW EDITOR MENUS */
 #items_menu li{
   border: 1px gray dotted;

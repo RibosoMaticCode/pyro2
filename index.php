@@ -160,6 +160,7 @@ if(isset($_GET['pa'])){
 	// Si accede a panel y esta logueado, lleva al modulo externo para el panel
 	elseif($_GET['pa']=="panel" && G_ACCESOUSUARIO==1):
 		define('rm_title_page' , "Panel de usuario");
+		define('rm_page_image', G_SERVER.'/rb-script/images/gallery-default.jpg');
 		define('rm_title' , "Panel de usuario | ".G_TITULO );
 		//define('rm_metadescription' , rb_get_values_options('descripcion') );
 		define('rm_metadescription' , "Panel del usuario. Puede editar sus datos personales y recibir notificaciones del sistema aqui." );
@@ -185,6 +186,7 @@ if(isset($_GET['pa'])){
 	// VALORES DE CABECERA DEL POST
 	define('rm_title' , $Post['titulo']." | ".G_TITULO);
 	define('rm_title_page' , $Post['titulo']);
+	define('rm_page_image', $Post['url_img_por_max']);
 	define('rm_metadescription' , rb_fragment_text($Post['contenido'],30, false) );
 	define('rm_metaauthor' , $Post['autor_id']); //--> capturar codigo de usuario
 	$rm_url_page = $Post['url'];
@@ -222,6 +224,7 @@ if(isset($_GET['pa'])){
 	}else{ // Asignando valores a la pagina del sistema
 	  define('rm_title', $Page['titulo']." | ".G_TITULO);
 		define('rm_title_page', $Page['titulo']);
+		define('rm_page_image', rb_photo_login(G_LOGO)); // IMAGEN PARA PAGINA
 	  define('rm_metakeywords', $Page['tags']);
 	  define('rm_metadescription', rb_fragment_text($Page['description'],30, false));
 	  define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
@@ -270,6 +273,7 @@ if(isset($_GET['pa'])){
 
 	define('rm_title', $Categoria['nombre']." | ".G_TITULO);
 	define('rm_title_page', $Categoria['nombre']);
+	define('rm_page_image', $Categoria['photo_id']); // foto de categoria
 	define('rm_metakeywords',  $Categoria['nombre']);
 	define('rm_metadescription',  $Categoria['descripcion']);
 	define('rm_metaauthor', G_METAAUTHOR);
@@ -295,6 +299,7 @@ if(isset($_GET['pa'])){
 
 	define('rm_title',"Buscando ".$data_to_search." | ".G_TITULO);
 	define('rm_title_page',"Buscando ".$data_to_search);
+	define('rm_page_image', rb_photo_login(G_LOGO));
 	define('rm_metakeywords', "");
 	define('rm_metadescription', "Resultados de busqueda");
 	define('rm_metaauthor',G_METAAUTHOR);
@@ -320,6 +325,7 @@ if(isset($_GET['pa'])){
 		$qStarred = $objDataBase->Ejecutar("SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta FROM articulos WHERE activo='A' and portada=1 ORDER BY fecha_creacion DESC LIMIT 3");
 
 		define('rm_title', rm_longtitle);
+		define('rm_page_image', rb_photo_login(G_LOGO));
 		define('rm_metadescription', G_METADESCRIPTION);
 		define('rm_metaauthor', "Blackpyro");
 		$rm_menu_name = "m-inicio";
@@ -331,6 +337,7 @@ if(isset($_GET['pa'])){
 	  $Page = rb_show_specific_page(G_INITIAL);
 		define('rm_title', rm_longtitle);
 		define('rm_title_page', $Page['titulo']);
+		define('rm_page_image', rb_photo_login(G_LOGO));
 		define('rm_metadescription', ''); //rb_fragment_text($Page['contenido'],30, false)
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 	  define('rm_metakeywords', $Page['tags']);

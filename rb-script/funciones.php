@@ -569,7 +569,7 @@ function rb_get_post_more_read($num_posts=10){
 	return rb_return_post_array($qa);
 }
 
-function rb_get_images_from_gallery($album_id){
+function rb_get_images_from_gallery($album_id, $limit = 0){
   global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$rm_url = G_SERVER."/";
@@ -583,10 +583,15 @@ function rb_get_images_from_gallery($album_id){
 		$num_reg = $qg->num_rows;
 	endif;
 
+  if($limit > 0 ){
+    $limit_filter = " LIMIT ".$limit;
+  }else{
+    $limit_filter = " ";
+  }
 	if($qg && $num_reg > 0 ):
 		$rg = $qg->fetch_assoc();
 		$album_id = $rg['id'];
-		$qp = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id=".$album_id." ORDER BY orden");
+		$qp = $objDataBase->Ejecutar("SELECT * FROM photo WHERE album_id=".$album_id." ORDER BY orden ".$limit_filter);
 
 		$FotosArray = array();
 		$i=0;
@@ -1774,15 +1779,40 @@ function rb_show_block($box){ //Muestra bloque
           case 'slide':
             echo '<div class="'.$widget['widget_class'].'">';
             $gallery_id = $widget['widget_values']['gallery_id'];
-            $fotos = rb_get_images_from_gallery($gallery_id);
+            $type = $col['widget_values']['type'];
+            $quantity = $col['widget_values']['quantity'];
+            $limit = $col['widget_values']['limit'];
+            $activelink = $col['widget_values']['activelink'];
+            $fotos = rb_get_images_from_gallery($gallery_id, $limit);
             foreach ($fotos as $foto) {
-              ?>
-              <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
-                <?php if($widget['widget_values']['show_title']==1): ?>
-                  <div class="camera_caption"><?= rb_BBCodeToGlobalVariable($foto['title']) ?></div>
-                <?php endif ?>
-              </div>
-              <?php
+              if($type==2){ // slide
+                ?>
+                <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
+                  <?php if($col['col_values']['show_title']==1): ?>
+                    <div class="camera_caption"><?= $foto['title'] ?></div>
+                  <?php endif ?>
+                </div>
+                <?php
+              }
+              if($type==1){ // simple galeria
+                  $width = 100/$quantity;
+                 ?>
+                 <div class="rb-cover-img" style="width:<?= $width ?>%">
+                   <div>
+                     <div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
+                     <div class="shadow"></div>
+                     <?php if($col['col_values']['show_title']==1): ?>
+                       <h2><?= $foto['title'] ?></h2>
+                     <?php endif ?>
+                     <?php if($col['col_values']['activelink']==1): ?>
+                       <a href="<?= $foto['goto_url'] ?>">Ver mas</a>
+                     <?php else: ?>
+                       <a class="fancy" href="<?= $foto['url_max'] ?>">Ver foto</a>
+                     <?php endif ?>
+                   </div>
+                </div>
+                <?php
+              }
             }
             echo '</div>';
             break;
@@ -1840,7 +1870,8 @@ function rb_show_block($box){ //Muestra bloque
             echo '<div class="rb-cover-galleries '.$widget['widget_class'].'">';
             $show_by_file = $widget['widget_values']['quantity'];
             $groupname = $widget['widget_values']['group'];
-            $Galleries = rb_list_galleries(0, $groupname);
+            $limit = $widget['widget_values']['limit'];
+            $Galleries = rb_list_galleries($limit, $groupname);
             $CountGalleries = count($Galleries);
             $porcent_width = round(100/$show_by_file,2);
             $i=1;

@@ -20,6 +20,20 @@
 				</label>
 			</div>
 		</div>
+		<div class="cols-container">
+			<div class="cols-6-md spacing-right">
+				<label>
+					<span>Grupo</span>
+					<input type="text" name="galleries_group" id="galleries_group" />
+				</label>
+			</div>
+			<div class="cols-6-md spacing-left">
+				<label>
+					<span>Límite</span>
+					<input type="text" name="galleries_limit" id="galleries_limit" />
+				</label>
+			</div>
+		</div>
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="galleries_id" value="" /> <!-- ID UNICO DEL BLOQUE -->
@@ -38,7 +52,7 @@ $(document).ready(function() {
 		// -- La clase CSS
 		$('#'+ galleries_id).attr('data-class', $('#galleries_class').val());
 		// -- Creamos cadena con valores en formato JSON y asingamos
-		var galleries_values_string = '{"quantity":'+ $('#galleries_quantity').val() +'}';
+		var galleries_values_string = '{"quantity":'+ $('#galleries_quantity').val() +', "group" : "'+ $('#galleries_group').val() +'", "limit" : "'+ $('#galleries_limit').val() +'"}';
 		$('#'+ galleries_id).attr('data-values', galleries_values_string );
 
 		$('.bg-opacity, #editor-galleries').hide();

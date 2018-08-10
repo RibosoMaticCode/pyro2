@@ -299,6 +299,8 @@ $(document).ready(function() {
     console.log(pva.quantity);
 
     $('#galleries_quantity').val(pva.quantity);
+    $('#galleries_group').val(pva.group);
+		$('#galleries_limit').val(pva.limit);
     $('#galleries_class').val(galleries_class);
 
     $(".bg-opacity").show();

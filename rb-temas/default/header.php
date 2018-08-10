@@ -7,7 +7,9 @@
 		<meta name="author" content="<?= rm_metaauthor ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 		<meta property="og:title" content="<?= rm_title ?>"/>
-		<meta property="og:image" content="<?= rm_urltheme ?>img/default.png"/>
+		<meta property="og:image" content="<?= rm_page_image ?>"/>
+		<meta property="og:image:width" content="476" />
+    <meta property="og:image:height" content="249" />
 		<meta property="og:site_name" content="<?= rm_titlesite ?>"/>
 		<meta property="og:description" content="<?= rm_metadescription ?>" />
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles.css">

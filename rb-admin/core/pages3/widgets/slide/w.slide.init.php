@@ -3,8 +3,8 @@
 $widget = [
   'link_action' => 'addSlide',
   'dir' => 'slide',
-  'name' => 'Slide',
-  'desc' => 'Añade un slide de imagenes',
+  'name' => 'Galeria',
+  'desc' => 'Añade un galeria de imagenes para diferente usos',
   'filejs' => 'w.slide.js'
 ];
 //Añadiendo al array principals widgets

@@ -27,6 +27,10 @@
 				</label>
 			</div>
 			<div class="cols-6-md spacing-left">
+				<label>
+					<span>Límite</span>
+					<input type="text" name="galleries_limit" id="galleries_limit" />
+				</label>
 			</div>
 		</div>
 	</div>
@@ -49,6 +53,7 @@ $(document).ready(function() {
     $('#galleries_id').val(galleries_id);
     $('#galleries_quantity').val(pva.quantity);
 		$('#galleries_group').val(pva.group);
+		$('#galleries_limit').val(pva.limit);
     $('#galleries_class').val(galleries_class);
 
     $(".bg-opacity").show();
@@ -64,7 +69,7 @@ $(document).ready(function() {
 		// -- La clase CSS
 		$('#'+ galleries_id).attr('data-class', $('#galleries_class').val());
 		// -- Creamos cadena con valores en formato JSON y asingamos
-		var galleries_values_string = '{"quantity":'+ $('#galleries_quantity').val() +', "group" : "'+ $('#galleries_group').val() +'"}';
+		var galleries_values_string = '{"quantity":'+ $('#galleries_quantity').val() +', "group" : "'+ $('#galleries_group').val() +'", "limit" : "'+ $('#galleries_limit').val() +'"}';
 		$('#'+ galleries_id).attr('data-values', galleries_values_string );
 
 		$('.bg-opacity, #editor-galleries').hide();

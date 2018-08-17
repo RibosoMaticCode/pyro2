@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-07-2018 a las 18:49:38
+-- Tiempo de generación: 16-08-2018 a las 17:24:37
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.1.17
 
@@ -326,6 +326,25 @@ CREATE TABLE `photo` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `staff`
+--
+
+CREATE TABLE `staff` (
+  `id` int(5) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `email` varchar(200) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `position` varchar(100) NOT NULL,
+  `area` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `photo_id` int(11) NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  `num_order` mediumint(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `suscriptores`
 --
 
@@ -501,6 +520,12 @@ ALTER TABLE `photo`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `staff`
+--
+ALTER TABLE `staff`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `suscriptores`
 --
 ALTER TABLE `suscriptores`
@@ -534,13 +559,13 @@ ALTER TABLE `usuarios_niveles`
 -- AUTO_INCREMENT de la tabla `albums`
 --
 ALTER TABLE `albums`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `articulos_articulos`
@@ -552,79 +577,85 @@ ALTER TABLE `articulos_articulos`
 -- AUTO_INCREMENT de la tabla `bloques`
 --
 ALTER TABLE `bloques`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `forms`
 --
 ALTER TABLE `forms`
-  MODIFY `id` mediumint(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` mediumint(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `log`
 --
 ALTER TABLE `log`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajes`
 --
 ALTER TABLE `mensajes`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `menus_items`
 --
 ALTER TABLE `menus_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `objetos`
 --
 ALTER TABLE `objetos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `opciones`
 --
 ALTER TABLE `opciones`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT de la tabla `paginas`
 --
 ALTER TABLE `paginas`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT de la tabla `staff`
+--
+ALTER TABLE `staff`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `suscriptores`
 --
 ALTER TABLE `suscriptores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios_grupos`
@@ -636,7 +667,7 @@ ALTER TABLE `usuarios_grupos`
 -- AUTO_INCREMENT de la tabla `usuarios_niveles`
 --
 ALTER TABLE `usuarios_niveles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

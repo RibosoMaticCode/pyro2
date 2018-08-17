@@ -422,20 +422,20 @@ section.seccion .popup {
 	width:100%;
 }
 .navs table td {
-    text-align: right;
+    text-align: center;
 }
 .pagination{
 	background-color:#fff;
 	overflow:hidden;
 }
 .pagination ul{
+	float: right;
 	margin-left:1px;
 }
 .pagination ul li{
 	float:left;
 	border: 1px solid  #ddd;
 	list-style-type:none;
-	/*max-width:33px;*/
 	margin-left: -1px;
 	background-color:#fff;
 }

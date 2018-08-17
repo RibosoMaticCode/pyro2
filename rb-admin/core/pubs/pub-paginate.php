@@ -10,11 +10,7 @@ $pag_act = isset($_GET['page']) ? $_GET['page'] : 1;
 <div class="navs">
 	<table>
 		<tr>
-			<td>
-				<div class="pagination">
-          <?php rb_paged_list($pag_act, $total, $link_section, $nums_show) ?>
-				</div>
-			</td>
+			<td><?php echo "<strong>Total: </strong>".$total." registros " ?></td>
 			<?php if($nums_show_list): ?>
 			<td><strong>Mostrar:</strong>
 				<select id="nums_items_show" name="<?= $type?>">
@@ -24,7 +20,11 @@ $pag_act = isset($_GET['page']) ? $_GET['page'] : 1;
 				</select>
 			</td>
 			<?php endif; ?>
-			<td><?php echo "<strong>Total: </strong>".$total." registros " ?></td>
+			<td>
+				<div class="pagination">
+          <?php rb_paged_list($pag_act, $total, $link_section, $nums_show) ?>
+				</div>
+			</td>
 		</tr>
 	</table>
 </div>

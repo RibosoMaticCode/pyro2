@@ -138,7 +138,7 @@ function show_form( $params ){ // Mostrar el formulario segun su id
 			event.preventDefault();
 			$.ajax({
 				method: 'post',
-				url: '".G_SERVER."/rb-script/modules/rb-mailer/mailer.array.recaptcha.php',
+				url: '".G_SERVER."/rb-script/modules/rb-mailer/mailer.form.db.php',
 				data: $( this ).serialize()
 			})
 			.done(function( data ) {

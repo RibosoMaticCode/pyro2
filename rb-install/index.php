@@ -1,6 +1,12 @@
 <?php
+require_once '../rb-script/funciones.php';
+if(is_https()){
+	$protocol = "https://";
+}else{
+	$protocol = "http://";
+}
 $directory = str_replace('/rb-install/index.php', '', $_SERVER['SCRIPT_NAME']);
-$rm_url = "http://".$_SERVER['SERVER_NAME'].$directory;
+$rm_url = $protocol.$_SERVER['SERVER_NAME'].$directory;
 $rm_urlinstall = $rm_url;
 ?>
 <!DOCTYPE html>
@@ -11,8 +17,8 @@ $rm_urlinstall = $rm_url;
 		<meta name="description" content="Instalación de Pyro: Gestor de Contenidos Básico">
 		<meta name="author" content="Yiustus Liñán">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-		<link rel="shortcut icon" href="favicon.ico">
-		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<link rel="shortcut icon" href="<?= $rm_url ?>/rb-script/images/blackpyro-logo.png">
+		<link rel="apple-touch-icon" href="<?= $rm_url ?>/rb-script/images/blackpyro-logo.png">
 		<link rel="stylesheet" href="<?= $rm_url ?>/rb-script/modules/rb-login/login.css">
 	</head>
 

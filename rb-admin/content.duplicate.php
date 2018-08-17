@@ -14,10 +14,25 @@ if(isset($_GET['sec'])){
 			$qr =  $objDataBase->Ejecutar("SELECT id FROM articulos WHERE titulo = '".$r['titulo']."'");
 			$nums = $qr->num_rows;
 			$new_link =  rb_cambiar_nombre($r['titulo'])."-".$nums;
-			$campos = array( $r['titulo'] , $new_link , $r['autor_id'] ,  $r['tags'] ,  addslashes($r['contenido']) , $r['portada'] , $r['img_portada'] , $r['actividad'] , '0000-00-00' , $r['video'] , $r['video_embed'] ,  $r['galeria_id'] );
-			$result = $objDataBase->Insertar("INSERT INTO articulos (fecha_creacion, titulo, titulo_enlace, autor_id, tags, contenido, portada, img_portada, actividad, fecha_actividad, video, video_embed, galeria_id) VALUES ( NOW() ,'".$campos[0]."','".$campos[1]."',".$campos[2].",'".$campos[3]."','".$campos[4]."',".$campos[5].",'".$campos[6]."',".$campos[7].",'".$campos[8]."',".$campos[9].",'".$campos[10]."',".$campos[11].")");
+			$campos = [
+				'fecha_creacion' => date('Y-m-d G:i:s'),
+				'titulo' => $r['titulo'],
+				'titulo_enlace' => $new_link,
+				'autor_id' => $r['autor_id'],
+				'tags' => $r['tags'],
+				'contenido' => addslashes($r['contenido']),
+				'video' => $r['video'],
+				'video_embed' => $r['video_embed'],
+				'portada' => $r['portada'],
+				'actividad' => $r['actividad'],
+				'fecha_actividad' => '0000-00-00',
+				'img_back' => $r['img_back'],
+				'img_profile' => $r['img_profile']
+			];
+			//$result = $objDataBase->Insertar("INSERT INTO articulos (fecha_creacion, titulo, titulo_enlace, autor_id, tags, contenido, portada,, actividad, fecha_actividad, video, video_embed, galeria_id) VALUES ( NOW() ,'".$campos[0]."','".$campos[1]."',".$campos[2].",'".$campos[3]."','".$campos[4]."',".$campos[5].",'".$campos[6]."',".$campos[7].",'".$campos[8]."',".$campos[9].",'".$campos[10]."',".$campos[11].")");
+			$result = $objDataBase->Insert('articulos', $campos);
 
-			if( $result ):
+			if( $result['result'] ):
 				$ultimo_id = $result['insert_id'];
 
 				// CONSULTAMOS EN CATEGORIAS

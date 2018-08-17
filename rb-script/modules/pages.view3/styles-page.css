@@ -65,6 +65,8 @@
   float:left;
 }
 
+/* STYLE 0 - HORIZONTAL */
+/* STYLE 1 - VERTICAL */
 .post-0{
 	display: flex;
 }
@@ -73,18 +75,28 @@
 	float: left;
 	width:100%;
 }
-.post-0 div{
+.post-0 div div,
+.post-1 div div { /* bg image */
+    min-height: 250px;
+    position: relative;
+    background-size: cover;
+}
+.post-0 div div a,
+.post-1 div div a { /* title link */
+    position:  absolute;
+    bottom: 20px;
+    font-size: 1.2em;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 5px #000;
+    left: 20px;
+}
+.post-0 > div,
+.post-1 > div{
   padding: 10px;
+  margin: 5px 0;
 }
-.post-0 div img{
-	display: block;
-	width: 100%;
-}
-.post-0 div h3{
-	margin: 4px 0;
-	line-height: 24px;
-	font-size: 1.1em;
-}
+
 /* STYLE 2, 3 - POSTS */
 .post-2{
   padding: 0 10px;

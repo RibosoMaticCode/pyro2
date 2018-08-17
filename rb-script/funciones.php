@@ -1,4 +1,42 @@
 <?php
+function is_https(){
+    if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on')
+    {
+      return TRUE;
+    }
+    elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+    {
+      return TRUE;
+    }
+    elseif (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && $_SERVER['HTTP_FRONT_END_HTTPS'] === 'on')
+    {
+      return TRUE;
+    }
+    return FALSE;
+}
+
+function rb_mailing_send($title_message, $message){ // Envia mail a cada usuario activo del sistema
+  global $objDataBase;
+  $q = $objDataBase->Ejecutar("SELECT nombres, correo FROM usuarios WHERE activo=1");
+  while($mail = $q->fetch_assoc()){
+    $subject = $title_message;
+    $recipient = $mail['correo'];
+    $email_content = "<h2>Hola ".$mail['nombres']."</h2><br />";
+    $email_content .= $message;
+    $email_content .= "<br /><p>--</p>";
+    $email_content .= "<p>Este mensaje fue enviado automaticamente desde la web.</p>";
+
+    $from_name = rb_get_values_options('name_sender');
+    $mail_no_reply = rb_get_values_options('mail_sender');
+    $email_headers = "From: $from_name <$mail_no_reply> \r\n";
+    $email_headers .= "MIME-Version: 1.0\r\n";
+    $email_headers .= "Content-Type: text/html; UTF-8\r\n";
+
+    // Send the email.
+    mail($recipient, $subject, $email_content, $email_headers);
+  }
+}
+
 function rb_css_list($css_list){
   if(!isset($css_list)) return;
   require_once ABSPATH."global.php";
@@ -146,12 +184,14 @@ function rb_return_post_array($qa){
 		$PostsArray[$i]['fec_mes'] = isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "";
 		$PostsArray[$i]['fec_mes_l'] = rb_mes_nombre( isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "" );
 		$PostsArray[$i]['fec_anio'] = isset( $Posts['fecha_anio'] ) ? $Posts['fecha_anio'] : "";
-		$PostsArray[$i]['url_img_por_max'] = rb_get_url_image( $Posts['id'] , "l", "portada" );
-		$PostsArray[$i]['url_img_por_min'] = rb_get_url_image( $Posts['id'] , "m", "portada" );
-		$PostsArray[$i]['url_img_pri_max'] = rb_get_url_image( $Posts['id'] , "l", "logo" );
-		$PostsArray[$i]['url_img_pri_min'] = rb_get_url_image( $Posts['id'] , "m", "logo" );
-		$PostsArray[$i]['url_img_sec_max'] = rb_get_url_image( $Posts['id'] , "l", "adjunto" );
-		$PostsArray[$i]['url_img_sec_min'] = rb_get_url_image( $Posts['id'] , "m", "adjunto" );
+    $img_back_id = $Posts['img_back'];
+		$img_profile_id = $Posts['img_profile'];
+		$photo_back = rb_get_photo_details_from_id($img_back_id);
+		$photo_profile = rb_get_photo_details_from_id($img_profile_id);
+		$PostsArray[$i]['url_img_por_max'] = $photo_back['file_url'];
+		$PostsArray[$i]['url_img_por_min'] = $photo_back['thumb_url'];
+		$PostsArray[$i]['url_img_pri_max'] = $photo_profile['file_url'];
+		$PostsArray[$i]['url_img_pri_min'] = $photo_profile['thumb_url'];
 		$i++;
 	endwhile;
 	return $PostsArray;
@@ -306,8 +346,6 @@ function rb_get_img_profile($user_id){
 
 /* OBTIENE DATOS FILES IN ARRAY FROM ID*/
 function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
-	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	$objFoto = new Fotos;*/
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
 	$Photos = $q->fetch_assoc();
@@ -317,8 +355,6 @@ function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
 /* OBTIENE DATOS FILES FROM ID*/
 function rb_get_photo_details_from_id($photo_id){
   global $objDataBase;
-	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-	$objFoto = new Fotos;*/
 	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
 	$Photo = $q->fetch_assoc();
   $DetailsPhoto = array();
@@ -1779,16 +1815,16 @@ function rb_show_block($box){ //Muestra bloque
           case 'slide':
             echo '<div class="'.$widget['widget_class'].'">';
             $gallery_id = $widget['widget_values']['gallery_id'];
-            $type = $col['widget_values']['type'];
-            $quantity = $col['widget_values']['quantity'];
-            $limit = $col['widget_values']['limit'];
-            $activelink = $col['widget_values']['activelink'];
+            $type = $widget['widget_values']['type'];
+            $quantity = $widget['widget_values']['quantity'];
+            $limit = $widget['widget_values']['limit'];
+            $activelink = $widget['widget_values']['activelink'];
             $fotos = rb_get_images_from_gallery($gallery_id, $limit);
             foreach ($fotos as $foto) {
               if($type==2){ // slide
                 ?>
                 <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
-                  <?php if($col['col_values']['show_title']==1): ?>
+                  <?php if($widget['widget_values']['show_title']==1): ?>
                     <div class="camera_caption"><?= $foto['title'] ?></div>
                   <?php endif ?>
                 </div>
@@ -1923,8 +1959,10 @@ function rb_show_block($box){ //Muestra bloque
               foreach ($Posts as $PostRelated) {
                 ?>
                 <div>
-                  <img src="<?= $PostRelated['url_img_por_min']  ?>" alt="img" />
-                  <h3><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h3>
+                  <div style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')">
+                    <!--<img src="<?= $PostRelated['url_img_pri_max']  ?>" alt="img" />-->
+                    <a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a>
+                  </div>
                   <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
                 </div>
                 <?php
@@ -1943,7 +1981,7 @@ function rb_show_block($box){ //Muestra bloque
                 if($i==1){
                   ?>
                   <div class="left">
-                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_por_min']  ?>)">
+                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_pri_max']  ?>)">
                     </div>
                     <h2><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h2>
                     <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
@@ -1952,7 +1990,7 @@ function rb_show_block($box){ //Muestra bloque
                 }else{
                   ?>
                   <div class="right">
-                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_por_min']  ?>)">
+                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_pri_max']  ?>)">
                     </div>
                     <h3><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h3>
                     <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->

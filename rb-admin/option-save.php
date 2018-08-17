@@ -49,10 +49,14 @@ function quitar_barra($direccionurl){
     return $direccionurl;
   endif;
 }
-
+if(is_https()){
+	$protocol = "https://";
+}else{
+	$protocol = "http://";
+}
 $direccionurl = quitar_barra($_POST['direccionurl']); // direccion_url sin slash al final
-$siteurl = "http://".$_SERVER['SERVER_NAME']; // url_del_sitio
-$directoriourl = str_replace($siteurl, "", $direccionurl); // quita http:// y url_del_sitio
+$siteurl = $protocol.$_SERVER['SERVER_NAME']; // url_del_sitio
+$directoriourl = str_replace($siteurl, "", $direccionurl); // quita el url_del_sitio y deja el directorio donde esta instalada la web, si es fuera el caso.
 $descripcion = $_POST['descripcion'];
 $meta_keywords = $_POST['keywords'];
 $meta_description = $_POST['description'];

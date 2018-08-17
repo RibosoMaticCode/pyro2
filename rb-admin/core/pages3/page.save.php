@@ -24,7 +24,7 @@ if($mode=="new"):
 	$q = "INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, contenido, menu_id, show_header, show_footer, header_custom_id, footer_custom_id ) VALUES (NOW(), '$titulo', '$titulo_enlace', $autor_id, '$contenido', $menu_id, $sh, $sf, '$hcust_id', '$fcust_id')";
 	$result = $objDataBase->Insertar($q);
 	if($result):
-		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina guardada', 'url' => G_SERVER, 'last_id' => $result['insert_id'] );
+		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina guardada.', 'url' => G_SERVER, 'last_id' => $result['insert_id'], 'reload' => true );
 		die(json_encode($arr));
 	else:
 		$arr = array('resultado' => 'bad', 'contenido' => $result['error'] );
@@ -33,7 +33,7 @@ if($mode=="new"):
 elseif($mode=="update"):
 	$q = "UPDATE paginas SET titulo='$titulo', titulo_enlace = '$titulo_enlace', contenido = '$contenido', menu_id = $menu_id, show_header = $sh, show_footer = $sf, header_custom_id = '$hcust_id', footer_custom_id = '$fcust_id' WHERE id= $pagina_id";
 	if($result = $objDataBase->Ejecutar($q)):
-		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina actualizada', 'url' => G_SERVER, 'last_id' => $pagina_id );
+		$arr = array('resultado' => 'ok', 'contenido' => 'Contenido actualizado', 'url' => G_SERVER, 'last_id' => $pagina_id, 'reload' => false );
 		die(json_encode($arr));
 	else:
 		$error = $result->error;

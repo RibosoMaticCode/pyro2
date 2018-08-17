@@ -491,10 +491,12 @@ $(document).ready(function() {
     .done(function( data ) {
       if(data.resultado=="ok"){
         $('#img_loading, .bg-opacity').hide();
-        notify("La página se guardo en la base de datos");
-        /*setTimeout(function(){
-          window.location.href = data.url+'/rb-admin/index.php?pag=pages&opc=edt&id='+data.last_id;
-        }, 1000);*/
+        notify( data.contenido );
+        if(data.reload==true){
+          setTimeout(function(){
+            window.location.href = data.url+'/rb-admin/index.php?pag=pages&opc=edt&id='+data.last_id;
+          }, 1000);
+        }
       }else{
         notify("Existe un error al intentar guardar en la base de datos");
         console.log(data.contenido);

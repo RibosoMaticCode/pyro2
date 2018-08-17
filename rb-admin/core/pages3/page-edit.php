@@ -24,7 +24,7 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 			<?php
 			if(isset($_GET["id"])){
 			?>
-			<a class="fancybox fancybox.iframe button" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank">Vista previa</a>
+			<a title="Presionar Control para cargar en una pestaña aparte" class="fancybox fancybox.iframe button" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank">Vista previa</a>
 			<?php
 			}
 			?>

@@ -56,14 +56,7 @@ a{
   border: 0px;
 	min-height: 300px;
 }
-/*.inner-content .cols{
-    display: flex;
-}
-.inner-content .cols > div{
-	list-style-type: none;
-	float: left;
-	width:100%;
-}*/
+
 .inner-content table{
 	margin: 0 auto;
 }
@@ -111,13 +104,8 @@ a{
 .box{
 	margin-bottom: 10px;
 }
+
 /* background home */
-.bg-intro{
-  /*background: url('../img/intro.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-	background-position: center center;*/
-}
 .bg-intro-inner{
   height: 100vh;
 }
@@ -151,7 +139,70 @@ a{
 	background-position: center center;
 }
 .header-page-inner{
-	padding: 80px 0;
+	padding: 80px 15px;
+}
+
+/* menu */
+nav.menu {
+  float: right;
+  margin: 20px 20px 0 0;
+}
+nav.menu li a {
+  color: #fff;
+}
+
+/* block content */
+.block-content{
+	padding: 40px 15px;
+}
+.post-image{
+	height:300px;
+	background-size: cover;
+	background-position: center;
+}
+
+/* category pagination */
+.pagination{
+	background-color: #fff;
+  border-bottom: 1px solid #E4E4E4;
+  margin-bottom: 40px;
+  margin-top: -1px;
+}
+.pagination ul{
+	float: right;
+  margin-right: 20px;
+  margin-top: -16px;
+}
+.pagination ul li{
+	float:left;
+	border: 1px solid  #ddd;
+	list-style-type:none;
+	max-width:33px;
+	margin-left: -1px;
+	background-color:#fff;
+}
+.pagination ul li:first-child{
+	border-radius:4px 0 0 4px;
+}
+.pagination ul li:last-child{
+	border-radius: 0 4px 4px 0;
+}
+.pagination ul li a{
+	padding: 6px 12px;
+	display:block;
+	font-size:.9em;
+	color:#155095;
+}
+.page-disabled{
+	cursor:not-allowed;
+}
+.page-disabled a{
+	background-color:#F1F0F0;
+	pointer-events: none;
+}
+a.page-resalt {
+	font-weight:bold;
+	pointer-events: none;
 }
 
 /* footer */
@@ -163,5 +214,5 @@ a{
   color:#fff;
 }
 .inner-footer{
-  padding: 20px 0;
+  padding: 20px 15px;
 }

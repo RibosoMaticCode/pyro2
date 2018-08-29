@@ -75,14 +75,14 @@
 	float: left;
 	width:100%;
 }
-.post-0 div div,
-.post-1 div div { /* bg image */
+.post-0 .post div,
+.post-1 .post div { /* bg image */
     min-height: 250px;
     position: relative;
     background-size: cover;
 }
-.post-0 div div a,
-.post-1 div div a { /* title link */
+/*.post-0 div div a,
+.post-1 div div a {
     position:  absolute;
     bottom: 20px;
     font-size: 1.2em;
@@ -90,11 +90,15 @@
     font-weight: bold;
     text-shadow: 1px 1px 5px #000;
     left: 20px;
-}
+}*/
 .post-0 > div,
 .post-1 > div{
   padding: 10px;
   margin: 5px 0;
+}
+.post-img{
+  background-position: center;
+  background-size: cover;
 }
 
 /* STYLE 2, 3 - POSTS */
@@ -152,14 +156,10 @@
 }
 /* body blocks width */
 .block-content h1{
-  margin: 0 0 45px;
+  margin: 10px 0;
   text-transform: uppercase;
   font-size: 1.4em;
   color:gray;
-}
-.block-content{
-  margin-top: 55px;
-  margin-bottom: 55px;
 }
 .block-left-content{ /* SIDEBAR RIGHT */
   width: 60%;
@@ -180,6 +180,7 @@
 .block-full{
 	width: 100%;
 }
+
 /* sidebar */
 .box-sidebar h3{
   text-transform: uppercase;
@@ -195,31 +196,63 @@
   border-bottom: 1px solid #c7c7c7;
 }
 /* GALERIAS DE IMAGENES */
-.rb-wrap-galleries {
-    padding: 20px 15px;
-}
 .rb-gallery-container {
-    display: flex;
+  display: flex;
 }
-.rb-gallery-container div{
+.rb-gallery{
   padding: 5px 8px;
 }
-.rb-gallery-container div img{
-  max-width: 100%;
+.rb-gallery > div{
+  overflow:hidden;
+  position: relative;
+}
+.rb-gallery > div:hover .rb-bg-gallery{
+	transform:scale(1.1);
+}
+.rb-gallery .rb-bg-gallery{
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+}
+.rb-gallery-info {
+  position:  absolute;
+  z-index: 2;
+  bottom: 0;
+  left:18px;
+}
+span.rb-gallery-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 300px;
+  font-weight:bold;
+}
+span.rb-gallery-desc {
+  height:  32px;
+  display: block;
 }
 .rb-gallery-photos{
   width:100%;
-  display: none;
+}
+.rb-gallery-photos .cols-container a {
+  display: block;
+  margin:2px;
+  overflow:hidden;
+}
+.rb-gallery-photos .cols-container a img{
+  width:100%;
+  margin-bottom:-8px;
 }
 
 /* GRID DE VIDEOS YOUTUBE */
 .rb-youtube-grid {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .rb-youtube-grid div {
-    padding: 10px;
+  padding: 10px;
 }
 
 @media screen and (max-width: 425px) {
@@ -237,5 +270,14 @@
     float: none!important;
     width: 100%!important;
     padding: 0;
+  }
+
+  /* GALLERIAS */
+  .rb-gallery-container{
+    display: initial;
+  }
+  .rb-gallery{
+    width:100%!important;
+    float: none;
   }
 }

@@ -337,6 +337,7 @@ include_once 'widgets/editor/w.editor.conf.php';
 include_once 'widgets/gallery/w.gallery.conf.php';
 include_once 'widgets/youtube/w.youtube.conf.php';
 include_once 'widgets/pubs/w.pubs.conf.php';
+include_once 'widgets/sidebar/w.sidebar.conf.php';
 include_once 'modal-css-edit.php';
 include_once 'modal-save-block.php';//widget
 include_once 'modal-save-box.php';

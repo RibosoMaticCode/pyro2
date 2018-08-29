@@ -42,7 +42,7 @@ $(document).ready(function() {
 			});
       notify('Los datos seleccionados fueron eliminados correctamente.');
       setTimeout(function(){
-        window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=files';
+        window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=explorer';
       }, 1000);
 		}
 	});
@@ -60,7 +60,7 @@ $(document).ready(function() {
           if(data.result = 1){
             notify('El dato fue eliminado correctamente.');
             setTimeout(function(){
-              window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=files';
+              window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=explorer';
             }, 1000);
           }else{
             notify('Ocurrio un error inesperado. Intente luego.');
@@ -90,7 +90,7 @@ $(document).ready(function() {
     <li><a class="btn-primary show-uploader" href="#"><img src="img/add-white-16.png" alt="Cargar" /> Subir Archivos</a></li>
     <li><a class="btn-delete" rel="files" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
     <li>
-      <input type="text" id="search_box" placeholder="Archivo a buscar" />
+      <input type="text" id="search_box" placeholder="Filtrar por nombre de archivo" />
     </li>
   </ul>
 </div>
@@ -102,7 +102,7 @@ $(document).ready(function() {
     </div>
     <div class="seccion-body">
     <div id="mulitplefileuploader"></div>
-    <span class="info">Archivos permitidos: jpg, png, gif, doc, docx, xls, xlsx, pdf. Tamaño máximo: 8 MB</span>
+    <span class="info">Archivos permitidos: jpg, png, gif, doc, docx, xls, xlsx, pdf. Tamaño máximo: <strong><?php echo ini_get("upload_max_filesize"); ?></strong></span>
     <div id="status"></div>
     <!-- Load multiples imagenes -->
     <link href="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">

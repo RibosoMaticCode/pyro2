@@ -1,4 +1,5 @@
 <aside class="wrap-sidebar <?= class_col_2 ?>">
+  <!--
   <section class="box search clear">
     <form class="frmsearch" action="<?= G_SERVER ?>" method="get">
       <label>
@@ -19,5 +20,5 @@
       endforeach;
       ?>
     </ul>
-  </section>
+  </section>-->
 </aside>

@@ -155,7 +155,7 @@ switch($pag){
 		}
 		break;
 
-	case "files":
+	case "explorer":
 		echo '<h2 class="title">Archivos</h2>';
 		$sec="files";
 		if(isset($_GET['opc'])){

@@ -21,21 +21,22 @@ define('rm_datetoday', date("Y-m-d"));
 //define('rm_mainmenu', G_MAINMENU);
 
 // Verifica en los modulos si hay alguna URL personalizada que direccione a otro lado
-do_action('call_modules_url');
+do_action('call_modules_url'); // parece dar error al enviar un aviso antes, que aparezcan las cabeceras (20-08-18), modo local, funciona bien. Modo remoto, no.
 
 // definiendo clases para el sidebar
 $show_sidebar = rb_get_values_options('sidebar');
 if($show_sidebar==1){
 	$sidebar_align = rb_get_values_options('sidebar_pos');
 	if($sidebar_align == 'right'):
-		define('class_col_1', " block-left-content ");
-		define('class_col_2', " block-right-sidebar ");
+		define('class_col_1', "block-left-content");
+		define('class_col_2', "block-right-sidebar");
 	elseif($sidebar_align == 'left'):
-		define('class_col_1', " block-right-content ");
-		define('class_col_2', " block-left-sidebar ");
+		define('class_col_1', "block-right-content");
+		define('class_col_2', "block-left-sidebar");
 	endif;
 }else{
-	$class_col_1 = " block-full ";
+	define('class_col_1', "block-full");
+	//$class_col_1 = " block-full ";
 }
 function message_error($file){
 	header( 'Location: '.G_SERVER.'/login.php');
@@ -72,6 +73,13 @@ if(G_ENL_AMIG):
 	if ( isset($_GET['p']) ):
 		$Page = rb_show_specific_page( $_GET['p'] );
 		header( 'Location: '.G_SERVER.'/'.$Page['titulo_enlace'].'/');
+		exit();
+	endif;
+
+	// Direccionar a gallery G_BASEGALLERY
+	if ( isset($_GET['gallery']) ):
+		$Gallery = rb_get_info_gallery( $_GET['gallery'] );
+		header( 'Location: '.G_SERVER.'/galeria/'.$Gallery['nombre_enlace'].'/');
 		exit();
 	endif;
 
@@ -127,6 +135,10 @@ if(G_ENL_AMIG):
 		if( $requestURI[0] == G_BASESEAR ):
 			$SearchTerm = $requestURI[1];
 		endif;
+		// Si es galeria
+		if( $requestURI[0] == "galeria" ): //G_BASEGALLERY
+			$GalleryId = $requestURI[1];
+		endif;
 		// Si es Pagina simple
 		if( $numsItemArray == 1 ):
 			if( $requestURI[0] == "index.php" ):
@@ -145,6 +157,7 @@ else: // SI ENLACES NO AMIGABLES
 		if ( isset($_GET['page']) ) $Page = $_GET['page'];
 	endif;
 	if ( isset($_GET['s']) ) $SearchTerm = $_GET['s'];
+	if ( isset($_GET['gallery']) ) $GalleryId = $_GET['gallery'];
 	if ( isset($_GET['panel']) ) $Panel = $_GET['panel'];
 endif;
 
@@ -305,6 +318,23 @@ if(isset($_GET['pa'])){
 	define('rm_metaauthor',G_METAAUTHOR);
 
 	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/search.php';
+	if(file_exists( $file )) require_once( $file );
+	else die( message_error($file));
+
+// GALERIA DE IMAGENES
+}elseif( isset( $GalleryId ) ){
+	//$gallery_id = $_GET['gallery_id'];
+	$gallery = rb_get_info_gallery($GalleryId);
+	$fotos = rb_get_images_from_gallery($GalleryId);
+
+	define('rm_title',"Fotos de ".$gallery['nombre']." | ".G_TITULO);
+	define('rm_title_page',"Fotos de ".$gallery['nombre']);
+	define('rm_page_image', rb_photo_login(G_LOGO));
+	define('rm_metakeywords', "");
+	define('rm_metadescription', "Galería de fotos de ".$gallery['nombre']);
+	define('rm_metaauthor',G_METAAUTHOR);
+
+	$file = ABSPATH.'rb-temas/'.G_ESTILO.'/gallery.php';
 	if(file_exists( $file )) require_once( $file );
 	else die( message_error($file));
 

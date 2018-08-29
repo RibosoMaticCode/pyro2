@@ -41,7 +41,7 @@ if(is_dir($dir_raiz4)==false){
 /* CREAR CATEGORIA SI NO HAY NINGUNA */
 $q = $objDataBase->Ejecutar("SELECT * FROM categorias");
 $num_categories = $q->num_rows;
-if( $num_categories == 0 ) $objDataBase->Ejecutar("INSERT INTO categorias (nombre_enlace, nombre ) VALUES ('pordefecto', 'Por defecto' )");
+if( $num_categories == 0 ) $objDataBase->Ejecutar("INSERT INTO categorias (nombre_enlace, nombre, acceso) VALUES ('pordefecto', 'Por defecto', 'public')");
 
 // CONSULTAR COOKIE QUE CONTIENE AYUDAS OCULTAS
 if (isset($_COOKIE['help_close'])) $array_help_close = unserialize($_COOKIE['help_close']);

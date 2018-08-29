@@ -46,7 +46,7 @@ while ($row = $consulta->fetch_assoc()){
   <span>
     <a href="content.duplicate.php?id=<?= $row['id'] ?>&sec=pages">Duplicar</a></span>
   <span>
-      <a class="fancybox fancybox.iframe" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank">Vista previa</a>
+      <a class="fancybox fancybox.iframe" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank" title="Manten presionado F5 y pulsa el link para abrir en nueva pestaña">Vista previa</a>
   </span>
 </div>
 </td>

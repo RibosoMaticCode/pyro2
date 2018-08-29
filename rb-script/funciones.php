@@ -1542,9 +1542,9 @@ function rb_list_galleries($limit=0, $groupname=""){
     $add_limit = " LIMIT ".$limit;
   }
   if(empty($groupname)){
-      $q= $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY nombre_enlace ASC".$add_limit);
+      $q= $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY fecha DESC".$add_limit);
   }else{
-      $q= $objDataBase->Ejecutar("SELECT * FROM albums WHERE galeria_grupo='$groupname' ORDER BY nombre_enlace ASC".$add_limit);
+      $q= $objDataBase->Ejecutar("SELECT * FROM albums WHERE galeria_grupo='$groupname' ORDER BY fecha DESC".$add_limit);
   }
   $GaleriasArray = Array();
   //$FotosArray = array();
@@ -1552,6 +1552,7 @@ function rb_list_galleries($limit=0, $groupname=""){
 	while($Galerias = $q->fetch_assoc()):
 			$GaleriasArray[$i]['id'] = $Galerias['id'];
 			$GaleriasArray[$i]['nombre'] = $Galerias['nombre'];
+      $GaleriasArray[$i]['descripcion'] = $Galerias['descripcion'];
 			$GaleriasArray[$i]['nombre_enlace'] = $Galerias['nombre_enlace'];
 			$GaleriasArray[$i]['usuario_id'] = $Galerias['usuario_id'];
 			$GaleriasArray[$i]['galeria_grupo'] = $Galerias['galeria_grupo'];
@@ -1667,6 +1668,7 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 					<td>".$value['descripcion']."</td>
 					<td>".rb_showvisiblename($value['acceso'])."</td>
 					<td>".rb_niveltoname($value['niveles'])."</td>
+          <td><a target='_blank' href='".G_SERVER."/?cat=".$value['id']."'>Link</a></td>
 					<td width='40px;'>
 					<span>
 					<a title=\"Editar\" href='../rb-admin/index.php?pag=cat&amp;opc=edt&amp;id=".$value['id']."'>
@@ -1689,6 +1691,7 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 					<td>".$value['descripcion']."</td>
 					<td>".rb_showvisiblename($value['acceso'])."</td>
 					<td>".rb_niveltoname($value['niveles'])."</td>
+          <td><a target='_blank' href='".G_SERVER."/?cat=".$value['id']."'>Link</a></td>
 					<td width='40px;'>
 					<span>
 					<a title=\"Editar\" href='../rb-admin/index.php?pag=cat&amp;opc=edt&amp;id=".$value['id']."'>
@@ -1717,7 +1720,7 @@ function rb_show_bar_admin(){
   endif;
 }
 
-function rb_show_block($box){ //Muestra bloque
+function rb_show_block($box, $type="page"){ //Muestra bloque
   global $objDataBase;
   if(isset($box['box_save_id'])){
     $box_save_id = $box['box_save_id'];
@@ -1907,6 +1910,7 @@ function rb_show_block($box){ //Muestra bloque
             $show_by_file = $widget['widget_values']['quantity'];
             $groupname = $widget['widget_values']['group'];
             $limit = $widget['widget_values']['limit'];
+            $link = $widget['widget_values']['link'];
             $Galleries = rb_list_galleries($limit, $groupname);
             $CountGalleries = count($Galleries);
             $porcent_width = round(100/$show_by_file,2);
@@ -1916,10 +1920,18 @@ function rb_show_block($box){ //Muestra bloque
                 echo '<div class="rb-gallery-container">';
               }
               echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">';
-              echo '<img src="'.$Gallery['url_bgimagetn'].'" alt="Portada Galeria" />';
-              echo '<h2>'.$Gallery['nombre']."</h2>";
-              echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">Ver galeria</a>';
-              echo '</div>';
+              echo '<div>';
+              echo '<div class="rb-bg-gallery" style="background-image:url(\''.$Gallery['url_bgimagetn'].'\')" />';
+              echo '</div>'; // close bg image
+              echo '<div class="rb-gallery-info">';
+              if($link==0)
+                echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">'.$Gallery['nombre'].'</a></span>';
+              if($link==1)
+                echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">'.$Gallery['nombre'].'</a></span>';
+              echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
+              echo '</div>'; // close rb-gallery-info
+              echo '</div>'; // close div
+              echo '</div>'; // close rb-gallery
               if($i==$CountGalleries || $i==$show_by_file){
                 echo '</div>';
                 $i=1;
@@ -1929,8 +1941,8 @@ function rb_show_block($box){ //Muestra bloque
             }
             echo '</div>';
             ?>
-            <div class="rb-gallery-photos">
             </div>
+            <div class="rb-gallery-photos">
             </div>
             <?php
             break;
@@ -1945,6 +1957,8 @@ function rb_show_block($box){ //Muestra bloque
             $ord = $widget['widget_values']['ord'];
             $tit = $widget['widget_values']['tit'];
             $typ = $widget['widget_values']['typ'];
+            $desc = $widget['widget_values']['desc'];
+            $link = $widget['widget_values']['link'];
 
             if($tit!=""){
               ?>
@@ -1955,15 +1969,25 @@ function rb_show_block($box){ //Muestra bloque
               ?>
               <div class="post-<?= $typ ?>">
               <?php
+              if($category_id==0) $category_id="*";
               $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
               foreach ($Posts as $PostRelated) {
                 ?>
-                <div>
-                  <div style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')">
-                    <!--<img src="<?= $PostRelated['url_img_pri_max']  ?>" alt="img" />-->
-                    <a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a>
+                <div class="post-list">
+                  <div class="post">
+                    <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
+                    <!--<span class="post-category"></span>-->
+                    <div class="post-desc">
+                    <h1><a href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h1>
+                    <?php if($desc==1): ?>
+                      <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
+                    <?php endif ?>
+                    <?php if($link==1): ?>
+                      <br />
+                      <a class="post-more" href="<?= $PostRelated['url'] ?>">Leer mas</a>
+                    <?php endif ?>
+                    </div>
                   </div>
-                  <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
                 </div>
                 <?php
               }

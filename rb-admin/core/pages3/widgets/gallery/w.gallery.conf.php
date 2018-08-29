@@ -33,6 +33,19 @@
 				</label>
 			</div>
 		</div>
+		<div class="cols-container">
+			<div class="cols-6-md spacing-right">
+				<label>
+					<span>Tipo de link</span>
+					<select name="galleries_link" id="galleries_link">
+						<option value="0">Carga en otro pagina</option>
+						<option value="1">Carga en la misma pagina (Asincrono)</option>
+					</select>
+				</label>
+			</div>
+			<div class="cols-6-md spacing-left">
+			</div>
+		</div>
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="galleries_id" value="" /> <!-- ID UNICO DEL BLOQUE -->
@@ -54,6 +67,7 @@ $(document).ready(function() {
     $('#galleries_quantity').val(pva.quantity);
 		$('#galleries_group').val(pva.group);
 		$('#galleries_limit').val(pva.limit);
+		$('#galleries_link').val(pva.link);
     $('#galleries_class').val(galleries_class);
 
     $(".bg-opacity").show();
@@ -69,7 +83,7 @@ $(document).ready(function() {
 		// -- La clase CSS
 		$('#'+ galleries_id).attr('data-class', $('#galleries_class').val());
 		// -- Creamos cadena con valores en formato JSON y asingamos
-		var galleries_values_string = '{"quantity":'+ $('#galleries_quantity').val() +', "group" : "'+ $('#galleries_group').val() +'", "limit" : "'+ $('#galleries_limit').val() +'"}';
+		var galleries_values_string = '{"quantity":'+ $('#galleries_quantity').val() +', "group" : "'+ $('#galleries_group').val() +'", "limit" : "'+ $('#galleries_limit').val() +'", "link" : '+ $('#galleries_link').val() +'}';
 		$('#'+ galleries_id).attr('data-values', galleries_values_string );
 
 		$('.bg-opacity, #editor-galleries').hide();

@@ -7,29 +7,43 @@ endif;
 while ($row = $result->fetch_assoc()):
 ?>
   <li class="grid-1">
-    <div class="cover-img">
-    <?php
-      if(rb_file_type($row['type']) == "image"):
-        ?>
-        <a class="fancybox" rel="group" href="../rb-media/gallery/<?= utf8_encode($row['src']) ?>"> <img src="../rb-media/gallery/tn/<?= utf8_encode($row['tn_src']) ?>" /></a>
+    <label>
+      <div class="cover-img" style="background-image:url('<?= G_SERVER ?>/rb-media/gallery/tn/<?= $row['src'] ?>')" title="<?= $row['src'] ?>">
         <?php
-      else:
-        if( rb_file_type( $row['type'] )=="pdf" ) echo "<img src=\"img/pdf.png\" alt=\"png\" />";
-        if( rb_file_type( $row['type'] )=="word" ) echo "<img src=\"img/doc.png\" alt=\"png\" />";
-        if( rb_file_type( $row['type'] )=="excel" ) echo "<img src=\"img/xls.png\" alt=\"png\" />";
-      endif;
-    ?>
-      <input class="checkbox" id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
-      <span class="filename">
-        <?= utf8_encode($row['src']) ?>
-      </span>
-      <span class="edit"><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $row['id'] ?>">
-        <img src="img/edit-black-16.png" alt="icon" />
-      </a></span>
-      <span class="delete"><a href="#" style="color:red" class="del-item" data-id="<?= $row['id'] ?>">
-        <img src="img/del-black-16.png" alt="icon" />
-      </a></span>
-    </div>
+        switch( rb_file_type( $row['type'] ) ){ // Mostrar un icono de algunos archivos permitidos en el sistema
+          case 'pdf':
+          ?>
+          <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/pdf.png" alt="Others files" />
+          <?php
+          break;
+          case 'word':
+          ?>
+          <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/doc.png" alt="Others files" />
+          <?php
+          break;
+          case 'excel':
+          ?>
+          <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/xls.png" alt="Others files" />
+          <?php
+          break;
+        }
+        ?>
+        <input class="checkbox" id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
+        <span class="filename truncate">
+          <a target="_blank" class="fancybox" rel="group" href="<?= G_SERVER ?>/rb-media/gallery/<?= utf8_encode($row['src']) ?>"><?= utf8_encode($row['src']) ?></a>
+        </span>
+        <span class="edit">
+          <a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $row['id'] ?>">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </a>
+        </span>
+        <span class="delete">
+          <a title="Eliminar" href="#" style="color:red" class="del-item" data-id="<?= $row['id'] ?>">
+            <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+          </a>
+        </span>
+      </div>
+    </label>
   </li>
 <?php
 endwhile;

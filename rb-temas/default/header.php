@@ -9,7 +9,7 @@
 		<meta property="og:title" content="<?= rm_title ?>"/>
 		<meta property="og:image" content="<?= rm_page_image ?>"/>
 		<meta property="og:image:width" content="476" />
-    <meta property="og:image:height" content="249" />
+		<meta property="og:image:height" content="249" />
 		<meta property="og:site_name" content="<?= rm_titlesite ?>"/>
 		<meta property="og:description" content="<?= rm_metadescription ?>" />
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles.css">
@@ -17,26 +17,24 @@
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/font-awesome.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/styles-add.css">
 		<link rel="stylesheet" href="<?= rm_urltheme ?>css/responsive.css">
+		<link rel="stylesheet" href="<?= rm_urltheme ?>css/animations.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-admin/css/frontend-bar.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page-responsive.css">
-		<?php if(defined('rm_css')): ?>
- 		<?= rb_css_list(rm_css) ?>
-		<?php endif ?>
-		<link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
+		<?php if(defined('rm_css')) rb_css_list(rm_css) ?><link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<link rel="apple-touch-icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<!-- jquery -->
-	  <script src="<?= rm_urltheme ?>js/jquery-1.11.2.min.js"></script>
+		<script src="<?= rm_urltheme ?>js/jquery-1.11.2.min.js"></script>
 		<script src="<?= rm_urltheme ?>js/jquery-migrate-1.2.1.js"></script>
 		<!-- parallax -->
 		<script src="<?= rm_urltheme ?>js/parallax.js"></script>
 		<!-- fancy box -->
-	  <link rel="stylesheet" href="<?= rm_urltheme ?>res/fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
-	  <script src="<?= rm_urltheme ?>res/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+		<link rel="stylesheet" href="<?= rm_urltheme ?>res/fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
+		<script src="<?= rm_urltheme ?>res/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
 		<script src="<?= rm_urltheme ?>res/fancybox/source/jquery.fancybox.pack.js"></script>
 		<script src="<?= rm_urltheme ?>res/fancybox/source/helpers/jquery.fancybox-media.js"></script>
 		<!-- camera plugin -->
-  	<link rel="stylesheet" href="<?= rm_urltheme ?>res/camera/css/camera.css">
+		<link rel="stylesheet" href="<?= rm_urltheme ?>res/camera/css/camera.css">
 		<script src="<?= rm_urltheme ?>res/camera/scripts/jquery.easing.1.3.js"></script>
 		<script src="<?= rm_urltheme ?>res/camera/scripts/camera.min.js"></script>
 		<!-- functions js additional -->
@@ -69,25 +67,6 @@
 					event.preventDefault();
 					$('.bg, .menu').hide();
 				});
-				// Formulario Contacto
-				/*$('#fcontact').submit(function (){
-					event.preventDefault();
-					$.ajax({
-						method: "post",
-						url: "<?= rm_url ?>/rb-script/modules/rb-mailer/mailer.array.recaptcha.php",
-						data: $( this ).serialize()
-					})
-					.done(function( data ) {
-						if(data.result){
-							console.log(data);
-						  $('#fcontact').slideUp();
-							$('.result').html('<h2 style="color:green">'+data.msg+'</h2>');
-						}else{
-							console.log(data);
-						  $('.result').html('<h2 style="color:red">'+data.msg+'</h2>');
-						}
-					});
-				});*/
 			});
 		</script>
 	</head>

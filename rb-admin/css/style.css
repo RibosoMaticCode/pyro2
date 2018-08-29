@@ -580,9 +580,17 @@ ul#grid{
 	background: #eee;
 	box-shadow: inset 0 0 15px rgba(0,0,0,.1),inset 0 0 0 1px rgba(0,0,0,.05);
 	position:relative;
+	height: 120px;
+	background-position: center;
+	background-size: cover;
 }
-.cover-img img{
-	width:100%;
+.cover-img span a{
+	color:gray;
+}
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .cover-img > a{
 	display:table-cell;
@@ -601,19 +609,30 @@ ul#grid{
 }
 .cover-img span.edit{
 	position:absolute;
-	bottom:0;
-	right:18px;
-	display:none;
+	display: none;
 	text-align:center;
-	border-top:1px solid #DEDEDE;
+	left: 20%;
+	top: 50%;
+	transform: translate(0, -50%);
 }
 .cover-img span.delete{
 	position:absolute;
-	bottom:0;
-	right:0;
-	display:none;
+	display: none;
 	text-align:center;
-	border-top:1px solid #DEDEDE;
+	right: 20%;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+.cover-img span i{
+	color:#fff;
+	font-size:1.6em;
+	text-shadow:1px 1px 5px #000;
+}
+.cover-img .other-file{
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform:translate(-50%, -50%);
 }
 .cover-img span.filename{
 	position:absolute;
@@ -621,7 +640,6 @@ ul#grid{
 	bottom:0;
 	overflow: hidden;
 	font-size: .8em;
-	font-weight: bold;
 	padding: 4px 0;
 	text-align: center;
 	background-color: #fff;
@@ -631,6 +649,9 @@ ul#grid{
 }
 .cover-img:hover > span{
 	display:block;
+}
+.grid-1 label{
+	margin: 0;
 }
 
 /* BIBLIOTECA DE MEDIOS */

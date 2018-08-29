@@ -15,7 +15,7 @@ if(isset($_GET["id"])){
     <div id="toolbar-buttons">
       <span class="post-submit">
         <input class="submit" name="guardar" type="submit" value="Guardar" />
-        <a href="../rb-admin/?pag=files"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=explorer"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
       </span>
     </div>
   </div>
@@ -24,7 +24,30 @@ if(isset($_GET["id"])){
       <div class="seccion-body">
         <div class="files-container">
           <picture>
-            <img src="<?= G_SERVER ?>/rb-media/gallery/<?= $row['src'] ?>" alt="previo" />
+            <?php
+            switch( rb_file_type( $row['type'] ) ){ // Mostrar un icono de algunos archivos permitidos en el sistema
+              case 'pdf':
+              ?>
+              <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/pdf.png" alt="Others files" />
+              <?php
+              break;
+              case 'word':
+              ?>
+              <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/doc.png" alt="Others files" />
+              <?php
+              break;
+              case 'excel':
+              ?>
+              <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/xls.png" alt="Others files" />
+              <?php
+              break;
+              default:
+              ?>
+              <img src="<?= G_SERVER ?>/rb-media/gallery/<?= $row['src'] ?>" alt="previo" />
+              <?php
+              break;
+            }
+            ?>
           </picture>
           <h3 class="subtitle">Nombre del archivo: <?php if(isset($row))echo $row['src'] ?></h3>
           <div>

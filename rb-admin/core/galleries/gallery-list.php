@@ -5,14 +5,14 @@ if(G_USERTYPE == "admin"):
           FROM photo
           WHERE album_id = a.id
           ) AS nrophotos
-          FROM  `albums` a");
+          FROM  `albums` a ORDER BY fecha DESC");
 else:
   $q = $objDataBase->Ejecutar("SELECT a . * , (
           SELECT COUNT( id )
           FROM photo
           WHERE album_id = a.id
           ) AS nrophotos
-          FROM  `albums` a WHERE usuario_id =".G_USERID);
+          FROM  `albums` a WHERE usuario_id =".G_USERID. " ORDER BY fecha DESC");
 endif;
 while ($row = $q->fetch_assoc()):
   $photo = rb_get_photo_details_from_id($row['photo_id']);

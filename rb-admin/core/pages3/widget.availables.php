@@ -14,6 +14,7 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/editor/w.editor.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/gallery/w.gallery.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/pubs/w.pubs.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/youtube/w.youtube.init.php';
+include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
 ?>
 <div id="editor-widget" class="editor-window">
   <script>

@@ -47,6 +47,7 @@ $(document).ready(function() {
                 <th><h3>Descripcion</h3></th>
                 <th><h3>Acceso</h3></th>
                 <th><h3>Niveles</h3></th>
+                <th><h3>Previo</h3></th>
                 <th colspan="2"><h3>Acciones</h3></th>
               </tr>
              </thead>

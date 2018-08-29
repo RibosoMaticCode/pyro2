@@ -81,6 +81,26 @@
 				</label>
 			</div>
 		</div>
+		<div class="cols-container">
+			<div class="cols-6-md spacing-right">
+				<label>
+					<span>Breve descripcion:</span>
+					<select name="post1_desc" id="post1_desc" >
+						<option value="0">No mostrar</option>
+						<option value="1">Mostrar</option>
+					</select>
+				</label>
+			</div>
+			<div class="cols-6-md spacing-left">
+				<label>
+					<span>Link "ver más":</span>
+					<select name="post1_link" id="post1_link" >
+						<option value="0">No mostrar</option>
+						<option value="1">Mostrar</option>
+					</select>
+				</label>
+			</div>
+		</div>
 		<!--<div class="cols-container">
 			<div class="cols-12-md">
 				<label>
@@ -117,6 +137,8 @@ $(document).ready(function() {
     $('#post1_category').val(pva.cat);
     $('#post1_count').val(pva.count);
     $('#post1_order').val(pva.ord);
+		$('#post1_desc').val(pva.desc);
+		$('#post1_link').val(pva.link);
     $("input[name='post1_type'][value='"+pva.typ+"']").prop('checked', true);
     $('#post1_class').val(post1_class);
     $(".bg-opacity").show();
@@ -139,7 +161,7 @@ $(document).ready(function() {
 		var post1_type = $('input[name=post1_type]:checked').val();
 		if (post1_type=="") post1_type = 0;
 
-		var post1_values_string = '{"cat":'+post1_category+',"count":'+post1_count+',"ord":"'+post1_order+'","tit":"'+post1_title+'","typ":'+post1_type+'}';
+		var post1_values_string = '{"cat":'+post1_category+',"count":'+post1_count+',"ord":"'+post1_order+'","tit":"'+post1_title+'","typ":'+post1_type+', "desc": '+$('#post1_desc').val()+', "link": '+$('#post1_link').val()+'}';
 		console.log(post1_values_string);
 		$('#'+ post1_id).attr('data-values', post1_values_string );
 		/*if ($('#$post1_showimg').is(':checked')) {

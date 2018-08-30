@@ -119,6 +119,7 @@ rb_set_values_options('nivel_user_register', $_POST['nivel_user_register']);
 rb_set_values_options('alcance', $_POST['alcance']);
 rb_set_values_options('sidebar', $_POST['sidebar']);
 rb_set_values_options('sidebar_pos', $_POST['sidebar_pos']);
+rb_set_values_options('sidebar_id', $_POST['sidebar_id']);
 
 rb_set_values_options('message_config_restrict', $string_json_restric);
 rb_set_values_options('user_superadmin', $user_superadmin_string);

@@ -61,6 +61,7 @@ $opciones_valores = array(
 	"version" => "2.0.5",
 	"sidebar" => "0",
 	"sidebar_pos" => "left",
+	"sidebar_id" => "0",
 	"terms_url" => "",
 	"index_custom" => "",
 	"favicon" => "0",

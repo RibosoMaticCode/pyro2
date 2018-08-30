@@ -164,6 +164,17 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               Privado - para acceder al index tendra que loguearse previamente
             </label>
             <label>Barra lateral de blog</label>
+            <label>
+              <select name="sidebar_id">
+                <option value="0">Por defecto</option>
+                <?php
+                $q = $objDataBase->Ejecutar("SELECT * FROM paginas ORDER BY titulo");
+                while($r = $q->fetch_assoc()):
+                  ?><option <?php if( rb_get_values_options('sidebar_id') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
+                endwhile;
+                ?>
+              </select>
+            </label>
             <span class="info">Configuracion de visualizacion de la barra lateral.</span>
             <label class="lbl-listoptions">
               <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />

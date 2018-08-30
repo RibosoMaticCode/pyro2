@@ -19,7 +19,7 @@ while ($row = $q->fetch_assoc()):
 ?>
 <tr>
   <td><input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" /></td>
-  <td><img style="max-width:70px" src="<?= $photo['file_url'] ?>" alt="Imagen portada" /></td>
+  <td><img style="max-width:70px" src="<?= $photo['thumb_url'] ?>" alt="Imagen portada" /></td>
   <td>
     <h3><?= $row['nombre']?></h3>
     <div class="options">
@@ -29,6 +29,7 @@ while ($row = $q->fetch_assoc()):
     </div>
   </td>
   <td><?= $row['galeria_grupo']?></td>
+  <td><a target="_blank" href="<?= G_SERVER ?>/?gallery=<?= $row['id']?>">Link</a></td>
   <td><?= $row['fecha']?></td>
   <td><?= $row['nrophotos']?></td>
 </tr>

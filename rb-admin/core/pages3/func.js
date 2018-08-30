@@ -340,8 +340,9 @@ $(document).ready(function() {
     event.preventDefault();
     var pagina_title = $('#titulo').val();
     var pagina_id = $('#pagina_id').val();
-    var menu_id = $('select[name=menu]').val()
-    var pagina_enlace = $('#pagina_enlace').val()
+    var menu_id = $('select[name=menu]').val();
+    var pagina_enlace = $('#pagina_enlace').val();
+    var pagina_desc = $('#pagina_desc').val();
     var mode = $('#mode').val();
 
     if(pagina_title == "" ){
@@ -483,7 +484,7 @@ $(document).ready(function() {
     $.ajax({
       url: "core/pages3/page.save.php",
       method: 'post',
-      data: "title="+pagina_title+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id,
+      data: "title="+pagina_title+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id,
       beforeSend: function(){
         $('#img_loading, .bg-opacity').show();
       }

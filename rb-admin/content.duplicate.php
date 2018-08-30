@@ -88,7 +88,9 @@ if(isset($_GET['sec'])){
 				'addon'=> $r['addon'],
 				'menu_id'=> $r['menu_id'],
 				'show_header' => $r['show_header'],
-				'show_footer' => $r['show_footer']
+				'header_custom_id' => $r['header_custom_id'],
+				'show_footer' => $r['show_footer'],
+				'footer_custom_id' => $r['footer_custom_id']
 			];
 
 			$row = $objDataBase->Insert( 'paginas', $campos );

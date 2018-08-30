@@ -1763,7 +1763,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
     $addons = '';
   }
 
-  echo '<div class="'.$ext_class.' clear" style="'.$styles_ext.'" '.$addons.'>';
+  if($type=="page") echo '<div class="'.$ext_class.' clear" style="'.$styles_ext.'" '.$addons.'>';
   //BLoque interno
   $default_class = "inner-content "; // default
   $style_inwidth = ""; // default
@@ -1788,7 +1788,8 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
 
   $styles_in = $style_inheight.$style_inbgcolor.$style_inbgimage.$style_inpaddingtop.$style_inpaddingright.$style_inpaddingbottom.$style_inpaddingleft.$style_inwidth;
 
-  echo '<div class="'.$default_class.' '.$in_class.' clear" style="'.$styles_in.'">';
+  if($type=="page") echo '<div class="'.$default_class.' '.$in_class.' clear" style="'.$styles_in.'">';
+  if($type=="sidebar") echo '<div class="box'.$in_class.' clear" style="'.$styles_in.'">';
   echo '<div class="cols">';
   $array_cols =$box['columns'];
   foreach ($array_cols as $col):
@@ -1813,6 +1814,18 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
           case 'htmlraw':
             echo '<div class="'.$widget['widget_class'].'">';
             echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
+            echo '</div>';
+            break;
+          case 'sidebar':
+            echo '<div class="'.$widget['widget_class'].'">';
+            $SidebarId = $widget['widget_values']['name'];
+            $Sidebar = rb_show_specific_page($SidebarId);
+            $array_content = json_decode($Sidebar['contenido'], true);
+            foreach ($array_content['boxes'] as $box) {
+              rb_show_block($box, "sidebar");
+            }
+            //echo $sidebar_id;
+            //rb_show_block($sidebar_id, "sidebar");
             echo '</div>';
             break;
           case 'slide':
@@ -1914,32 +1927,34 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
             $Galleries = rb_list_galleries($limit, $groupname);
             $CountGalleries = count($Galleries);
             $porcent_width = round(100/$show_by_file,2);
-            $i=1;
+            $i=1; // contador por fila
+            $j=1; // contador general
             foreach ($Galleries as $Gallery) {
               if($i==1){
-                echo '<div class="rb-gallery-container">';
+                echo '<div class="rb-gallery-container">'; // open rb-gallery-container
               }
-              echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">';
-              echo '<div>';
-              echo '<div class="rb-bg-gallery" style="background-image:url(\''.$Gallery['url_bgimagetn'].'\')" />';
-              echo '</div>'; // close bg image
-              echo '<div class="rb-gallery-info">';
-              if($link==0)
-                echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">'.$Gallery['nombre'].'</a></span>';
-              if($link==1)
-                echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">'.$Gallery['nombre'].'</a></span>';
-              echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
-              echo '</div>'; // close rb-gallery-info
-              echo '</div>'; // close div
+              echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">'; // open rb-gallery
+                echo '<div>'; // open div (no name)
+                echo '<div class="rb-bg-gallery" style="background-image:url(\''.$Gallery['url_bgimagetn'].'\')" />'; // open rb-bg-gallery
+                echo '</div>'; // close rb-bg-gallery
+                echo '<div class="rb-gallery-info">'; // open rb-gallery-info
+                if($link==0)
+                  echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">'.$Gallery['nombre'].'</a></span>';
+                if($link==1)
+                  echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">'.$Gallery['nombre'].'</a></span>';
+                echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
+                echo '</div>'; // close rb-gallery-info
+                echo '</div>'; // close div
               echo '</div>'; // close rb-gallery
-              if($i==$CountGalleries || $i==$show_by_file){
-                echo '</div>';
+              if($j==$CountGalleries || $i==$show_by_file){
+                echo '</div>'; // Close rb-gallery-container
                 $i=1;
               }else{
                 $i++;
               }
+              $j++;
             }
-            echo '</div>';
+            echo '</div>'; // close rb-cover-galleries
             ?>
             </div>
             <div class="rb-gallery-photos">
@@ -1973,7 +1988,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
               $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
               foreach ($Posts as $PostRelated) {
                 ?>
-                <div class="post-list">
+                <div class="post-list clear">
                   <div class="post">
                     <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
                     <!--<span class="post-category"></span>-->
@@ -2039,7 +2054,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   endforeach; // end columns
   echo '</div>'; //end cols
   echo '</div>'; //end inner box
-  echo '</div>'; //end outer box
+  if($type=="page") echo '</div>'; //end outer box
 }
 /*
 * Muestra la cabecera de la plantilla, por defecto el archivo se llama header.php, tambien se puede adicional algunos otros,

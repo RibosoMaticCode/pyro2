@@ -186,6 +186,9 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 																case 'post1':
 																	include 'widgets/pubs/w.pubs.php';
 																	break;
+																case 'sidebar':
+																	include 'widgets/sidebar/w.sidebar.php';
+																	break;
 												    	}
 														}
 														unset($data_saved_id);
@@ -221,6 +224,16 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 		<strong>Más configuraciones</strong>
 	</div>
 	<div class="editor-body">
+		<!-- SECCION SUBIR IMAGENES -->
+		<section id="post-sub" class="seccion">
+			<div class="seccion-header">
+				<h3>Descripción</h3>
+				<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+			</div>
+			<div class="seccion-body">
+				<textarea rows="3" name="description" id="pagina_desc"><?php if(isset($row)) echo $row['description']; else echo "" ?></textarea>
+			</div>
+		</section>
 		<!-- SECCION SUBIR IMAGENES -->
 		<section id="post-sub" class="seccion">
 			<div class="seccion-header">

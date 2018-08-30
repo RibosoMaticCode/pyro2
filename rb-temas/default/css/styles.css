@@ -104,6 +104,9 @@ a{
 .box{
 	margin-bottom: 10px;
 }
+.box img{
+	max-width: 100%;
+}
 
 /* background home */
 .bg-intro-inner{

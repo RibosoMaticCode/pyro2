@@ -7,32 +7,38 @@ require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once ABSPATH.'rb-script/funciones.php';
 
-$titulo = $_POST['title'];
-if(empty($_POST['title_enlace'])) $titulo_enlace = rb_cambiar_nombre(utf8_encode($titulo));
+if(empty($_POST['title_enlace'])) $titulo_enlace = rb_cambiar_nombre(utf8_encode(trim($_POST['title'])));
 else $titulo_enlace = $_POST['title_enlace'];
-$contenido = $_POST['content'];
-$menu_id = 0; // Obsoleto
-$autor_id = G_USERID;
 $mode = $_POST['mode'];
 $pagina_id = $_POST['pid'];
-$sh = $_POST['sh'];
-$sf = $_POST['sf'];
-$hcust_id = $_POST['h_cust_id'];
-$fcust_id = $_POST['f_cust_id'];
+
+$valores = [
+	"fecha_creacion" => date('Y-m-d G:i:s'),
+	"titulo" => trim($_POST['title']),
+	"titulo_enlace" => $titulo_enlace,
+	"description" => $_POST['page_desc'],
+	"autor_id" => G_USERID,
+	"contenido" => $_POST['content'],
+	"menu_id" => 0,
+	"show_header" => $_POST['sh'],
+	"show_footer" => $_POST['sf'],
+	"header_custom_id" => $_POST['h_cust_id'],
+	"footer_custom_id" => $_POST['f_cust_id']
+];
 
 if($mode=="new"):
-	$q = "INSERT INTO paginas (fecha_creacion, titulo, titulo_enlace, autor_id, contenido, menu_id, show_header, show_footer, header_custom_id, footer_custom_id ) VALUES (NOW(), '$titulo', '$titulo_enlace', $autor_id, '$contenido', $menu_id, $sh, $sf, '$hcust_id', '$fcust_id')";
-	$result = $objDataBase->Insertar($q);
-	if($result):
-		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina guardada.', 'url' => G_SERVER, 'last_id' => $result['insert_id'], 'reload' => true );
+	$result = $objDataBase->Insert('paginas', $valores);
+	if($result['result']):
+		$ultimo_id = $result['insert_id'];
+		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina guardada.', 'url' => G_SERVER, 'last_id' => $ultimo_id, 'reload' => true );
 		die(json_encode($arr));
 	else:
 		$arr = array('resultado' => 'bad', 'contenido' => $result['error'] );
 		die(json_encode($arr));
 	endif;
 elseif($mode=="update"):
-	$q = "UPDATE paginas SET titulo='$titulo', titulo_enlace = '$titulo_enlace', contenido = '$contenido', menu_id = $menu_id, show_header = $sh, show_footer = $sf, header_custom_id = '$hcust_id', footer_custom_id = '$fcust_id' WHERE id= $pagina_id";
-	if($result = $objDataBase->Ejecutar($q)):
+	$result = $objDataBase->Update('paginas', $valores, ["id" => $pagina_id]);
+	if($result['result']):
 		$arr = array('resultado' => 'ok', 'contenido' => 'Contenido actualizado', 'url' => G_SERVER, 'last_id' => $pagina_id, 'reload' => false );
 		die(json_encode($arr));
 	else:

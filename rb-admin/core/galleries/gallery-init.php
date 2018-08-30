@@ -89,6 +89,7 @@ $(document).ready(function() {
                       <th width="80px"><h3>Portada</h3></th>
                       <th><h3>Nombre</h3></th>
                       <th width="250px;"><h3>Grupo</h3></th>
+                      <th width="250px;"><h3>Visualizar</h3></th>
                       <th width="250px;"><h3>Fecha</h3></th>
                       <th width="30px;"><h3>Imagenes</h3></th>
                     </tr>

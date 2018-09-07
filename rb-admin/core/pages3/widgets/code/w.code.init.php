@@ -4,8 +4,9 @@ $widget = [
   'link_action' => 'addHtmlRaw',
   'dir' => 'code',
   'name' => 'Código',
-  'desc' => 'Editor de HTML',
-  'filejs' => 'file.js'
+  'desc' => 'Editor de código HTML',
+  'filejs' => 'file.js',
+  'img' => 'browser.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addHtmlRaw").click (function (event) {
       url: "core/pages3/widgets/code/w.code.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

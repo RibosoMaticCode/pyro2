@@ -4,8 +4,9 @@ $widget = [
   'link_action' => 'addHtml',
   'dir' => 'editor',
   'name' => 'Editor',
-  'desc' => 'Editor de HTML',
-  'filejs' => 'file.js'
+  'desc' => 'Editor de texto WYSIWYG para HTML',
+  'filejs' => 'file.js',
+  'img' => 'editor.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addHtml").click (function (event) {
       url: "core/pages3/widgets/editor/w.editor.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

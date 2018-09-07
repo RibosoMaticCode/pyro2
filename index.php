@@ -220,6 +220,7 @@ if(isset($_GET['pa'])){
 }elseif( isset( $PageId ) ){
 	$Page = rb_show_specific_page( $PageId );
 	if(!$Page) header('Location: '.G_SERVER.'/404.php');
+	//if($Page!=0) header('Location: '.G_SERVER.'/404.php'); -- en caso de no ser pagina normal, no mostrar
 	if($Page==false){ // Sino es una pagina del sistema sino una pagina externa independiente html/php
 		if($PageId=="panel" && G_ACCESOUSUARIO==0):
 			header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
@@ -246,7 +247,6 @@ if(isset($_GET['pa'])){
 		$show_footer = $Page['show_footer'];
 		$block_header_id = $Page['header_custom_id'];
 		$block_footer_id = $Page['footer_custom_id'];
-		$rm_menu_name = $Page['addon'];
 		$rm_url_page = rb_url_link('pag', $Page['id']);
 
 		$file = ABSPATH.'rb-script/modules/pages.view3/page.php';

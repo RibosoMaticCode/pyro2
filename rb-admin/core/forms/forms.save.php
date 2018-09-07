@@ -16,7 +16,7 @@ $columns_vals = [
 
 // tipo de accion
 if( $mode=="new" ){
-	$columns_vals['name_id'] => rb_cambiar_nombre( utf8_encode( trim($_POST['name']) ) );
+	$columns_vals['name_id'] = rb_cambiar_nombre( utf8_encode( trim( $_POST['name'] ) ) );
 	$result = $objDataBase->Insert('forms', $columns_vals);
 	if( $result['result'] ){
 		//$ultimo_id=$result['insert_id'];

@@ -17,13 +17,14 @@ $valores = [
 	"titulo" => trim($_POST['title']),
 	"titulo_enlace" => $titulo_enlace,
 	"description" => $_POST['page_desc'],
+	"tags" => $_POST['page_tags'],
 	"autor_id" => G_USERID,
 	"contenido" => $_POST['content'],
-	"menu_id" => 0,
 	"show_header" => $_POST['sh'],
 	"show_footer" => $_POST['sf'],
 	"header_custom_id" => $_POST['h_cust_id'],
-	"footer_custom_id" => $_POST['f_cust_id']
+	"footer_custom_id" => $_POST['f_cust_id'],
+	"type" => $_POST['type']
 ];
 
 if($mode=="new"):

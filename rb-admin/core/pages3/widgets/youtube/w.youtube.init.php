@@ -5,7 +5,8 @@ $widget = [
   'dir' => 'youtube',
   'name' => 'Video de Youtube',
   'desc' => 'Lista de reprodución de Youtube',
-  'filejs' => 'file.js'
+  'filejs' => 'file.js',
+  'img' => 'youtube.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addYoutube1").click (function (event) {
       url: "core/pages3/widgets/youtube/w.youtube.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

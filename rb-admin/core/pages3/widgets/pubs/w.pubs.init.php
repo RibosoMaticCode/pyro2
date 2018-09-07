@@ -4,8 +4,9 @@ $widget = [
   'link_action' => 'addPost1',
   'dir' => 'pubs',
   'name' => 'Publicaciones',
-  'desc' => 'Muestra listado de publicaciones',
-  'filejs' => 'file.js'
+  'desc' => 'Muestra un listado de publicaciones',
+  'filejs' => 'file.js',
+  'img' => 'pubs.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addPost1").click (function (event) {
       url: "core/pages3/widgets/pubs/w.pubs.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

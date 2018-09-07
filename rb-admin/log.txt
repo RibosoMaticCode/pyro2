@@ -2,10 +2,14 @@ BlackPyro CMS - Gestor Basico de Contenidos
 ===========================================
 PHP, MySQL, JavaScript (jquery), HTML 5, CSS3
 
-Desarrollo: Jesus Liñan < jesusvld@gmail.com >
+Desarrollo: Yustus Liñan < jesusvld@gmail.com >
 Web: ribosomatic.com
 
 Licencia: ../rb-admin/licencia.txt
+
+version 2.0.6 pyro2 (septiembre 18)
+-------------------
+- Cabecera, Pie de pagina y Barra Lateral edicion similar a una pagina.
 
 version 2.0.5 pyro2 (junio 18)
 -------------------

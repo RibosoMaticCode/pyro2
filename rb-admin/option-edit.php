@@ -89,7 +89,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <select  name="inicial">
               <option value="0">Por defecto</option>
               <?php
-              $q = $objDataBase->Ejecutar("SELECT * FROM paginas ORDER BY titulo");
+              $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 ORDER BY titulo");
 
               while($r = $q->fetch_assoc()):
                 ?><option <?php if( rb_get_values_options('initial') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
@@ -97,10 +97,60 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               ?>
             </select>
             <label>Bloque de cabecera personalizado</label>
-            <input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />
+            <!--<input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />-->
+            <?php
+  					$qh = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 ORDER BY titulo");
+  					?>
+  					<select name="block_header_id">
+  						<option value="0">Ninguno</option>
+  						<?php while($header = $qh->fetch_assoc()): ?>
+  						<option value="<?= $header['id'] ?>" <?php if($header['id']==rb_get_values_options('block_header_ids')) echo "selected" ?>><?= $header['titulo'] ?></option>
+  						<?php endwhile ?>
+  					</select>
 
             <label>Bloque de pie de pagina personalizado</label>
-            <input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />
+            <!--<input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />-->
+            <?php
+  					$qf = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2 ORDER BY titulo");
+  					?>
+            <select name="block_footer_id">
+  						<option value="0">Ninguno</option>
+  						<?php while($Footer = $qf->fetch_assoc()): ?>
+  						<option value="<?= $Footer['id'] ?>" <?php if($Footer['id']==rb_get_values_options('block_footer_ids')) echo "selected" ?>><?= $Footer['titulo'] ?></option>
+  						<?php endwhile ?>
+  					</select>
+
+            <label>Barra lateral de blog</label>
+            <label>
+              <select name="sidebar_id">
+                <option value="0">Por defecto</option>
+                <?php
+                $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=3 ORDER BY titulo");
+                while($r = $q->fetch_assoc()):
+                  ?><option <?php if( rb_get_values_options('sidebar_id') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
+                endwhile;
+                ?>
+              </select>
+            </label>
+            <span class="info">Configuracion de visualizacion de la barra lateral.</span>
+            <label class="lbl-listoptions">
+              <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
+              Ocultar
+            </label>
+            <label class="lbl-listoptions">
+              <input name="sidebar" type="radio" value="1" <?php if(rb_get_values_options('sidebar')=='1') echo "checked=\"checked\""?> />
+              Mostrar
+            </label>
+            <div style="padding-left:15px">
+              <label class="lbl-listoptions">
+                <input name="sidebar_pos" type="radio" value="right" <?php if(rb_get_values_options('sidebar_pos')=='right') echo "checked=\"checked\""?> />
+                A la derecha
+              </label>
+              <label class="lbl-listoptions">
+                <input name="sidebar_pos" type="radio" value="left" <?php if(rb_get_values_options('sidebar_pos')=='left') echo "checked=\"checked\""?> />
+                A la izquierda
+              </label>
+            </div>
           </div>
         </div>
         <!-- Correos -->
@@ -163,37 +213,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="alcance" type="radio" value="1" <?php if(rb_get_values_options('alcance')=='1') echo "checked=\"checked\""?> />
               Privado - para acceder al index tendra que loguearse previamente
             </label>
-            <label>Barra lateral de blog</label>
-            <label>
-              <select name="sidebar_id">
-                <option value="0">Por defecto</option>
-                <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM paginas ORDER BY titulo");
-                while($r = $q->fetch_assoc()):
-                  ?><option <?php if( rb_get_values_options('sidebar_id') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
-                endwhile;
-                ?>
-              </select>
-            </label>
-            <span class="info">Configuracion de visualizacion de la barra lateral.</span>
-            <label class="lbl-listoptions">
-              <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
-              Ocultar
-            </label>
-            <label class="lbl-listoptions">
-              <input name="sidebar" type="radio" value="1" <?php if(rb_get_values_options('sidebar')=='1') echo "checked=\"checked\""?> />
-              Mostrar
-            </label>
-            <div style="padding-left:15px">
-              <label class="lbl-listoptions">
-                <input name="sidebar_pos" type="radio" value="right" <?php if(rb_get_values_options('sidebar_pos')=='right') echo "checked=\"checked\""?> />
-                A la derecha
-              </label>
-              <label class="lbl-listoptions">
-                <input name="sidebar_pos" type="radio" value="left" <?php if(rb_get_values_options('sidebar_pos')=='left') echo "checked=\"checked\""?> />
-                A la izquierda
-              </label>
-            </div>
+
           </div>
           <div class="cols-6-md col-padding">
             <label>Enlace amigable para el sitio web:</label>

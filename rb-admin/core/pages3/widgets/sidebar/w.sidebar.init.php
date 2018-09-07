@@ -5,7 +5,8 @@ $widget = [
   'dir' => 'sidebar',
   'name' => 'Barra lateral',
   'desc' => 'Configurar la barra lateral',
-  'filejs' => 'file.js'
+  'filejs' => 'file.js',
+  'img' => 'sidebar.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addSidebar").click (function (event) {
       url: "core/pages3/widgets/sidebar/w.sidebar.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

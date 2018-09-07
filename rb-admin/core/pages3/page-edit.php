@@ -3,16 +3,16 @@
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
-	$cons_art = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
-	$row= $cons_art->fetch_assoc();
+	$qp = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
+	$Page= $qp->fetch_assoc();
 	$mode = "update";
 }else{
 	$mode = "new";
 }
-$shead = isset($row) ? $row['show_header'] : 0;
-$sfoot = isset($row) ? $row['show_footer'] : 0;
-$hcustid = isset($row) ? $row['header_custom_id'] : 0;
-$fcustid = isset($row) ? $row['footer_custom_id'] : 0;
+$shead = isset($Page) ? $Page['show_header'] : 0;
+$sfoot = isset($Page) ? $Page['show_footer'] : 0;
+$hcustid = isset($Page) ? $Page['header_custom_id'] : 0;
+$fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script src="<?= G_SERVER ?>/rb-admin/core/pages3/func.js"></script>
@@ -24,49 +24,39 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 			<?php
 			if(isset($_GET["id"])){
 			?>
-			<a title="Presionar Control para cargar en una pestaña aparte" class="fancybox fancybox.iframe button" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank">Vista previa</a>
+			<a title="Presionar Control para cargar en una pestaña aparte" class="fancybox fancybox.iframe button" href="<?= G_SERVER ?>/?p=<?= $Page['id'] ?>" target="_blank">Vista previa</a>
 			<?php
 			}
 			?>
-			<a class="button" href="#"id="editCSSFile">Editar CSS adicionales</a>
-			<a class="button" href="#"id="showConfigPage">Mas configuraciones</a>
+			<a class="button" href="#" id="editCSSFile">Editar CSS adicionales</a>
+			<a class="button" href="#" id="showConfigPage">Mas configuraciones</a>
+			<a class="button" href="#" id="showFilesUpload"><i class="fa fa-upload"></i> Subir archivos</a>
 		</span>
 	</div>
 </div>
 <div class="wrap-content-editor"> <!-- antes container-page-edit -->
 	<section class="seccion" style="overflow:initial">
+		<div class="seccion-header">
+			<h3>Datos iniciales</h3>
+			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+		</div>
 		<div class="seccion-body">
 			<div class="wrap-input">
 				<label>Titulo de la página</label>
-				<input placeholder="Escribe el titulo de la página aquí" class="ancho" name="titulo" type="text" id="titulo" required value="<?php if(isset($row)) echo $row['titulo'] ?>" />
-				<input type="hidden" name="pagina_id" id="pagina_id" value="<?php if(isset($row)) echo $row['id']; else echo "0" ?>" />
+				<input placeholder="Escribe el titulo de la página aquí" class="ancho" name="titulo" type="text" id="titulo" required value="<?php if(isset($Page)) echo $Page['titulo'] ?>" />
+				<input type="hidden" name="pagina_id" id="pagina_id" value="<?php if(isset($Page)) echo $Page['id']; else echo "0" ?>" />
 				<input type="hidden" name="mode" id="mode" value="<?= $mode ?>" />
 			</div>
-			<label style="display:none">Menu asociado a la pagina
-				<span class="info">
-					Por defecto se establece como menu principal el establecido en las opciones generales. Sin embargo si desea especificar para esta pagina un menu diferente puede cambiarlo desde aqui. Por Ej. para una web que maneje contenido en diferentes idiomas.
-				</span>
-				<select id="menu_page" name="menu">
-					<?php
-					$result = $objDataBase->Ejecutar("SELECT * FROM menus");
-					$menu_id = isset($row) ? $row['menu_id'] : 0;
-					?>
-					<option value="0">[Ninguno]</option>
-					<?php
-					while($menu = $result->fetch_assoc()):
-						?>
-						<option <?php if($menu['id'] == $menu_id) echo " selected" ?> value="<?= $menu['id'] ?>"><?= $menu['nombre'] ?></option>
-						<?php
-					endwhile;
-					?>
-				</select>
-			</label>
-			<label>Url de la pagina
-				<span class="info">Url amigable (generado automaticamente, si se deja en blanco)</span>
-				<span style="background:#fffcdf;padding:5px;border: 1px solid #FFEB3B;">
-					<?= G_SERVER ?>/<input type="text" style="display:inline-block;width:auto;padding:0;background:none;border:0;border-bottom:1px solid gray;" name="pagina_enlace" id="pagina_enlace" value="<?php if(isset($row)) echo $row['titulo_enlace']; else echo "" ?>"  size="<?php if(isset($row)) echo strlen($row['titulo_enlace']); else echo "" ?>" />/</span>
-			</label>
-			<label class="editor-main-title"><i class="fa fa-th fa-lg" aria-hidden="true"></i> Estructura</label>
+			<p style="text-align:right"><a href="#" id="link-data-config">Mas opciones</a></p>
+		</div>
+	</section>
+	<section class="seccion" >
+		<div class="seccion-header">
+			<h3>Estructura</h3>
+			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+		</div>
+		<div class="seccion-body">
+			<!--<label class="editor-main-title"><i class="fa fa-th fa-lg" aria-hidden="true"></i> Estructura</label>-->
 			<div class="estructure">
 				<script>
 				$(document).ready(function() {
@@ -77,38 +67,25 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 				});
 				</script>
 				<ul id="boxes">
-				<?php if(isset($row)): ?>
+				<?php if(isset($Page)): ?>
 					<?php
-					$array_content = json_decode($row['contenido'], true);
-					// Testing
-					/*echo "<pre>";
-					print_r($array_content);
-					echo "</pre>";
-					die();*/
+					$array_content = json_decode($Page['contenido'], true);
 					foreach ($array_content['boxes'] as $boxes => $box) {
-						//echo "Save ID:".$box['box_save_id'];
 						if(isset($box['box_save_id'])){
 					    $box_save_id = $box['box_save_id'];
 					  }else{
 					    $box_save_id = 0;
 					  }
 					  if($box_save_id > 0){
-						//if($box['box_save_id']>0){
-							//$box_save_id = $box['box_save_id'];
-							// Consultar los datos del bloque
 							$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=$box_save_id");
 							$boxsave = $qb->fetch_assoc();
 							$box = json_decode($boxsave['contenido'], true);
 							$box_saved_css = " saved";
 							$box_save_title = '<span class="box-save-title">'.$boxsave['nombre'].'</span>';
-							/*echo "<pre>";
-							print_r($box);
-							echo "</pre>";*/
 						}else{
 							$box_save_id = 0;
 							$box_saved_css = "";
 							$box_save_title = '<a href="#" class="SaveBox"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a><span class="box-save-title"></span>';
-							/*print_r($box);*/
 						}
 						?>
 						<li id="<?= $box['box_id'] ?>" class="box <?= $box_saved_css ?>" data-id="<?= $box['box_id'] ?>" data-type="box"
@@ -124,14 +101,6 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 						      <i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
 						    </a>
 								<?= $box_save_title ?>
-								<!--<a href="#" class="SaveBox">
-						      <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
-						    </a>
-								<span class="box-save-title"></span>-->
-						    <!--<a class="toggle" href="#">
-						      <span class="arrow-up">&#9650;</span>
-						      <span class="arrow-down">&#9660;</span>
-						    </a>-->
 						    <a class="boxdelete" href="#" title="Eliminar">
 									<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
 								</a>
@@ -141,7 +110,6 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 									<?php
 									/* start columnas */
 								  $array_cols =$box['columns'];
-
 									foreach ($array_cols as $col) {
 										?>
 										<li id="<?= $col['col_id'] ?>" class="col" data-id="<?= $col['col_id'] ?>" data-type="col" data-class="<?= $col['col_class'] ?>" data-values='<?= json_encode ($col['col_values']) ?>'>
@@ -151,7 +119,7 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 										      <i class="fa fa-pencil" aria-hidden="true"></i> Personalizar
 										    </a>
 										    <a href="#" class="addNewWidget">
-										      <i class="fa fa-cube fa-lg" aria-hidden="true"></i> Añadir widget
+										      <i class="fa fa-cube fa-lg" aria-hidden="true"></i> Añadir componente
 										    </a>
 										    <a class="boxdelete" href="#" title="Eliminar">
 										      <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
@@ -218,110 +186,127 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 		</div>
 	</section>
 </div>
+<!-- DATOS PAGINAS MAS -->
+<div id="data-config" class="editor-window">
+	<div class="editor-header">
+		<strong>Otros datos</strong>
+	</div>
+	<div class="editor-body">
+		<label>Url de la pagina
+			<span class="info">Url amigable (generado automaticamente, si se deja en blanco)</span>
+			<span style="background:#fffcdf;padding:5px;border: 1px solid #FFEB3B;">
+				<?= G_SERVER ?>/<input type="text" style="display:inline-block;width:auto;padding:0;background:none;border:0;border-bottom:1px solid gray;" name="pagina_enlace" id="pagina_enlace" value="<?php if(isset($Page)) echo $Page['titulo_enlace']; else echo "" ?>"  size="<?php if(isset($Page)) echo strlen($Page['titulo_enlace']); else echo "" ?>" />/</span>
+		</label>
+		<label>Descripción<br />
+			<textarea rows="2" name="description" id="pagina_desc"><?php if(isset($Page)) echo $Page['description']; else echo "" ?></textarea>
+		</label>
+		<label>Tags<br />
+			<input type="text" name="tags" id="pagina_tags" value="<?php if(isset($Page)) echo $Page['tags']; else echo "" ?>" />
+		</label>
+		<label>Tipo de página</label>
+		<div class="cols-container">
+			<div class="cols-3-md">
+				<label>
+					<input type="radio" value="0" name="type" <?php if( isset($Page) && $Page['type']==0) echo "checked" ?> /> Normal
+				</label>
+			</div>
+			<div class="cols-3-md">
+				<label>
+					<input type="radio" value="1" name="type" <?php if( isset($Page) && $Page['type']==1) echo "checked" ?> /> Cabecera
+				</label>
+			</div>
+			<div class="cols-3-md">
+				<label>
+					<input type="radio" value="2" name="type" <?php if( isset($Page) && $Page['type']==2) echo "checked" ?> /> Pie de página
+				</label>
+			</div>
+			<div class="cols-3-md">
+				<label>
+					<input type="radio" value="3" name="type" <?php if( isset($Page) && $Page['type']==3) echo "checked" ?> /> Barra lateral
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="editor-footer">
+		<button class="button" id="data-config-btn-cancel">Cerrar</button>
+	</div>
+</div>
+<!-- start config page -->
+<div id="filesupload-config" class="editor-window">
+	<div class="editor-header">
+		<strong>Subir archivos</strong>
+	</div>
+	<div class="editor-body">
+		<?php
+		include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
+		?>
+	</div>
+	<div class="editor-footer">
+		<button class="button" id="filesupload-config-btn-cancel">Cerrar</button>
+	</div>
+</div>
 <!-- start config page -->
 <div id="page-config" class="editor-window">
 	<div class="editor-header">
 		<strong>Más configuraciones</strong>
 	</div>
 	<div class="editor-body">
-		<!-- SECCION SUBIR IMAGENES -->
-		<section id="post-sub" class="seccion">
-			<div class="seccion-header">
-				<h3>Descripción</h3>
-				<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-			</div>
-			<div class="seccion-body">
-				<textarea rows="3" name="description" id="pagina_desc"><?php if(isset($row)) echo $row['description']; else echo "" ?></textarea>
-			</div>
-		</section>
-		<!-- SECCION SUBIR IMAGENES -->
-		<section id="post-sub" class="seccion">
-			<div class="seccion-header">
-				<h3>Subir imagenes</h3>
-				<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-			</div>
-			<div class="seccion-body">
-			<?php
-			include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
-			?>
-			</div>
-		</section>
-		<!-- SECCION CABECERA FOOTER SHOW -->
-		<section id="page-config" class="seccion">
-			<div class="seccion-header">
-				<h3>Cabecera y pie de página</h3>
-				<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-			</div>
-			<div class="seccion-body cols-container">
-				<div class="cols-6-md">
-					<h4>Cabecera</h4>
-					<?php
-					//$shead = isset($row) ? $row['show_header'] : 0;
-					?>
-					<label>
-						<input type="radio" name="sheader" value="0" <?php if($shead==0) echo "checked" ?>> <span>Ninguna</span>
-					</label>
-					<label>
-						<input type="radio" name="sheader" value="1" <?php if($shead==1) echo "checked" ?>> <span>Incluir de la plantilla</span>
-					</label>
-					<label>
-						<input type="radio" name="sheader" value="2" <?php if($shead==2) echo "checked" ?>> <span>Personalizada</span>
-						<!--<select name="_sheader_custom_id">
-						<?php
-						$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=1");
-				    while($boxsave = $qb->fetch_assoc()):
-							?>
-							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
-							<?php
-						endwhile;
-						?>
-					</select>-->
-						<input name="sheader_custom_id" type="text" value="<?= $hcustid  ?>" />
-					</label>
-				</div>
-				<div class="cols-6-md">
-					<h4>Pie de Pagina</h4>
-					<?php
-					//$sfoot = isset($row) ? $row['show_footer'] : 0;
-					?>
-					<label>
-						<input type="radio" name="sfooter" value="0" <?php if($sfoot==0) echo "checked" ?>> <span>Ninguna</span>
-					</label>
-					<label>
-						<input type="radio" name="sfooter" value="1" <?php if($sfoot==1) echo "checked" ?>> <span>Incluir de la plantilla</span>
-					</label>
-					<label>
-						<input type="radio" name="sfooter" value="2" <?php if($sfoot==2) echo "checked" ?>> <span>Personalizada</span>
-						<!--<select name="_sfooter_custom_id">
-						<?php
-						$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=2");
-				    while($boxsave = $qb->fetch_assoc()):
-							?>
-							<option value="<?= $boxsave['id'] ?>"><?= $boxsave['nombre'] ?></option>
-							<?php
-						endwhile;
-						?>
-					</select>-->
-						<input name="sfooter_custom_id" type="text" value="<?= $fcustid  ?>" />
-					</label>
-				</div>
-				<!--<label>
-					<?php
-					$checkedh = "";
-					if($show_header==1) $checkedh = " checked ";
-					?>
-					<input type="checkbox" value="1" name="sheader" id="sheader" <?= $checkedh ?>> <span>Incluir Cabecera de la plantilla</span>
+		<div class="seccion-body cols-container">
+			<div class="cols-6-md">
+				<h4>Cabecera</h4>
+				<label>
+					<input type="radio" name="sheader" value="0" <?php if($shead==0) echo "checked" ?>> <span>Ninguna</span>
 				</label>
 				<label>
+					<input type="radio" name="sheader" value="1" <?php if($shead==1) echo "checked" ?>> <span>Incluir de la plantilla</span>
+				</label>
+				<label>
+					<input type="radio" name="sheader" value="2" <?php if($shead==2) echo "checked" ?>> <span>Personalizada</span>
+					<!--<input name="sheader_custom_id" type="text" value="<?= $hcustid  ?>" />-->
 					<?php
-					$checkedf = "";
-					if($show_footer==1) $checkedf = " checked ";
+					if(isset($Page)){
+						$id = $Page['id'];
+						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 AND id<>$id");
+					}else{
+						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1");
+					}
 					?>
-					<input type="checkbox" value="1" name="sfooter" id="sfooter" <?= $checkedf ?>> <span>Incluir Pie de página de la plantilla</span>
-				</label>-->
-
+					<select name="sheader_custom_id">
+						<option value="0">Ninguno</option>
+						<?php while($header = $q->fetch_assoc()): ?>
+						<option value="<?= $header['id'] ?>" <?php if($header['id']==$hcustid) echo "selected" ?>><?= $header['titulo'] ?></option>
+						<?php endwhile ?>
+					</select>
+				</label>
 			</div>
-		</section>
+			<div class="cols-6-md">
+				<h4>Pie de Pagina</h4>
+				<label>
+					<input type="radio" name="sfooter" value="0" <?php if($sfoot==0) echo "checked" ?>> <span>Ninguna</span>
+				</label>
+				<label>
+					<input type="radio" name="sfooter" value="1" <?php if($sfoot==1) echo "checked" ?>> <span>Incluir de la plantilla</span>
+				</label>
+				<label>
+					<input type="radio" name="sfooter" value="2" <?php if($sfoot==2) echo "checked" ?>> <span>Personalizada</span>
+					<!--<input name="sfooter_custom_id" type="text" value="<?= $fcustid  ?>" />-->
+					<?php
+					if(isset($Page)){
+						$id = $Page['id'];
+						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2 AND id<>$id");
+					}else{
+						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2");
+					}
+					?>
+					<select name="sfooter_custom_id">
+						<option value="0">Ninguno</option>
+						<?php while($footer = $q->fetch_assoc()): ?>
+						<option value="<?= $footer['id'] ?>" <?php if($footer['id']==$fcustid) echo "selected" ?>><?= $footer['titulo'] ?></option>
+						<?php endwhile ?>
+					</select>
+				</label>
+			</div>
+		</div>
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="eb_id" value="" />
@@ -330,6 +315,24 @@ $fcustid = isset($row) ? $row['footer_custom_id'] : 0;
 </div>
 <script>
 $(document).ready(function() {
+	// Mostrar el config filesupload
+	$('#showFilesUpload').click(function(event) {
+		$('.bg-opacity, #filesupload-config').show();
+	});
+	// Cerrar el config data
+	$('#filesupload-config-btn-cancel').click(function(event) {
+		$('.bg-opacity, #filesupload-config').hide();
+	});
+
+	// Mostrar el config data
+	$('#link-data-config').click(function(event) {
+		$('.bg-opacity, #data-config').show();
+	});
+	// Cerrar el config data
+	$('#data-config-btn-cancel').click(function(event) {
+		$('.bg-opacity, #data-config').hide();
+	});
+
 	// Mostrar el config page
 	$('#showConfigPage').click(function(event) {
 		$('.bg-opacity, #page-config').show();

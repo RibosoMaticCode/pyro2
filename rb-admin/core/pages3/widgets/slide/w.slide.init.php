@@ -4,8 +4,9 @@ $widget = [
   'link_action' => 'addSlide',
   'dir' => 'slide',
   'name' => 'Galeria',
-  'desc' => 'Añade un galeria de imagenes para diferente usos',
-  'filejs' => 'w.slide.js'
+  'desc' => 'Añade una galeria de imagenes',
+  'filejs' => 'w.slide.js',
+  'img' => 'gallery.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addSlide").click (function (event) {
       url: "core/pages3/widgets/slide/w.slide.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

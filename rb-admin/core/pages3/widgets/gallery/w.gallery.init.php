@@ -4,8 +4,9 @@ $widget = [
   'link_action' => 'addGalleries',
   'dir' => 'gallery',
   'name' => 'Galerias',
-  'desc' => 'Mostrar diferentes galerias del sistema',
-  'filejs' => 'file.js'
+  'desc' => 'Muestra diferentes galerias del sistema',
+  'filejs' => 'file.js',
+  'img' => 'galleries.png'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);
@@ -19,6 +20,7 @@ $(".addGalleries").click (function (event) {
       url: "core/pages3/widgets/gallery/w.gallery.php?temp_id="+widget_id
   })
   .done(function( data ) {
+    notify("Elemento <?= $widget['name'] ?> añadido");
     widgets.append(data);
   });
 });

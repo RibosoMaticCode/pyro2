@@ -29,17 +29,8 @@ while ($row = $consulta->fetch_assoc()){
       <h3><?= $row['titulo'] ?></h3>
       <div class="options">
         <span>
-          <?php
-          if($row['bloques']==1):
-          ?>
-          <a title="Editar" href="../rb-admin/index.php?pag=design&amp;page_id=<?= $row['id'] ?>">Editar</a></span>
-          <?php
-          else:
-          ?>
-          <a title="Editar" href="../rb-admin/index.php?pag=pages&amp;opc=edt&amp;id=<?= $row['id'] ?>">Editar</a></span>
-          <?php
-          endif;
-          ?>
+          <a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=pages&opc=edt&id=<?= $row['id'] ?>">Editar</a>
+        </span>
         <span>
           <a href="#" style="color:red" title="Eliminar" class="del-item" data-id="<?= $row['id'] ?>">Eliminar</a></span>
         <span>
@@ -53,7 +44,22 @@ while ($row = $consulta->fetch_assoc()){
       <?= $row['description'] ?>
     </td>
     <td>
-      <span><?php if($row['bloques']==1) echo "Estructural"; else echo "Estándar"; ?></span>
+      <?php
+      switch($row['type']){
+        case 0:
+          echo "Normal";
+        break;
+        case 1:
+          echo "Cabecera";
+        break;
+        case 2:
+          echo "Pie de pagina";
+        break;
+        case 3:
+          echo "Barra lateral";
+        break;
+      }
+      ?>
     </td>
     <td><?= rb_sqldate_to($row['fecha_creacion']) ?></td>
   </tr>

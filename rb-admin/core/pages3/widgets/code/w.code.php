@@ -13,7 +13,7 @@ if(isset($data_saved_id)){
 }else{
 	$data_saved_id = 0;
 	$name_save = "";
-	$option_saved = '<span class="col-save-title"></span><a href="#" class="showEditBlock"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a>';
+	$option_saved = '<span class="col-save-title"></span><a title="Puedes guardar este elemento y usarlo en otra página." href="#" class="showEditBlock"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a>';
 }
 ?>
 <li id="<?= $widget_id ?>" class="widget <?= $class_save?>" data-id="<?= $widget_id ?>" data-type="htmlraw" data-class="<?php if(isset($widget)) echo $widget['widget_class'] ?>"

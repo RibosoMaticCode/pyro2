@@ -9,7 +9,7 @@ else $temp_id = $_GET['temp_id'];
       <i class="fa fa-pencil" aria-hidden="true"></i> Personalizar
     </a>
     <a href="#" class="addNewWidget">
-      <i class="fa fa-cube fa-lg" aria-hidden="true"></i> Añadir widget
+      <i class="fa fa-cube fa-lg" aria-hidden="true"></i> Añadir componente
     </a>
     <!--<a class="toggle" href="#">
       <span class="arrow-up">&#9650;</span>

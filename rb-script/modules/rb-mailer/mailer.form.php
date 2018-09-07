@@ -62,7 +62,7 @@ $values = $_POST['valores'];
 
 // Verificar existencia de ciertos elementos y validarlos
 // $keys_config = array con los nombres de los campos, y la validacion a realizar
-$keys_config = ['Nombre'=> 'req|min=3|max=50', 'Celular' => 'req|min=3|max=50', 'Correo' => 'req'];
+$keys_config = ['Nombre'=> 'req|min=3|max=50', 'Telefono' => 'req|min=3|max=50', 'Correo' => 'req', 'Mensaje' => 'req'];
 
 foreach ($keys_config as $key => $value) {
 		if(array_key_exists($key, $values)==false){

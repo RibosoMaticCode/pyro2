@@ -8,31 +8,31 @@ require_once ABSPATH.'rb-script/funciones.php';
 
 /* INCLUDE WIDGETS DISPONIBLES */
 $widgets=[];
-include_once ABSPATH.'rb-admin/core/pages3/widgets/slide/w.slide.init.php';
-include_once ABSPATH.'rb-admin/core/pages3/widgets/code/w.code.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/editor/w.editor.init.php';
+include_once ABSPATH.'rb-admin/core/pages3/widgets/slide/w.slide.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/gallery/w.gallery.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/pubs/w.pubs.init.php';
+include_once ABSPATH.'rb-admin/core/pages3/widgets/code/w.code.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/youtube/w.youtube.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
 ?>
 <div id="editor-widget" class="editor-window">
   <script>
   $(function() {
-    // Aceptar cambios
+    // Cerrar
     $('#widget-btn-accept').click(function() {
       $('.bg-opacity, #editor-widget').hide();
       $('#editor-widget').remove();
     });
     // Cancelar
-    $('#widget-btn-cancel').click(function() {
+    /*$('#widget-btn-cancel').click(function() {
       $('.bg-opacity, #editor-widget').hide();
       $('#editor-widget').remove();
-    });
+    });*/
   });
   </script>
 	<div class="editor-header">
-		<strong>Seleccione widget a agregar</strong>
+		<strong>Seleccione componente a agregar</strong>
 	</div>
 	<div class="editor-body">
   <ul class="_box-options-list">
@@ -40,7 +40,11 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
 		foreach ($widgets as $widget => $data) {
 			?>
 			<li>
-	      <a class="<?= $data['link_action'] ?>" href="#"><?= $data['name'] ?></a>
+	      <a class="<?= $data['link_action'] ?>" href="#">
+					<img src="<?= G_SERVER ?>/rb-admin/core/pages3/widgets/<?= $data['dir'] ?>/<?= $data['img'] ?>" alt="icon" />
+					<h4><?= $data['name'] ?></h4>
+					<?= $data['desc'] ?>
+				</a>
 	    </li>
 			<?php
 		}
@@ -48,7 +52,11 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
     while($r = $q->fetch_assoc()):
     ?>
     <li>
-      <a class="addCustom" href="#" data-id="<?= $r['id'] ?>"><?= $r['nombre'] ?></a>
+      <a class="addCustom" href="#" data-id="<?= $r['id'] ?>">
+				<img src="<?= G_SERVER ?>/rb-admin/core/pages3/save.png" alt="icon" />
+				<h4><?= $r['nombre'] ?></h4>
+				Elemento personalizado
+			</a>
     </li>
     <?php
     endwhile;
@@ -56,7 +64,7 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
   </ul>
 	</div>
 	<div class="editor-footer">
-		<button class="btn-primary" id="widget-btn-accept">Cambiar</button>
-		<button class="button" id="widget-btn-cancel">Cancelar</button>
+		<button class="btn-primary" id="widget-btn-accept">Cerrar</button>
+		<!--<button class="button" id="widget-btn-cancel">Cancelar</button>-->
 	</div>
 </div>

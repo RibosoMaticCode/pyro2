@@ -84,7 +84,7 @@ function do_action($ubicacion){ // De acuerdo a la ubicacion añade las funcione
 function add_shortcode($key, $func, $params=[]) {
   // Agregar nombre del shortcode y funcion que lo acompaña, al array principal publico $shortcodes
   global $shortcodes;
-  $shortcodes[$key]=[
+  $shortcodes[$key][]=[ // Correcion un nivel mas al array.
       'func' => $func,
       'params' => $params
   ];
@@ -94,6 +94,7 @@ function add_shortcode($key, $func, $params=[]) {
 function do_shortcode($key, $params=[]){ // Por defecto parametros vacios
   global $shortcodes;
   //return call_user_func_array( $shortcodes[$key]['func'], $params ); // los parametros se pasan como un array, pero internamente se manejan sus valores por separados
-  return call_user_func( $shortcodes[$key]['func'], $params ); // Los parametro se pasan como variables (incluidas array asociativos), y se maneja segun el tipo de variable.
+  return call_user_func( $shortcodes[$key][0]['func'], $params ); // Los parametro se pasan como variables (incluidas array asociativos), y se maneja segun el tipo de variable.
+  // why "0"? No idea! :S
 }
 ?>

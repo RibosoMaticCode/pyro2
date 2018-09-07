@@ -175,4 +175,6 @@ while($form = $r->fetch_assoc()){
 	add_shortcode('FORM', 'show_form', ['id' => $form['id'] ]);
 }
 add_shortcode('DEMO', 'test');
+/*add_shortcode('FORM', 'show_form', ['id' => 7 ]);
+add_shortcode('FORM', 'show_form', ['id' => 6 ]);*/
 ?>

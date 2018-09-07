@@ -13,7 +13,7 @@ if(isset($data_saved_id)){
 }else{
 	$data_saved_id = 0;
 	$name_save = "";
-	$option_saved = '<span class="col-save-title"></span><a href="#" class="showEditBlock"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a>';
+	$option_saved = '<span class="col-save-title"></span><a title="Puedes guardar este elemento y usarlo en otra página." href="#" class="showEditBlock"><i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar</a>';
 }
 
 ?>
@@ -29,7 +29,7 @@ if(isset($data_saved_id)){
 	<div class="widget-body">
 		<div class="box-edit">
 			<div class="box-edit-html" id="box-edit<?= $widget_id ?>">
-				<p style="text-align:center;max-width:100%"><img src="core/pages2/img/slider.png" alt="post" /></p>
+				<p style="text-align:center;max-width:100%"><img src="core/pages3/widgets/gallery/galleries.png" alt="icon" /></p>
 			</div>
 			<div class="box-edit-tool"><a href="#" class="showEditGalleries" title="Clic para configurar"><span>Configurar</span></a></div>
 		</div>

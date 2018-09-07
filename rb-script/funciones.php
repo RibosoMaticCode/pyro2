@@ -757,6 +757,8 @@ function rb_url_link($section, $id, $page=0){
 		case "per":
 			return rb_BBCodeToGlobalVariable($id);
 			break;
+    default:
+      return "#";
 	}
 }
 function rb_show_half_post($content,$link) { // antes -> more_content
@@ -1743,14 +1745,14 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   }
 
   //Bloque externo
-  $ext_class = isset($box['boxext_class']) ? $box['boxext_class'] : "";
-  $ext_parallax = isset($box['boxext_values']['extparallax']) ? $box['boxext_values']['extparallax'] : "";
-  $style_extbgcolor = isset($box['boxext_values']['bgcolor']) ? "background-color:".$box['boxext_values']['bgcolor'].";" : "";
-  $style_extbgimage = isset($box['boxext_values']['bgimage']) ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxext_values']['bgimage']).");background-position:center;background-size:cover;" : "";
-  $style_extpaddingtop = isset($box['boxext_values']['paddingtop']) ? "padding-top:".$box['boxext_values']['paddingtop'].";" : "";
-  $style_extpaddingright = isset($box['boxext_values']['paddingright']) ? "padding-right:".$box['boxext_values']['paddingright'].";" : "";
-  $style_extpaddingbottom = isset($box['boxext_values']['paddingbottom']) ? "padding-bottom:".$box['boxext_values']['paddingbottom'].";" : "";
-  $style_extpaddingleft = isset($box['boxext_values']['paddingleft']) ? "padding-left:".$box['boxext_values']['paddingleft'].";" : "";
+  $ext_class = isset($box['boxext_class']) && $box['boxext_class']!="" ? $box['boxext_class'] : "";
+  $ext_parallax = isset($box['boxext_values']['extparallax']) && $box['boxext_values']['extparallax']!="" ? $box['boxext_values']['extparallax'] : "";
+  $style_extbgcolor = isset($box['boxext_values']['bgcolor']) && $box['boxext_values']['bgcolor']!="" ? "background-color:".$box['boxext_values']['bgcolor'].";" : "";
+  $style_extbgimage = isset($box['boxext_values']['bgimage']) && $box['boxext_values']['bgimage']!="" ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxext_values']['bgimage']).");background-position:center;background-size:cover;" : "";
+  $style_extpaddingtop = isset($box['boxext_values']['paddingtop']) && $box['boxext_values']['paddingtop']!="" ? "padding-top:".$box['boxext_values']['paddingtop'].";" : "";
+  $style_extpaddingright = isset($box['boxext_values']['paddingright']) && $box['boxext_values']['paddingright']!="" ? "padding-right:".$box['boxext_values']['paddingright'].";" : "";
+  $style_extpaddingbottom = isset($box['boxext_values']['paddingbottom']) && $box['boxext_values']['paddingbottom']!="" ? "padding-bottom:".$box['boxext_values']['paddingbottom'].";" : "";
+  $style_extpaddingleft = isset($box['boxext_values']['paddingleft']) && $box['boxext_values']['paddingleft']!="" ? "padding-left:".$box['boxext_values']['paddingleft'].";" : "";
 
   //Parallax
   if($ext_parallax==1){
@@ -1765,7 +1767,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
 
   if($type=="page") echo '<div class="'.$ext_class.' clear" style="'.$styles_ext.'" '.$addons.'>';
   //BLoque interno
-  $default_class = "inner-content "; // default
+  $default_class = "inner-content"; // default
   $style_inwidth = ""; // default
   if(isset($box['boxin_values']['width']) && $box['boxin_values']['width']=="yes"){
     $default_class = "full-content ";
@@ -1777,18 +1779,18 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
     $default_class = "inner-content ";
     $style_inwidth = "";
   }
-  $in_class = isset($box['boxin_class']) ? $box['boxin_class'] : "";
-  $style_inbgcolor = isset($box['boxin_values']['bgcolor']) ? "background-color:".$box['boxin_values']['bgcolor'].";" : "";
-  $style_inbgimage = isset($box['boxin_values']['bgimage']) ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxin_values']['bgimage']).");background-position:center;background-size:cover;" : "";
-  $style_inheight = isset($box['boxin_values']['height']) ? "height:".$box['boxin_values']['height'].";" : "";
-  $style_inpaddingtop = isset($box['boxin_values']['paddingtop']) ? "padding-top:".$box['boxin_values']['paddingtop'].";" : "";
-  $style_inpaddingright = isset($box['boxin_values']['paddingright']) ? "padding-right:".$box['boxin_values']['paddingright'].";" : "";
-  $style_inpaddingbottom = isset($box['boxin_values']['paddingbottom']) ? "padding-bottom:".$box['boxin_values']['paddingbottom'].";" : "";
-  $style_inpaddingleft = isset($box['boxin_values']['paddingleft']) ? "padding-left:".$box['boxin_values']['paddingleft'].";" : "";
+  $in_class = isset($box['boxin_class']) && $box['boxin_class']!="" ? $box['boxin_class'] : "";
+  $style_inbgcolor = isset($box['boxin_values']['bgcolor']) && $box['boxin_values']['bgcolor']!="" ? "background-color:".$box['boxin_values']['bgcolor'].";" : "";
+  $style_inbgimage = isset($box['boxin_values']['bgimage']) && $box['boxin_values']['bgimage']!="" ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxin_values']['bgimage']).");background-position:center;background-size:cover;" : "";
+  $style_inheight = isset($box['boxin_values']['height']) && $box['boxin_values']['height']!="" ? "height:".$box['boxin_values']['height'].";" : "";
+  $style_inpaddingtop = isset($box['boxin_values']['paddingtop']) && $box['boxin_values']['paddingtop']!="" ? "padding-top:".$box['boxin_values']['paddingtop'].";" : "";
+  $style_inpaddingright = isset($box['boxin_values']['paddingright']) && $box['boxin_values']['paddingright']!="" ? "padding-right:".$box['boxin_values']['paddingright'].";" : "";
+  $style_inpaddingbottom = isset($box['boxin_values']['paddingbottom']) && $box['boxin_values']['paddingbottom']!="" ? "padding-bottom:".$box['boxin_values']['paddingbottom'].";" : "";
+  $style_inpaddingleft = isset($box['boxin_values']['paddingleft']) && $box['boxin_values']['paddingleft']!="" ? "padding-left:".$box['boxin_values']['paddingleft'].";" : "";
 
   $styles_in = $style_inheight.$style_inbgcolor.$style_inbgimage.$style_inpaddingtop.$style_inpaddingright.$style_inpaddingbottom.$style_inpaddingleft.$style_inwidth;
 
-  if($type=="page") echo '<div class="'.$default_class.' '.$in_class.' clear" style="'.$styles_in.'">';
+  if($type=="page") echo '<div class="'.$default_class.$in_class.' clear" style="'.$styles_in.'">';
   if($type=="sidebar") echo '<div class="box'.$in_class.' clear" style="'.$styles_in.'">';
   echo '<div class="cols">';
   $array_cols =$box['columns'];
@@ -1824,8 +1826,6 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
             foreach ($array_content['boxes'] as $box) {
               rb_show_block($box, "sidebar");
             }
-            //echo $sidebar_id;
-            //rb_show_block($sidebar_id, "sidebar");
             echo '</div>';
             break;
           case 'slide':
@@ -1853,10 +1853,10 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                    <div>
                      <div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
                      <div class="shadow"></div>
-                     <?php if($col['col_values']['show_title']==1): ?>
+                     <?php if($widget['widget_values']['show_title']==1): ?>
                        <h2><?= $foto['title'] ?></h2>
                      <?php endif ?>
-                     <?php if($col['col_values']['activelink']==1): ?>
+                     <?php if($widget['widget_values']['activelink']==1): ?>
                        <a href="<?= $foto['goto_url'] ?>">Ver mas</a>
                      <?php else: ?>
                        <a class="fancy" href="<?= $foto['url_max'] ?>">Ver foto</a>
@@ -1993,7 +1993,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                     <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
                     <!--<span class="post-category"></span>-->
                     <div class="post-desc">
-                    <h1><a href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h1>
+                    <h2><a href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
                     <?php if($desc==1): ?>
                       <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
                     <?php endif ?>
@@ -2077,22 +2077,36 @@ function rb_header($add_header = array(), $page=true){
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
       }
     }elseif($show_header==2){
+      /* old version
       $block_header_id_arrays = explode(",",$block_header_id);
       foreach ($block_header_id_arrays as $key => $value) {
         $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
         $boxsave = $qb->fetch_assoc();
         $box = json_decode($boxsave['contenido'], true);
         rb_show_block($box);
+      }*/
+      // New version
+      $Header = rb_show_specific_page($block_header_id);
+      $array_content = json_decode($Header['contenido'], true);
+      foreach ($array_content['boxes'] as $box) {
+        rb_show_block($box);
       }
     }
   }else{
     // Si son paginas de las plantilla
     if(G_BLOCK_HEADER!="0"){
+      /* old version
       $block_header_id_arrays = explode(",",G_BLOCK_HEADER);
       foreach ($block_header_id_arrays as $key => $value) {
         $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
         $boxsave = $qb->fetch_assoc();
         $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }*/
+      // New version
+      $Header = rb_show_specific_page(G_BLOCK_HEADER);
+      $array_content = json_decode($Header['contenido'], true);
+      foreach ($array_content['boxes'] as $box) {
         rb_show_block($box);
       }
     }else{
@@ -2126,22 +2140,34 @@ function rb_footer($add_footer = array(), $page=true){
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
       }
     }elseif($show_footer==2){
-      $block_footer_id_arrays = explode(",",$block_footer_id);
+      /*$block_footer_id_arrays = explode(",",$block_footer_id);
       foreach ($block_footer_id_arrays as $key => $value) {
         $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
         $boxsave = $qb->fetch_assoc();
         $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }*/
+      // New version
+      $Footer = rb_show_specific_page($block_footer_id);
+      $array_content = json_decode($Footer['contenido'], true);
+      foreach ($array_content['boxes'] as $box) {
         rb_show_block($box);
       }
     }
   }else{
     // Si son paginas de las plantilla
     if(G_BLOCK_FOOTER!="0"){
-      $block_footer_id_arrays = explode(",",G_BLOCK_FOOTER);
+      /*$block_footer_id_arrays = explode(",",G_BLOCK_FOOTER);
       foreach ($block_footer_id_arrays as $key => $value) {
         $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
         $boxsave = $qb->fetch_assoc();
         $box = json_decode($boxsave['contenido'], true);
+        rb_show_block($box);
+      }*/
+      // New version
+      $Footer = rb_show_specific_page(G_BLOCK_FOOTER);
+      $array_content = json_decode($Footer['contenido'], true);
+      foreach ($array_content['boxes'] as $box) {
         rb_show_block($box);
       }
     }else{
@@ -2290,7 +2316,8 @@ function rb_shortcode($content){
   // Shortcode, es un array que contiene las funciones a ejecutar y sus parametros (por defecto vacios)
   global $shortcodes;
 
-  /*echo "<pre>";
+  // Ver shortcodes en array
+  /*echo "<pre style='font-size:.6em;line-height:10px'>";
   print_r($shortcodes);
   echo "</pre>";*/
 
@@ -2302,31 +2329,39 @@ function rb_shortcode($content){
   $code = array();
   $html = array();
 
-  // Recorremos cada elemento del array $shortcodes, y pasamos en key-tag a array $code
-  foreach ($shortcodes as $key => $value) {
-    // Primero verificar si tiene parametros
-    $params = $value['params'];
-    $params_string = "";
-    foreach ($params as $param => $value) {
-      $params_string .= " ".$param."=\"".$value."\"";
+  /* Recorremos el array SHORTCODES para transformar cada elemento en formato BBCODE. Ej. [FORM id="2"] */
+  foreach ($shortcodes as $key => $index) {
+    $tag_name = $key;
+    foreach ($index as $key => $value) {
+      // Primero verificar si tiene parametros
+      $params = $value['params'];
+      $params_string = "";
+      foreach ($params as $param => $value) {
+        $params_string .= " ".$param."=\"".$value."\"";
+      }
+      array_push($code, "/\[".$tag_name.$params_string."]/is");
     }
-    array_push($code, "/\[".$key.$params_string."]/is");
   }
 
+  // Ver Shortcodes en formato BBCODE
   /*echo "<pre>"; // test code and parameters
   print_r($code);
   echo "</pre>";*/
 
   // Recorremos nuevamente cada elemento de array $shortcodes, y pasamos la ejecucion de su funcion a array $html
-  foreach ($shortcodes as $key => $value) {
-    // Primero verificar si tiene parametros
-    $params = $value['params'];
-    $func = $key;
-    $html_content = do_shortcode($func, $params);
-    array_push($html, $html_content);
+  foreach ($shortcodes as $key => $index) {
+    $tag_name = $key;
+    foreach ($index as $key => $value) {
+      // Primero verificar si tiene parametros
+      $params = $value['params'];
+      $func = $tag_name;
+      $html_content = do_shortcode($func, $params);
+      array_push($html, $html_content);
+    }
   }
+
+  // Ver la ejecucion de los Shortcodes
   /*echo "<pre>"; // test
-  print_r($code);
   print_r($html);
   echo "</pre>";*/
 

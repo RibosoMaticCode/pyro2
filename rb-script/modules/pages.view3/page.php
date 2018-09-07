@@ -6,10 +6,6 @@ else rb_header();*/
 <div class="wrap-content">
 <?php
 $array_content = json_decode($Page['contenido'], true);
-/*echo "<pre>"; // test
-print_r($array_content);
-echo "</pre>";*/
-
 foreach ($array_content['boxes'] as $box) {
   rb_show_block($box);
 }

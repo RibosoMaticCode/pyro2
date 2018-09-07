@@ -343,6 +343,7 @@ $(document).ready(function() {
     var menu_id = $('select[name=menu]').val();
     var pagina_enlace = $('#pagina_enlace').val();
     var pagina_desc = $('#pagina_desc').val();
+    var pagina_tags = $('#pagina_tags').val();
     var mode = $('#mode').val();
 
     if(pagina_title == "" ){
@@ -462,21 +463,11 @@ $(document).ready(function() {
     final_string_content += boxesmain_string_start + all_columns_string + boxesmain_string_end;
     console.log(final_string_content); // no es necesario pasar a json en js antes JSON.stringify
 
-    //return false;
-    /*if ($('#sheader').is(':checked')) {
-			sheader = 1;
-		}else{
-			sheader = 0;
-		}
-    if ($('#sfooter').is(':checked')) {
-			sfooter = 1;
-		}else{
-			sfooter = 0;
-		}*/
     sheader = $( "input[name$='sheader']:checked" ).val();
-    h_cust_id = $( "input[name$='sheader_custom_id']" ).val();
+    h_cust_id = $( "select[name$='sheader_custom_id']" ).val();
     sfooter = $( "input[name$='sfooter']:checked" ).val();
-    f_cust_id = $( "input[name$='sfooter_custom_id']" ).val();
+    f_cust_id = $( "select[name$='sfooter_custom_id']" ).val();
+    type = $( "input[name$='type']:checked" ).val();
 
     console.log(sheader+":"+h_cust_id);
     console.log(sfooter+":"+f_cust_id);
@@ -484,7 +475,7 @@ $(document).ready(function() {
     $.ajax({
       url: "core/pages3/page.save.php",
       method: 'post',
-      data: "title="+pagina_title+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id,
+      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id,
       beforeSend: function(){
         $('#img_loading, .bg-opacity').show();
       }

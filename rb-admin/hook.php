@@ -97,4 +97,17 @@ function do_shortcode($key, $params=[]){ // Por defecto parametros vacios
   return call_user_func( $shortcodes[$key][0]['func'], $params ); // Los parametro se pasan como variables (incluidas array asociativos), y se maneja segun el tipo de variable.
   // why "0"? No idea! :S
 }
+
+function add_bbcode($bbcode, $func, $params=[]){
+  global $bb_codes;
+  $bb_codes[$bbcode] = [
+    'func' => $func,
+    'params' => $params
+  ];
+}
+
+function do_bbcode($key, $params=[]){
+  global $bb_codes;
+  return call_user_func( $bb_codes[$key]['func'], $params );
+}
 ?>

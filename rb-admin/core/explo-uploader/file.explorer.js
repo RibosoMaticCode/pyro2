@@ -57,6 +57,10 @@
 
     };
 
+    var uniqueId = function() {
+      return Math.random().toString(36).substr(2, 16);
+    };
+
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function ( options ) {
@@ -67,16 +71,30 @@
 
             	// Obtener nombre del control, que pide instancia
             	var name_control = $(this).attr('name');
-            	console.log(name_control);
+
+              // Identificador unico para control visible e invisible
+              var id_control = uniqueId();
+
+              // Estableciendo nombre del control oculto
+              name_control_hidden = name_control+'_id';
+
+              // Si es un array de controles, osea "[]"
+              var lastChar = name_control.substr(name_control.length - 2); // Verificamos si es array []
+              if(lastChar=="[]"){
+                name_control = name_control.substring(0, name_control.length - 2); // Le sacamos los []
+                name_control_hidden = name_control+'_id[]'; // añadirlos al final del _id
+              }
+
+            	console.log(name_control+':'+name_control_hidden);
 
             	// Estableciendo ID al control visible de acuerdo al nombre
-            	$(this).attr( "id" , name_control );
+            	$(this).attr( "id" , id_control );
 
             	// Creando la envoltura para losbotones
             	var element_new = $(this).wrapAll('<div class="cover-input-dialog">');
 
-            	// Creando input hidden y sus atributos
-            	var $inputHide = $("<input>", {type: 'hidden', id: name_control+'_id', name: name_control+'_id', value: hideValue} );
+            	// Creando input hidden y sus atributos, este tiene como ID, el identicador unico + '_id'
+            	var $inputHide = $("<input>", {type: 'hidden', id: id_control+'_id', name: name_control_hidden, value: hideValue} ); // antes -> name_control+'_id'
             	$( element_new ).after($inputHide);
 
             	// Creando cover btns para buscar, ver y eliminar
@@ -114,8 +132,8 @@
 			    	event.preventDefault();
             $('#img_loading').show();
             $(".bg-opacity").show();
-			    	var controlHideId = name_control+"_id";
-					  var controlShowId = name_control;
+			    	var controlHideId = id_control+"_id"; // id del control oculto que contendra el ID real de la foto
+					  var controlShowId = id_control; // id del Control visible que contendra el Nombre de la foto (archivo)
 			    	$.post( "../rb-admin/core/explo-uploader/files.explorer.php?controlShowId="+controlShowId+"&controlHideId="+controlHideId , function( data ) {
   					 	$('.explorer').html(data);
   						$(".explorer").fadeIn(500);
@@ -127,7 +145,7 @@
 			    // Funcion para ver imagen
 			    viewImage = function(event){
 			    	event.preventDefault();
-			    	var controlShowId = name_control;
+			    	var controlShowId = id_control;
 			    	var photo = $( '#'+controlShowId+"_id" ).val();
             console.log(photo);
   					if(photo > 0){
@@ -145,8 +163,8 @@
 			    // Funcion borrar elementos elegido
 			    deleteImage = function(event){
 			    	event.preventDefault();
-			    	var controlHideId = name_control+"_id";
-					  var controlShowId = name_control;
+			    	var controlHideId = id_control+"_id";
+					  var controlShowId = id_control;
 			    	$( '#'+controlHideId ).val("0");
 			    	$( '#'+controlShowId ).val("");
 			    };

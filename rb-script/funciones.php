@@ -1070,54 +1070,50 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 }
 
 function rb_BBCodeToGlobalVariable($texto,$id=1){
-  global $objDataBase;
-	$gallery_html = "";
-	if($id>0){
-		$qp  = $objDataBase->Ejecutar("SELECT * FROM albums WHERE id=$id");
-		$r = $qp->fetch_assoc();
-		if($r['id']>0):
-			$gallery_html .= '<ul class="gallery">';
-			$Fotos = rb_get_images_from_gallery($r['id']);
-			foreach ($Fotos as $Foto):
-				$gallery_html .= '<li>';
-			 	$gallery_html .= '<a class="fancy" title="'.$Foto['description'].'" rel="gallery" href="'.$Foto['url_max'].'">';
-			 	$gallery_html .= '<img class="img-responsive" src="'.$Foto['url_min'].'" alt="Foto" />';
-			 	$gallery_html .= '</a>';
-				$gallery_html .= '</li>';
-			endforeach;
-			$gallery_html .= '</ul>';
-		endif;
-	}
+  global $objDataBase, $bb_codes, $bb_htmls;
 
-   	$bbcode = array(
-      "/\[RUTA_SITIO]/is",
-      "/\[RUTA_TEMA]/is",
-      "/\[YOUTUBE=\"(.*?)\"]/is",
-      //"/\[MENU id=\"(.*?)\"]/e", /e modifer obsoleto
-      "/\[GALERIA]/is",
-      "/\[FORMULARIO]/is",
-      /*"/\[FORMULARIO_SERVICIO nombre=\"(.*?)\"]/is",*/
-      "/\[MAPA coordenadas=\"(.*?)\" altura=\"(.*?)\"]/is",
-   	);
+  // BBcode personalizados de los modulos externos
+  $custom_bbcode = [];
+  foreach ($bb_codes as $key => $value) {
+    $params = $value['params'];
+    $params_string = "";
+    foreach ($params as $param => $value) {
+      $params_string .= " ".$value."=\"(.*?)\"";
+    }
+    array_push($custom_bbcode, "/\[".$key.$params_string."]/is");
+  }
 
-   	$html = array(
-      G_SERVER.'/',
-      G_URLTHEME.'/',
-      '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
-      //"rb_display_menu('$1')",
-      'Galeria:'.$gallery_html,
-      htmlspecialchars_decode(G_FORM),
-      /*rb_showform('$1'),*/
-      '<iframe frameborder="0" height="$2" src="'.G_SERVER.'/rb-script/map.php?ubicacion='.G_TITULO.'&coordenadas=$1&alto=$2" class="img-responsive"></iframe>'
-   	);
+  // Ejecucion de los bbcodes personalizados de los modulos
+  $custom_bbhtml = [];
+  foreach ($bb_codes as $key => $value) {
+    $params = $value['params'];
+    $func = $key;
+    $html_content = do_bbcode($func, $params);
+    array_push($custom_bbhtml, $html_content);
+  }
 
-    /*echo "<pre>"; // test
-    print_r($bbcode);
-    print_r($html);
-    echo "</pre>";*/
+  // BB codes del sistema
+  $default_bb_codes = array(
+    "/\[RUTA_SITIO]/is",
+    "/\[RUTA_TEMA]/is",
+    "/\[YOUTUBE=\"(.*?)\"]/is",
+    "/\[MAPA coordenadas=\"(.*?)\" altura=\"(.*?)\"]/is"
+  );
 
-   	$texto = preg_replace($bbcode, $html, $texto);
-   	return $texto;
+  // Ejecucion de los bbcodes del sistema
+  $default_bb_htmls = array(
+    G_SERVER.'/',
+    G_URLTHEME.'/',
+    '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
+    '<iframe frameborder="0" height="$2" src="'.G_SERVER.'/rb-script/map.php?ubicacion='.G_TITULO.'&coordenadas=$1&alto=$2" class="img-responsive"></iframe>'
+  );
+
+  // Combinamos arrays nuevos y los por defecto del sistema
+  $newbb_codes = array_merge($default_bb_codes, $custom_bbcode);
+  $newbb_htmls = array_merge($default_bb_htmls, $custom_bbhtml);
+
+  $texto = preg_replace($newbb_codes, $newbb_htmls, $texto);
+  return $texto;
 }
 
 function rb_showvisiblename($acceso){
@@ -1866,7 +1862,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                 <?php
               }
             }
-            echo '</div>';
+            echo '</div><div class="clear"></div>';
             break;
           case 'youtube1':
             $yt_list = explode(",", $widget['widget_values']['videos']);

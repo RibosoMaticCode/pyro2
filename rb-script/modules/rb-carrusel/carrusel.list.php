@@ -31,7 +31,7 @@ $suscriptores = $r->num_rows;
 		?>
     <tr id="carrusel<?= $row['id'] ?>">
       <td><?= $row['nombre'] ?></td>
-			<td><a href="#">Configurar</a></td>
+			<td><a href="<?= G_SERVER ?>/rb-admin/?pag=gal&opc=edt&id=<?= $row['id'] ?>">Configurar</a></td>
 			<td><a target="_blank" href="<?= G_SERVER ?>/rb-script/modules/rb-carrusel/preview.php?id=<?= $row['id'] ?>">Ver</a></td>
       <td><code>[carrusel id="<?= $row['id'] ?>"]</code></td>
     </tr>

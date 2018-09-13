@@ -1,8 +1,8 @@
 <?php
 /*
-Module Name: jQuery-Youtube-Channels-Playlist
+Module Name: Lista de reproduccion Youtube
 Plugin URI: https://github.com/bachors/jQuery-Youtube-Channels-Playlist
-Description: jQuery-Youtube-Channels-Playlist
+Description: Muestra un bloque de visualizacion de lista de reproduccion de Youtube
 Author: Ican Bachors
 Version: v06
 Author URI: https://github.com/bachors
@@ -18,4 +18,13 @@ function ycp_files_header(){
 }
 
 add_function('theme_header','ycp_files_header');
+
+function box($params){
+	return '<div id="$1" data-ycp_title="$2" data-ycp_channel="$3"> </div>';
+}
+function hello(){
+	return "Hola bebecode!!";
+}
+add_bbcode('YOUTUBELIST', 'box', ['id','title','channel']);
+add_bbcode('YOUTUBE_HOLA', 'hello');
 ?>

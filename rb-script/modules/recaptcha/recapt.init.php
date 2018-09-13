@@ -2,7 +2,7 @@
 $sitekey = rb_get_values_options('sitekey');
 $secretkey = rb_get_values_options('secretkey');
 if($sitekey==""){
-  $sitekeydemo = "<site-key>";
+  $sitekeydemo = "site-key";
 }else{
   $sitekeydemo = $sitekey;
 }
@@ -11,6 +11,7 @@ if($sitekey==""){
   <div class="cols-6-md">
     <section class="seccion">
       <div class="seccion-body">
+        <h2>Configuración</h2>
         <form class="form" id="frmConfigCaptcha">
           <label>
             Clave del sitio
@@ -28,6 +29,7 @@ if($sitekey==""){
   <div class="cols-6-md">
     <section class="seccion">
       <div class="seccion-body">
+        <h2>Modo de uso</h2>
         <p>Copia y pegar este codigo, dentro de tu formulario</p>
         <pre>&lt;div class="g-recaptcha" data-sitekey="<?= $sitekeydemo ?>" data-callback="enableBtn"&gt; &lt;/div&gt;
         </pre>

@@ -185,7 +185,7 @@
 	width: 100%;
 }
 
-/* sidebar */
+/* SIDEBAR */
 .box-sidebar h3{
   text-transform: uppercase;
   font-size: 1.1em;
@@ -199,6 +199,21 @@
   padding: 6px 0;
   border-bottom: 1px solid #c7c7c7;
 }
+
+/* GALERIA SOLA */
+.rb-img {
+    height: 180px;
+}
+
+.rb-cover-img {
+    float: left;
+    padding: 5px 8px;
+}
+.rb-img {
+    background-size: cover;
+    background-position: center;
+}
+
 /* GALERIAS DE IMAGENES */
 .rb-gallery-container {
   display: flex;

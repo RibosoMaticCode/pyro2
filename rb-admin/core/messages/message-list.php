@@ -69,7 +69,8 @@ while ($row = $result->fetch_assoc()){
 					echo "Gestor de Contenido ";
 				}else{
 					$Usuario = rb_get_user_info($row['remitente_id']);
-					echo $Usuario['nombrecompleto'];
+					if($Usuario) echo $Usuario['nombrecompleto'];
+					else echo 'Este usuario ya no existe';
 				}
 				?>
 			</td>

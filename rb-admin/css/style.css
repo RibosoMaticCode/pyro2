@@ -355,6 +355,7 @@ section.seccion .popup {
 	margin:5px 0;
 	font-family:condensed-regular;
 	color:#000;
+	font-size:.95em;
 }
 .seccion label input[type="checkbox"]{
 	margin-right:5px;

@@ -35,8 +35,6 @@ if($r->num_rows == 0){
 	];
 	die(json_encode($rspmail));
 }
-$form = $r->fetch_assoc();
-$validaciones = $form['validations']; // pasar a json
 
 //Usa captcha?
 if( isset($_POST['g-recaptcha-response']) ){
@@ -44,31 +42,31 @@ if( isset($_POST['g-recaptcha-response']) ){
 	$secret = rb_get_values_options('secretkey'); // get DB
 
 	$post_data = http_build_query(
-    array(
-        'secret' => $secret,
-        'response' => $_POST['g-recaptcha-response'],
-        'remoteip' => $_SERVER['REMOTE_ADDR']
-    )
+		array(
+			'secret' => $secret,
+			'response' => $_POST['g-recaptcha-response'],
+			'remoteip' => $_SERVER['REMOTE_ADDR']
+		)
 	);
 	$opts = array('http' =>
-    array(
-        'method'  => 'POST',
-        'header'  => 'Content-type: application/x-www-form-urlencoded',
-        'content' => $post_data
-    )
+		array(
+			'method'  => 'POST',
+			'header'  => 'Content-type: application/x-www-form-urlencoded',
+			'content' => $post_data
+		)
 	);
 
 	$context  = stream_context_create($opts);
-  $rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+  	$rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
 
-  $arr = json_decode($rsp, true);
-  if($arr['success']==""){
-  	$recaptcha_msg = 'spam';
-
-  }
-  if($arr['success']==1){
-  	$recaptcha_msg = 'done';
-  }
+  	$arr = json_decode($rsp, true);
+  	if($arr['success']==""){
+  		$recaptcha_msg = 'spam';
+  	}
+	  
+	if($arr['success']==1){
+  		$recaptcha_msg = 'done';
+  	}
 }
 
 // Si respuesta del recaptcha es spam, termina todo
@@ -81,31 +79,67 @@ if($recaptcha_msg=="spam"){
 	die(json_encode($rspmail));
 }
 
-$values = $_POST['valores']; // Inputs
+// Consultamos configuracion del formulario
+$form = $r->fetch_assoc();
+
+// Valores de los campos del formulario
+$values = $_POST['valores']; 
 
 // Verificar existencia de ciertos elementos y validarlos
-$keys_config = ['Nombres'=> 'req|min=3|max=50', 'Telefono' => 'req|min=3|max=50']; // Esta configuracion debe cargarse de la base de datos
+$keys_config = json_decode($form['validations'], true); // Pasamos campos a validar en formato JSON a Array PHP
 
 foreach ($keys_config as $key => $value) {
-		if(array_key_exists($key, $values)==false){
-			echo "Campo ".$key." no existe. No podemos continuar :P";
-			die();
-		}else{
-			// Verificamos sus opciones de validacion
-			// Extraemos su configuracion
-			$settings = explode("|", $value);
+	// Verificamos si el campo a validar existe
+	if(array_key_exists($key, $values)==false){
+		$rspmail = [
+			'result' => false,
+			'msg' => "Campo ".$key." no existe. No podemos continuar"
+		];
+		die(json_encode($rspmail));
+	}else{
+		// Extraemos su configuracion de validacion
+		$settings = explode("|", $value);
 
-			// Verificamos que tipo de configuracion estan activas, en este caso verificamos 'req'
-			if(in_array("req",$settings)){
+		// Navegamos por cada configuracion
+		foreach ($settings as $setting){
+			//echo $setting;
+			// Si requerido esta activo
+			if($setting=="req"){
 				if(trim($values[$key])==""){
-					//return $result = ['result' => false, 'msg' => 'Campo: '.$input_name.' no debe estar vacio'];
-					echo "Campo ".$key." no debe quedar vacio :P";
-					die();
+					$rspmail = [
+						'result' => false,
+						'msg' => "Campo ".$key." no debe quedar vacio"
+					];
+					die(json_encode($rspmail));
+				}
+			}
+
+			// Si es min esta activo
+			if( substr($setting,0,3)=="min"){
+				$min_config = explode("=", $setting);
+				if( strlen(trim($values[$key])) <= $min_config[1]){
+					$rspmail = [
+						'result' => false,
+						'msg' => "Campo ".$key." debe tener mas de ".$min_config[1]." caracteres de longitud"
+					];
+					die(json_encode($rspmail));
+				}
+			}
+
+			// Si es max esta activo
+			if( substr($setting,0,3)=="max"){
+				$max_config = explode("=", $setting);
+				if( strlen(trim($values[$key])) > $max_config[1]){
+					$rspmail = [
+						'result' => false,
+						'msg' => "Campo ".$key." debe tener maximo ".$max_config[1]." caracteres de longitud"
+					];
+					die(json_encode($rspmail));
 				}
 			}
 		}
+	}
 }
-
 
 if(isset($values['Terminos']) && $values['Terminos']==0){
 	die("No se aceptaron terminos");

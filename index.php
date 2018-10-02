@@ -83,13 +83,13 @@ if(G_ENL_AMIG):
 		exit();
 	endif;
 
-	// Direccionamientos pendientes
-	/*if ( isset($_GET['cat']) ):
+	// Direccionar categoria
+	if ( isset($_GET['cat']) ):
 		$CategoryId = $_GET['cat'];
-		if ( isset($_GET['page']) ) $Page = $_GET['page'];
+		$Categoria = rb_get_category_info($CategoryId);
+		header( 'Location: '.G_SERVER.'/'.G_BASECAT.'/'.$Categoria['nombre_enlace'].'/');
+		exit();
 	endif;
-	//if ( isset($_GET['s']) ) $SearchTerm = $_GET['s'];
-	if ( isset($_GET['panel']) ) $Panel = $_GET['panel'];*/
 
 	//Direccionar en caso de busqueda
 	if ( isset($_GET['s']) ):
@@ -103,7 +103,7 @@ if(G_ENL_AMIG):
 	// debemos obviarlo antes de destriparlo :-)
 	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
 	// Pasamos la URL a un array que contenga sus elementos delimitados por la barra (slash)
-  $requestURI = explode("/", $requestURI);
+  	$requestURI = explode("/", $requestURI);
 	// Indexamos numericamente el array para mas facil consultar
 	$requestURI = array_values( array_filter( $requestURI ) );
 	$numsItemArray = count($requestURI);

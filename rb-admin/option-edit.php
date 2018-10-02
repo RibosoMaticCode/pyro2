@@ -89,7 +89,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <select  name="inicial">
               <option value="0">Por defecto</option>
               <?php
-              $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 ORDER BY titulo");
+              $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=0 ORDER BY titulo");
 
               while($r = $q->fetch_assoc()):
                 ?><option <?php if( rb_get_values_options('initial') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php

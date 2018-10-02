@@ -8,6 +8,64 @@ require_once("../rb-script/class/rb-database.class.php");
 
 $key_web = randomPassword(12,1,"lower_case,upper_case,numbers,special_symbols");
 
+//function crear htaccess
+function create_htaccess($dir){
+	//Agradecimiento: http://www.dreamincode.net/forums/topic/214225-php-create-htaccess/page__view__findpost__p__1243819
+	$create_name = "../.htaccess";
+	// open the .htaccess file for editing
+	$file_handle = fopen($create_name, 'w') or die("Error: Can't open file");
+	//enter the contents
+	$content_string = "# Generado automaticamente por Blackpyro\n";
+	//$content_string .= "RewriteEngine On\n";
+	$content_string .= "
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	# Descomentar las siguientes lineas si el sitio es HTTPS
+	#RewriteCond %{HTTPS} !=on
+ 	#RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+	RewriteBase $dir/
+	RewriteRule ^index\.php$ - [L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule . $dir/index.php [L]
+</IfModule>\n\n";
+
+	// Mas opciones
+	$content_string .= '
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType image/jpg "access 1 year"
+	ExpiresByType image/jpeg "access 1 year"
+	ExpiresByType image/gif "access 1 year"
+	ExpiresByType image/png "access 1 year"
+	ExpiresByType text/css "access 1 month"
+	ExpiresByType text/html "access 1 month"
+	ExpiresByType application/pdf "access 1 month"
+	ExpiresByType text/x-javascript "access 1 month"
+	ExpiresByType application/x-shockwave-flash "access 1 month"
+	ExpiresByType image/x-icon "access 1 year"
+	ExpiresDefault "access 1 month"
+</IfModule>
+
+## EXPIRES CACHING ##
+<IfModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_item_include file \.html$
+	mod_gzip_item_include file \.php$
+	mod_gzip_item_include file \.css$
+	mod_gzip_item_include file \.js$
+	mod_gzip_item_include mime ^application/javascript$
+	mod_gzip_item_include mime ^application/x-javascript$
+	mod_gzip_item_include mime ^text/.*
+	mod_gzip_item_include handler ^application/x-httpd-php
+	mod_gzip_item_exclude mime ^image/.*
+</IfModule>';
+	fwrite($file_handle, $content_string);
+	// close
+	fclose($file_handle);
+}
+
 $directory = str_replace('/rb-install/save.php', '', $_SERVER['SCRIPT_NAME']); //obteniendo sub directorio de instalacion
 $opciones_valores = array(
 	"nombresitio" => "Nombre Sitio",
@@ -112,64 +170,7 @@ if(isset($_POST)):
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (2, 'Usuario Gestionador', 'user-panel', 'Usuario con acceso para gestionar solo parte del sitio web')");
 		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar el sitio web')");
 
-		//function crear htaccess
-		function create_htaccess($dir){
-			//Agradecimiento: http://www.dreamincode.net/forums/topic/214225-php-create-htaccess/page__view__findpost__p__1243819
-			$create_name = "../.htaccess";
-			// open the .htaccess file for editing
-			$file_handle = fopen($create_name, 'w') or die("Error: Can't open file");
-			//enter the contents
-			$content_string = "# Generado automaticamente por Blackpyro\n";
-			//$content_string .= "RewriteEngine On\n";
-			$content_string .= "<IfModule mod_rewrite.c>
-				RewriteEngine On
-				#Redirect www to without www
-				#RewriteCond %{HTTP_HOST} ^www.domain.com [NC]
-        #RewriteRule ^(.*)$ http://domain.com/$1 [L,R=301]
-				RewriteBase $dir/
-				#RewriteCond %{HTTP_HOST} ^www.domain-here.com [NC]
-        #RewriteRule ^(.*)$ http://domain-here.com/$1 [L,R=301]
-				RewriteRule ^index\.php$ - [L]
-				RewriteCond %{REQUEST_FILENAME} !-f
-				RewriteCond %{REQUEST_FILENAME} !-d
-				RewriteRule . $dir/index.php [L]
-			</IfModule>\n\n";
-			// Mas opciones
-			$content_string .= '## EXPIRES CACHING ##
-			<IfModule mod_expires.c>
-			ExpiresActive On
-			ExpiresByType image/jpg "access 1 year"
-			ExpiresByType image/jpeg "access 1 year"
-			ExpiresByType image/gif "access 1 year"
-			ExpiresByType image/png "access 1 year"
-			ExpiresByType text/css "access 1 month"
-			ExpiresByType text/html "access 1 month"
-			ExpiresByType application/pdf "access 1 month"
-			ExpiresByType text/x-javascript "access 1 month"
-			ExpiresByType application/x-shockwave-flash "access 1 month"
-			ExpiresByType image/x-icon "access 1 year"
-			ExpiresDefault "access 1 month"
-			</IfModule>
-
-			## EXPIRES CACHING ##
-			<IfModule mod_gzip.c>
-			mod_gzip_on Yes
-			mod_gzip_item_include file \.html$
-			mod_gzip_item_include file \.php$
-			mod_gzip_item_include file \.css$
-			mod_gzip_item_include file \.js$
-			mod_gzip_item_include mime ^application/javascript$
-			mod_gzip_item_include mime ^application/x-javascript$
-			mod_gzip_item_include mime ^text/.*
-			mod_gzip_item_include handler ^application/x-httpd-php
-			mod_gzip_item_exclude mime ^image/.*
-			</IfModule>';
-			fwrite($file_handle, $content_string);
-			// close
-			fclose($file_handle);
-		}
 		create_htaccess($directory);
-
 		header('Location: '.$sitio_url."/login.php");
 	else:
 		die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico.".$response['error']);

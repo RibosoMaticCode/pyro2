@@ -85,13 +85,13 @@ $(document).ready(function() {
             <table id="t_articulos" class="tables" border="0" cellpadding="0" cellspacing="0">
                 <thead>
                     <tr>
-                      <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-                      <th width="80px"><h3>Portada</h3></th>
+                      <th><input type="checkbox" value="all" id="select_all" /></th>
+                      <th><h3>Portada</h3></th>
                       <th><h3>Nombre</h3></th>
-                      <th width="250px;"><h3>Grupo</h3></th>
-                      <th width="250px;"><h3>Visualizar</h3></th>
-                      <th width="250px;"><h3>Fecha</h3></th>
-                      <th width="30px;"><h3>Imagenes</h3></th>
+                      <th><h3>Grupo</h3></th>
+                      <th><h3>Visualizar</h3></th>
+                      <th><h3>Fecha</h3></th>
+                      <th><h3>Imagenes</h3></th>
                     </tr>
                 </thead>
                 <tbody id="itemstable">

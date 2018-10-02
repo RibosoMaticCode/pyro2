@@ -2,10 +2,11 @@
 /*
 Module Name: Recaptcha
 Plugin URI: https://www.google.com/recaptcha/
-Description: Evitar spam en los formularios. Debes establecer el ID del submit como: btnSend. <a href='module.php?pag=recaptcha_google'>Configuracion</a>
+Description: Evitar spam en los formularios. Debes establecer el ID del submit como: btnSend.
 Author: Google Inc.
 Version: 1.0
 Author URI: https://www.google.com/recaptcha/
+PageConfig: recaptcha_google
 */
 
 // ------ FUNCIONES PARA EL FRONT-END ------ //

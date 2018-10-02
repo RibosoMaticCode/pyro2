@@ -14,7 +14,7 @@ while ($row = $result->fetch_assoc()){
           <a class="fancybox" rel="group" href="../rb-media/gallery/<?= utf8_encode($row['src']) ?>"><?= utf8_encode($row['src']) ?></a>
         </span>
         <span class="edit">
-          <a href="<?= G_SERVER ?>/rb-admin/index.php?pag=img&opc=edt&id=<?= $row['id'] ?>&album_id=<?= $row['album_id'] ?>">
+          <a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>/rb-admin/core/galleries/img-edit.php?id=<?= $row['id'] ?>&album_id=<?= $row['album_id'] ?>">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </a>
         </span>

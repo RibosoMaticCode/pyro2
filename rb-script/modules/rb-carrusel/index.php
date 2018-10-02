@@ -6,6 +6,7 @@ Description: Convierte una galería en un carrusel de fotos. Usa el plugin slick
 Author: Jesus Liñan
 Version: 1.1
 Author URI: http://ribosomatic.com
+PageConfig: carrusel
 */
 // Menu
 rb_add_specific_item_menu('files', array(

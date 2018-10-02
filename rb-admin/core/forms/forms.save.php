@@ -19,9 +19,6 @@ if( $mode=="new" ){
 	$columns_vals['name_id'] = rb_cambiar_nombre( utf8_encode( trim( $_POST['name'] ) ) );
 	$result = $objDataBase->Insert('forms', $columns_vals);
 	if( $result['result'] ){
-		//$ultimo_id=$result['insert_id'];
-		//$enlace=G_SERVER.'/rb-admin/module.php?pag=forms&opc=edt&id='.$ultimo_id."&m=ok";
-		//header('Location: '.$enlace);
 		$arr = array('result' => true, 'message' => 'Formulario guardado', 'url' => G_SERVER, 'last_id' => $result['insert_id'] );
 	}else{
 		$arr = array('result' => false, 'message' => $result['error']);
@@ -30,8 +27,6 @@ if( $mode=="new" ){
 	$id = $_POST['id'];
 	$result = $objDataBase->Update('forms', $columns_vals, ['id' => $id]);
 	if( $result['result'] ){
-		/*$enlace=G_SERVER.'/rb-admin/module.php?pag=forms&opc=edt&id='.$id."&m=ok";
-		header('Location: '.$enlace);*/
 		$arr = array('result' => true, 'message' => 'Formulario actualizado', 'url' => G_SERVER, 'last_id' => $id );
 	}else{
 		$arr = array('result' => false, 'message' => $result['error']);

@@ -105,7 +105,8 @@ $seccion = 'modules-list'; // pintar boton del menu
 													        'Tags'        => 'Tags',
 													        'TextDomain'  => 'Text Domain',
 													        'DomainPath'  => 'Domain Path',
-																	'PluginURI' => 'Plugin URI'
+																	'PluginURI' => 'Plugin URI',
+																	'PageConfig' => 'PageConfig'
 														);
 														//echo $carpeta.$archivo."<br />";
 
@@ -128,6 +129,12 @@ $seccion = 'modules-list'; // pintar boton del menu
 																			<span><a href="modules.list.save.php?action=active&name=<?= $data['Name'] ?>&path=<?= $carpeta.$archivo ?>">Activar</a></span>
 																		<?php }elseif($action==1){ ?>
 																			<span><a href="modules.list.save.php?action=desactive&name=<?= $data['Name'] ?>&path=<?= $carpeta.$archivo ?>">Desactivar</a></span>
+																			<?php if(isset($data['PageConfig'])){
+																				?>
+																				<span><a href="<?= G_SERVER ?>/rb-admin/module.php?pag=<?= $data['PageConfig'] ?>">Configurar</a></span>
+																				<?php
+																			}
+																			?>
 																		<?php } ?>
 																	</div>
 																</td>

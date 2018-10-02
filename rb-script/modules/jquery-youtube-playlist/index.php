@@ -6,6 +6,7 @@ Description: Muestra un bloque de visualizacion de lista de reproduccion de Yout
 Author: Ican Bachors
 Version: v06
 Author URI: https://github.com/bachors
+PageConfig: playlistyoutube_config
 */
 
 // ------ FUNCIONES PARA EL FRONT-END ------ //
@@ -22,9 +23,23 @@ add_function('theme_header','ycp_files_header');
 function box($params){
 	return '<div id="$1" data-ycp_title="$2" data-ycp_channel="$3"> </div>';
 }
-function hello(){
+function hello(){ // BBcode de prueba
 	return "Hola bebecode!!";
 }
 add_bbcode('YOUTUBELIST', 'box', ['id','title','channel']);
 add_bbcode('YOUTUBE_HOLA', 'hello');
+
+// Pagina de configuraciones
+if(isset($_GET['pag']) && $_GET['pag']=="playlistyoutube_config"):
+  function yp_title(){ // Youtube Playlist
+		return "Configuracion de Lista de videos de Youtube";
+	}
+
+	function yp_maincontent(){
+		include_once 'backend.config.php';
+	}
+	add_function('module_title_page','yp_title');
+	add_function('module_content_main','yp_maincontent');
+
+endif;
 ?>

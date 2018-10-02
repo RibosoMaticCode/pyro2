@@ -7,6 +7,7 @@ if($sitekey==""){
   $sitekeydemo = $sitekey;
 }
 ?>
+<h2 class="title">Recaptcha</h2>
 <div class="cols-container">
   <div class="cols-6-md">
     <section class="seccion">

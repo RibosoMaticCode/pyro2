@@ -44,7 +44,7 @@ $row_g = $result_g->fetch_assoc();
         			});
               notify('Los datos seleccionados fueron eliminados correctamente.');
               setTimeout(function(){
-                window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=img&album_id='+album_id;
+                window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=gal&album_id='+album_id;
               }, 1000);
         		}
         	});
@@ -63,7 +63,7 @@ $row_g = $result_g->fetch_assoc();
                   if(data.result = 1){
                     notify('El dato fue eliminado correctamente.');
                     setTimeout(function(){
-                      window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=img&album_id='+album_id;
+                      window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=gal&album_id='+album_id;
                     }, 1000);
                   }else{
                     notify('Ocurrio un error inesperado. Intente luego.');

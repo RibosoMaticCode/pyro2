@@ -15,6 +15,6 @@ $array_images = $_REQUEST['items'];
 foreach($array_images as $image){
   $objDataBase->Ejecutar("UPDATE photo SET album_id =".$_POST['album_id']." WHERE id=".$image);
 }
-$urlreload=G_SERVER.'/rb-admin/index.php?pag=img&album_id='.$_POST['album_id']."&m=ok";
+$urlreload=G_SERVER.'/rb-admin/index.php?pag=gal&album_id='.$_POST['album_id']."&m=ok";
 header('Location: '.$urlreload);
 ?>

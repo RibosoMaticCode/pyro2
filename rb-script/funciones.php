@@ -226,7 +226,9 @@ function rb_post_related_by_category($Post_id, $Category_id,  $Limit = 5){
 function rb_get_user_info($User_id){
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=$User_id");
-
+	if($q->num_rows==0)
+		return false;
+		
 	$UserArray = array();
 	while($Users = $q->fetch_assoc()):
 		$UserArray['id'] = $Users['id'];

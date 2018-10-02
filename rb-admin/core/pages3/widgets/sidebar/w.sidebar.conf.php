@@ -18,7 +18,7 @@
 					<select name="sidebar_name" id="sidebar_name">
 						<option value="0">Seleccionar</option>
 						<?php
-						$q = $objDataBase->Ejecutar("SELECT * FROM paginas");
+						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=3");
 						while($Pagina = $q->fetch_assoc()):
 							?>
 							<option value="<?= $Pagina['id']?>"><?= $Pagina['titulo']?></option>

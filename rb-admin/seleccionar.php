@@ -25,7 +25,7 @@ switch($pag){
 			default:
 				include('core/pubs/pub-init.php');
 		}
-	break;
+		break;
 	case "usu":
 		if(isset($_GET['profile'])){
 			echo '<h2 class="title">Mi perfil</h2>';
@@ -56,7 +56,7 @@ switch($pag){
 					endif;
 					include('core/users/user-init.php');
 			}
-	break;
+		break;
 	case "menus":
 		if($userType != "admin"):
 			printf(" Sección no disponible ");
@@ -79,28 +79,27 @@ switch($pag){
 				include('core/menu/menu-init.php');
 		}
 		break;
-		case "menu":
-			if($userType != "admin"):
-				printf(" Sección no disponible ");
-				break;
-			endif;
-			$sec="menu";
-			if(isset($_GET['opc'])){
-				$opc=$_GET['opc'];
-			}else{
-				$opc="";
-			}
-			switch($opc){
-				default:
-					include('core/menu/items-init.php');
-			}
-			break;
-  case "pages":
+	case "menu":
 		if($userType != "admin"):
 			printf(" Sección no disponible ");
 			break;
 		endif;
-		//echo '';
+		$sec="menu";
+		if(isset($_GET['opc'])){
+			$opc=$_GET['opc'];
+		}else{
+			$opc="";
+		}
+		switch($opc){
+			default:
+			include('core/menu/items-init.php');
+		}
+		break;
+  	case "pages":
+		if($userType != "admin"):
+			printf(" Sección no disponible ");
+			break;
+		endif;
         $sec="pages";
         if(isset($_GET['opc'])){
             $opc=$_GET['opc'];
@@ -115,46 +114,45 @@ switch($pag){
             default:
                 include('core/pages3/page-init.php');
         }
-    break;
+    	break;
 	case "pages2":
 		if($userType != "admin"):
 			printf(" Sección no disponible ");
 			break;
 		endif;
-	//echo '';
-	      $sec="pages";
-	      if(isset($_GET['opc'])){
-	          $opc=$_GET['opc'];
-	      }else{
-	          $opc="";
-	     }
-	      switch($opc){
-	          case "nvo":
-	          case "edt":
-	              include('core/pages2/page-edit.php');
-	              break;
-	          default:
-	              include('core/pages2/page-init.php');
-	      }
-	  break;
+	    $sec="pages";
+	    if(isset($_GET['opc'])){
+	        $opc=$_GET['opc'];
+	    }else{
+	        $opc="";
+	    }
+	    switch($opc){
+	        case "nvo":
+	        case "edt":
+	    		include('core/pages2/page-edit.php');
+	        	break;
+	        default:
+	        	include('core/pages2/page-init.php');
+	    }
+	  	break;
 	case "gal":
 		echo '<h2 class="title">Galerías</h2>';
 		$sec="gal";
+
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
+			switch($opc){
+				case "nvo":
+				case "edt":
+					include('core/galleries/gallery-edit.php');
+					break;
+			}
+		}elseif(isset($_GET['album_id'])){
+			include('core/galleries/img-init.php');
 		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "nvo":
-			case "edt":
-				include('core/galleries/gallery-edit.php');
-				break;
-			default:
-				include('core/galleries/gallery-init.php');
+			include('core/galleries/gallery-init.php');
 		}
 		break;
-
 	case "explorer":
 		echo '<h2 class="title">Archivos</h2>';
 		$sec="files";
@@ -184,36 +182,7 @@ switch($pag){
 				break;
 		}
 	break;
-	case "img":
-		$sec="img";
-		if(isset($_GET['opc'])){
-			$opc=$_GET['opc'];
-		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "edt":
-				include('core/galleries/img-edit.php'); //posible duplicado con imgnew
-				break;
-			default:
-				include('core/galleries/img-init.php');
-		}
-		break;
 	// revisar de aca en adelante
-	case "file_edit":
-		echo '<h2 class="title">Archivos</h2>';
-		$sec="file_edit";
-		if(isset($_GET['opc'])){
-			$opc=$_GET['opc'];
-		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "edt":
-				include('core/files/file-edit.php');
-				break;
-		}
-		break;
 	case "com":
 		if($userType != "admin"):
 			printf(" Sección no disponible ");

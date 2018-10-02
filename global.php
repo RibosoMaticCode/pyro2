@@ -16,6 +16,10 @@ if($q->num_rows==0){
 	$directory = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
 	header('Location: ..'.$directory.'/rb-install/index.php');
 }
+
+$bb_codes = [];
+$bb_htmls = [];
+
 //enlaces amigables
 define('G_ENL_AMIG', rb_get_values_options('enlaceamigable'));
 

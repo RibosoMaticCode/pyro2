@@ -640,7 +640,23 @@ function rb_get_images_from_gallery($album_id, $limit = 0){
 			$FotosArray[$i]['tipo'] = $Fotos['tipo'];
 			$FotosArray[$i]['url_max'] = $rm_url.'rb-media/gallery/'.$Fotos['src'];
 			$FotosArray[$i]['url_min'] = $rm_url.'rb-media/gallery/tn/'.$Fotos['src'];
-			$FotosArray[$i]['goto_url'] = rb_url_link( $Fotos['tipo'] , $Fotos['url'] );
+			$FotosArray[$i]['class'] = "";
+			switch($FotosArray[$i]['tipo']){
+				case '':
+					$FotosArray[$i]['goto_url'] = $rm_url.'rb-media/gallery/'.$Fotos['src'];
+					break;
+				case 'fac':
+					$FotosArray[$i]['goto_url'] = G_SERVER."/rb-script/modules/rb-faceplayer/show.php?fbUrlVideo=".$Fotos['url'];
+					$FotosArray[$i]['class'] = "fancybox.ajax";
+					break;
+				case 'you':
+					$FotosArray[$i]['goto_url'] = "https://www.youtube.com/embed/".$Fotos['url'];
+					$FotosArray[$i]['class'] = "fancybox.iframe";
+					break;
+				default:
+					$FotosArray[$i]['goto_url'] = rb_url_link( $Fotos['tipo'] , $Fotos['url'] );
+			}
+			
 			$i++;
 		endwhile;
 		return $FotosArray;
@@ -1827,7 +1843,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
             echo '</div>';
             break;
           case 'slide':
-            echo '<div class="'.$widget['widget_class'].'">';
+            echo '<div class="clear '.$widget['widget_class'].'">';
             $gallery_id = $widget['widget_values']['gallery_id'];
             $type = $widget['widget_values']['type'];
             $quantity = $widget['widget_values']['quantity'];
@@ -1844,27 +1860,28 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                 </div>
                 <?php
               }
-              if($type==1){ // simple galeria
-                  $width = 100/$quantity;
-                 ?>
-                 <div class="rb-cover-img" style="width:<?= $width ?>%">
-                   <div>
-                     <div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
-                     <div class="shadow"></div>
-                     <?php if($widget['widget_values']['show_title']==1): ?>
-                       <h2><?= $foto['title'] ?></h2>
-                     <?php endif ?>
-                     <?php if($widget['widget_values']['activelink']==1): ?>
-                       <a href="<?= $foto['goto_url'] ?>">Ver mas</a>
-                     <?php else: ?>
-                       <a class="fancy" href="<?= $foto['url_max'] ?>">Ver foto</a>
-                     <?php endif ?>
-                   </div>
+							if($type==1){ // simple galeria
+								$width = 100/$quantity;
+                ?>
+                <div class="rb-cover-img" style="width:<?= $width ?>%">
+								 	<?php if($widget['widget_values']['activelink']==1): ?>
+                  	<a class="fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
+                  <?php else: ?>
+                    <a class="fancy" href="<?= $foto['goto_url'] ?>">
+                  <?php endif ?>
+                  	<div>
+											<div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
+											<div class="shadow"></div>
+											<?php if($widget['widget_values']['show_title']==1): ?>
+												<h2><?= $foto['title'] ?></h2>
+											<?php endif ?>
+                  	</div>
+										</a>
                 </div>
                 <?php
               }
             }
-            echo '</div><div class="clear"></div>';
+            //echo '</div><div class="clear"></div>';
             break;
           case 'youtube1':
             $yt_list = explode(",", $widget['widget_values']['videos']);
@@ -1931,18 +1948,27 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
               if($i==1){
                 echo '<div class="rb-gallery-container">'; // open rb-gallery-container
               }
-              echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">'; // open rb-gallery
-                echo '<div>'; // open div (no name)
+							echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">'; // open rb-gallery
+								if($link==0)
+								echo '<a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">';
+
+								if($link==1)
+								echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">';
+
+								echo '<div>'; // open div (no name)
+								
                 echo '<div class="rb-bg-gallery" style="background-image:url(\''.$Gallery['url_bgimagetn'].'\')" />'; // open rb-bg-gallery
-                echo '</div>'; // close rb-bg-gallery
+								echo '</div>'; // close rb-bg-gallery
+								
                 echo '<div class="rb-gallery-info">'; // open rb-gallery-info
-                if($link==0)
-                  echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">'.$Gallery['nombre'].'</a></span>';
-                if($link==1)
-                  echo '<span class="rb-gallery-title"><a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">'.$Gallery['nombre'].'</a></span>';
-                echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
-                echo '</div>'; // close rb-gallery-info
-                echo '</div>'; // close div
+                	echo '<span class="rb-gallery-title">'.$Gallery['nombre'].'</span>';
+                	echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
+								echo '</div>'; // close rb-gallery-info
+								
+								echo '</div>'; // close div
+
+								echo '</a>';
+								
               echo '</div>'; // close rb-gallery
               if($j==$CountGalleries || $i==$show_by_file){
                 echo '</div>'; // Close rb-gallery-container

@@ -94,11 +94,19 @@ if(isset($_GET["id"])){
             <input <?php if(isset($row) && $row['tipo']=="per") echo " value='".$row['url']."'" ?> placeholder="http://" autocomplete="off"  name="url" type="text" />
           </label>
           <label>
+            <input <?php if(isset($row) && $row['tipo']=="you") echo " checked " ?> type="radio" name="tipo" value="you" /> <span>Youtube (Colocar codigo del video)</span><br />
+            <input <?php if(isset($row) && $row['tipo']=="you") echo " value='".$row['url']."'" ?> placeholder="D4dyPBJeTko" autocomplete="off"  name="youtubecode" type="text" />
+          </label>
+          <label>
+            <input <?php if(isset($row) && $row['tipo']=="fac") echo " checked " ?> type="radio" name="tipo" value="fac" /> <span>Video de Facebook (Escribir URL completa del video)</span><br />
+            <input <?php if(isset($row) && $row['tipo']=="fac") echo " value='".$row['url']."'" ?> placeholder="https://" autocomplete="off"  name="facebookcode" type="text" />
+          </label>
+          <!--<label>
             <input <?php if(isset($row) && $row['tipo']=="obj") echo " checked " ?> type="radio" name="tipo" value="obj" />
             <span>Objetos externos como videos (Youtube, Vimeo), presentaciones (Slidesahre), etc </span>
             <span class="info">Si seleccionas está opción pega el código proporcionado por estos servicios en este recuadro</span>
             <textarea name="descripcion" id="descripcion" style="width:100%;"><?php if(isset($row))echo $row['description'] ?></textarea>
-          </label>
+          </label>-->
         </div>
       </div>
     </div>

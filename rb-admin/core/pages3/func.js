@@ -54,6 +54,12 @@ $(document).ready(function() {
 
   // ***** AÑADIR COLUMNAS ********
   $("#boxes").on("click", ".addNewCol", function (event) {
+    if(navigator.onLine){
+      console.log("Conexion estable");
+    }else{
+      notify("No hay conexion a internet en este momento!");
+      return;
+    }
     event.preventDefault();
     var cols = $(this).closest("li").find(".cols");
     $.ajax({
@@ -70,6 +76,12 @@ $(document).ready(function() {
 
   // ***** AÑADIR WIDGETS ********
   $("#boxes").on("click", ".addNewWidget", function (event) {
+    if(navigator.onLine){
+      console.log("Conexion estable");
+    }else{
+      notify("No hay conexion a internet en este momento!");
+      return;
+    }
     event.preventDefault();
     $('.bg-opacity').show();
     var widgets = $(this).closest("li").find(".widgets");
@@ -336,7 +348,14 @@ $(document).ready(function() {
     return (str + '').replace(/([^>rn]?)(rn|nr|r|n)/g, '' + break_tag + '');
   }
 
+  // Guardar toda la Pagina
   $( "#btnGuardar" ).click(function() {
+    if(navigator.onLine){
+      console.log("Conexion estable");
+    }else{
+      notify("No hay conexion a internet en este momento!");
+      return;
+    }
     event.preventDefault();
     var pagina_title = $('#titulo').val();
     var pagina_id = $('#pagina_id').val();

@@ -13,7 +13,15 @@ require_once(ABSPATH.'rb-script/funciones.php');
 // verifica datos en tabla, sino inicial el instalador
 $q = $objDataBase->Ejecutar("SELECT * FROM opciones");
 if($q->num_rows==0){
-	$directory = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
+	// Fragmentamos la url
+	$url_parts = explode("/",$_SERVER['SCRIPT_NAME']);
+	// Obtenermos el ultimo elemento del array
+	$last_part_url = $url_parts[count($url_parts)-1];
+
+	// Obtener el directorio donde estara instalado el cms
+	// Reemplazamos el ultimo elemento con un dato campo vacio para obtener este valor
+	$directory = str_replace('/'.$last_part_url, '', $_SERVER['SCRIPT_NAME']);
+	
 	header('Location: ..'.$directory.'/rb-install/index.php');
 }
 

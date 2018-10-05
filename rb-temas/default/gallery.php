@@ -10,7 +10,7 @@
         foreach ($fotos as $foto) {
           ?>
           <div class="cols-3-md">
-            <a href="<?= $foto['url_max'] ?>" class="fancy" data-fancybox-group="gallery">
+            <a href="<?= $foto['goto_url'] ?>" class="fancy <?= $foto['class'] ?>" data-fancybox-group="gallery">
               <img src="<?= $foto['url_min'] ?>" alt="imagen de galeria" />
             </a>
           </div>

@@ -2,7 +2,7 @@
 <div id="editor-slide" class="editor-window">
 	<!-- ED = Editor Box -->
 	<div class="editor-header">
-		<strong>Configuración del slide</strong>
+		<strong>Configuración de la galería</strong>
 	</div>
 	<div class="editor-body">
 		<div class="cols-container">
@@ -10,7 +10,7 @@
 				<label>
 					<span>Galeria a mostrar:</span>
 					<?php
-					$q = $objDataBase->Ejecutar("SELECT * FROM albums");
+					$q = $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY id DESC");
 					?>
 					<select id="slide_gallery" name="slide_gallery">
 				    <option value="0">Seleccionar</option>
@@ -56,6 +56,7 @@
 				</label>
 				<label>
 					<input type="checkbox" name="slide_activelink" id="slide_activelink" /> <span>Activar el link de la imagen</span>
+					<span class="info">Cuando se cliquee en la imagen la llevará al link especificado. No mostrará la foto.</span>
 				</label>
 			</div>
 			<div class="cols-6-md spacing-left">

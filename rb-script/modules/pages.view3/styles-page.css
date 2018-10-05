@@ -221,6 +221,10 @@
 .rb-gallery{
   padding: 5px 8px;
 }
+.rb-gallery a {
+  display: block;
+  position: relative;
+}
 .rb-gallery > div{
   overflow:hidden;
   position: relative;

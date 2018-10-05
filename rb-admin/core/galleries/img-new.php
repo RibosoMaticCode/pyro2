@@ -19,7 +19,7 @@ $rg= $qg->fetch_assoc();
 <div class="content">
   <!--<div class="wrap-home">-->
     <ul class="buttons-edition">
-      <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/index.php?pag=img&album_id=<?= $album_id ?>">Volver</a></li>
+      <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/index.php?pag=igalmg&album_id=<?= $album_id ?>">Volver</a></li>
     </ul>
     <section class="seccion">
       <div class="seccion-header">
@@ -40,7 +40,7 @@ $rg= $qg->fetch_assoc();
             dragDrop:true,
             fileName: "myfile",
             formData: {"albumid":"<?= $album_id ?>" , "user_id" : "<?= G_USERID ?>"},
-            urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=img&opc=edt&album_id=".$album_id."&id=" ?>',
+            urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=gal&opc=edt&album_id=".$album_id."&id=" ?>',
             allowedTypes:"jpg,png,gif",
             returnType:"html", //json
           onSuccess:function(files,data,xhr)

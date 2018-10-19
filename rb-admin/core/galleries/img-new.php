@@ -19,7 +19,7 @@ $rg= $qg->fetch_assoc();
 <div class="content">
   <!--<div class="wrap-home">-->
     <ul class="buttons-edition">
-      <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/index.php?pag=igalmg&album_id=<?= $album_id ?>">Volver</a></li>
+      <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/index.php?pag=gal&album_id=<?= $album_id ?>">Volver</a></li>
     </ul>
     <section class="seccion">
       <div class="seccion-header">

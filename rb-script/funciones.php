@@ -16,7 +16,7 @@ function is_https(){
 }
 
 function rb_mailing_send($title_message, $message){ // Envia mail a cada usuario activo del sistema
-  global $objDataBase;
+	global $objDataBase;
   $q = $objDataBase->Ejecutar("SELECT nombres, correo FROM usuarios WHERE activo=1");
   while($mail = $q->fetch_assoc()){
     $subject = $title_message;
@@ -1075,6 +1075,9 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		if(substr_count(strtolower($destination_file), ".jpg")){
 			imagejpeg($square_image,$destination_file,100);
 		}
+		if(substr_count(strtolower($destination_file), ".jpeg")){
+			imagejpeg($square_image,$destination_file,100);
+		}
 		if(substr_count(strtolower($destination_file), ".gif")){
 			imagegif($square_image,$destination_file);
 		}
@@ -1779,7 +1782,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
     $addons = '';
   }
 
-  if($type=="page") echo '<div class="'.$ext_class.' clear" style="'.$styles_ext.'" '.$addons.'>';
+  if($type=="page") echo '<div class="clear '.$ext_class.'" style="'.$styles_ext.'" '.$addons.'>'; // start outer box
   //BLoque interno
   $default_class = "inner-content"; // default
   $style_inwidth = ""; // default
@@ -1804,9 +1807,9 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
 
   $styles_in = $style_inheight.$style_inbgcolor.$style_inbgimage.$style_inpaddingtop.$style_inpaddingright.$style_inpaddingbottom.$style_inpaddingleft.$style_inwidth;
 
-  if($type=="page") echo '<div class="'.$default_class.$in_class.' clear" style="'.$styles_in.'">';
+  if($type=="page") echo '<div class="'.$default_class.$in_class.' clear" style="'.$styles_in.'">'; // start inner box
   if($type=="sidebar") echo '<div class="box'.$in_class.' clear" style="'.$styles_in.'">';
-  echo '<div class="cols">';
+  echo '<div class="cols">'; // start cols
   $array_cols =$box['columns'];
   foreach ($array_cols as $col):
     $col_class = "";
@@ -1845,13 +1848,13 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
           case 'slide':
             echo '<div class="clear '.$widget['widget_class'].'">';
             $gallery_id = $widget['widget_values']['gallery_id'];
-            $type = $widget['widget_values']['type'];
+            $typegallery = $widget['widget_values']['type'];
             $quantity = $widget['widget_values']['quantity'];
             $limit = $widget['widget_values']['limit'];
             $activelink = $widget['widget_values']['activelink'];
             $fotos = rb_get_images_from_gallery($gallery_id, $limit);
             foreach ($fotos as $foto) {
-              if($type==2){ // slide
+              if($typegallery==2){ // slide
                 ?>
                 <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
                   <?php if($widget['widget_values']['show_title']==1): ?>
@@ -1860,14 +1863,14 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                 </div>
                 <?php
               }
-							if($type==1){ // simple galeria
+							if($typegallery==1){ // simple galeria
 								$width = 100/$quantity;
                 ?>
                 <div class="rb-cover-img" style="width:<?= $width ?>%">
 								 	<?php if($widget['widget_values']['activelink']==1): ?>
                   	<a class="fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
                   <?php else: ?>
-                    <a class="fancy" href="<?= $foto['goto_url'] ?>">
+                    <a class="fancy" data-fancybox-group="gallery" href="<?= $foto['goto_url'] ?>">
                   <?php endif ?>
                   	<div>
 											<div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
@@ -1881,7 +1884,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                 <?php
               }
             }
-            //echo '</div><div class="clear"></div>';
+            echo '</div>';//<div class="clear"></div>';
             break;
           case 'youtube1':
             $yt_list = explode(",", $widget['widget_values']['videos']);
@@ -2074,11 +2077,11 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
         }
       }
     }
-    echo '</div>';// end col or coverwidgets
+    echo '</div><!--end col or coverwidgets-->';// end col or coverwidgets
   endforeach; // end columns
-  echo '</div>'; //end cols
-  echo '</div>'; //end inner box
-  if($type=="page") echo '</div>'; //end outer box
+  echo '</div><!--end cols-->'; //end cols
+	echo '</div><!--end inner box-->'; //end inner box
+  if($type=="page") echo '</div><!--end outer box-->'; //end outer box
 }
 /*
 * Muestra la cabecera de la plantilla, por defecto el archivo se llama header.php, tambien se puede adicional algunos otros,

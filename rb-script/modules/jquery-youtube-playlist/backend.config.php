@@ -4,7 +4,14 @@
     <section class="seccion">
       <div class="seccion-body">
         <h2>Cómo usarlo</h2>
-        <p>Copia y pega este BBcode y añadelo en tu pagina y establece titulo y codigo de la lista de reproduccion segun Youtube</p>
+        <p>Primero genera tu <a target="_blank" href="https://developers.google.com/youtube/v3/getting-started?hl=es-419">API KEY</a> youtube</p>
+        <form>
+        <label> Establece tu API KEY aqui
+        <input type="text" name="apikey" />
+        <button type="submit">Guardar Api Key</button>
+        </label>
+        </form>
+        <p>Copia y pega este BBcode y añadelo en tu pagina. Establece un identificador único, titulo y codigo de la lista de reproduccion en Youtube</p>
         <p><code>[YOUTUBELIST id="unix" title="Tu titulo de video" channel="Codigo del lista de reproduccion"]</code></p>
       </div>
     </section>

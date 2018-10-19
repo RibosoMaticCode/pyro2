@@ -5,11 +5,11 @@
 }
 @font-face{
 	font-family: Light;
-	src: url('../fonts/palanquin-light.ttf');
+	src: url('../fonts/FuturaStd-Light.otf');
 }
 @font-face{
 	font-family: Semibold;
-	src: url('../fonts/palanquindark-bold.ttf');
+	src: url('../fonts/FuturaStd-Bold.otf');
 }
 .fa {
   display: inline-block;

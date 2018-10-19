@@ -233,7 +233,7 @@
 	transform:scale(1.1);
 }
 .rb-gallery .rb-bg-gallery{
-  height: 200px;
+  min-height: 200px;
   background-position: center;
   background-size: cover;
 }

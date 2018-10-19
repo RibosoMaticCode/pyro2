@@ -11,6 +11,7 @@ $columns_vals = [
 	'name' => trim($_POST['name']),
 	'estructure' => htmlentities(trim($_POST['estructure'])),
 	'validations' => addslashes($_POST['validations']),
+	'mails' => $_POST['mails'],
 	'user_id' => G_USERID
 ];
 

@@ -116,7 +116,7 @@ $(document).ready(function() {
         fileName: "myfile",
         formData: {"albumid":"0", "user_id" : "<?= G_USERID ?>"},
         urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
-        allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf",
+        allowedTypes:"jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf",
         returnType:"json", //html
         showStatusAfterSuccess: false,
         onSuccess:function(files,data,xhr){

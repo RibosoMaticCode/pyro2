@@ -10,18 +10,34 @@ PageConfig: playlistyoutube_config
 */
 
 // ------ FUNCIONES PARA EL FRONT-END ------ //
+
+// Archivos de Cabecera 
 function ycp_files_header(){
 	global $rb_module_url;
 	$files = '<script src="'.G_DIR_MODULES_URL.'jquery-youtube-playlist/js/ycp.js"></script>';
-  $files .= '<script src="'.G_DIR_MODULES_URL.'jquery-youtube-playlist/config.init.js"></script>';
-  $files .= '<link rel="stylesheet" href="'.G_DIR_MODULES_URL.'jquery-youtube-playlist/css/ycp.css">';
+	//$files .= '<script src="'.G_DIR_MODULES_URL.'jquery-youtube-playlist/config.init.js"></script>';
+  	$files .= '<link rel="stylesheet" href="'.G_DIR_MODULES_URL.'jquery-youtube-playlist/css/ycp.css">';
 	return $files;
 }
 
 add_function('theme_header','ycp_files_header');
 
+
+// Funcion BBCODE
 function box($params){
-	return '<div id="$1" data-ycp_title="$2" data-ycp_channel="$3"> </div>';
+	$player = '<script>$(document).ready(function() {
+
+		$("#$1").ycp({
+		  apikey : \'AIzaSyBmrQl2FmO08sU68_hR7wrDkQIuzp4shsc\',
+		  playlist : 7,
+		  autoplay : false,
+		  related : true
+		});
+	  
+	  });</script>';
+	
+	$player .= '<div id="$1" data-ycp_title="$2" data-ycp_channel="$3"> </div>';
+	return $player;
 }
 function hello(){ // BBcode de prueba
 	return "Hola bebecode!!";
@@ -31,7 +47,7 @@ add_bbcode('YOUTUBE_HOLA', 'hello');
 
 // Pagina de configuraciones
 if(isset($_GET['pag']) && $_GET['pag']=="playlistyoutube_config"):
-  function yp_title(){ // Youtube Playlist
+  	function yp_title(){ // Youtube Playlist
 		return "Configuracion de Lista de videos de Youtube";
 	}
 

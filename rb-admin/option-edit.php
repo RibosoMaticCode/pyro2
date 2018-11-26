@@ -1,7 +1,7 @@
 <?php
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 ?>
-<form name="options-form" method="post" action="option-save.php">
+<form class="form" name="options-form" method="post" action="option-save.php">
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">
@@ -84,19 +84,22 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </label>
           </div>
           <div class="cols-6-md col-padding">
-            <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web? <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Nueva página</a></label>
-            <span class="info">Puede elegir una en particular ó dejar por defecto según el tema instalado</span>
-            <select  name="inicial">
-              <option value="0">Por defecto</option>
-              <?php
-              $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=0 ORDER BY titulo");
+            <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web? 
+              <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Nueva página</a>
+              <span class="info">Puede elegir una en particular ó dejar por defecto según el tema instalado</span>
+              <select  name="inicial">
+                <option value="0">Por defecto</option>
+                <?php
+                $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=0 ORDER BY titulo");
 
-              while($r = $q->fetch_assoc()):
-                ?><option <?php if( rb_get_values_options('initial') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
-              endwhile;
-              ?>
-            </select>
-            <label>Bloque de cabecera personalizado</label>
+                while($r = $q->fetch_assoc()):
+                  ?><option <?php if( rb_get_values_options('initial') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
+                endwhile;
+                ?>
+              </select>
+            </label>
+
+            <label>Bloque de cabecera personalizado
             <!--<input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />-->
             <?php
   					$qh = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 ORDER BY titulo");
@@ -106,9 +109,10 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
   						<?php while($header = $qh->fetch_assoc()): ?>
   						<option value="<?= $header['id'] ?>" <?php if($header['id']==rb_get_values_options('block_header_ids')) echo "selected" ?>><?= $header['titulo'] ?></option>
   						<?php endwhile ?>
-  					</select>
+            </select>
+            </label>
 
-            <label>Bloque de pie de pagina personalizado</label>
+            <label>Bloque de pie de pagina personalizado
             <!--<input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />-->
             <?php
   					$qf = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2 ORDER BY titulo");
@@ -118,10 +122,10 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
   						<?php while($Footer = $qf->fetch_assoc()): ?>
   						<option value="<?= $Footer['id'] ?>" <?php if($Footer['id']==rb_get_values_options('block_footer_ids')) echo "selected" ?>><?= $Footer['titulo'] ?></option>
   						<?php endwhile ?>
-  					</select>
+            </select>
+            </label>
 
-            <label>Barra lateral de blog</label>
-            <label>
+            <label>Barra lateral de blog
               <select name="sidebar_id">
                 <option value="0">Por defecto</option>
                 <?php
@@ -132,6 +136,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 ?>
               </select>
             </label>
+
             <span class="info">Configuracion de visualizacion de la barra lateral.</span>
             <label class="lbl-listoptions">
               <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
@@ -287,8 +292,9 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 ?>
               </select>
             </label>
-            <label>Activar usuario:</label>
+            <label>Activar usuario:
             <span class="info">Cuando el usuario se registra, es necesario que se active, como medida de seguridad y para evitar el SPAM.</span>
+            </label>
             <label class="lbl-listoptions">
               <input name="user_active_admin" type="radio" value="2" <?php if(rb_get_values_options('user_active_admin')=='2') echo "checked=\"checked\""?> />
               Solo el Administrador puede activar al usuario nuevo
@@ -302,7 +308,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               El usuario nuevo no necesita activar su cuenta
             </label>
 
-            <span class="info">Mostrar link de terminos y condiciones en formulario de registro</span>
+            <label>Mostrar link de terminos y condiciones en formulario de registro</label>
             <label class="lbl-listoptions">
               <input name="show_terms_register" type="radio" value="0" <?php if(rb_get_values_options('show_terms_register')==0) echo "checked=\"checked\""?> />
               No mostrar
@@ -312,7 +318,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               Mostrar
             </label>
 
-            <span class="info">Validar contraseña segura en formularios de registro de usuarios</span>
+            <label>Validar contraseña segura en formularios de registro de usuarios</label>
             <label class="lbl-listoptions">
               <input name="pass_security" type="radio" value="0" <?php if(rb_get_values_options('pass_security')==0) echo "checked=\"checked\""?> />
               Contraseñas no seguras
@@ -328,8 +334,9 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </label>
           </div>
           <div class="cols-6-md col-padding">
-            <label>Permitir registrar nuevo usuario desde la página web</label>
+            <label>Permitir registrar nuevo usuario desde la página web
             <span class="info">Puede incluir un link para registrarse en la página de inicio de sesión ó no.</span>
+            </label>
             <label class="lbl-listoptions">
               <input name="linkregister" type="radio" value="2" <?php if(rb_get_values_options('linkregister')=='2') echo "checked=\"checked\""?> />
               Permitir, pero ocultar link de registro en la página de Inicio de Sesión

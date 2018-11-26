@@ -4,11 +4,15 @@
   if($SidebarId == 0):
   ?>
   <section class="box search clear">
-    <form class="frmsearch" action="<?= G_SERVER ?>" method="get">
-      <label>
-        <input type="text" name="s" />
-      </label>
-      <button>Buscar</button>
+    <form class="form" action="<?= G_SERVER ?>" method="get">
+      <div class="cols-container">
+        <div class="cols-8-md">
+          <input type="text" name="s" />
+        </div>
+        <div class="cols-4-md">
+          <button>Buscar</button>
+        </div>
+      </div>
     </form>
   </section>
   <section class="box box-sidebar">

@@ -26,8 +26,8 @@ while ($row = $consulta->fetch_assoc()){
       <input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
     </td>
     <td>
-      <h3><?= $row['titulo'] ?></h3>
-      <div class="options">
+      <?= $row['titulo'] ?>
+      <!--<div class="options">
         <span>
           <a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=pages&opc=edt&id=<?= $row['id'] ?>">Editar</a>
         </span>
@@ -38,7 +38,7 @@ while ($row = $consulta->fetch_assoc()){
         <span>
             <a class="fancybox fancybox.iframe" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank" title="Manten presionado F5 y pulsa el link para abrir en nueva pestaña">Vista previa</a>
         </span>
-      </div>
+      </div>-->
     </td>
     <td>
       <?= $row['description'] ?>
@@ -62,6 +62,20 @@ while ($row = $consulta->fetch_assoc()){
       ?>
     </td>
     <td><?= rb_sqldate_to($row['fecha_creacion']) ?></td>
+    <td class="row-actions">
+      <a title="Duplicar" class="edit" href="<?= G_SERVER ?>/rb-admin/content.duplicate.php?id=<?= $row['id'] ?>&sec=pages">
+        <i class="fa fa-clone"></i>
+      </a>
+      <a title="Previsualizar" class="edit" href="<?= G_SERVER ?>/?p=<?= $row['id'] ?>" target="_blank">
+        <i class="fa fa-eye"></i>
+      </a>
+      <a title="Editar" class="edit" data-item="<?= $row['id'] ?>" href="<?= G_SERVER ?>/rb-admin/index.php?pag=pages&opc=edt&id=<?= $row['id'] ?>">
+        <i class="fa fa-edit"></i>
+      </a>
+      <a title="Eliminar" class="del del-item" data-id="<?= $row['id'] ?>" href="#">
+        <i class="fa fa-times"></i>
+      </a>
+    </td>
   </tr>
   <?php
   $i++;

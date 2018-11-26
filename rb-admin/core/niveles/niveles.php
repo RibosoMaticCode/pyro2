@@ -1,4 +1,7 @@
-<h2 class="title">Niveles de acceso</h2>
+<div class="page-header">
+	<h2>Niveles de acceso
+	</h2>
+</div>
 <?php
 $sec="nivel";
 if(isset($_GET['opc'])):
@@ -80,6 +83,7 @@ $(document).ready(function() {
 </script>
 <div class="wrap-content-list">
 	<section class="seccion">
+		<div class="seccion-body">
 		<table class="tables" border="0" cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
@@ -94,6 +98,7 @@ $(document).ready(function() {
 				<?php include('niveles.list.php') ?>
 			</tbody>
 		</table>
+		</div>
 	</section>
 </div>
 <?php

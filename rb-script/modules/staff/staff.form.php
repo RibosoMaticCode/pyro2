@@ -22,6 +22,7 @@ endif;
 <section class="seccion">
 	<div class="seccion-body">
 		<form id="frmstaff" method="post">
+			<div class="form">
 			<input type="hidden" name="mode" value="<?= $mode ?>" />
 			<input type="hidden" name="id" value="<?php if(isset($row)) echo $row['id']; else echo "0" ?>" />
 			<label>
@@ -59,6 +60,7 @@ endif;
 				</script>
 				<input type="text" name="photo" class="staff_photo" value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['photo_id'] : 0 ); echo $photos['src']; ?>" />
 			</label>
+			</div>
 			<textarea name="description" class="mceEditor"><?php if(isset($row)) echo $row['description'] ?></textarea>
 		</form>
 	</div>

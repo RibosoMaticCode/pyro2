@@ -21,7 +21,7 @@ if(isset($_GET["id"])){
     });
   });
 </script>
-<form id="categorie-form" name="categorie-form" method="post" action="core/categories/category-save.php">
+<form class="form" id="categorie-form" name="categorie-form" method="post" action="core/categories/category-save.php">
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">

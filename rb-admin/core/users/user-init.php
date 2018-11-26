@@ -79,27 +79,32 @@ $(document).ready(function() {
 </div>
 <div class="wrap-content-list">
   <section class="seccion">
-    <div id="content-list">
-      <div id="resultado">
-        <table id="t_usuarios" class="tables" border="0" cellpadding="0" cellspacing="0">
-          <thead>
-            <tr>
-              <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-              <th><h3>Usuario</h3></th>
-              <th><h3>Nombre Completo</h3></th>
-              <th><h3>Correo</h3></th>
-              <th><h3>Nivel Acceso</h3></th>
-              <th><h3>Activo</h3></th>
-            </tr>
-          </thead>
-          <tbody id="itemstable">
-          <?php include('user-list.php') ?>
-          </tbody>
-        </table>
+    <div class="seccion-body">
+      <div id="content-list">
+        <div id="resultado">
+          <table id="t_usuarios" class="tables" border="0" cellpadding="0" cellspacing="0">
+            <thead>
+              <tr>
+                <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
+                <th>Usuario</th>
+                <th>Nombre Completo</th>
+                <th>Correo</th>
+                <th>Nivel Acceso</th>
+                <th>Registro</th>
+                <th>Ultimo acceso</th>
+                <th>Activo</th>
+              </tr>
+            </thead>
+            <tbody id="itemstable">
+            <?php include('user-list.php') ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="pagination">
+      <?php include('user-paginate.php') ?>
       </div>
     </div>
-    <div id="pagination">
-    <?php include('user-paginate.php') ?>
-    </div>
   </section>
+  <a href="<?= G_SERVER ?>/rb-admin/?pag=usu&opc=csv">Cargar archivo CSV</a>
 </div>

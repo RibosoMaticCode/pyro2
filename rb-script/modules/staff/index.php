@@ -27,7 +27,7 @@ $menu1 = [
 							'nombre' => "Staff",
 							'url' => "module.php?pag=staff",
 							'url_imagen' => "none",
-							'pos' => 1,
+							'pos' => 1
 						]
 					]
 				];

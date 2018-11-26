@@ -1,4 +1,3 @@
-<h2 class="title">Editor Visual de Páginas (v.0.2)</h2>
 <?php
 $mode;
 if(isset($_GET["id"])){
@@ -41,7 +40,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 			<a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
 		</div>
 		<div class="seccion-body">
-			<div class="wrap-input">
+			<div class="form">
 				<label>Titulo de la página</label>
 				<input placeholder="Escribe el titulo de la página aquí" class="ancho" name="titulo" type="text" id="titulo" required value="<?php if(isset($Page)) echo $Page['titulo'] ?>" />
 				<input type="hidden" name="pagina_id" id="pagina_id" value="<?php if(isset($Page)) echo $Page['id']; else echo "0" ?>" />
@@ -192,6 +191,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 		<strong>Otros datos</strong>
 	</div>
 	<div class="editor-body">
+		<div class="form">
 		<label>Url de la pagina
 			<span class="info">Url amigable (generado automaticamente, si se deja en blanco)</span>
 			<span style="background:#fffcdf;padding:5px;border: 1px solid #FFEB3B;">
@@ -226,6 +226,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 				</label>
 			</div>
 		</div>
+		</div>
 	</div>
 	<div class="editor-footer">
 		<button class="button" id="data-config-btn-cancel">Cerrar</button>
@@ -250,7 +251,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 	<div class="editor-header">
 		<strong>Más configuraciones</strong>
 	</div>
-	<div class="editor-body">
+	<div class="editor-body form">
 		<div class="seccion-body cols-container">
 			<div class="cols-6-md">
 				<h4>Cabecera</h4>

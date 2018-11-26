@@ -41,7 +41,7 @@ $path_module = G_SERVER."/rb-script/modules/rb-editfile/";
 					?>
 					</ul>
 				</div>
-				<div class="cols-8-md">
+				<div class="cols-8-md form">
 					<form id="file_form" action="<?= G_SERVER ?>/rb-admin/modules/editfile/save.change.php" method="post">
 					<div style="position:relative; min-height:500px">
 						<textarea id="textarea" name="file_content" rows="30"></textarea>

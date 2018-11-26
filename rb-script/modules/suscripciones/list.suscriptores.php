@@ -15,6 +15,7 @@ while ($row = $q->fetch_assoc()):
 		<td><?= rb_sqldate_to($row['fecha']) ?></td>
 		<td><?= $row['nombres'] ?></td>
 		<td><?= $row['correo'] ?></td>
+		<td><?= $row['telefono'] ?></td>
 		<td><a class="del" data-item="<?= $row['id'] ?>" href="#">Eliminar</a></td>
 	</tr>
   <?php

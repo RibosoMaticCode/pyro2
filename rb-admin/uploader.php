@@ -8,43 +8,51 @@ require_once(ABSPATH."rb-script/funciones.php");
 require_once(ABSPATH."rb-script/class/rb-database.class.php");
 
 if(G_ACCESOUSUARIO>0){
-  /*if($response['response']){
-    $arr = ['resultado' => true, 'contenido' => 'Copia de BD generada', 'filename' => $response['filename'], 'url_backup' => $response['url_backup']];
-  }else{
-    $arr = ['resultado' => false, 'contenido' => 'Ocurrio un error durante el proceso, vuelva a intentarlo.'];
-  }*/
 	$album_id = $_POST['albumid'];
 	$user_id = $_POST['user_id'];
+	$dir_gallery =  ABSPATH."rb-media/gallery/";
+	$dir_gallery_thumbs = ABSPATH."rb-media/gallery/tn/";
 
-	$output_dir = ABSPATH."rb-media/gallery/";
 	if(isset($_FILES["myfile"])){
-		$error =$_FILES["myfile"]["error"];
-		if(!is_array($_FILES["myfile"]["name"])) {//single file
-			$temp = explode(".", $_FILES["myfile"]["name"]);
 
+		$error =$_FILES["myfile"]["error"]; // ???
+
+		if(!is_array($_FILES["myfile"]["name"])) {//single file
+
+			// Verificando si existe archivo con el mismo nombre
+			$temp = explode(".", $_FILES["myfile"]["name"]);
 			$originalfileName = pathinfo(utf8_decode($_FILES['myfile']['name']), PATHINFO_FILENAME); // 22/06/17 utf8_decode -> Para que acepte carecteres especiales Ñ tildes y espacios
-			$i = count(glob(ABSPATH."rb-media/gallery/".$originalfileName.'*.'.end($temp))) + 1;
+			$i = count(glob($dir_gallery.$originalfileName.'*.'.end($temp))) + 1;
 			if($i>1){
 				$fileName = $originalfileName.$i.'.'.end($temp);
 			}else{
 				$fileName = $originalfileName.'.'.end($temp);
 			}
-	 		move_uploaded_file($_FILES["myfile"]["tmp_name"], $output_dir.$fileName);
 
-			// creando thumbnails
-			$directorio = ABSPATH.'rb-media/gallery/';
-			$directorio_thumbs = ABSPATH.'rb-media/gallery/tn/';
+			// Comprimiendo y guardan en directorio
+			rb_compress($_FILES["myfile"]["tmp_name"], $dir_gallery.$fileName);
+
+			// Creando thumbnails
 			$fileType = $_FILES["myfile"]["type"];
-			if($fileType == "image/png" || $fileType == "image/jpeg" || $fileType == "image/gif") rb_createThumbnail($fileName, $directorio_thumbs, $directorio, 300);
+			if($fileType == "image/png" || $fileType == "image/jpeg" || $fileType == "image/gif") rb_createThumbnail($fileName, $dir_gallery_thumbs, $dir_gallery, 300);
 
-	    $campos = array($originalfileName,$fileName,$fileName,$album_id,$fileType,"",$user_id);
-	    $q = "INSERT INTO photo (title, src, tn_src, album_id, type, tipo, usuario_id) VALUES ('".$campos[0]."','".$campos[1]."','".$campos[2]."',".$campos[3].",'".$campos[4]."','".$campos[5]."', ".$campos[6].")";
-			$result = $objDataBase->Insertar( $q );
-	    if($result){
-	      $ultimo_id = $result['insert_id'];
+			// Almacenando informacion de archivo en base de datos
+			$valores = [
+				'title' => $originalfileName,
+				'src' => $fileName,
+				'tn_src' => $fileName,
+				'album_id' => $album_id,
+				'type' => $fileType,
+				'tipo' => "",
+				'usuario_id' => $user_id
+			];
+
+			$r = $objDataBase->Insert('photo', $valores);
+	    if($r['result']){
+				$ultimo_id = $r['insert_id'];
 	    }
 		}
-	  //echo $ultimo_id;
+
 		$arr = ['resultado' => true, 'last_id' => $ultimo_id, 'type' => $fileType ];
 	}
 

@@ -1,4 +1,3 @@
-<h2 class="title">Editor Visual de Páginas (v.0.2)</h2>
 <?php if (!in_array("pag", $array_help_close)): ?>
 <div class="help" data-name="pag">
 <h4>Información</h4>
@@ -79,19 +78,19 @@ $(document).ready(function() {
     <li><a class="btn-delete" rel="pages" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
   </ul>
 </div>
-
-  <div class="wrap-content-list">
   <section class="seccion">
+    <div class="seccion-body">
       <div id="content-list">
           <div id="resultado"> <!-- ajax asyncron here -->
           <table id="t_articulos" class="tables" border="0" cellpadding="0" cellspacing="0">
               <thead>
                   <tr>
                     <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-                      <th><h3>Título</h3></th>
-                      <th><h3>Descripción</h3></th>
-                      <th><h3>Tipo</h3></th>
-                      <th><h3>Fecha</h3></th>
+                      <th>Título</th>
+                      <th>Descripción</th>
+                      <th>Tipo</th>
+                      <th>Fecha</th>
+                      <th>Acciones</th>
                   </tr>
               </thead>
               <tbody id="itemstable">
@@ -103,5 +102,5 @@ $(document).ready(function() {
       <div id="pagination">
       <?php include('page-paginate.php') ?>
       </div>
+    </div>
   </section>
-  </div>

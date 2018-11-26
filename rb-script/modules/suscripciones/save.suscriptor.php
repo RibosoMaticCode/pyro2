@@ -10,9 +10,10 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 $id = $_POST['id'];
 
 $valores = [
-  'nombres' => $_POST['nombres'],
+	'nombres' => $_POST['nombres'],
 	'correo' => trim($_POST['correo']),
-  'fecha' => date('Y-m-d G:i:s')
+	'telefono' => isset($_POST['telefono']) ? trim($_POST['telefono']) : "",
+  	'fecha' => date('Y-m-d G:i:s')
 ];
 
 // Validar mail

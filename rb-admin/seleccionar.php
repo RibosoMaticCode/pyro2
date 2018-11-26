@@ -10,7 +10,12 @@ if(isset($_GET['pag'])){
 }
 switch($pag){
 	case "art":
-		echo '<h2 class="title">Publicaciones</h2>';
+		//echo '<h2 class="title">Publicaciones</h2>';
+		?>
+		<div class="page-header">
+			<h2>Publicaciones</h2>
+		</div>
+		<?php
 		$sec="art";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -28,9 +33,17 @@ switch($pag){
 		break;
 	case "usu":
 		if(isset($_GET['profile'])){
-			echo '<h2 class="title">Mi perfil</h2>';
+			?>
+			<div class="page-header">
+				<h2>Mi perfil</h2>
+			</div>
+			<?php
 		}else{
-			echo '<h2 class="title">Usuarios</h2>';
+			?>
+			<div class="page-header">
+				<h2>Mi perfil</h2>
+			</div>
+			<?php
 		}
 			$sec="usu";
 			if(isset($_GET['opc'])){
@@ -49,6 +62,13 @@ switch($pag){
 				case "edt":
 					include('core/users/user-edit.php');
 					break;
+				case "csv":
+					if($userType != "admin"):
+						printf(" Sección no disponible ");
+						break;
+					endif;
+					include('core/users/user.csv.config.php');
+					break;
 				default:
 					if($userType != "admin"):
 						printf(" Sección no disponible ");
@@ -63,7 +83,11 @@ switch($pag){
 			break;
 		endif;
 
-		echo '<h2 class="title">Menús</h2>';
+		?>
+			<div class="page-header">
+				<h2>Menus</h2>
+			</div>
+			<?php
 		$sec="menus";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -95,7 +119,12 @@ switch($pag){
 			include('core/menu/items-init.php');
 		}
 		break;
-  	case "pages":
+	  case "pages":
+	  ?>
+			<div class="page-header">
+				<h2>Pseudo editor visual de páginas</h2>
+			</div>
+			<?php
 		if($userType != "admin"):
 			printf(" Sección no disponible ");
 			break;
@@ -136,7 +165,11 @@ switch($pag){
 	    }
 	  	break;
 	case "gal":
-		echo '<h2 class="title">Galerías</h2>';
+	?>
+	<div class="page-header">
+		<h2>Galerias</h2>
+	</div>
+	<?php
 		$sec="gal";
 
 		if(isset($_GET['opc'])){
@@ -154,7 +187,11 @@ switch($pag){
 		}
 		break;
 	case "explorer":
-		echo '<h2 class="title">Archivos</h2>';
+	?>
+	<div class="page-header">
+		<h2>Archivos</h2>
+	</div>
+	<?php
 		$sec="files";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -189,7 +226,11 @@ switch($pag){
 			break;
 		endif;
 
-		echo '<h2 class="title">Comentarios</h2>';
+		?>
+			<div class="page-header">
+				<h2>Comentarios</h2>
+			</div>
+			<?php
 		$sec="com";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -210,7 +251,11 @@ switch($pag){
 			break;
 		endif;
 
-		echo '<h2 class="title">Categorias</h2>';
+		?>
+			<div class="page-header">
+				<h2>Categorias</h2>
+			</div>
+			<?php
 		$sec="cat";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -228,7 +273,11 @@ switch($pag){
 		break;
 
 	case "men":
-		echo '<h2 class="title">Mensajes</h2>';
+	?>
+	<div class="page-header">
+		<h2>Mensajes</h2>
+	</div>
+	<?php
 		$sec="men";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -259,7 +308,11 @@ switch($pag){
 			printf(" Sección no disponible ");
 			break;
 		endif;
-		echo '<h2 class="title">Opciones de Configuración</h2>';
+		?>
+			<div class="page-header">
+				<h2>Opciones de configuracion</h2>
+			</div>
+			<?php
 		include('option-edit.php');
 		break;
 	case "modules":

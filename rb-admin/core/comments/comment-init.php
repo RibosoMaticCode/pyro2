@@ -27,16 +27,17 @@ require_once(ABSPATH."rb-script/class/rb-database.class.php");
 </div>
 
 <div class="wrap-content-list">
-      <section class="seccion">
-        <div id="content-list">
+  <section class="seccion">
+    <div class="seccion-body">
+      <div id="content-list">
               <div id="resultado">
-              <table id="t_comentarios" class="tables" border="0" cellpadding="0" cellspacing="0">
+              <table id="t_comentarios" class="tables">
               <thead>
                   <tr>
                     <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-                      <th style="width:10%"><h3>Autor</h3></th>
-                      <th><h3>Comentario</h3></th>
-                      <th style="width:30%"><h3>Publicación comentada</h3></th>
+                      <th>Autor</th>
+                      <th>Comentario</th>
+                      <th>Publicación comentada</th>
                   </tr>
               </thead>
               <tbody id="itemstable">
@@ -46,9 +47,10 @@ require_once(ABSPATH."rb-script/class/rb-database.class.php");
               </tbody>
               </table>
               </div>
-    </div>
-    <div id="pagination">
-    <?php if(!isset($_GET['art'])) include('comment-paginate.php') ?>
+      </div>
+      <div id="pagination">
+      <?php if(!isset($_GET['art'])) include('comment-paginate.php') ?>
+      </div>
     </div>
   </section>
 </div>

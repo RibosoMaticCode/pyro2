@@ -66,22 +66,14 @@
 }
 
 /* STYLE 0 - HORIZONTAL */
-.post-0{
-	display: flex;
-}
-.post-0 > div{
-	list-style-type: none;
-	float: left;
-	width:100%;
+.post-0 .post-wrap .post-list{
+  float:left;
+  padding:10px;
 }
 .post-0 .post .post-img { /* bg image */
   min-height: 250px;
   position: relative;
   background-size: cover;
-}
-.post-0 > div{
-  padding: 10px;
-  margin: 5px 0;
 }
 .post-img{
   background-position: center;
@@ -282,6 +274,10 @@ span.rb-gallery-desc {
   .post-0{
     display: block;
   }
+  .post-0 .post-wrap .post-list{
+    float:none;
+    width:100%!important;
+  }
   .post-2{
     padding: 10px;
   }
@@ -302,5 +298,12 @@ span.rb-gallery-desc {
   .rb-gallery{
     width:100%!important;
     float: none;
+  }
+
+  /* FOTOS */
+  .rb-cover-img {
+    float: left;
+    padding: 5px 8px;
+    width:100%!important;
   }
 }

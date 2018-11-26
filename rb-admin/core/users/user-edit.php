@@ -87,7 +87,7 @@ $(document).ready(function() {
   });
 });
 </script>
-<form id="user-form" name="user-form" method="post" action="core/users/user-save.php">
+<form class="form" id="user-form" name="user-form" method="post" action="core/users/user-save.php">
   <?php
   if(isset($_GET['profile'])):
   ?>
@@ -102,7 +102,8 @@ $(document).ready(function() {
         <?php
         if(!isset($_GET['profile'])):
         ?>
-        <a href="<?= G_SERVER ?>/rb-admin/?pag=usu"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=usu"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Volver a listado" /></a>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=usu&opc=nvo">Nuevo usuario</a>
         <?php
         endif;
         ?>
@@ -200,6 +201,21 @@ $(document).ready(function() {
         <div class="seccion-body">
           <div>
           <?php if($userType == "admin"): ?>
+            <?php  if($mode == "new"): ?>
+            <label title="Tipo de Usuario" for="tipo" >Tipo de usuario:
+              <select name="tipo" id="tipo">
+                <?php
+                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles ORDER BY nombre");
+                while($r = $q->fetch_assoc()):
+                ?>
+                <option <?php if( rb_get_values_options('nivel_user_register') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
+                <?php
+                endwhile;
+                ?>
+              </select>
+            </label>
+            <?php endif; ?>
+            <?php  if($mode == "update"): ?>
             <label title="Tipo de Usuario" for="tipo" >Tipo de usuario:
               <select name="tipo" id="tipo">
                 <?php
@@ -212,17 +228,47 @@ $(document).ready(function() {
                 ?>
               </select>
             </label>
+            <?php endif; ?>
           <?php else: ?>
             <input type="hidden" name="tipo" value="<?= $row['tipo'] ?>" />
           <?php endif; ?>
           </div>
           <div class="subform">
+            <?php if($mode == "new"): ?>
+                <a class="nick_auto" href="#">Autogenerar</a>
+                <script>
+                  $(document).ready(function() {
+                    $('.nick_auto').click(function(event) {
+                      var email = $('#mail').val();
+                      $.ajax({
+                        method: "get",
+                        url: "<?= G_SERVER ?>/rb-admin/core/users/autogenerate.php",
+                        data: "email="+email
+                      }).done(function( data ) {
+                        if(data.result){
+                          notify(data.message);
+                          $('#nickname').val(data.nickname);
+                          $('#pass_auto').append(data.password);
+                          $('#password').val(data.password);
+                          $('#password1').val(data.password);
+                        }else{
+                          notify(data.message);
+                        }
+                        //$('#img_loading, .bg-opacity').hide();
+                      });
+                    });
+                  });
+                </script>
+            <?php endif; ?>
             <label title="Nombre usuario para identificarte con el sistema" for="nickname">Nombre de usuario:
               <input name="nickname" type="text" id="nickname" value="<?php if(isset($row)) echo $row['nickname'] ?>" <?php if(isset($row)){ ?>readonly="readonly" <?php } ?>  />
             </label>
+            <?php if($mode == "update"): ?>
             <span class="info">
               Si no va a cambiar las contraseñas, deje los campos vacios.
             </span>
+            <?php endif; ?>
+            <span id="pass_auto" style="font-weight:bold"></span>
             <label title="Contrasena" for="password" >Contrase&ntilde;a:
               <input name="password" type="password" id="password" autocomplete="new-password" />
             </label>

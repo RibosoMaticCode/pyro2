@@ -5,7 +5,7 @@
 	<div class="editor-header">
 		<strong>Configuración de la columna</strong>
 	</div>
-	<div class="editor-body">
+	<div class="editor-body form">
 		<div class="cols-container">
 			<div class="cols-6-md spacing-right">
 				<label>

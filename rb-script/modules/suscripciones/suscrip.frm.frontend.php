@@ -5,17 +5,11 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH.'global.php';
 ?>
 <form id="frm_suscrip" class="form_sus">
-	<p>Escribe tu nombre y correo. Si ya te suscribiste antes, solo vuelve a colocarlos para continuar</p>
 	<input type="hidden" name="id" value="0" />
   <input type="text" name="nombres" placeholder="Nombres" required />
   <input type="text" name="correo" placeholder="Email" required />
-	<div class="cols-container">
-		<div class="cols-6-md form_sus_left">
+	<div>
 			<button type="submit">Enviar</button>
-		</div>
-		<div class="cols-6-md form_sus_right">
-			<button class="btnCancel">Cancelar</button>
-		</div>
 	</div>
 </form>
 <script>
@@ -38,7 +32,7 @@ $(document).ready(function() {
         alert(data.contenido);
       }else{
 				if(data.continue){
-					alert("Ya estas suscrito. Puedes continuar");
+					alert("Ya figuras en nuestra lista de suscriptores. ¡Atento a nuestras novedades!");
 					$.fancybox.close();
 				}
       }

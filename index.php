@@ -64,7 +64,7 @@ if(G_ENL_AMIG):
 	// -- Si opcion enlaces amigables e ingresa de manera tradicional, direccionarlo a enlaces amigables.
 	//Direccionar a publicacion
 	if ( isset($_GET['art']) ):
-		$Post = rb_show_post( $_GET['art'] );
+		$Post = rb_show_post( $_GET['art'], false );
 		header( 'Location: '.$Post['url'] );
 		exit();
 	endif;
@@ -219,13 +219,14 @@ if(isset($_GET['pa'])){
 // PAGINAS
 }elseif( isset( $PageId ) ){
 	$Page = rb_show_specific_page( $PageId );
-	if(!$Page) header('Location: '.G_SERVER.'/404.php');
-	//if($Page!=0) header('Location: '.G_SERVER.'/404.php'); -- en caso de no ser pagina normal, no mostrar
-	if($Page==false){ // Sino es una pagina del sistema sino una pagina externa independiente html/php
+	// Si no es una pagina del sistema arroja FALSE
+	if($Page==false){ // En tal caso es una pagina independiente alojada en la plantilla
+		// Primero revisamos si es "panel" (ya que es una pagina reservada del sistema)
+		// "panel" en caso NO este logueado
 		if($PageId=="panel" && G_ACCESOUSUARIO==0):
 			header('Location: '.$objOpcion->obtener_valor(1,'direccion_url'));
 
-		// Si accede a panel y esta logueado, lleva al modulo externo para el panel
+		// "panel" en caso esté logueado
 		elseif($PageId=="panel" && G_ACCESOUSUARIO==1):
 			$rm_menu_name = "";
 			require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
@@ -233,15 +234,17 @@ if(isset($_GET['pa'])){
 		else:
 			$file = ABSPATH.'rb-temas/'.G_ESTILO.'/'.$PageId.'.php';
 			if(file_exists( $file )) require_once( $file );
+			// En caso no encontrar la pagina arroja error 404
+			else header('Location: '.G_SERVER.'/404.php');
 		endif;
-		//header('Location: '.G_SERVER.'/404.php');
-	}else{ // Asignando valores a la pagina del sistema
-	  define('rm_title', $Page['titulo']." | ".G_TITULO);
+	// Si pagina alojada en el sistema
+	}else{ // Asignando valores
+		define('rm_title', $Page['titulo']." | ".G_TITULO);
 		define('rm_title_page', $Page['titulo']);
 		define('rm_page_image', rb_photo_login(G_LOGO)); // IMAGEN PARA PAGINA
-	  define('rm_metakeywords', $Page['tags']);
-	  define('rm_metadescription', rb_fragment_text($Page['description'],30, false));
-	  define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
+	  	define('rm_metakeywords', $Page['tags']);
+	  	define('rm_metadescription', rb_fragment_text($Page['description'],30, false));
+	  	define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 
 		$show_header = $Page['show_header'];
 		$show_footer = $Page['show_footer'];
@@ -254,7 +257,6 @@ if(isset($_GET['pa'])){
 		else: die( message_error($file));
 		endif;
 	}
-	// Asingar la pagina 404 en ambos casos. Arreglar bug
 // CATEGORIAS
 }elseif( isset($CategoryId) ){
 	// Verificar si pagina esta definida
@@ -364,20 +366,20 @@ if(isset($_GET['pa'])){
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}else{ // Pagina seleccionada por el usuario
-	  $Page = rb_show_specific_page(G_INITIAL);
+	  	$Page = rb_show_specific_page(G_INITIAL);
 		define('rm_title', rm_longtitle);
 		define('rm_title_page', $Page['titulo']);
 		define('rm_page_image', rb_photo_login(G_LOGO));
 		define('rm_metadescription', ''); //rb_fragment_text($Page['contenido'],30, false)
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
-	  define('rm_metakeywords', $Page['tags']);
+	  	define('rm_metakeywords', $Page['tags']);
 
 		$show_header = $Page['show_header'];
 		$show_footer = $Page['show_footer'];
 		$block_header_id = $Page['header_custom_id'];
 		$block_footer_id = $Page['footer_custom_id'];
 
-	  $file = ABSPATH.'rb-script/modules/pages.view3/page.php';
+	  	$file = ABSPATH.'rb-script/modules/pages.view3/page.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}

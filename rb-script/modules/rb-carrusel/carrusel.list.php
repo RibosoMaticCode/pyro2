@@ -19,24 +19,30 @@ $r = $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY id DESC");
 $suscriptores = $r->num_rows;
 ?>
 <section class="seccion">
-	<table class="tables">
-  <tr>
-		<th>Nombre de la galeria</th>
-		<th>Configuracion</th>
-		<th>Previa</th>
-    <th>Shortcode</th>
-  </tr>
-  <?php
-  while ($row = $r->fetch_assoc()):
-		?>
-    <tr id="carrusel<?= $row['id'] ?>">
-      <td><?= $row['nombre'] ?></td>
-			<td><a href="<?= G_SERVER ?>/rb-admin/?pag=gal&opc=edt&id=<?= $row['id'] ?>">Configurar</a></td>
-			<td><a target="_blank" href="<?= G_SERVER ?>/rb-script/modules/rb-carrusel/preview.php?id=<?= $row['id'] ?>">Ver</a></td>
-      <td><code>[carrusel id="<?= $row['id'] ?>"]</code></td>
-    </tr>
-    <?php
-  endwhile;
-  ?>
-</table>
+  <div class="seccion-body">
+    <table class="tables">
+      <thead>
+        <tr>
+          <th>Nombre de la galeria</th>
+          <th>Configuracion</th>
+          <th>Previa</th>
+          <th>Shortcode</th>
+        </tr>
+      </thead>
+      <tbody>
+      <?php
+      while ($row = $r->fetch_assoc()):
+        ?>
+        <tr id="carrusel<?= $row['id'] ?>">
+          <td><?= $row['nombre'] ?></td>
+          <td><a href="<?= G_SERVER ?>/rb-admin/?pag=gal&opc=edt&id=<?= $row['id'] ?>">Configurar</a></td>
+          <td><a target="_blank" href="<?= G_SERVER ?>/rb-script/modules/rb-carrusel/preview.php?id=<?= $row['id'] ?>">Ver</a></td>
+          <td><code>[carrusel id="<?= $row['id'] ?>"]</code></td>
+        </tr>
+        <?php
+      endwhile;
+      ?>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -4,21 +4,18 @@
 		<strong>Configuración del contenido</strong>
 	</div>
 	<div class="editor-body">
-			<div class="cols-container">
-				<div class="cols-6-md spacing-right">
-					<label>Class CSS
-						<input type="text" name="class_css" id="class_css" />
-					</label>
-				</div>
-				<div class="cols-6-md spacing-left">
-					<!--<label>ID CSS
-						<input type="text" name="id_css" id="id_css" />
-					</label>-->
-				</div>
+		<div class="cols-container form">
+			<div class="cols-6-md spacing-right">
+				<label>Class CSS
+					<input type="text" name="class_css" id="class_css" />
+				</label>
 			</div>
-			<div id="ta">
-			  <p>Editor de html</p>
+			<div class="cols-6-md spacing-left">
 			</div>
+		</div>
+		<div id="ta">
+		  <p>Editor de html</p>
+		</div>
 	</div>
 	<div class="editor-footer">
 		<button class="btn-primary" id="btn1">Cambiar</button>

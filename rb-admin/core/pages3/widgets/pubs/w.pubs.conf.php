@@ -4,7 +4,7 @@
 	<div class="editor-header">
 		<strong>Configuración del bloque de publicaciones</strong>
 	</div>
-	<div class="editor-body">
+	<div class="editor-body form">
 		<div class="cols-container">
 			<div class="cols-6-md spacing-right">
 				<label>
@@ -13,6 +13,10 @@
 				</label>
 			</div>
 			<div class="cols-6-md spacing-left">
+				<label>
+					<span>Clase CSS</span>
+					<input type="text" name="post1_class" id="post1_class" />
+				</label>
 			</div>
 		</div>
 		<div class="cols-container">
@@ -34,8 +38,8 @@
 			</div>
 			<div class="cols-6-md spacing-left">
 				<label>
-					<span>Cantidad</span>
-					<input type="text" name="post1_count" id="post1_count" />
+					<span>Cantidad por fila (<em>Solo diseño horizontal, Default: 3</em>)</span>
+					<input type="text" name="post1_byrow" id="post1_byrow" />
 				</label>
 			</div>
 		</div>
@@ -51,8 +55,8 @@
 			</div>
 			<div class="cols-6-md spacing-left">
 				<label>
-					<span>Clase CSS</span>
-					<input type="text" name="post1_class" id="post1_class" />
+					<span>Maximo a mostrar (<em>Default: 10</em>)</span>
+					<input type="text" name="post1_count" id="post1_count" />
 				</label>
 			</div>
 		</div>
@@ -137,8 +141,9 @@ $(document).ready(function() {
     $('#post1_category').val(pva.cat);
     $('#post1_count').val(pva.count);
     $('#post1_order').val(pva.ord);
-		$('#post1_desc').val(pva.desc);
-		$('#post1_link').val(pva.link);
+	$('#post1_desc').val(pva.desc);
+	$('#post1_link').val(pva.link);
+	$('#post1_byrow').val(pva.byrow);
     $("input[name='post1_type'][value='"+pva.typ+"']").prop('checked', true);
     $('#post1_class').val(post1_class);
     $(".bg-opacity").show();
@@ -155,13 +160,15 @@ $(document).ready(function() {
 		var post1_category = $('#post1_category').val();
 		if (post1_category=="") post1_category = 0;
 		var post1_count = $('#post1_count').val();
-		if (post1_count=="") post1_count = 3;
+		if (post1_count=="") post1_count = 10;
+		var post1_byrow = $('#post1_byrow').val();
+		if (post1_byrow=="") post1_byrow = 3;
 		var post1_order = $('#post1_order').val();
 		if (post1_order=="") post1_count = "DESC";
 		var post1_type = $('input[name=post1_type]:checked').val();
 		if (post1_type=="") post1_type = 0;
 
-		var post1_values_string = '{"cat":'+post1_category+',"count":'+post1_count+',"ord":"'+post1_order+'","tit":"'+post1_title+'","typ":'+post1_type+', "desc": '+$('#post1_desc').val()+', "link": '+$('#post1_link').val()+'}';
+		var post1_values_string = '{"cat":'+post1_category+',"count":'+post1_count+',"byrow":'+post1_byrow+',"ord":"'+post1_order+'","tit":"'+post1_title+'","typ":'+post1_type+', "desc": '+$('#post1_desc').val()+', "link": '+$('#post1_link').val()+'}';
 		console.log(post1_values_string);
 		$('#'+ post1_id).attr('data-values', post1_values_string );
 		/*if ($('#$post1_showimg').is(':checked')) {

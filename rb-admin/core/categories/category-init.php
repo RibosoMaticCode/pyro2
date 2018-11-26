@@ -38,17 +38,18 @@ $(document).ready(function() {
 </div>
 <div class="wrap-content-list">
   <section class="seccion">
+    <div class="seccion-body">
       <div id="content-list">
             <div id="resultado">
-            <table id="t_categorias" class="tables" border="0" cellpadding="0" cellspacing="0">
+            <table id="t_categorias" class="tables">
             <thead>
               <tr>
-                <th><h3>Nombre</h3></th>
-                <th><h3>Descripcion</h3></th>
-                <th><h3>Acceso</h3></th>
-                <th><h3>Niveles</h3></th>
-                <th><h3>Previo</h3></th>
-                <th colspan="2"><h3>Acciones</h3></th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Acceso</th>
+                <th>Niveles</th>
+                <th>Previo</th>
+                <th colspan="2">Acciones</th>
               </tr>
              </thead>
             <tbody id="itemstable">
@@ -57,5 +58,6 @@ $(document).ready(function() {
             </table>
             </div>
         </div>
+    </div>
   </section>
 </div>

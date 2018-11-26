@@ -12,7 +12,7 @@ if(isset($_GET["id"])){
   $mode = "new";
 }
 ?>
-<form id="galery-form" name="galery-form" method="post" action="core/galleries/gallery-save.php">
+<form class="form" id="galery-form" name="galery-form" method="post" action="core/galleries/gallery-save.php">
   <input type="hidden" name="user_id" value="<?= G_USERID ?>" />
       <div id="toolbar">
           <div id="toolbar-buttons">

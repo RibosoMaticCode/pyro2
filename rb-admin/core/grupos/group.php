@@ -23,6 +23,11 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 	endif;
 	// Contenido inicial
 	function group_admin_content(){
+		?>
+		<div class="page-header">
+			<h2>Grupos</h2>
+		</div>
+		<?php
 		if(isset($_GET['opc'])):
 			$opc=$_GET['opc'];
 			include('group.edit.php');
@@ -103,6 +108,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 		</script>
 		<div class="wrap-content-list">
 			<section class="seccion">
+				<div class="seccion-body">
 				<table class="tables" border="0" cellpadding="0" cellspacing="0">
 					<thead>
 						<tr>
@@ -114,6 +120,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 						<?php include('group.list.php') ?>
 					</tbody>
 				</table>
+				</div>
 			</section>
 		</div>
 	<?php

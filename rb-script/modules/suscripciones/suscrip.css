@@ -1,21 +1,6 @@
-.form_sus input[type="text"]{
-  width: 100%;
+.sus_fields{
+
 }
-.form_sus button{
-  padding: 0 10px;
-}
-.form_sus{
-  width: 100%;
-  max-width: 350px;
-}
-.form_sus p{
-  line-height: 20px;
-  padding: 10px 0;
-  font-size: .9em;
-}
-.form_sus_left{
-  text-align: left;
-}
-.form_sus_right{
-  text-align: right;
+.sus_field{
+  
 }

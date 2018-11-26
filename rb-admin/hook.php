@@ -48,7 +48,9 @@ function do_action($ubicacion){ // De acuerdo a la ubicacion añade las funcione
 	if(!isset($content)) $content=""; // ????? Si no hay contenido, no mostramos nada
 
 	if(!isset($hooks[$ubicacion])){
-		echo "<!-- no hay funciones en esta ubicacion -->";
+    // Sino hay funciones no continua y sale
+    // Ya no se usa el mensaje pues generaba un error cuando aparecia
+		//echo "<!-- no hay funciones en esta ubicacion -->";
 		return;
 	}
 

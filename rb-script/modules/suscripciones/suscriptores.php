@@ -1,30 +1,39 @@
-<h2 class="title">Suscriptores</h2>
-<div id="sidebar-left">
-  <ul class="buttons-edition">
-    <li><a class="btn-primary fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php">Nuevo</a></li>
-  </ul>
-</div>
-<div class="wrap-content-list">
-  <section class="seccion">
+<section class="seccion">
+  <div class="seccion-header">
+    <h2>Suscriptores</h2>
+    <ul class="buttons">
+      <li><a class="btn-primary fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php">Nuevo</a></li>
+    </ul>
+  </div>
+  <div class="seccion-body">
     <div id="content-list">
-      <table class="tables">
+      <script>
+        $(document).ready(function() {
+          $('#table').DataTable({
+            "language": {
+              "url": "resource/datatables/Spanish.json"
+            } 
+          });
+        } );
+      </script>
+      <table id="table" class="tables table-striped">
         <thead>
           <tr>
             <th>Fecha</th>
             <th>Nombres</th>
             <th>Correo</th>
-            <th></th>
-          <tr>
+            <th>Telefono</th>
+            <th>Acciones</th>
+          </tr>
         </thead>
         <tbody>
           <?php include_once 'list.suscriptores.php' ?>
         </tbody>
       </table>
     </div>
-    <div id="pagination">
-    </div>
-  </section>
-</div>
+  </div>
+</section>
+
 <?php
 $urlreload=G_SERVER.'/rb-admin/module.php?pag=rb_sus_susc';
 ?>

@@ -273,18 +273,29 @@ function rb_photos_from_album_post($Post_id){
 	return $FotosArray;
 }
 
-function rb_show_post($post_id){
-  global $objDataBase;
+function rb_show_post($post_id, $redirect=true){
+	global $objDataBase;
 	if( G_ENL_AMIG == 1 ):
-		$q = $objDataBase->Ejecutar("SELECT id FROM articulos WHERE titulo_enlace='$post_id' OR id ='$post_id'");
-		$num_posts = $q->num_rows;
-		if( $num_posts > 0):
-			$Post = $q->fetch_assoc();
-			$post_id = $Post['id'];
-		else:
-			return false;
-		endif;
+		if($redirect){
+			$q = $objDataBase->Ejecutar("SELECT id FROM articulos WHERE titulo_enlace ='$post_id'");
+		}else{ // Esta opcion solo se usa cuando enlaces_amigables esta activo,
+			// Y intenta direccionar de una url por defecto, tipo art=30, en tal caso
+			// valor de $redirect debe ser false
+			$q = $objDataBase->Ejecutar("SELECT id FROM articulos WHERE id='$post_id'");
+		}
 	endif;
+	if( G_ENL_AMIG == 0 ):
+		$q = $objDataBase->Ejecutar("SELECT id FROM articulos WHERE id ='$post_id'");
+	endif;
+	
+	$num_posts = $q->num_rows;
+	if( $num_posts > 0):
+		$Post = $q->fetch_assoc();
+		$post_id = $Post['id'];
+	else:
+		return false;
+	endif;
+
 	$qa  = $objDataBase->Ejecutar("SELECT a.*, DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio FROM articulos a WHERE activo='A' AND id =".$post_id);
 	// Como solo buscamos un unico valor y queremos usar la funcion "rb_return_post_array" que devuelve
 	// un array asociativo, usamos el link de ayuda. Tanto para versiones nuevas como antiguas
@@ -478,11 +489,6 @@ function rb_a_yyyymmdd($ddmmyyyy, $separate = "-"){
 	$fec_frag = explode("-",$ddmmyyyy);
 	return $fec_frag[2].$separate.$fec_frag[1].$separate.$fec_frag[0];
 }
-/*function rb_datesql_to_ddmmyyyy($fecha, $separate = "/"){
-    ereg( "([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})", $fecha, $mifecha);
-    $lafecha=$mifecha[3].$separate.$mifecha[2].$separate.$mifecha[1];
-    return $lafecha;
-}*/
 
 // Antes rb_fecha_format
 function rb_sqldate_to($sqlfecha, $format = 'd-m-Y'){ // Convierte fecha SQl (formato ingles) a fecha unix y luego a formato español.
@@ -1090,6 +1096,45 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		imagedestroy($square_image);
 }
 
+
+function rb_compress($source, $destination) {
+	$info = getimagesize($source);
+
+	switch($info['mime']){
+			case "image/png":
+					$src = imagecreatefrompng($source);
+			break;
+			case "image/jpeg":
+			case "image/jpg":
+					$src = imagecreatefromjpeg($source);
+			break;
+			case "image/gif":
+					$src = imagecreatefromgif($source);
+			break;
+			default:
+					$src = imagecreatefromjpeg($source);
+			break;
+	}
+	
+	switch($info['mime']){
+			case "image/png":
+					imagepng($src, $destination, 6); //Nivel de compresión: desde 0 (sin compresión) hasta 9.
+			break;
+			case "image/jpeg":
+			case "image/jpg":
+					imagejpeg($src, $destination, 80);
+			break;
+			case "image/gif":
+					imagegif($src, $destination);
+			break;
+			default:
+					imagejpeg($src, $destination, 80);
+			break;
+	}
+
+	return $destination;
+}
+
 function rb_BBCodeToGlobalVariable($texto,$id=1){
   global $objDataBase, $bb_codes, $bb_htmls;
 
@@ -1561,9 +1606,17 @@ function rb_list_galleries($limit=0, $groupname=""){
     $add_limit = " LIMIT ".$limit;
   }
   if(empty($groupname)){
-      $q= $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY fecha DESC".$add_limit);
+      $q= $objDataBase->Ejecutar("SELECT a.*, (
+				SELECT COUNT( id )
+				FROM photo
+				WHERE album_id = a.id
+				) AS nrophotos FROM albums a ORDER BY fecha DESC".$add_limit);
   }else{
-      $q= $objDataBase->Ejecutar("SELECT * FROM albums WHERE galeria_grupo='$groupname' ORDER BY fecha DESC".$add_limit);
+      $q= $objDataBase->Ejecutar("SELECT a.*, (
+				SELECT COUNT( id )
+				FROM photo
+				WHERE album_id = a.id
+				) AS nrophotos FROM albums a WHERE galeria_grupo='$groupname' ORDER BY fecha DESC".$add_limit);
   }
   $GaleriasArray = Array();
   //$FotosArray = array();
@@ -1575,6 +1628,7 @@ function rb_list_galleries($limit=0, $groupname=""){
 			$GaleriasArray[$i]['nombre_enlace'] = $Galerias['nombre_enlace'];
 			$GaleriasArray[$i]['usuario_id'] = $Galerias['usuario_id'];
 			$GaleriasArray[$i]['galeria_grupo'] = $Galerias['galeria_grupo'];
+			$GaleriasArray[$i]['nrophotos'] = $Galerias['nrophotos'];
       $photos = rb_get_photo_from_id($Galerias['photo_id']);
     	if($photos['src']==""):
     		$GaleriasArray[$i]['url_bgimage'] = G_SERVER."/rb-script/images/gallery-default.jpg";
@@ -1876,7 +1930,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
 											<div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
 											<div class="shadow"></div>
 											<?php if($widget['widget_values']['show_title']==1): ?>
-												<h2><?= $foto['title'] ?></h2>
+											<?= $foto['title'] ?>
 											<?php endif ?>
                   	</div>
 										</a>
@@ -2000,8 +2054,13 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
             $tit = $widget['widget_values']['tit'];
             $typ = $widget['widget_values']['typ'];
             $desc = $widget['widget_values']['desc'];
-            $link = $widget['widget_values']['link'];
-
+						$link = $widget['widget_values']['link'];
+						$byrow = $widget['widget_values']['byrow'];
+						$width_post = 100;
+						if($typ==0){
+							$width_post = round(100/$byrow,2);
+						}
+						
             if($tit!=""){
               ?>
               <h2><?= $tit ?></h2>
@@ -2012,10 +2071,17 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
               <div class="post-<?= $typ ?>">
               <?php
               if($category_id==0) $category_id="*";
-              $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
+							$Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
+							$i=1;
+							$j=1;
               foreach ($Posts as $PostRelated) {
+								if($i==1){
+									?>
+									<div class="post-wrap clear">
+									<?php
+								}
                 ?>
-                <div class="post-list clear">
+                <div class="post-list clear" style="width:<?= $width_post?>%">
                   <div class="post">
                     <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
                     <!--<span class="post-category"></span>-->
@@ -2031,6 +2097,17 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
                     </div>
                   </div>
                 </div>
+								<?php
+								if($j==$num_posts || $i==$byrow){
+									?>
+									</div>
+									<?php
+									$i=1;
+								}else{
+									$i++;
+								}
+								$j++;
+								?>
                 <?php
               }
               ?>
@@ -2395,4 +2472,19 @@ function rb_shortcode($content){
   $content_html = preg_replace($code, $html, $content); // Reemplazamos cada key-tag, conla ejecucion de la funcion
   return $content_html;
 }
+
+function rb_generate_nickname($mail){ // Generar nickname en base a correo electronico
+	global $objDataBase;
+	
+	$array_mail = explode("@", $mail);
+	$user = $array_mail[0];
+	$q = $objDataBase->Ejecutar("SELECT nickname FROM usuarios WHERE nickname LIKE '%$user%'");
+	$nums = $q->num_rows;
+	if($nums>0):
+		$user = $user."_".$nums;
+	endif;
+
+	return $user;
+}
+
 ?>

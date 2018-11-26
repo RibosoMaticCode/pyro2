@@ -23,13 +23,13 @@ while ($row = $consulta->fetch_assoc()):
   <tr>
     <td><input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" /></td>
     <td>
-      <h3><?= $row['titulo'] ?></h3>
-      <div class="options">
+      <?= $row['titulo'] ?>
+      <!--<div class="options">
         <span id="boxart_<?= $row['id'] ?>">
           <?php if($row['activo']=="D"): ?>
-            <a href="#" data-state="<?= $row['activo'] ?>" data-postid="<?= $row['id'] ?>" class="active" title="Activar articulo">Publicar</a> <!-- actualizar funcion js -->
+            <a href="#" data-state="<?= $row['activo'] ?>" data-postid="<?= $row['id'] ?>" class="active" title="Activar articulo">Publicar</a>
           <?php else: ?>
-            <a href="#" data-state="<?= $row['activo'] ?>" data-postid="<?= $row['id'] ?>" class="active" title="Desactivar articulo">No publicar</a> <!-- actualizar funcion js -->
+            <a href="#" data-state="<?= $row['activo'] ?>" data-postid="<?= $row['id'] ?>" class="active" title="Desactivar articulo">No publicar</a>
           <?php endif ?>
         </span>
         <span>
@@ -44,9 +44,9 @@ while ($row = $consulta->fetch_assoc()):
         <span>
           <a class="fancybox fancybox.iframe" href="<?= G_SERVER ?>/?art=<?= $row['id'] ?>" target="_blank" title="Manten presionado F5 y pulsa el link para abrir en nueva pestaña">Vista Preliminar</a>
         </span>
-      </div>
+      </div>-->
     </td>
-    <td class="col_autor"><span style="text-align: center; display: block;"><?php if($row['portada']==1){ ?><img src="img/star-24.png" alt="star" /><?php } ?></span></td>
+    <!--<td class="col_autor"><span style="text-align: center; display: block;"><?php if($row['portada']==1){ ?><img src="img/star-24.png" alt="star" /><?php } ?></span></td>-->
     <td class="col_autor"><?= $row['nombres'] ?></td>
     <td class="col_categoria">
       <?php
@@ -59,6 +59,20 @@ while ($row = $consulta->fetch_assoc()):
     </td>
     <td class="col_vistas"><?= $row['lecturas'] ?></td>
     <td class="col_fecha"><?= rb_sqldate_to($row['fecha_creacion']) ?></td> <!-- actualizar funcion -->
+    <td class="row-actions">
+      <a title="Duplicar" class="edit" href="<?= G_SERVER ?>/rb-admin/content.duplicate.php?id=<?= $row['id'] ?>&sec=art">
+        <i class="fa fa-clone"></i>
+      </a>
+      <a title="Previsualizar" class="edit" href="<?= G_SERVER ?>/?art=<?= $row['id'] ?>" target="_blank">
+        <i class="fa fa-eye"></i>
+      </a>
+      <a title="Editar" class="edit" data-item="<?= $row['id'] ?>" href="<?= G_SERVER ?>/rb-admin/index.php?pag=art&opc=edt&id=<?= $row['id'] ?>">
+        <i class="fa fa-edit"></i>
+      </a>
+      <a title="Eliminar" class="del del-item" data-id="<?= $row['id'] ?>" href="#">
+        <i class="fa fa-times"></i>
+      </a>
+    </td>
   </tr>
 <?php
 $i++;

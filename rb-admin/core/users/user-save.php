@@ -87,6 +87,10 @@ if($mode=="new"){
 	$date_2d_s =  strtotime($now."+ 2 days");
 	$date_2d = date('Y-m-d G:i:s', $date_2d_s);
 
+	$admin_active_user = 0;
+	if(rb_get_values_options('user_active_admin')==0){
+		$admin_active_user = 1;
+	}
 	$valores = [
 		'nickname' => $nickname,
 		'password' => md5($pwd),
@@ -104,7 +108,7 @@ if($mode=="new"){
 		'ultimoacceso' => date('Y-m-d G:i:s'),
 		'sexo' => $sex,
 		'photo_id' => $photo,
-		'activo' => 0,
+		'activo' => $admin_active_user,
 		'user_key' => md5(microtime().rand())
 	];
 

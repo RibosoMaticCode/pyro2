@@ -4,7 +4,7 @@ Module Name: Suscripciones
 Plugin URI: http://emocion.pe
 Description: Base datos para suscriptores de la web. Administracion desde el panel y registro del front-end
 Author: Jesus Liñan
-Version: 1.0.0
+Version: 1.1
 Author URI: http://ribosomatic.com
 */
 
@@ -48,7 +48,7 @@ function suscrip_title(){
 function header_files(){
 	global $rb_module_url;
 	$files = "<script src='".G_DIR_MODULES_URL."suscripciones/suscrip.js'></script>\n";
-	$files .= "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."suscripciones/suscrip.css' />\n";
+	//$files .= "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."suscripciones/suscrip.css' />\n";
 	return $files;
 }
 add_function('theme_header','header_files');
@@ -79,8 +79,8 @@ endif;
 // si se suscribe o ya esta suscrito permite continuar, caso contrario al cancelar
 // redirecciona a la pagina principal
 
-function sus_shortcode(){
-	$action = "<a id='hidden_link' href='".G_SERVER."/rb-script/modules/suscripciones/suscrip.frm.frontend.php' class='fancySuscrip fancybox.ajax'>Suscripcion</a>
+function sus_required(){
+	$action = "<a id='hidden_link' href='".G_SERVER."/rb-script/modules/suscripciones/suscrip.frm.frontendreq.php' class='fancySuscrip fancybox.ajax'>Suscripcion</a>
 	<script type='text/javascript'>
 		$(document).ready(function() {
 			$('#hidden_link').trigger('click');
@@ -89,5 +89,67 @@ function sus_shortcode(){
 	return $action;
 }
 
-add_shortcode('suscripform', 'sus_shortcode');
+add_shortcode('suscripformreq', 'sus_required');
+
+/* FORMULARIO TRADICIONAL DE SUSCRIPCION */
+
+function sus_form(){
+	global $objDataBase;
+	$qs = $objDataBase->Ejecutar("SELECT * FROM suscriptores_config WHERE opcion='campos'");
+	$susconfig = $qs->fetch_assoc();
+	$jsonconfig = json_decode($susconfig['valor'], true);
+	$form = '
+	<form id="frm_suscrip">
+		<input type="hidden" name="id" value="0" />
+		<div class="sus_fields">
+		';
+		if($jsonconfig['Nombres']=="show"){
+			$form .= '<div class="sus_fiel">
+			<input type="text" name="nombres" placeholder="Nombres" required />
+			</div>';
+		}
+		if($jsonconfig['Correo']=="show"){
+			$form .= '<div class="sus_fiel">
+			<input type="text" name="correo" placeholder="Email" required />
+			</div>';
+		}
+		if($jsonconfig['Telefono']=="show"){
+			$form .= '<div class="sus_fiel">
+			<input type="text" name="telefono" placeholder="Telefono" required />
+			</div>';
+		}
+		$form .= '</div>
+		<div class="sus_coverbutton">
+			<button class="sus_btnsend" type="submit">Enviar</button>
+		</div>
+	</form>
+	<script>
+	$(document).ready(function() {
+
+	$("#frm_suscrip").submit(function( event ){
+		event.preventDefault();
+
+		$.ajax({
+			method: "post",
+			url: "'.G_SERVER.'/rb-script/modules/suscripciones/save.suscriptor.php",
+			data: $( this ).serialize()
+			})
+			.done(function( data ) {
+				if(data.resultado){
+					$.fancybox.close();
+					alert(data.contenido);
+				}else{
+					if(data.continue){
+						alert("Ya figuras en nuestra lista de suscriptores. ¡Atento a nuestras novedades!");
+						$.fancybox.close();
+					}
+				}
+			});
+		});
+	});
+	</script>';
+	return $form;
+}
+
+add_shortcode('suscripform', 'sus_form');
 ?>

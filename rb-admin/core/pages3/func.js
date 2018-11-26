@@ -269,7 +269,7 @@ $(document).ready(function() {
     var boxext_values_string = $(this).closest(".box").attr('data-extvalues');
     var boxext_jsonvals = JSON.parse(boxext_values_string); //Pasando a json
 
-    var boxext_parallax = boxext_jsonvals.parallax;
+    var boxext_parallax = boxext_jsonvals.extparallax;
     var boxext_bgimage = boxext_jsonvals.bgimage;
     var boxext_bgcolor = boxext_jsonvals.bgcolor;
     var boxext_paddingtop = boxext_jsonvals.paddingtop;

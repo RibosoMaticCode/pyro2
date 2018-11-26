@@ -11,17 +11,21 @@ if(isset($_GET["id"])){
 ?>
 <script>
 $(document).ready(function() {
-	$("#frmForms").submit(function (event) {
+	$("#SaveForm").click(function (event) {
 		event.preventDefault();
-		
-		var festr = $('#form_estructure').html(); // estructura HTML
-		var data = $("#frmForms").serializeArray();
-		data.push({name: "estructure", value: festr});
+
+		var fname = $('#form_name').val();
+		var festr = $('#form_estructure').html();
+		var fvalid = $('#form_validations').val();
+		var fmode = $('#form_mode').val();
+		var fmails = $('#form_mails').val();
+		var fid = $('#form_id').val();
 
 		$.ajax({
 			url: "core/forms/forms.save.php",
 			method: 'post',
-			data: $.param(data),
+			//data: $.param(data),
+			data: 'name='+fname+'&estructure='+festr+'&validations='+fvalid+'&mode='+fmode+'&id='+fid+'&mails='+fmails,
 			beforeSend: function(){
 				$('#img_loading, .bg-opacity').show();
 			}

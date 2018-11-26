@@ -78,27 +78,28 @@ $(document).ready(function() {
   </ul>
 </div>
 <div class="content">
-      <!--<div id="content-list">-->
-      <div class="wrap-content-list">
-        <section class="seccion">
-            <div id="resultado"> <!-- ajax asyncron here -->
-            <table id="t_articulos" class="tables" border="0" cellpadding="0" cellspacing="0">
-                <thead>
-                    <tr>
-                      <th><input type="checkbox" value="all" id="select_all" /></th>
-                      <th><h3>Portada</h3></th>
-                      <th><h3>Nombre</h3></th>
-                      <th><h3>Grupo</h3></th>
-                      <th><h3>Visualizar</h3></th>
-                      <th><h3>Fecha</h3></th>
-                      <th><h3>Imagenes</h3></th>
-                    </tr>
-                </thead>
-                <tbody id="itemstable">
-                <?php include('gallery-list.php') ?>
-                </tbody>
-            </table>
-            </div>
-            </section>
+  <div class="wrap-content-list">
+    <section class="seccion">
+      <div class="seccion-body">
+        <div id="resultado"> <!-- ajax asyncron here -->
+          <table id="t_articulos" class="tables" border="0" cellpadding="0" cellspacing="0">
+            <thead>
+              <tr>
+                <th><input type="checkbox" value="all" id="select_all" /></th>
+                <th>Portada</th>
+                <th>Nombre</th>
+                <th>Grupo</th>
+                <th>Visualizar</th>
+                <th>Fecha</th>
+                <th>Imagenes</th>
+              </tr>
+            </thead>
+            <tbody id="itemstable">
+              <?php include('gallery-list.php') ?>
+            </tbody>
+          </table>
         </div>
+      </div>
+    </section>
+  </div>
 </div>

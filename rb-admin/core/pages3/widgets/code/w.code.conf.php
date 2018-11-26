@@ -4,7 +4,7 @@
 		<strong>Configuración del contenido</strong>
 	</div>
 	<div class="editor-body">
-			<div class="cols-container">
+			<div class="cols-container form">
 				<div class="cols-6-md spacing-right">
 					<label>Class CSS
 						<input type="text" name="htmlraw_css" id="htmlraw_css" />

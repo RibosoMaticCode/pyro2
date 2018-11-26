@@ -2,8 +2,8 @@
 //require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
 $regMostrar = $_COOKIE['user_show_items'];
 
-$colOrder = "nickname"; // column name table
-$Ord = "ASC"; // A-Z
+$colOrder = "id"; // column name table
+$Ord = "DESC"; // A-Z
 
 $key_web = rb_get_values_options('key_web'); // podria ser key de la sesion de usuario
 
@@ -42,6 +42,8 @@ while ( $row = $result->fetch_assoc() ):
     </td>
     <td><?= $row['correo'] ?></td>
     <td><?= show_nivel($row['tipo']) ?></td>
+    <td><?= $row['fecharegistro'] ?></td>
+    <td><?= $row['ultimoacceso'] ?></td>
     <td>
       <?php
       if($row['activo']==0) echo '<a href="'.G_SERVER.'/rb-admin/core/users/user-active.php?id='.$row['id'].'">¿Activar?</a>';

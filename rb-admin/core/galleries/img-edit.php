@@ -19,7 +19,7 @@ if(isset($_GET["id"])){
   $mode = "new";
 }
 ?>
-<form enctype="multipart/form-data" id="form-edit-img" name="galery-form" method="post">
+<form class="form" enctype="multipart/form-data" id="form-edit-img" name="galery-form" method="post">
   <div id="toolbar">
     <div id="toolbar-buttons">
       <span class="post-submit">

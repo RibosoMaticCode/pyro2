@@ -5,7 +5,7 @@
 			<strong>Guardar Bloque</strong>
 		</div>
 		<!--<input type="hidden" name="box_id" id="box_id" value="0" />-->
-		<div class="editor-body">
+		<div class="editor-body form">
 			<label>Nombre del bloque
 				<input type="text" name="box_name" id="box_name" required />
 			</label>

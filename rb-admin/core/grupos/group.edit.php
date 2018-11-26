@@ -11,7 +11,7 @@ if(isset($_GET["id"])){
 	$mode = "new";
 }
 ?>
-<form id="nivel-form" method="post" action="../rb-admin/core/grupos/group.save.php">
+<form id="nivel-form" class="form" method="post" action="../rb-admin/core/grupos/group.save.php">
 	<div id="toolbar">
     <div id="toolbar-buttons">
 			<span class="post-submit">

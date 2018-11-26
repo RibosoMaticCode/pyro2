@@ -193,10 +193,12 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
     <!-- SECCION EDITOR -- POR DEFECTO VISIBLE -->
     <section class="seccion">
       <div class="seccion-body">
-        <input autocomplete="off" placeholder="Escribe el titulo aqui" class="titulo" name="titulo" type="text" id="titulo" value="<?php if(isset($row)) echo $row['titulo'] ?>" required />
+        <div class="form">
+          <input autocomplete="off" placeholder="Escribe el titulo aqui" class="titulo" name="titulo" type="text" id="titulo" value="<?php if(isset($row)) echo $row['titulo'] ?>" required />
+        </div>
         <textarea class=" mceEditor" name="contenido" id="contenido" style="width:100%;"><?php if(isset($row)) echo stripslashes(htmlspecialchars($row['contenido'])); ?></textarea>
         <a href="#" id="btnshowDateTimeCover">Establecer fecha de publicación</a>
-        <div id="coverFechaPublicacion">
+        <div id="coverFechaPublicacion" class="form">
           <label title="Editar fecha publicacion">Fecha de Publicacion:
             <span class="info">El gestor establece la fecha y hora de publicación en el momento que se guardan los datos, si desea establecerlos manualmente, siga este formato: YYYY-MM-DD HH:MM:SS Ejemplo: <?= date("Y-m-d H:i:s") ?></span>
             <input maxlength="200"  name="fechamod" type="text" id="fechamod" value="<?php if(isset($row)) echo $row['fecha_creacion'] ?>" />
@@ -213,7 +215,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
       </div>
       <div class="seccion-body">
         <?php if(isset($row)):?>
-          <table class="tsmall" id="t_atributo" width="100%">
+          <table class="tables form" id="t_atributo" width="100%">
             <tr>
               <th>Nombre de Atributo</th>
               <th>Publicación</th>
@@ -247,7 +249,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
           </table>
           <a class="add" id="newAtributo" href="#">Añadir atributo</a>
         <?php else: ?>
-          <table class="tsmall" id="t_atributo" width="100%">
+          <table class="tables form" id="t_atributo" width="100%">
             <tr>
               <th>Nombre de Atributo</th>
               <th>Publicación</th>
@@ -264,13 +266,13 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Adjuntos</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
         <div id="featured-image">
           <!-- A C T U A L I Z A R -->
           <?php // if(isset($row)):?>
-            <table id="t_imagen" width="100%" cellpadding="0" cellspacing="0">
+            <table id="t_imagen" class="tables form">
               <tr>
-                <td width="40%"><strong>Imagen de Portada</strong><br />
+                <td width="40%"><strong>Imagen de Portada</strong>
                   <span class="info">Sirve como imagen de fondo, para slideshow, por lo general una imagen grande.</span>
                 </td>
                 <td>
@@ -285,7 +287,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
                 </td>
               </tr>
               <tr>
-                <td><strong>Imagen Perfil</strong> <br />
+                <td><strong>Imagen Perfil</strong>
                   <span class="info">Sirve como imagen que identifica a la publicación o artículo.</span>
                 </td>
                 <td>
@@ -330,11 +332,13 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Opciones de Edición</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
-        <label title="Edita enlace amigable" for="titulo-enlace">Enlace por defecto:</label>
-        <input maxlength="200"  name="titulo_enlace" type="text" id="titulo-enlace" value="<?php if(isset($row)) echo $row['titulo_enlace'] ?>" />
-        <label title="Edita etiquetas">Etiquetas (palabras claves relacionadas con la Publicacion. Ej. viajes, caribe, ofertas)</label>
-        <input maxlength="200"  name="claves" type="text" id="claves" value="<?php if(isset($row)) echo $row['tags'] ?>" />
+      <div class="seccion-body form">
+        <label>Enlace por defecto:
+          <input maxlength="200"  name="titulo_enlace" type="text" id="titulo-enlace" value="<?php if(isset($row)) echo $row['titulo_enlace'] ?>" />
+        </label>
+        <label>Etiquetas (palabras claves relacionadas con la Publicacion. Ej. viajes, caribe, ofertas)
+          <input maxlength="200"  name="claves" type="text" id="claves" value="<?php if(isset($row)) echo $row['tags'] ?>" />
+        </label>
       </div>
     </section>
   </div>
@@ -345,7 +349,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Categoria</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
         <div class="post-categories">
           <?php if($userType == "admin"): ?>
           <a href="#" class="popup" title="Nueva Categoría">+</a>
@@ -386,11 +390,11 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Campos adicionales</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
       <div id="objects-extern" class="inseccion">
         <!-- actualizar -->
         <?php if(isset($row)):?>
-        <table class="tsmall" id="t_externo" width="100%">
+        <table class="tables form" id="t_externo" width="100%">
             <tr>
               <th>Tipo</th>
               <th>Contenido</th>
@@ -418,7 +422,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         </table>
         <!-- nuevo -->
         <?php else: ?>
-          <table class="tsmall" id="t_externo" width="100%">
+          <table class="tables form" id="t_externo" width="100%">
                       <tr>
                         <th>Tipo</th>
                         <th>Contenido</th>
@@ -455,7 +459,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
                     <h3>Galerías e imágenes</h3>
                     <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
                   </div>
-                  <div class="seccion-body">
+                  <div class="seccion-body form">
                   <!--<div class="mitad">-->
           <div id="alblist">
           <?php
@@ -500,7 +504,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Video</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
         <span class="info">Puedes mostrar videos de Youtube unicamente (aparecerá luego del contenido)</span>
         <textarea name="video_embed" placeholder="http://www.youtube.com/embed/CODIGO"><?php if(isset($row)) echo $row['video_embed'] ?></textarea>
       </div>
@@ -512,7 +516,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Calendario</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
         <span class="info">Bastará con seleccionar la fecha, y esta publicación aparecera en el calendario de actividades</span>
         <input type="text" name="calendar" class="fecha_actividad" value="<?php if(isset($row) && $row['actividad']=='1') echo rb_a_ddmmyyyy($row['fecha_actividad']) ?>" />
       </div>
@@ -524,7 +528,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Otras opciones</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
         <span class="info">Estas opciones afectan las publicaciones dependiendo de la plantilla usada.</span>
         <label class="label_checkbox" for="featured">
           <?php $chektext = "Destacar <img src='img/star-16.png' alt='starred' />"?>
@@ -546,7 +550,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <h3>Subir imagenes</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
-      <div class="seccion-body">
+      <div class="seccion-body form">
       <?php
       include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
       ?>

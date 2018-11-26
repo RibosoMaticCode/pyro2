@@ -22,7 +22,9 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 	function forms_editor(){
 		global $objDataBase;
 		?>
-		<h2 class="title">Formularios (v. 0.1)</h2>
+		<div class="page-header">
+			<h2>Seudo editor de formularios</h2>
+		</div>
 		<?php
 		if(isset($_GET['opc'])):
 			$opc=$_GET['opc'];
@@ -103,6 +105,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 		</script>
 		<div class="wrap-content-list">
 			<section class="seccion">
+				<div class="seccion-body">
 				<table class="tables" border="0" cellpadding="0" cellspacing="0">
 					<thead>
 						<tr>
@@ -116,6 +119,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 						<?php include('forms.list.php') ?>
 					</tbody>
 				</table>
+				</div>
 			</section>
 		</div>
 		<?php

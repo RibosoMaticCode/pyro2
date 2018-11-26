@@ -5,7 +5,7 @@
 			<strong>Guardar Widget</strong>
 		</div>
 		<input type="hidden" name="block_id" id="block_id" value="0" />
-		<div class="editor-body">
+		<div class="editor-body form">
 			<label>Nombre del bloque
 				<input type="text" name="block_name" id="block_name" required />
 			</label>

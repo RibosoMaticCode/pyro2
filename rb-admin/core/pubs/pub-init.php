@@ -9,12 +9,12 @@
 $(document).ready(function() {
   // SELECT ALL ITEMS CHECKBOXS
   $('#select_all').change(function(){
-      var checkboxes = $(this).closest('table').find(':checkbox');
-      if($(this).prop('checked')) {
-        checkboxes.prop('checked', true);
-      } else {
-        checkboxes.prop('checked', false);
-      }
+    var checkboxes = $(this).closest('table').find(':checkbox');
+    if($(this).prop('checked')) {
+      checkboxes.prop('checked', true);
+    } else {
+      checkboxes.prop('checked', false);
+    }
   });
   // DELETE all
   $('#delete').click(function( event ){
@@ -78,37 +78,37 @@ $(document).ready(function() {
     <li><a class="btn-delete" rel="art" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
   </ul>
 </div>
-<div class="wrap-content-list">
 <section class="seccion">
-  <?php
-  if(isset($_GET['term'])){
-    echo '<div id="message1">';
-    echo '<p>Buscando: <strong>'.$_GET['term'].'</strong></p>';
-    echo '</div>';
-  }
-  ?>
-      <div id="content-list">
-            <div id="resultado"> <!-- ajax asyncron here -->
-            <table id="t_articulos" class="tables" border="0" cellpadding="0" cellspacing="0">
-                <thead>
-                    <tr>
-                      <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-                      <th><h3>T&iacute;tulo</h3></th>
-                      <th width="90px;"><h3>Destacado</h3></th>
-                        <th class="col_autor" width="80px;"><center><h3>Autor</h3></center></th>
-                        <th class="col_categoria" width="120px;"><h3>Categor&iacute;as</h3></th>
-                        <th class="col_vistas" width="30px;"><h3>Vistas</h3></th>
-                        <th class="col_fecha" width="80px;"><h3>Fecha</h3></th>
-                    </tr>
-                </thead>
-                <tbody id="itemstable">
-                <?php include('pub-list.php') ?>
-                </tbody>
-            </table>
-            </div>
-        </div>
-  <div id="pagination">
-  <?php include('pub-paginate.php') ?>
+  <div class="seccion-body">
+    <?php
+    if(isset($_GET['term'])){
+      echo '<div id="message1">';
+      echo '<p>Buscando: <strong>'.$_GET['term'].'</strong></p>';
+      echo '</div>';
+    }
+    ?>
+    <div id="content-list">
+      <div id="resultado"> <!-- ajax asyncron here -->
+        <table id="t_articulos" class="tables">
+          <thead>
+            <tr>
+              <th><input type="checkbox" value="all" id="select_all" /></th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Categoría</th>
+              <th>Vistas</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="itemstable">
+            <?php include('pub-list.php') ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="pagination">
+      <?php include('pub-paginate.php') ?>
+    </div>
   </div>
-</div>
 </section>

@@ -39,7 +39,7 @@ include 'islogged.php';
 	<script src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
 	<script>
 		$(document).ready(function() {
-			// fancyBox simple
+			// FancyBox simple
 			$(".fancybox").fancybox();
 
 			// Fancybox advanced Form
@@ -54,7 +54,23 @@ include 'islogged.php';
 					// prevents closing when press ESC button
 					close  : null
 				}
-		  });
+			});
+
+			// Fancybox advanced Form + Tinymce
+			$(".fancyboxFormEditor").fancybox({
+				//closeBtn    : false, // hide close button
+				closeClick  : false, // prevents closing when clicking INSIDE fancybox
+				helpers     : {
+					// prevents closing when clicking OUTSIDE fancybox
+					overlay : {closeClick: false}
+				},
+				keys : {
+					// prevents closing when press ESC button
+					close  : null
+				},
+				beforeShow: function () { tinymce.execCommand('mceToggleEditor', false, 'editor1'); },
+				beforeClose: function () { tinyMCE.remove(); }
+			});
 
 			// scroll then menu top fixed
 			var num = 50; //number of pixels before modifying styles
@@ -140,6 +156,9 @@ include 'islogged.php';
 			event.preventDefault();
 		}
 	</script>
+	<!-- tablas con datos -->
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/resource/datatables/datatables.min.css"/>
+	<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/resource/datatables/datatables.min.js"></script>
 </head>
 <body>
 <?php

@@ -6,6 +6,9 @@
 	}
 }
 @media screen and (max-width: 500px) {
+	#contenedor{
+		padding: 15px;
+	}
 	/* LIMPIAR ARRIBA Y ABAJO DE DIVS*/
 	.items::before{
     	display: table;

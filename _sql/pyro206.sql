@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-10-2018 a las 23:50:54
+-- Tiempo de generación: 08-11-2018 a las 18:55:20
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.1.17
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `pyro206_db`
+-- Base de datos: `pyro205_db`
 --
 
 -- --------------------------------------------------------
@@ -170,6 +170,7 @@ CREATE TABLE `forms` (
   `name_id` varchar(250) NOT NULL,
   `estructure` text NOT NULL,
   `validations` text NOT NULL,
+  `mails` text NOT NULL,
   `user_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

@@ -81,7 +81,7 @@ while ($row = $result->fetch_assoc()){
 	  <td width='40px;'>
 			<span>
 				<a href="#" style="color:red" title="Eliminar" class="del-item" data-id="<?= $row['id'] ?>" data-mode="<?= $mod ?>" data-uid="<?= G_USERID ?>">
-					<img src="img/del-black-16.png" alt="Eliminar" />
+					<i class="fa fa-times"></i>
 				</a>
 			</span>
 	  </td>

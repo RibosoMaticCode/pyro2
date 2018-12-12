@@ -20,9 +20,21 @@ function create_htaccess($dir){
 	$content_string .= "
 <IfModule mod_rewrite.c>
 	RewriteEngine On
+	
+	#Force www:
+	#RewriteEngine on
+	#RewriteCond %{HTTP_HOST} ^example.com [NC]
+	#RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301,NC]
+
+	#Force non-www:
+	#RewriteEngine on
+	#RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
+	#RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
 	# Descomentar las siguientes lineas si el sitio es HTTPS
 	#RewriteCond %{HTTPS} !=on
  	#RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+	
 	RewriteBase $dir/
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
@@ -114,7 +126,7 @@ $opciones_valores = array(
 	"modules_load" => "[]",
 	"name_sender" => "No-Reply",
 	"directorio_url" => $directory,
-	"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img\/icon_home.png","pos":1,"show":true,"item":null},"blogs":{"key":"blogs","nombre":"Blog","url":"#","url_imagen":"img\/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1},{"key":"com","nombre":"Comentarios","url":"index.php?pag=com","url_imagen":"none","pos":1}]},"files":{"key":"files","nombre":"Archivos","url":"#","url_imagen":"img\/icon_media.png","pos":3,"show":true,"item":[{"key":"explorer","nombre":"Explorar","url":"index.php?pag=explorer","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de de imagenes","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img\/icon_user.png","pos":4,"show":true,"item":{"0":{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},"2":{"key":"men","nombre":"Mensajeria","url":"index.php?pag=men","url_imagen":"none","pos":1},"3":{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}}},"visual":{"key":"visual","nombre":"Contenidos y Estructuras","url":"#","url_imagen":"img\/icon_design.png","pos":5,"show":true,"item":[{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantilla","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',
+	"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img\/icon_home.png","pos":1,"show":true,"item":null},"blogs":{"key":"blogs","nombre":"Blog","url":"#","url_imagen":"img\/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1}]},"files":{"key":"files","nombre":"Archivos","url":"#","url_imagen":"img\/icon_media.png","pos":3,"show":true,"item":[{"key":"explorer","nombre":"Explorar","url":"index.php?pag=explorer","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de de imagenes","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img\/icon_user.png","pos":4,"show":true,"item":{"0":{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},"2":{"key":"men","nombre":"Mensajeria","url":"index.php?pag=men","url_imagen":"none","pos":1},"3":{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}}},"visual":{"key":"visual","nombre":"Contenidos y Estructuras","url":"#","url_imagen":"img\/icon_design.png","pos":5,"show":true,"item":[{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantilla","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',
 	"alcance" => "1",
 	"version" => "2.0.6",
 	"sidebar" => "0",
@@ -130,7 +142,10 @@ $opciones_valores = array(
 	"block_footer_ids" => "0",
 	"show_terms_register" => "0",
 	"pass_security" => "0",
-	"more_fields_register" => '{"nombres":"Nombres"}'
+	"more_fields_register" => '{"nombres":"Nombres"}',
+	"repet_pass_register" => 0,
+	"after_login_url" => "[RUTA_SITIO]?pa=panel",
+	"sidebar_id" => 0
 );
 
 if(isset($_POST)):
@@ -147,8 +162,6 @@ if(isset($_POST)):
 		VALUES ('admin', '".md5($usuario_pass)."', 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");
 
 	if($response['result']==true):
-
-	//if($objUsuario->Insertar( array('admin', $usuario_pass, 'Admin', 'Del Sitio', '', '', '', '', $usuario_correo, '', 1, 'h', 0) )):
 		$usuario_id = $response['insert_id'];
 
 		// ACTIVANDO USUARIO
@@ -173,7 +186,7 @@ if(isset($_POST)):
 		create_htaccess($directory);
 		header('Location: '.$sitio_url."/login.php");
 	else:
-		die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico.".$response['error']);
+		die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico. ".$response['error']);
 	endif;
 endif;
 ?>

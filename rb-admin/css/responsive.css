@@ -113,4 +113,12 @@
 	#footer{
 		height:auto;
 	}
+
+	/* SECTION BUTTONS TEXT */
+	.seccion .seccion-header h2{
+		font-size:1.4em;
+	}
+	.seccion-header .buttons li a span.button-label{
+		display:none;
+	}
 }

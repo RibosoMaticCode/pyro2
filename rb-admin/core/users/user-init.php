@@ -71,18 +71,19 @@ $(document).ready(function() {
   });
 });
 </script>
-<div id="sidebar-left">
-  <ul class="buttons-edition">
-    <li><a class="btn-primary" href="../rb-admin/?pag=usu&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo" /> Nuevo</a></li>
-    <li><a class="btn-delete" rel="usu" href="#" id="delete"><img src="img/del-white-16.png" alt="Eliminar" /> Eliminar</a></li>
-  </ul>
-</div>
 <div class="wrap-content-list">
   <section class="seccion">
+    <div class="seccion-header">
+      <h2>Usuarios</h2>
+      <ul class="buttons">
+        <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=usu&opc=nvo"><i class="fa fa-plus-circle"></i> <span>Nuevo</span></a></li>
+        <li><a class="btn-delete" rel="usu" href="#" id="delete"><i class="fa fa-times"></i> <span>Eliminar</span></a></li>
+      </ul>
+    </div>
     <div class="seccion-body">
       <div id="content-list">
         <div id="resultado">
-          <table id="t_usuarios" class="tables" border="0" cellpadding="0" cellspacing="0">
+          <table id="t_usuarios" class="tables">
             <thead>
               <tr>
                 <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>

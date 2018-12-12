@@ -72,14 +72,18 @@ $(document).ready(function() {
   });
 });
 </script>
-<div id="sidebar-left">
-  <ul class="buttons-edition">
-    <li><a class="btn-primary" href="../rb-admin/?pag=art&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo" /> Nuevo</a></li>
-    <li><a class="btn-delete" rel="art" href="#" id="delete"><img src="img/del-white-16.png" alt="delete" /> Eliminar</a></li>
-  </ul>
-</div>
+<!--<div id="sidebar-left">
+  
+</div>-->
 <section class="seccion">
-  <div class="seccion-body">
+  <div class="seccion-header">
+    <h2>Publicaciones</h2>
+    <ul class="buttons">
+    <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=art&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+    <li><a class="btn-delete" rel="art" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+  </ul>
+  </div>
+  <div class="seccion-body seccion-scroll">
     <?php
     if(isset($_GET['term'])){
       echo '<div id="message1">';

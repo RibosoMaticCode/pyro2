@@ -30,7 +30,9 @@ if(G_ACCESOUSUARIO>0){
 			}
 
 			// Comprimiendo y guardan en directorio
-			rb_compress($_FILES["myfile"]["tmp_name"], $dir_gallery.$fileName);
+			//rb_compress($_FILES["myfile"]["tmp_name"], $dir_gallery.$fileName);
+
+			move_uploaded_file($_FILES["myfile"]["tmp_name"],$dir_gallery.$fileName);
 
 			// Creando thumbnails
 			$fileType = $_FILES["myfile"]["type"];

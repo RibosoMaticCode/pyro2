@@ -206,6 +206,7 @@ a.page-resalt {
 
 /* FORMULARIOS */
 .form input[type="text"],
+.form input[type="password"],
 .form input[type="email"],
 .form input[type="tel"],
 .form input[type="date"],
@@ -225,16 +226,47 @@ a.page-resalt {
 .form label{
     display:block;
 }
-.form button{
+.form button,
+.form input[type="submit"]{
 	margin: 5px 0;
-	padding: 2px 25px;
-	background-color: #4caf50;
+	padding: 6px 25px;
+	background-color: #03A9F4;
 	border-radius: 4px;
 	border:0;
 	color: #fff;
 	font-weight: bold;
 }
-.form button:hover{
+.form button:hover,
+.form input[type="submit"]:hover{
     box-shadow:1px 1px 10px gray;
 }
 
+/* TABLES */
+.tables{
+	width: 100%;
+	text-align: left;
+	clear: both;
+  max-width: none!important;
+	border-collapse: separate!important;
+}
+.tables th{
+	padding: 8px;
+	font-size:.95em;
+	color: #333;
+	background-color:#f3f3f3;
+}
+.tables td{
+	padding: .75rem;
+	color: #575962;
+	vertical-align: middle;
+	font-size: 13px;
+	border-bottom: 1px solid #f6f6f6;
+}
+.tables td a{
+	color:#2196F3;
+}
+.tables tr:hover td{
+	background: #ececec;
+	color: #339;
+	opacity:1;
+}

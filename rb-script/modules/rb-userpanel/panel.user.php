@@ -19,7 +19,7 @@
 	});
 </script>
 	<div class="content-right content-right-add">
-		<form id="userdata" class="frm" action="<?= rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php" method="post">
+		<form id="userdata" class="form" action="<?= rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php" method="post">
 
 			<label class="col"><span>Nombres:</span>
 				<input class="itext" type="text" id="nom" name="nom" value="<?= $UsuarioItem['nombres'] ?>"  />

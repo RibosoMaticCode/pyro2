@@ -3,6 +3,7 @@
 	<head>
     <meta charset="utf-8">
 		<title><?= rm_title ?></title>
+		<meta name="theme-color" content="#fff" /> <!-- mobil bg color -->
 		<meta name="description" content="<?= rm_metadescription ?>">
 		<meta name="author" content="<?= rm_metaauthor ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
@@ -68,6 +69,12 @@
 					event.preventDefault();
 					$('.bg, .menu').hide();
 				});
+
+				// Scroll with effect - Set 'a' tag with class 'scrollLink'
+				$( "a.scrollLink" ).click(function( event ) {
+                    event.preventDefault();
+                    $("html, body").animate({ scrollTop: $($(this).attr("href")).offset().top }, 500);
+                });
 			});
 		</script>
 	</head>

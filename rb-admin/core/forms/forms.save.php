@@ -12,7 +12,9 @@ $columns_vals = [
 	'estructure' => htmlentities(trim($_POST['estructure'])),
 	'validations' => addslashes($_POST['validations']),
 	'mails' => $_POST['mails'],
-	'user_id' => G_USERID
+	'user_id' => G_USERID,
+	'intro' => $_POST['intro'],
+	'respuesta' => $_POST['rspta']
 ];
 
 // tipo de accion

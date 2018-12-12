@@ -57,4 +57,14 @@ $(document).ready(function() {
    if (splitBtn.hasClass('open'))
     splitBtn.removeClass('open');
   });
+
+  // Tabs
+  $('#tabcontent1').show(); // first tab content hide
+  $('.tabs-buttons input').click(function(event){ 
+    $('.tabs-sections section').hide();
+    if($('.tabs-buttons input:checked')){
+      var tab_id = $(this).attr('id').substr(3,2);
+      $('#tabcontent'+tab_id).show();
+    }
+  });
 });

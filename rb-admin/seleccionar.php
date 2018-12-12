@@ -10,12 +10,6 @@ if(isset($_GET['pag'])){
 }
 switch($pag){
 	case "art":
-		//echo '<h2 class="title">Publicaciones</h2>';
-		?>
-		<div class="page-header">
-			<h2>Publicaciones</h2>
-		</div>
-		<?php
 		$sec="art";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -32,19 +26,6 @@ switch($pag){
 		}
 		break;
 	case "usu":
-		if(isset($_GET['profile'])){
-			?>
-			<div class="page-header">
-				<h2>Mi perfil</h2>
-			</div>
-			<?php
-		}else{
-			?>
-			<div class="page-header">
-				<h2>Mi perfil</h2>
-			</div>
-			<?php
-		}
 			$sec="usu";
 			if(isset($_GET['opc'])){
 				$opc=$_GET['opc'];
@@ -82,12 +63,6 @@ switch($pag){
 			printf(" Sección no disponible ");
 			break;
 		endif;
-
-		?>
-			<div class="page-header">
-				<h2>Menus</h2>
-			</div>
-			<?php
 		$sec="menus";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -120,11 +95,6 @@ switch($pag){
 		}
 		break;
 	  case "pages":
-	  ?>
-			<div class="page-header">
-				<h2>Pseudo editor visual de páginas</h2>
-			</div>
-			<?php
 		if($userType != "admin"):
 			printf(" Sección no disponible ");
 			break;
@@ -165,11 +135,6 @@ switch($pag){
 	    }
 	  	break;
 	case "gal":
-	?>
-	<div class="page-header">
-		<h2>Galerias</h2>
-	</div>
-	<?php
 		$sec="gal";
 
 		if(isset($_GET['opc'])){
@@ -187,11 +152,6 @@ switch($pag){
 		}
 		break;
 	case "explorer":
-	?>
-	<div class="page-header">
-		<h2>Archivos</h2>
-	</div>
-	<?php
 		$sec="files";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -219,43 +179,11 @@ switch($pag){
 				break;
 		}
 	break;
-	// revisar de aca en adelante
-	case "com":
-		if($userType != "admin"):
-			printf(" Sección no disponible ");
-			break;
-		endif;
-
-		?>
-			<div class="page-header">
-				<h2>Comentarios</h2>
-			</div>
-			<?php
-		$sec="com";
-		if(isset($_GET['opc'])){
-			$opc=$_GET['opc'];
-		}else{
-			$opc="";
-		}
-		switch($opc){
-			case "edt":
-				include('core/comments/comment-edit.php');
-				break;
-			default:
-				include('core/comments/comment-init.php');
-		}
-		break;
 	case "cat":
 		if($userType != "admin"):
 			printf(" Sección no disponible ");
 			break;
 		endif;
-
-		?>
-			<div class="page-header">
-				<h2>Categorias</h2>
-			</div>
-			<?php
 		$sec="cat";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -273,11 +201,6 @@ switch($pag){
 		break;
 
 	case "men":
-	?>
-	<div class="page-header">
-		<h2>Mensajes</h2>
-	</div>
-	<?php
 		$sec="men";
 		if(isset($_GET['opc'])){
 			$opc=$_GET['opc'];
@@ -308,11 +231,6 @@ switch($pag){
 			printf(" Sección no disponible ");
 			break;
 		endif;
-		?>
-			<div class="page-header">
-				<h2>Opciones de configuracion</h2>
-			</div>
-			<?php
 		include('option-edit.php');
 		break;
 	case "modules":

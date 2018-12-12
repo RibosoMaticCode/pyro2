@@ -81,20 +81,25 @@ $(document).ready(function() {
 </div>
 <div class="wrap-content-list">
   <section class="seccion">
-    <div id="content-list">
-      <div id="resultado">
-        <table id="t_categorias" class="tables" border="0" cellpadding="0" cellspacing="0">
-          <thead>
-            <tr>
-              <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-              <th><h3>Nombre</h3></th>
-              <th><h3>Como usarlo</h3></th>
-            </tr>
-          </thead>
-          <tbody id="itemstable">
-          <?php include('menu-list.php') ?>
-          </tbody>
-        </table>
+    <div class="seccion-header">
+      <h2>Menus</h2>
+    </div>
+    <div class="seccion-body">
+      <div id="content-list">
+        <div id="resultado">
+          <table id="t_categorias" class="tables" border="0" cellpadding="0" cellspacing="0">
+            <thead>
+              <tr>
+                <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
+                <th>Nombre</th>
+                <th>Como usarlo</th>
+              </tr>
+            </thead>
+            <tbody id="itemstable">
+            <?php include('menu-list.php') ?>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>

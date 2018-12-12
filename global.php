@@ -25,6 +25,7 @@ if($q->num_rows==0){
 	header('Location: ..'.$directory.'/rb-install/index.php');
 }
 
+// Inicia arrays para contener los bb_codes y su correspondiente en html
 $bb_codes = [];
 $bb_htmls = [];
 
@@ -91,8 +92,8 @@ define('G_FORM', rb_get_values_options('form_code'));
 define('G_TWIDTH', rb_get_values_options('t_width'));
 define('G_THEIGHT', rb_get_values_options('t_height'));
 
-// menu principal a mostrar
-define('G_MAINMENU', rb_get_values_options('mainmenu_id'));
+// menu principal a mostrar - obsoleto
+// define('G_MAINMENU', rb_get_values_options('mainmenu_id'));
 
 // moneda
 define('G_COIN', rb_get_values_options('moneda'));
@@ -145,8 +146,9 @@ if(isset($_SESSION['usr']) and isset($_SESSION['pwd'])){
 	define('G_USERNIVELID', 0);
 }
 
+/* Carrito obsoleto 
 $carrito = array();
 if(!isset($_SESSION['carrito'])){
 	$_SESSION['carrito'] = $carrito;
-}
+}*/
 ?>

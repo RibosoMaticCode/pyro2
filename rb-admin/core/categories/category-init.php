@@ -31,13 +31,14 @@ $(document).ready(function() {
   });
 });
 </script>
-<div id="sidebar-left">
-  <ul class="buttons-edition">
-    <li><a class="btn-primary" href="../rb-admin/?pag=cat&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo" /> Nueva Categoria</a></li>
-  </ul>
-</div>
 <div class="wrap-content-list">
   <section class="seccion">
+    <div class="seccion-header">
+      <h2>Categorias</h2>
+      <ul class="buttons">
+        <li><a class="btn-primary" href="../rb-admin/?pag=cat&amp;opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+      </ul>
+    </div>
     <div class="seccion-body">
       <div id="content-list">
             <div id="resultado">

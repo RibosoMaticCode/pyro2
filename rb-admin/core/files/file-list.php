@@ -32,11 +32,17 @@ while ($row = $result->fetch_assoc()):
         <span class="filename truncate">
           <a target="_blank" class="fancybox" rel="group" href="<?= G_SERVER ?>/rb-media/gallery/<?= utf8_encode($row['src']) ?>"><?= utf8_encode($row['src']) ?></a>
         </span>
-        <!--<span class="edit"> -- PROXIMAMENTE INFO DEL FILE
-          <a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=file_edit&amp;opc=edt&amp;id=<?= $row['id'] ?>">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
+        <?php
+        if(isset($_GET['compress'])): // opcion oculta al usuario
+        ?>
+        <span class="edit">
+          <a title="Compresion" href="<?= G_SERVER ?>/rb-admin/core/files/compress.image.php?image=<?= utf8_encode($row['src']) ?>">
+            <i class="fa fa-compress"></i>
           </a>
-        </span>-->
+        </span>
+        <?php
+        endif;
+        ?>
         <span class="delete">
           <a title="Eliminar" href="#" style="color:red" class="del-item" data-id="<?= $row['id'] ?>">
             <i class="fa fa-trash fa-lg" aria-hidden="true"></i>

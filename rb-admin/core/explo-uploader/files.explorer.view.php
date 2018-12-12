@@ -20,8 +20,19 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 </div>
 <div class="explorer-body">
   <?php
-  $q = $objDataBase->Ejecutar("SELECT src FROM photo WHERE id=".$_GET['file_id']);
+  $q = $objDataBase->Ejecutar("SELECT src, type FROM photo WHERE id=".$_GET['file_id']);
   $file = $q->fetch_assoc();
+  if( substr($file['type'], 0, 5) != "image"){
+	  ?>
+	  <div class="file_msj">
+	  	<p>Vista no disponible</p>
+	  	<a target="_blank" href="<?= G_SERVER ?>/rb-media/gallery/<?= $file['src']?>">Clic aqui para ver archivo</a>
+  		</div>
+	  <?php
+  }else{
+	  ?>
+	  <img class="preview" src="<?= G_SERVER ?>/rb-media/gallery/<?= $file['src']?>" alt="previa" />
+	  <?php
+  }
   ?>
-  <img class="preview" src="<?= G_SERVER ?>/rb-media/gallery/<?= $file['src']?>" alt="previa" />
 </div>

@@ -135,15 +135,12 @@ function sus_form(){
 			data: $( this ).serialize()
 			})
 			.done(function( data ) {
-				if(data.resultado){
-					$.fancybox.close();
-					alert(data.contenido);
-				}else{
-					if(data.continue){
-						alert("Ya figuras en nuestra lista de suscriptores. ¡Atento a nuestras novedades!");
-						$.fancybox.close();
-					}
-				}
+				alert(data.contenido);
+			    if(data.continue){
+			        setTimeout(function(){
+	                    window.location.href = "'.G_SERVER.'";
+	                }, 1000);
+			    }
 			});
 		});
 	});

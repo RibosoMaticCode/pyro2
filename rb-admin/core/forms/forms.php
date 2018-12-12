@@ -21,11 +21,6 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 	// Function
 	function forms_editor(){
 		global $objDataBase;
-		?>
-		<div class="page-header">
-			<h2>Seudo editor de formularios</h2>
-		</div>
-		<?php
 		if(isset($_GET['opc'])):
 			$opc=$_GET['opc'];
 			include('forms.edit.php');
@@ -105,6 +100,9 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 		</script>
 		<div class="wrap-content-list">
 			<section class="seccion">
+				<div class="seccion-header">
+					<h2>Formularios</h2>
+				</div>
 				<div class="seccion-body">
 				<table class="tables" border="0" cellpadding="0" cellspacing="0">
 					<thead>
@@ -149,7 +147,8 @@ function show_form( $params ){ // Mostrar el formulario segun su id
 				if(data.result){
 					console.log(data);
 					$('#".$form['name_id']."').slideUp();
-					$('#frmresponse_".$form['id']."').html('<p style=\"color:green\">'+data.msg+'</p>');
+					//$('#frmresponse_".$form['id']."').html('<p style=\"color:green\">'+data.msg+'</p>');
+					$('#frmresponse_".$form['id']."').html(data.msgHtml);
 				}else{
 					console.log(data);
 					$('#frmresponse_".$form['id']."').html('<p style=\"color:red\">'+data.msg+'</p>');
@@ -158,11 +157,12 @@ function show_form( $params ){ // Mostrar el formulario segun su id
 		});
 	});
 	</script>";
+	$formhtml .= "<div class='frm_intro'>".$form['intro']."</div>";
 	$formhtml .= "<form class='form' id='".$form['name_id']."'>";
 	$formhtml .= "<input type='hidden' name='form_id' value='".$form['id']."' />";
 	$formhtml .= html_entity_decode($form['estructure']);
 	$formhtml .= "</form>";
-	$formhtml .= "<div id='frmresponse_".$form['id']."'></div>";
+	$formhtml .= "<div class='frm_response' id='frmresponse_".$form['id']."'></div>";
 	return $formhtml;
 }
 

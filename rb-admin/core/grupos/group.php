@@ -23,22 +23,11 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 	endif;
 	// Contenido inicial
 	function group_admin_content(){
-		?>
-		<div class="page-header">
-			<h2>Grupos</h2>
-		</div>
-		<?php
 		if(isset($_GET['opc'])):
 			$opc=$_GET['opc'];
 			include('group.edit.php');
 		else:
 		?>
-		<div id="sidebar-left">
-			<ul class="buttons-edition">
-				<li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/module.php?pag=gru&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo"> Nuevo</a></li>
-				<li><a class="btn-delete" href="#" id="delete"><img src="img/del-white-16.png" alt="delete"> Eliminar</a></li>
-			</ul>
-		</div>
 		<script>
 		$(document).ready(function() {
 		  // SELECT ALL ITEMS CHECKBOXS
@@ -108,8 +97,15 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 		</script>
 		<div class="wrap-content-list">
 			<section class="seccion">
+				<div class="seccion-header">
+					<h2>Grupos</h2>
+					<ul class="buttons">
+						<li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/module.php?pag=gru&amp;opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+						<li><a class="btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+					</ul>
+				</div>
 				<div class="seccion-body">
-				<table class="tables" border="0" cellpadding="0" cellspacing="0">
+				<table class="tables">
 					<thead>
 						<tr>
 							<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>

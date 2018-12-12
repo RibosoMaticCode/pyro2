@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-11-2018 a las 18:55:20
+-- Tiempo de generación: 12-12-2018 a las 21:20:46
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 7.1.17
 
@@ -139,28 +139,6 @@ CREATE TABLE `categorias` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comentarios`
---
-
-CREATE TABLE `comentarios` (
-  `id` int(7) NOT NULL,
-  `articulo_id` int(7) DEFAULT NULL,
-  `nombre` varchar(50) NOT NULL DEFAULT '',
-  `fecha` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `contenido` text NOT NULL,
-  `mail` varchar(50) NOT NULL DEFAULT '',
-  `web` varchar(50) NOT NULL DEFAULT '',
-  `comentario_id` int(7) NOT NULL DEFAULT '0',
-  `spam` int(1) NOT NULL DEFAULT '0',
-  `activo` int(1) NOT NULL DEFAULT '0',
-  `ip` varchar(15) NOT NULL,
-  `source` varchar(20) NOT NULL,
-  `url_referencia` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `forms`
 --
 
@@ -171,7 +149,9 @@ CREATE TABLE `forms` (
   `estructure` text NOT NULL,
   `validations` text NOT NULL,
   `mails` text NOT NULL,
-  `user_id` int(5) NOT NULL
+  `user_id` int(5) NOT NULL,
+  `intro` text NOT NULL,
+  `respuesta` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -346,7 +326,20 @@ CREATE TABLE `suscriptores` (
   `id` int(11) NOT NULL,
   `nombres` varchar(100) NOT NULL,
   `correo` varchar(150) NOT NULL,
-  `fecha` datetime NOT NULL
+  `fecha` datetime NOT NULL,
+  `telefono` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `suscriptores_config`
+--
+
+CREATE TABLE `suscriptores_config` (
+  `id` int(11) NOT NULL,
+  `opcion` varchar(150) NOT NULL,
+  `valor` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -475,6 +468,12 @@ ALTER TABLE `mensajes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `mensajes_usuarios`
+--
+ALTER TABLE `mensajes_usuarios`
+  ADD UNIQUE KEY `mensaje_id` (`mensaje_id`,`usuario_id`);
+
+--
 -- Indices de la tabla `menus`
 --
 ALTER TABLE `menus`
@@ -523,6 +522,12 @@ ALTER TABLE `staff`
 -- Indices de la tabla `suscriptores`
 --
 ALTER TABLE `suscriptores`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `suscriptores_config`
+--
+ALTER TABLE `suscriptores_config`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -643,6 +648,12 @@ ALTER TABLE `staff`
 -- AUTO_INCREMENT de la tabla `suscriptores`
 --
 ALTER TABLE `suscriptores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `suscriptores_config`
+--
+ALTER TABLE `suscriptores_config`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

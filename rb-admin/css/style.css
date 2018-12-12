@@ -198,10 +198,15 @@ section.seccion {
 }
 .seccion-header .buttons li{
 	display:inline-block;
-	padding:0 4px;
+}
+.seccion-header .buttons li a *{
+	color:#fff
 }
 .seccion .seccion-body{
 	padding: 1.125em;
+}
+.seccion .seccion-scroll{
+	overflow:auto
 }
 .seccion .seccion-body li{
 	list-style-type:none;

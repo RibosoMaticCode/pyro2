@@ -1,4 +1,5 @@
 <?php
+include_once("../rb-admin/tinymce/tinymce.config.php");
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
@@ -13,6 +14,7 @@ if(isset($_GET["id"])){
 $(document).ready(function() {
 	$("#SaveForm").click(function (event) {
 		event.preventDefault();
+		tinyMCE.triggerSave();
 
 		var fname = $('#form_name').val();
 		var festr = $('#form_estructure').html();
@@ -20,12 +22,14 @@ $(document).ready(function() {
 		var fmode = $('#form_mode').val();
 		var fmails = $('#form_mails').val();
 		var fid = $('#form_id').val();
+		var fintro = $('#form_intro').val();
+		var frspta = $('#form_respuesta').val();
 
 		$.ajax({
 			url: "core/forms/forms.save.php",
 			method: 'post',
 			//data: $.param(data),
-			data: 'name='+fname+'&estructure='+festr+'&validations='+fvalid+'&mode='+fmode+'&id='+fid+'&mails='+fmails,
+			data: 'name='+fname+'&estructure='+festr+'&validations='+fvalid+'&mode='+fmode+'&id='+fid+'&mails='+fmails+'&intro='+fintro+'&rspta='+frspta,
 			beforeSend: function(){
 				$('#img_loading, .bg-opacity').show();
 			}
@@ -54,6 +58,14 @@ $(document).ready(function() {
 					<label>Nombre:
 						<input name="name" id="form_name" type="text" value="<?php if(isset($row)) echo $row['name'] ?>" required />
 					</label>
+					<label>
+						Contenido previo (opcional)
+						<span class="info">Puede incluir HTML</span>
+						<textarea id="form_intro" name="form_intro" class=" mceEditor"><?php if(isset($row)) echo $row['intro'] ?></textarea>
+					</label>
+					<label>
+						Estructura de formulario
+					</label>
 					<div class="estructure">
 						<div class="shadow"></div>
 						<div class="estructure_html" id="form_estructure" style="border:2px solid red">
@@ -69,6 +81,11 @@ $(document).ready(function() {
 					<label>Correos destino:
 						<span class="info">Si no se establece, se toma el mail por defecto de la configuracion general</span>
 						<input name="mails" id="form_mails" type="text" value="<?php if(isset($row)) echo $row['mails'] ?>" />
+					</label>
+					<label>
+						Mensaje de respuesta (opcional)
+						<span class="info">Puede incluir HTML</span>
+						<textarea id="form_respuesta" name="form_respuesta" class=" mceEditor"><?php if(isset($row)) echo $row['respuesta'] ?></textarea>
 					</label>
 				</div>
 			</section>

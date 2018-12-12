@@ -15,7 +15,7 @@ require_once(ABSPATH.'rb-script/class/rb-database.class.php');
 
 $qm = $objDataBase->Ejecutar("SELECT * FROM mensajes m, mensajes_usuarios mu WHERE m.id=mu.mensaje_id AND mu.usuario_id = $user_id AND m.id = $message_id");
 $Mensaje = $qm->fetch_assoc();
-$content = '<h4 style="margin-bottom:20px">Contenido del Mensaje</h4>';
+$content = '<h4 style="margin-bottom:20px">'.$Mensaje['asunto'].'</h4>';
 $content .= $Mensaje['contenido'];
 
 if($objDataBase->Ejecutar("UPDATE mensajes_usuarios SET leido=1 WHERE usuario_id = $user_id AND mensaje_id = $message_id"))

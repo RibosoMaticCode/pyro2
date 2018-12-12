@@ -1160,14 +1160,21 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
 
   // BB codes del sistema
   $default_bb_codes = array(
+		"/\[LOGUEO]/is",
     "/\[RUTA_SITIO]/is",
     "/\[RUTA_TEMA]/is",
     "/\[YOUTUBE=\"(.*?)\"]/is",
     "/\[MAPA coordenadas=\"(.*?)\" altura=\"(.*?)\"]/is"
-  );
+	);
+	
+	$acceso = '<a href="'.G_SERVER.'/login.php">Ingresar</a>';
+	if(G_ACCESOUSUARIO==1){
+		$acceso = '<a href="'.G_SERVER.'/?pa=panel">Panel usuario</a> <a href="'.G_SERVER.'/login.php?out">Cerrar sesión</a>';
+	}
 
   // Ejecucion de los bbcodes del sistema
   $default_bb_htmls = array(
+		$acceso,
     G_SERVER.'/',
     G_URLTHEME.'/',
     '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',

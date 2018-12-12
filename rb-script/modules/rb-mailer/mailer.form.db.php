@@ -171,9 +171,15 @@ $email_headers .= "Content-Type: text/html; UTF-8\r\n";
 
 // Send the email.
 if (mail($recipient, $subject, $email_content, $email_headers)) {
+	if($form['respuesta']==""){
+		$rsptaHtml = "Envio correcto de la informacion";
+	}else{
+		$rsptaHtml = $form['respuesta'];
+	}
 	$rspmail = [
 		'result' => true,
 		'msg' => 'Envio correcto del correo',
+		'msgHtml' => $rsptaHtml,
 		'recaptcha' => $recaptcha_use,
 		'recaptcha_msg' => $recaptcha_msg
 	];

@@ -2,8 +2,7 @@
 						<?php
 						$qm = $objDataBase->Ejecutar("SELECT m.id, m.contenido, DATE_FORMAT(m.fecha_envio,'%d-%m-%Y') as fecha, TIME_FORMAT(m.fecha_envio,'%H:%i:%s') as hora, u.nombres, m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo FROM mensajes m, mensajes_usuarios mu, usuarios u WHERE m.id = mu.mensaje_id AND u.id = m.remitente_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 ORDER BY fecha_envio DESC LIMIT 20");
 						?>
-						<div class="datagrid">
-						<table>
+						<table class="tables">
 							<thead>
 								<tr>
 									<th style="width:20%">Fecha</th>
@@ -55,7 +54,6 @@
 							?>
 							</tbody>
 						</table>
-						</div>
 							<script>
 							$(document).ready(function() {
 								$('a.viewmessage').click( function(event){

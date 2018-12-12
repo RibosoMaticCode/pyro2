@@ -161,6 +161,13 @@
 	min-height:450px;
 	min-width: 600px;
 }
+.explorer-body .file_msj {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	text-align: center;
+	transform: translate(-50%, -50%);
+}
 .explorer-toolbar{
   padding: 10px 5px 0 5px;
   background-color: #f3f3f3;
@@ -560,4 +567,36 @@ ul.box-options-list{
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+
+/* TABS */
+.tabs-buttons {
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.tabs-buttons input{
+	display:none;
+}
+.tabs-buttons label{
+	display:inline-block!important;
+	padding: 10px 20px!important;
+}
+.tabs-buttons label:hover {
+  color: #789;
+  cursor: pointer;
+}
+.tabs-buttons input:checked + label {
+  color: #0af;
+  border: 1px solid #abc;
+  border-top: 2px solid #0af;
+  border-bottom: 1px solid #fff;
+}
+.tabs-sections {
+	margin-top: -1px;
+}
+.tabs-sections section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #abc;
 }

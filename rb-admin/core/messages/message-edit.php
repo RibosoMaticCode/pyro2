@@ -13,7 +13,7 @@ include_once("tinymce/tinymce.config.php");
   <div class="content-edit">
     <section class="seccion">
       <div class="seccion-body">
-        <div class="wrap-input">
+        <div class="wrap-input form">
           <label title="Asunto del mensaje" for="web_nombre">Asunto:
             <input  name="asunto" type="text" id="asunto" required />
           </label>
@@ -29,7 +29,7 @@ include_once("tinymce/tinymce.config.php");
   <div id="sidebar">
     <section class="seccion">
       <div class="seccion-body">
-        <div class="edit-list">
+        <div class="edit-list form">
           <label title="Webmaster" for="webmaster">Destinatarios:</label>
             <div id="catlist">
               <?php

@@ -41,7 +41,7 @@ while ($row = $consulta->fetch_assoc()){
       </div>-->
     </td>
     <td>
-      <?= $row['description'] ?>
+      <?= rb_fragment_letters($row['description'], 40) ?>
     </td>
     <td>
       <?php

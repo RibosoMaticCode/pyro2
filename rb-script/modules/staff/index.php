@@ -54,7 +54,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="staff"):
 			include_once 'staff.list.php';
 		}
 	}
-	
+
 	add_function('module_title_page','staff_title');
 	add_function('panel_header_js','staff_js');
 	add_function('module_content_main','staff_content');

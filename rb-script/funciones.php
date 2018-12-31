@@ -228,7 +228,7 @@ function rb_get_user_info($User_id){
 	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=$User_id");
 	if($q->num_rows==0)
 		return false;
-		
+
 	$UserArray = array();
 	while($Users = $q->fetch_assoc()):
 		$UserArray['id'] = $Users['id'];
@@ -287,7 +287,7 @@ function rb_show_post($post_id, $redirect=true){
 	if( G_ENL_AMIG == 0 ):
 		$q = $objDataBase->Ejecutar("SELECT id FROM articulos WHERE id ='$post_id'");
 	endif;
-	
+
 	$num_posts = $q->num_rows;
 	if( $num_posts > 0):
 		$Post = $q->fetch_assoc();
@@ -349,11 +349,12 @@ function rb_get_img_profile($user_id){
 
 	$q = $objDataBase->Ejecutar("SELECT photo_id FROM usuarios WHERE id= $user_id");
 	$Usuario = $q->fetch_assoc();
-	$photos = rb_get_photo_from_id($Usuario['photo_id']);
-	if($photos['src']==""):
+	$Photo = rb_get_photo_from_id($Usuario['photo_id']);
+  print_r($Photo);
+	if($Photo['src']==""):
 		return G_SERVER."/rb-admin/img/user-default.png";
 	else:
-		return G_SERVER."/rb-media/gallery/tn/".$photos['src'];
+		return G_SERVER."/rb-media/gallery/tn/".$Photo['src'];
 	endif;
 }
 
@@ -361,8 +362,8 @@ function rb_get_img_profile($user_id){
 function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE id=$photo_id");
-	$Photos = $q->fetch_assoc();
-	return $Photos;
+	$Photo = $q->fetch_assoc();
+	return $Photo;
 }
 
 /* OBTIENE DATOS FILES FROM ID*/
@@ -492,6 +493,9 @@ function rb_a_yyyymmdd($ddmmyyyy, $separate = "-"){
 
 // Antes rb_fecha_format
 function rb_sqldate_to($sqlfecha, $format = 'd-m-Y'){ // Convierte fecha SQl (formato ingles) a fecha unix y luego a formato español.
+  if($sqlfecha == "0000-00-00 00:00:00"){
+    return "--";
+  }
 	$date_unix = strtotime($sqlfecha);
 	$format_date = date($format,$date_unix);
 	return $format_date;
@@ -662,7 +666,7 @@ function rb_get_images_from_gallery($album_id, $limit = 0){
 				default:
 					$FotosArray[$i]['goto_url'] = rb_url_link( $Fotos['tipo'] , $Fotos['url'] );
 			}
-			
+
 			$i++;
 		endwhile;
 		return $FotosArray;
@@ -1115,7 +1119,7 @@ function rb_compress($source, $destination) {
 					$src = imagecreatefromjpeg($source);
 			break;
 	}
-	
+
 	switch($info['mime']){
 			case "image/png":
 					imagepng($src, $destination, 6); //Nivel de compresión: desde 0 (sin compresión) hasta 9.
@@ -1166,7 +1170,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
     "/\[YOUTUBE=\"(.*?)\"]/is",
     "/\[MAPA coordenadas=\"(.*?)\" altura=\"(.*?)\"]/is"
 	);
-	
+
 	$acceso = '<a href="'.G_SERVER.'/login.php">Ingresar</a>';
 	if(G_ACCESOUSUARIO==1){
 		$acceso = '<a href="'.G_SERVER.'/?pa=panel">Panel usuario</a> <a href="'.G_SERVER.'/login.php?out">Cerrar sesión</a>';
@@ -2020,19 +2024,19 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
 								echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">';
 
 								echo '<div>'; // open div (no name)
-								
+
                 echo '<div class="rb-bg-gallery" style="background-image:url(\''.$Gallery['url_bgimagetn'].'\')" />'; // open rb-bg-gallery
 								echo '</div>'; // close rb-bg-gallery
-								
+
                 echo '<div class="rb-gallery-info">'; // open rb-gallery-info
                 	echo '<span class="rb-gallery-title">'.$Gallery['nombre'].'</span>';
                 	echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
 								echo '</div>'; // close rb-gallery-info
-								
+
 								echo '</div>'; // close div
 
 								echo '</a>';
-								
+
               echo '</div>'; // close rb-gallery
               if($j==$CountGalleries || $i==$show_by_file){
                 echo '</div>'; // Close rb-gallery-container
@@ -2067,7 +2071,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
 						if($typ==0){
 							$width_post = round(100/$byrow,2);
 						}
-						
+
             if($tit!=""){
               ?>
               <h2><?= $tit ?></h2>
@@ -2482,7 +2486,7 @@ function rb_shortcode($content){
 
 function rb_generate_nickname($mail){ // Generar nickname en base a correo electronico
 	global $objDataBase;
-	
+
 	$array_mail = explode("@", $mail);
 	$user = $array_mail[0];
 	$q = $objDataBase->Ejecutar("SELECT nickname FROM usuarios WHERE nickname LIKE '%$user%'");

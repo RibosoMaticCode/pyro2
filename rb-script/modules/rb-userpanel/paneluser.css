@@ -1,46 +1,22 @@
 /* PANEL USUARIO */
-.info-active{
-    background-color: red;
-    color: #fff;
-    padding: 3px 10px;
-    font-size: .5em!important;
-    position: absolute;
-    right: 10px;
+.panels_user {
+    padding: 20px;
+    border-left: 1px solid #e6e6e6;
+    min-height: 500px;
 }
-.btn-back{
-	position:absolute;
-	padding:8px 10px;
-	right:20px;
-	top:80px;
-	font-size:.85em;
-	border-radius:5px;
-	border:1px solid #00557F;
-}
-.user{
-	position:relative;
-}
-.user h3{
-	padding:10px 0;
+.panel{
+  display: none;
 }
 .user h1{
 	padding:15px 10px;
 	position:relative
 }
-
-.history,
-.data,
-.works{
-	background-color:#fff;
-	padding:5px 20px;
-	border-left: 1px solid #eaeaea;
-	margin-top: -1px;
-	min-height:400px;
+.user{
+	position:relative;
+  padding: 10px;
 }
-.history{
-	display:none;
-}
-.no-read{
-	font-weight:bold
+.user h3{
+	padding:10px 0;
 }
 .menu-user{
 	margin-top:10px;
@@ -62,9 +38,29 @@
 	border-bottom: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 }
+.no-read{
+	font-weight:bold
+}
+/*.info-active{
+    background-color: red;
+    color: #fff;
+    padding: 3px 10px;
+    font-size: .5em!important;
+    position: absolute;
+    right: 10px;
+}
+.btn-back{
+	position:absolute;
+	padding:8px 10px;
+	right:20px;
+	top:80px;
+	font-size:.85em;
+	border-radius:5px;
+	border:1px solid #00557F;
+}
 
 /* FORMULARIO */
-form#userdata {
+#userdata {
     max-width: 400px;
     margin: 0 auto;
 }

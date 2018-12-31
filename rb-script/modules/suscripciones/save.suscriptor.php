@@ -38,21 +38,21 @@ $valores = [
 // Validar mail
 $q = $objDataBase->Ejecutar("SELECT * FROM suscriptores WHERE correo='".$valores['correo']."'");
 if($q->num_rows > 0){
-	$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.', 'continue' => true ];
+	$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.', 'continue' => false ];
 	die(json_encode($arr));
 }
 
 if($id==0){ // Nuevo
 	$r = $objDataBase->Insert('suscriptores', $valores);
 	if($r['result']){
-		$arr = ['resultado' => true, 'contenido' => 'Suscriptor registrado', 'id' => $r['insert_id'] ];
+		$arr = ['resultado' => true, 'contenido' => 'Suscriptor registrado', 'id' => $r['insert_id'], 'continue' => true ];
 	}else{
 		$arr = ['resultado' => false, 'contenido' => $r['error']];
 	}
 }else{ // Update
 	$r = $objDataBase->Update('suscriptores', $valores, ["id" => $id]);
 	if($r['result']){
-		$arr = ['resultado' => true, 'contenido' => 'Suscriptor actualizado' ];
+		$arr = ['resultado' => true, 'contenido' => 'Suscriptor actualizado', 'continue' => true ];
 	}else{
 		$arr = ['resultado' => false, 'contenido' => $r['error']];
 	}

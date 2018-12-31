@@ -211,6 +211,7 @@ a.page-resalt {
 .form input[type="tel"],
 .form input[type="date"],
 .form input[type="time"],
+.form input[type="number"],
 .form select,
 .form textarea{
 	width: 100%;

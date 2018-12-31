@@ -21,13 +21,14 @@ if($q->num_rows==0){
 	// Obtener el directorio donde estara instalado el cms
 	// Reemplazamos el ultimo elemento con un dato campo vacio para obtener este valor
 	$directory = str_replace('/'.$last_part_url, '', $_SERVER['SCRIPT_NAME']);
-	
+
 	header('Location: ..'.$directory.'/rb-install/index.php');
 }
 
 // Inicia arrays para contener los bb_codes y su correspondiente en html
 $bb_codes = [];
 $bb_htmls = [];
+$menu_user_panel=[]; // iniciar array del menu del panel de usuario
 
 //enlaces amigables
 define('G_ENL_AMIG', rb_get_values_options('enlaceamigable'));
@@ -145,10 +146,4 @@ if(isset($_SESSION['usr']) and isset($_SESSION['pwd'])){
 	define('G_USERTYPE', 0);
 	define('G_USERNIVELID', 0);
 }
-
-/* Carrito obsoleto 
-$carrito = array();
-if(!isset($_SESSION['carrito'])){
-	$_SESSION['carrito'] = $carrito;
-}*/
 ?>

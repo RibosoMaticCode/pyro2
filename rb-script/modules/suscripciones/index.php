@@ -95,7 +95,7 @@ add_shortcode('suscripformreq', 'sus_required');
 
 function sus_form(){
 	global $objDataBase;
-	$qs = $objDataBase->Ejecutar("SELECT * FROM suscriptores_config WHERE opcion='campos'");
+	$qs = $objDataBase->Ejecutar("SELECT * FROM `suscriptores_config` WHERE `opcion`='campos'");
 	$susconfig = $qs->fetch_assoc();
 	$jsonconfig = json_decode($susconfig['valor'], true);
 	$form = '

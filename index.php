@@ -7,8 +7,10 @@ require_once 'rb-script/class/rb-usuarios.class.php';
 
 // Carga formato js de la base de datos
 $modules_prev = rb_get_values_options('modules_load');
+
 // Convierte json a array
 $array_modules = json_decode($modules_prev, true);
+
 require_once 'rb-admin/modules.list.php';
 
 // VARIABLES CON DATOS DE CABECERA GENERALES
@@ -18,7 +20,6 @@ define('rm_longtitle' , G_TITULO . ( G_SUBTITULO=="" ? "" :  " - ".G_SUBTITULO )
 define('rm_url', G_SERVER."/" );
 define('rm_urltheme', G_URLTHEME."/");
 define('rm_datetoday', date("Y-m-d"));
-//define('rm_mainmenu', G_MAINMENU);
 
 // Verifica en los modulos si hay alguna URL personalizada que direccione a otro lado
 do_action('call_modules_url'); // parece dar error al enviar un aviso antes, que aparezcan las cabeceras (20-08-18), modo local, funciona bien. Modo remoto, no.

@@ -1,3 +1,27 @@
+<?php
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/class/rb-database.class.php';
+require_once ABSPATH.'rb-script/funciones.php';
+
+$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=".G_USERID);
+$UsuarioItem = $q->fetch_assoc();
+
+function show_nivel($nivel_id){
+	global $objDataBase;
+	$q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id=$nivel_id");
+	$r = $q->fetch_assoc();
+	return $r['nombre'];
+}
+?>
+<div class="panel panel_datauser" style="display:block">
+	<h3>Datos del usuario</h3>
+	<p>Nivel: <?= show_nivel($UsuarioItem['tipo']) ?></p>
+	<?php if(G_USERTYPE=="admin" || G_USERTYPE=="user-panel"): ?>
+	<p><a href="<?= rm_url ?>rb-admin/">Administrar contenidos</a></p>
+	<?php endif ?>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#userdata').submit(function() {
@@ -68,5 +92,5 @@
 				<input class="btn-comment" type="submit" name="newpass" value="Guardar Datos" />
 			</div>
 		</form>
-		<div style="clear:both"></div>
 	</div>
+</div>

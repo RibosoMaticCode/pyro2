@@ -135,6 +135,9 @@
 .cols-content-right{
   text-align: right;
 }
+.cols-content-center{
+  text-align: center;
+}
 .cols-content-left{
   text-align: left;
 }

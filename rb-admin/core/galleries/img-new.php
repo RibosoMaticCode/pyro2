@@ -41,7 +41,7 @@ $rg= $qg->fetch_assoc();
             fileName: "myfile",
             formData: {"albumid":"<?= $album_id ?>" , "user_id" : "<?= G_USERID ?>"},
             urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=gal&opc=edt&album_id=".$album_id."&id=" ?>',
-            allowedTypes:"jpg,png,gif",
+            allowedTypes:"jpeg,jpg,png,gif",
             returnType:"html", //json
           onSuccess:function(files,data,xhr)
             {

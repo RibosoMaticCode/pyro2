@@ -1,15 +1,15 @@
 <?php
 if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
 ?>
+<div class="inside_contenedor_frm">
 <form class="form" name="options-form" method="post" action="option-save.php">
   <div id="toolbar">
-    <div id="toolbar-buttons">
+    <div class="inside_toolbar">
       <span class="post-submit">
         <input class="button" name="guardar" type="submit" value="Guardar" />
       </span>
     </div>
   </div>
-  <div class="content-centered">
     <section class="seccion">
       <div class="seccion-body">
         <!-- Datos generales -->
@@ -84,7 +84,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </label>
           </div>
           <div class="cols-6-md col-padding">
-            <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web? 
+            <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web?
               <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Nueva página</a>
               <span class="info">Puede elegir una en particular ó dejar por defecto según el tema instalado</span>
               <select  name="inicial">
@@ -502,7 +502,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
       </div>
     <!--</div>-->
     </section>
-  </div>
-  <div id="sidebar"></div>
+
   <input name="section" value="opc" type="hidden" />
 </form>
+</div>

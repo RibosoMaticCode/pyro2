@@ -255,6 +255,7 @@ a.page-resalt {
 	font-size:.95em;
 	color: #333;
 	background-color:#f3f3f3;
+	text-align: center;
 }
 .tables td{
 	padding: .75rem;
@@ -270,4 +271,10 @@ a.page-resalt {
 	background: #ececec;
 	color: #339;
 	opacity:1;
+}
+.tables td.col_right {
+    text-align: right;
+}
+.tables td.col_center {
+    text-align: center;
 }

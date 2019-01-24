@@ -1,3 +1,4 @@
+<div class="inside_contenedor_frm">
 <?php
 // MOSTRAR LA ESTRUCTURA DE EDICION DEL MENU
 //require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
@@ -263,13 +264,13 @@ $menu_asincrono = true;
 		<li><a class="button" href="<?= G_SERVER ?>/rb-admin/?pag=menus">Volver</a></li>
 	</ul>
 </div>
-<div class="content-edit">
+<div class="content-edit form">
 	<section class="seccion">
 		<?php include('items-list.php') ?>
 	</section>
 </div>
 
-<div id="sidebar">
+<div id="sidebar" class="form">
 	<section class="seccion">
 		<div class="seccion-header">
 			<h3>Elementos disponibles</h3>
@@ -371,4 +372,5 @@ $menu_asincrono = true;
 			</div>
 		</div>
 	</section>
+</div>
 </div>

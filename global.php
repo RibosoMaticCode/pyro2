@@ -26,9 +26,22 @@ if($q->num_rows==0){
 }
 
 // Inicia arrays para contener los bb_codes y su correspondiente en html
+$widgets=[];
 $bb_codes = [];
 $bb_htmls = [];
-$menu_user_panel=[]; // iniciar array del menu del panel de usuario
+$menu_user_panel=[];
+$menu_user_panel_start=[ // iniciar array del menu del panel de usuario
+	[
+		'key' => 'data',
+		'title' => 'Mis datos',
+	],
+	[
+		'key' => 'notifications',
+		'title' => 'Mis notificaciones',
+	]
+];
+
+array_push($menu_user_panel, $menu_user_panel_start);
 
 //enlaces amigables
 define('G_ENL_AMIG', rb_get_values_options('enlaceamigable'));

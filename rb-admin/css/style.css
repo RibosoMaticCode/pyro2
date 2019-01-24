@@ -60,7 +60,7 @@ p{
     z-index: 3;
     width: calc(100% - 160px);
     background-color: #F7F7F9;
-    padding: 6px 10px!important;
+
     left:160px;
     border-top: 1px solid #E2E2E2;
     border-bottom: 1px solid #E2E2E2;
@@ -323,12 +323,12 @@ section.seccion .popup {
 	float:left;
 	width:calc(100% - 300px);
 }
-.content-centered {
+/*.content-centered {
   padding: 5px;
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
-}
+}*/
 .seccion label input[type="checkbox"]{
 	margin-right:5px;
 }

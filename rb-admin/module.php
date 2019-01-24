@@ -25,8 +25,9 @@ include_once 'header.php';
 	<?php include('menu.php') ?>
 	<!--<div id="message"></div>-->
 	<div id="contenedor">
-		<!--<h2 class="title"><?= $rb_title_module ?></h2>-->
-		<?= do_action('module_content_main') ?>
+		<div class="inside_contenedor_list">
+			<?= do_action('module_content_main') ?>
+		</div>
 	</div>
 </section>
 <?php include_once 'footer.php' ?>

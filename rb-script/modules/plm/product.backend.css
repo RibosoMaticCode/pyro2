@@ -1,0 +1,20 @@
+/* CATEGORIES LIST */
+.categories_list li ul {
+    margin-left: 20px;
+}
+ul.categories_list li > div {
+    border: 1px solid #bbbbbb;
+    padding: 8px;
+    position: relative;
+}
+
+ul.categories_list li div .options {
+    position: absolute;
+    right: 10px;
+}
+ul.categories_list li .option {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

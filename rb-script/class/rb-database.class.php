@@ -116,7 +116,7 @@ class DataBase{
 		return $resultArray;
 	}
 
-	function Search($data_to_search, $table, $columns){
+	function Search($data_to_search, $table, $columns, $condition_add=""){
 		// Busqueda avanzada
 		$conexion = $this->Conexion();
 		$cols_vals = "";
@@ -126,7 +126,7 @@ class DataBase{
 			$coma = ", ";
 		}
 		// campo score para ver prioridad de resultado: "SELECT *, MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) AS score FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) ORDER BY score DESC";
-		return $conexion->query("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION)");
+		return $conexion->query("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION) ".$condition_add);
 	}
 }
 $objDataBase = new DataBase;

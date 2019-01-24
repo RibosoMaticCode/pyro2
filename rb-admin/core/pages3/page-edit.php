@@ -1,3 +1,4 @@
+<div class="inside_contenedor_frm">
 <?php
 $mode;
 if(isset($_GET["id"])){
@@ -16,7 +17,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
 <script src="<?= G_SERVER ?>/rb-admin/core/pages3/func.js"></script>
 <div id="toolbar">
-	<div id="toolbar-buttons">
+	<div class="inside_toolbar">
 		<span class="post-submit">
 			<input class="submit" name="guardar" type="submit" value="Guardar" id="btnGuardar" />
 			<a class="button" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Volver</a>
@@ -33,7 +34,6 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 		</span>
 	</div>
 </div>
-<div class="wrap-content-editor"> <!-- antes container-page-edit -->
 	<section class="seccion" style="overflow:initial">
 		<div class="seccion-header">
 			<h3>Datos iniciales</h3>
@@ -184,7 +184,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 			</div>
 		</div>
 	</section>
-</div>
+
 <!-- DATOS PAGINAS MAS -->
 <div id="data-config" class="editor-window">
 	<div class="editor-header">
@@ -358,4 +358,6 @@ include_once 'widgets/sidebar/w.sidebar.conf.php';
 include_once 'modal-css-edit.php';
 include_once 'modal-save-block.php';//widget
 include_once 'modal-save-box.php';
+do_action('modals-config');
 ?>
+</div>

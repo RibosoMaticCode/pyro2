@@ -20,21 +20,19 @@ function create_htaccess($dir){
 	$content_string .= "
 <IfModule mod_rewrite.c>
 	RewriteEngine On
-	
-	#Force www:
-	#RewriteEngine on
+
+	# Force www:
 	#RewriteCond %{HTTP_HOST} ^example.com [NC]
 	#RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301,NC]
 
-	#Force non-www:
-	#RewriteEngine on
+	# Force non-www:
 	#RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
 	#RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
 
-	# Descomentar las siguientes lineas si el sitio es HTTPS
+	# HTTPS
 	#RewriteCond %{HTTPS} !=on
  	#RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
-	
+
 	RewriteBase $dir/
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f

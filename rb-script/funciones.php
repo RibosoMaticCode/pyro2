@@ -986,8 +986,8 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		$destination_file = $path_to_thumbs_directory.$original_file;
 		$original_file = $path_to_image_directory.$original_file;
 
-		$height = strval(G_THEIGHT); //"250";
-		$width = strval(G_TWIDTH); //"360";
+		$height = empty(G_THEIGHT) ? "190" : strval(G_THEIGHT); //"190";
+		$width = empty(G_TWIDTH) ? "280" : strval(G_TWIDTH); //"280";
 
 		// get width and height of original image
 		$imagedata = getimagesize($original_file);
@@ -1165,6 +1165,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
   // BB codes del sistema
   $default_bb_codes = array(
 		"/\[LOGUEO]/is",
+    "/\[LOGUEO_REGISTRO]/is",
     "/\[RUTA_SITIO]/is",
     "/\[RUTA_TEMA]/is",
     "/\[YOUTUBE=\"(.*?)\"]/is",
@@ -1176,9 +1177,15 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
 		$acceso = '<a href="'.G_SERVER.'/?pa=panel">Panel usuario</a> <a href="'.G_SERVER.'/login.php?out">Cerrar sesión</a>';
 	}
 
+  $acceso_reg = '<a href="'.G_SERVER.'/login.php">Ingresar</a> / <a href="'.G_SERVER.'/login.php?reg">Registrarse</a>';
+	if(G_ACCESOUSUARIO==1){
+		$acceso_reg = '<a href="'.G_SERVER.'/?pa=panel">Panel usuario</a> / <a href="'.G_SERVER.'/login.php?out">Cerrar sesión</a>';
+	}
+
   // Ejecucion de los bbcodes del sistema
   $default_bb_htmls = array(
 		$acceso,
+    $acceso_reg,
     G_SERVER.'/',
     G_URLTHEME.'/',
     '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
@@ -2496,6 +2503,23 @@ function rb_generate_nickname($mail){ // Generar nickname en base a correo elect
 	endif;
 
 	return $user;
+}
+
+function rb_link_gallery($gallery_id){
+  if($gallery_id==0) return;
+  $photos = rb_get_images_from_gallery($gallery_id);
+  $i=1;
+  foreach ($photos as $photo) {
+    ?>
+    <a href="<?= $photo['url_max'] ?>" data-fancybox-group="album_<?= $gallery_id ?>" class="fancybox" <?php if($i>1) echo ' style="display:none"' ?>>
+      <?php
+      if($i>1) echo $photo['id'];
+      else echo '<img src="'.$photo['url_min'].'" alt="previa" style="max-width:50px;" />';
+      ?>
+    </a>
+    <?php
+    $i++;
+  }
 }
 
 ?>

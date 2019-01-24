@@ -11,17 +11,16 @@ if(isset($_GET["id"])){
 	$mode = "new";
 }
 ?>
+<div class="inside_contenedor_frm">
 <form id="nivel-form" class="form" method="post" action="../rb-admin/core/grupos/group.save.php">
 	<div id="toolbar">
-    <div id="toolbar-buttons">
+    <div class="inside_toolbar">
 			<span class="post-submit">
 				<input class="submit" name="guardar" type="submit" value="Guardar" />
 				<a href="?pag=gru"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar/Volver" /></a>
 			</span>
 		</div>
 	</div>
-	<div>
-		<div class="content-edit">
 			<section class="seccion">
 				<div class="seccion-body">
 					<label>Nombre Grupo:
@@ -29,10 +28,8 @@ if(isset($_GET["id"])){
 					</label>
 				</div>
 			</section>
-		</div>
-		<div id="sidebar"></div>
-	</div>
 	<input name="section" value="nivel" type="hidden" />
 	<input name="mode" value="<?php echo $mode ?>" type="hidden" />
 	<input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
 </form>
+</div>

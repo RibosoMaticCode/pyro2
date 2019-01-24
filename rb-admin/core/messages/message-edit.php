@@ -1,12 +1,13 @@
 <?php
 include_once("tinymce/tinymce.config.php");
 ?>
+<div class="inside_contenedor_frm">
 <form id="edit-form" name="edit-form" method="post" action="core/messages/message-save.php">
   <div id="toolbar">
-    <div id="toolbar-buttons">
+    <div class="inside_toolbar">
       <span class="post-submit">
         <input class="submit" name="guardar" type="submit" value="Enviar" />
-        <a href="../rb-admin/?pag=men"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=men"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
       </span>
     </div>
   </div>
@@ -50,6 +51,6 @@ include_once("tinymce/tinymce.config.php");
     </div>
     <input name="section" value="men" type="hidden" />
     <input name="mode" value="new" type="hidden" />
-    <!--<input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />-->
     <input name="remitente_id" value="<?= G_USERID ?>" type="hidden" />
 </form>
+</div>

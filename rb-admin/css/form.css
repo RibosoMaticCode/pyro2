@@ -6,13 +6,18 @@
 .form input[type="number"],
 .form select,
 .form textarea{
-  font-size:1em;
-	padding:5px;
+  border-radius: 3px;
+  font-size: .95em;
+  padding: 6px 8px;
   border: 1px solid #CCCCCC;
   margin:2px 0;
-  width:100%;
+  width: calc(100% - 2px);
   background-image: linear-gradient(to bottom, #FFF, #FBFBFB);
   max-width: 100%;
+  margin-right: 2px;
+}
+.form select{
+	padding:5px 8px!important;
 }
 .form input[type="text"]:focus,
 .form input[type="password"]:focus,
@@ -47,4 +52,9 @@
 input:disabled {
     background-color: #f7f7f7!important;
     background-image: none!important;
+}
+.form .title{
+  text-align: center;
+  font-size: 1.5em;
+  padding: 10px 0;
 }

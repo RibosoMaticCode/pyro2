@@ -27,6 +27,11 @@ while ($row = $result->fetch_assoc()):
           <?php
           break;
         }
+        if($row['type'] == ""):
+        ?>
+          <img class="other-file" src="<?= G_SERVER ?>/rb-admin/img/unknown.png" alt="Others files" />
+        <?php
+        endif;
         ?>
         <input class="checkbox" id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
         <span class="filename truncate">

@@ -12,19 +12,19 @@ if(isset($_GET["id"])){
   $mode = "new";
 }
 ?>
+<div class="inside_contenedor_frm">
 <form class="form" id="galery-form" name="galery-form" method="post" action="core/galleries/gallery-save.php">
   <input type="hidden" name="user_id" value="<?= G_USERID ?>" />
       <div id="toolbar">
-          <div id="toolbar-buttons">
+          <div class="inside_toolbar">
                 <span class="post-submit">
       <input class="submit" name="guardar" type="submit" value="Guardar" />
-      <a href="../rb-admin/?pag=gal"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
+      <a href="<?= G_SERVER ?>/rb-admin/?pag=gal"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
 
                 </span>
             </div>
         </div>
-        <div>
-            <div class="content-edit">
+
               <section class="seccion">
                 <div class="seccion-body">
                     <label title="Especifica un nombre a tu galeria de fotos" for="nombre">Nombre de la Galeria:
@@ -58,8 +58,6 @@ if(isset($_GET["id"])){
                     </label>
                   </div>
                 </section>
-            </div>
-            <div id="sidebar">
               <?php if(isset($row)): ?>
                 <section class="seccion">
                   <div class="seccion-body">
@@ -72,9 +70,8 @@ if(isset($_GET["id"])){
                   </div>
                 </section>
               <?php endif ?>
-            </div>
-  </div>
         <input name="mode" value="<?php echo $mode ?>" type="hidden" />
   <input name="id" value="<?php if(isset($row))echo $row['id'] ?>" type="hidden" />
   <input name="section" value="gal" type="hidden" />
 </form>
+</div>

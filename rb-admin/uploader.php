@@ -22,6 +22,8 @@ if(G_ACCESOUSUARIO>0){
 			// Verificando si existe archivo con el mismo nombre
 			$temp = explode(".", $_FILES["myfile"]["name"]);
 			$originalfileName = pathinfo(utf8_decode($_FILES['myfile']['name']), PATHINFO_FILENAME); // 22/06/17 utf8_decode -> Para que acepte carecteres especiales Ñ tildes y espacios
+			$originalfileName = rb_cambiar_nombre($originalfileName); // cambios caracteres español y espacios vacios
+
 			$i = count(glob($dir_gallery.$originalfileName.'*.'.end($temp))) + 1;
 			if($i>1){
 				$fileName = $originalfileName.$i.'.'.end($temp);

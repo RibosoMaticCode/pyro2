@@ -169,14 +169,17 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
   	});
   });
 </script>
+<div class="inside_contenedor_frm">
 <form name="formcat" action="category.minisave.php" method="post" id="formcat"></form>
 <form name="formgaleria" action="album.minisave.php" method="post" id="formgaleria"></form>
 <form enctype="multipart/form-data" id="article-form" name="article-form" method="post" action="core/pubs/pub-save.php">
   <div id="toolbar">
-    <div id="toolbar-buttons">
+    <div class="inside_toolbar">
+      <div class="navigation">
+        <a href="#">Blog</a> / <a href="#">Publicaciones</a> / <span>Nuevo producto</span>
+      </div>
       <input class="submit" name="guardar" type="submit" value="Guardar" />
       <input class="submit" name="guardar_volver" type="submit" value="Guardar y Volver" />
-      <!--<a href="<?= G_SERVER ?>/rb-admin/?pag=art"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>-->
       <a href="<?= G_SERVER ?>/rb-admin/?pag=art" class="button">Cancelar</a>
       <?php
       if(isset($_GET["id"])){
@@ -186,7 +189,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
       }
       ?>
       <?= $new_button ?>
-      <a id="edit-config" class="edit-config" href="#">Funciones adicionales</a>
+      <a id="edit-config" class="button edit-config" href="#">Configurar editor</a>
     </div>
   </div>
   <div class="content-edit">
@@ -564,3 +567,4 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
   <input name="userid" value="<?php echo G_USERID ?>" type="hidden" />
   <input name="srcimg" value="<?php if(isset($row)) echo $row['img_portada'] ?>" type="hidden" />
 </form>
+</div>

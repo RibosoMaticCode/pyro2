@@ -77,7 +77,7 @@ $(document).ready(function() {
       <div class="seccion-header">
         <h2>Galerias</h2>
         <ul class="buttons">
-          <li><a class="btn-primary" href="<?= G_SERVER ?>index.php?pag=gal&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+          <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/index.php?pag=gal&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
           <li><a class="btn-delete" rel="gal" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
         </ul>
       </div>

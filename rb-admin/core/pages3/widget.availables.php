@@ -5,9 +5,18 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-admin/hook.php';
+// Carga formato js de la base de datos
+$modules_prev = rb_get_values_options('modules_load');
+
+// Convierte json a array
+$array_modules = json_decode($modules_prev, true);
+
+// Incluir los modulos externos desde la base de datos
+require_once ABSPATH.'rb-admin/modules.list.php';
 
 /* INCLUDE WIDGETS DISPONIBLES */
-$widgets=[];
+
 include_once ABSPATH.'rb-admin/core/pages3/widgets/editor/w.editor.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/slide/w.slide.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/gallery/w.gallery.init.php';
@@ -38,10 +47,15 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
   <ul class="_box-options-list">
 		<?php
 		foreach ($widgets as $widget => $data) {
+			if(isset($data['img_abs'])){
+				$url_img = $data['img_abs'];
+			}else{
+				$url_img = G_SERVER.'/rb-admin/core/pages3/widgets/'.$data['dir'].'/'.$data['img'];
+			}
 			?>
 			<li>
 	      <a class="<?= $data['link_action'] ?>" href="#">
-					<img src="<?= G_SERVER ?>/rb-admin/core/pages3/widgets/<?= $data['dir'] ?>/<?= $data['img'] ?>" alt="icon" />
+					<img src="<?= $url_img ?>" alt="icon" />
 					<h4><?= $data['name'] ?></h4>
 					<?= $data['desc'] ?>
 				</a>

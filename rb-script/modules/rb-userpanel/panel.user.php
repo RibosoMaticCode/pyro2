@@ -16,7 +16,7 @@ function show_nivel($nivel_id){
 	return $r['nombre'];
 }
 ?>
-<div class="panel panel_datauser" style="display:block">
+<div class="panel data_panel" style="display:block">
 	<h3>Datos del usuario</h3>
 	<p>Nivel: <?= show_nivel($UsuarioItem['tipo']) ?></p>
 	<?php if(G_USERTYPE=="admin" || G_USERTYPE=="user-panel"): ?>
@@ -45,10 +45,10 @@ function show_nivel($nivel_id){
 	<div class="content-right content-right-add">
 		<form id="userdata" class="form" action="<?= rm_url?>rb-script/modules/rb-userpanel/saveuserdata.php" method="post">
 
-			<label class="col"><span>Nombres:</span>
+			<label class="col"><span>Nombres *:</span>
 				<input class="itext" type="text" id="nom" name="nom" value="<?= $UsuarioItem['nombres'] ?>"  />
 			</label>
-			<label class="col"><span>Apellidos:</span>
+			<label class="col"><span>Apellidos *:</span>
 				<input class="itext" type="text" id="ape" name="ape" value="<?= $UsuarioItem['apellidos'] ?>"  />
 			</label>
 			<label class="col"><span>Direccion:</span>
@@ -57,13 +57,13 @@ function show_nivel($nivel_id){
 			<label class="col"><span>Ciudad:</span>
 				<input class="itext" type="text" id="cir" name="cir" value="<?= $UsuarioItem['ciudad'] ?>"  />
 			</label>
-			<label class="col"><span>Telefono Movil:</span>
+			<label class="col"><span>Telefono Movil *:</span>
 				<input class="itext" type="text" id="tem" name="tem" value="<?= $UsuarioItem['telefono-movil'] ?>"  />
 			</label>
 			<label class="col"><span>Telefono Fijo:</span>
 				<input class="itext" type="text" id="tef" name="tef" value="<?= $UsuarioItem['telefono-fijo'] ?>"  />
 			</label>
-			<label class="col"><span>Correo Electronico:</span>
+			<label class="col"><span>Correo Electronico *:</span>
 				<input class="itext" type="text" id="cor" name="cor" value="<?= $UsuarioItem['correo'] ?>"  />
 			</label>
 			<div style="clear:both"></div>

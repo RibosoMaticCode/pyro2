@@ -87,6 +87,7 @@ $(document).ready(function() {
   });
 });
 </script>
+<div class="inside_contenedor_frm">
 <form class="form" id="user-form" name="user-form" method="post" action="core/users/user-save.php">
   <?php
   if(isset($_GET['profile'])):
@@ -96,7 +97,7 @@ $(document).ready(function() {
   endif;
   ?>
   <div id="toolbar">
-    <div id="toolbar-buttons">
+    <div class="inside_toolbar">
       <span class="post-submit">
         <input class="submit" name="guardar" type="submit" value="Guardar" />
         <?php
@@ -317,3 +318,4 @@ $(document).ready(function() {
   <input name="mode" value="<?php echo $mode ?>" type="hidden" />
   <input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
 </form>
+</div>

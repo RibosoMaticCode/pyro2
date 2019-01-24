@@ -1,3 +1,4 @@
+<div class="inside_contenedor_frm">
 <?php
 $mode;
 if(isset($_GET["id"])){
@@ -7,7 +8,7 @@ if(isset($_GET["id"])){
   $row=$cons_art->fetch_assoc();
   $mode = "update";
   $cancel ="Cancelar";
-  $new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=cat&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
+  $new_button = '<a class="button" href="'.G_SERVER.'/rb-admin/?pag=cat&opc=nvo">Nuevo</a>';
 }else{
   $mode = "new";
   $cancel ="Cancelar";
@@ -23,10 +24,10 @@ if(isset($_GET["id"])){
 </script>
 <form class="form" id="categorie-form" name="categorie-form" method="post" action="core/categories/category-save.php">
   <div id="toolbar">
-    <div id="toolbar-buttons">
+    <div class="inside_toolbar">
       <span class="post-submit">
         <input class="submit" name="guardar" type="submit" value="Guardar" />
-        <a href="<?= G_SERVER ?>/rb-admin/?pag=cat"><input title="Volver al listado" class="button" name="cancelar" type="button" value="<?= $cancel ?>" /></a>
+        <a href="<?= G_SERVER ?>/rb-admin/?pag=cat" class="button"><?= $cancel ?></a>
         <?= $new_button ?>
       </span>
     </div>
@@ -123,3 +124,4 @@ if(isset($_GET["id"])){
   <input name="nivel" value="<?php if(isset($row)) {echo $row['nivel'];}elseif(isset($_GET['niv'])){ echo $_GET['niv']; }else{ echo "0";} ?>" type="hidden" />
   <input name="catid" value="<?php if(isset($row)) {echo $row['categoria_id'];}elseif(isset($_GET['catid'])){ echo $_GET['catid']; }else{ echo "0";} ?>" type="hidden" />
 </form>
+</div>

@@ -23,6 +23,7 @@ $seccion = 'modules-list'; // pintar boton del menu
 	<?php include('menu.php') ?>
 	<div id="message"></div>
 	<div id="contenedor">
+		<div class="inside_contenedor_list">
 		<h2 class="title"><?= $rb_title_module ?></h2>
 		<div class="page-bar">Modulos</div>
 		<?php
@@ -85,11 +86,11 @@ $seccion = 'modules-list'; // pintar boton del menu
 												if(is_dir($carpeta.$archivo)){
 													//echo str_repeat('-',$nivel).$archivo."<br />";
 													read_directory($carpeta.$archivo."/",$nivel+1);
-												// Si es archivo, asegurarse que sea de extension .php
-								                }else{
-								                	// Solo leer archivos con extension PHP
-								                	$ext = substr($archivo, strrpos($archivo, '.') + 1);
-													if(in_array($ext, array("php"))){
+													// Si es archivo, asegurarse que sea de extension .php
+												}else{
+													// Solo leer archivos con extension PHP
+													$ext = substr($archivo, strrpos($archivo, '.') + 1);
+													if(in_array($ext, array("php")) && $archivo=="index.php"){ // 10/01/19 -> solo buscara en archivos index, la informacion de cada modulo
 														//echo str_repeat('-',$nivel).$archivo."<br />";
 
 														// Estructura que debe tener las cabeceras de datos de los modulos/plugins/plantillas
@@ -169,6 +170,7 @@ $seccion = 'modules-list'; // pintar boton del menu
 		add_function('module_content_main' , 'listado_modulos');
 
 		do_action('module_content_main') ?>
+		</div>
 	</div>
 </section>
 <?php include_once 'footer.php' ?>

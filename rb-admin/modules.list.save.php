@@ -34,7 +34,7 @@ if(isset($_GET['action']) && $_GET['action']=='active'):
 			//$menu_panel_array[$rb_module_unique] = $menu; // La variable $rb_module_unique, se encuentra en el archivo inicial del modulo, y especifica un nombre unico para modulo y menu
 
 			// actualiza el menu_panel ahora incluyendo el menu del modulo
-			rb_set_values_options('menu_panel', json_encode($menu_panel_array));
+			rb_set_values_options('menu_panel', json_encode($menu_panel_array, JSON_UNESCAPED_UNICODE));
 
 			// ACTUALIZAR MENU DE CADA NIVEL DE USUARIO, AÑADIENDO EL MENU DEL MODULO NUEVO
 			$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
@@ -89,7 +89,7 @@ if(isset($_GET['action']) && $_GET['action']=='desactive'):
 				foreach ($menu as $key => $value) {
 					unset($menu_panel_nivel[$key]);
 				}
-				
+
 				// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
 				$valores = [
 				  'permisos' => json_encode($menu_panel_nivel)

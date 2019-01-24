@@ -1,0 +1,84 @@
+.list_habitaciones a {
+    width: 200px;
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.list_habitaciones li {
+    display: inline-block;
+}
+.list_habitaciones{
+    padding:15px 0;
+}
+
+.available li a {
+    background-color: green;
+}
+
+.occupied li a {
+    background-color: red;
+}
+.empty_box{
+  width:100%;
+  border: 2px dashed #c5c5c5;
+  padding: 30px;
+  color: #c5c5c5;
+  text-align: center;
+  font-size: 1.4em;
+}
+.title_center{
+  padding: 10px;
+  text-align: center;
+}
+.list_habitaciones a span {
+    font-size: .65em;
+    color: #fff;
+}
+
+/* enseres */
+.ensere_item {
+    display: flex;
+}
+.ensere_grupo > div {
+    font-size: .8em;
+    padding: 0;
+    border-bottom: 1px solid #b9b9b9;
+}
+
+.ensere_grupo {
+    padding:5px;
+    border:1px solid #cecece;
+    max-height: 340px;
+    overflow: auto;
+}
+
+.ensere_grupo > div:last-child {
+    border: 0;
+}
+
+a.add_item {
+    padding: 5px 8px;
+    background-color: #2196F3;
+    display: inline-block;
+    float: right;
+    margin: 5px 0;
+    font-size: .8em;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.remove_cover {
+    position: relative;
+    padding: 8px 10px;
+}
+
+.remove_cover .remove_item {
+    font-size: 2em;
+}
+.remove_cover .remove_item i {
+    color: red;
+}

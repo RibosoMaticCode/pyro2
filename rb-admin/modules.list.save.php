@@ -77,7 +77,7 @@ if(isset($_GET['action']) && $_GET['action']=='desactive'):
 			}
 
 			// actualiza el menu_panel ahora incluyendo el menu del modulo
-			rb_set_values_options('menu_panel', json_encode($menu_panel_array));
+			rb_set_values_options('menu_panel', json_encode($menu_panel_array, JSON_UNESCAPED_UNICODE));
 
 			// ACTUALIZAR MENU DE CADA NIVEL
 			$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu

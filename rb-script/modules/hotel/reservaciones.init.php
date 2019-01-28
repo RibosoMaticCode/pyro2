@@ -13,8 +13,8 @@ $urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
 
 // Fecha a mostrar
 $time_now = date(' H:i:s');
-$hora_llegada = " 13:00:00";
-$hora_salida = " 12:30:00";
+$hora_llegada = " ".get_option('hora_llegada');
+$hora_salida = " ".get_option('hora_salida');
 if(isset($_GET['date'])){
   $fecha = $_GET['date'];
 }else{
@@ -26,9 +26,7 @@ $objDataBase = new DataBase;
 $q = "SELECT h.*, r.* FROM hotel_reservacion r, hotel_habitacion h WHERE h.id = r.habitacion_id AND '$fecha$hora_llegada' >= r.fecha_llegada AND r.fecha_salida >= '$fecha$hora_salida'";
 $qho = $objDataBase->Ejecutar( $q );
 
-//echo $q;
-
-// Determinar Habitaciones disponibles
+// Determinar Habitaciones disponibles:
 $ids_habita_ocu = "";
 $coma = "";
 while( $habita = $qho->fetch_assoc() ){
@@ -36,7 +34,17 @@ while( $habita = $qho->fetch_assoc() ){
   $coma = ",";
 }
 
-// Habitaciones disponibles
+// Habitaciones disponibles : que se liberaran durante el dia
+$hoy = date('Y-m-d'); // Fecha actual
+if($fecha > $hoy){
+  // Consulta si hay habitaciones que se desocupan a la hora del chekcout de este dia
+  // Ej. Esto lista las habitaciones que se desocuparan hoy a las 14:30 horas, por lo tanto deben estar disponibles para elegir
+  $q = "SELECT r.*, h.id, h.numero_habitacion FROM hotel_reservacion r, hotel_habitacion h WHERE r.habitacion_id = h.id AND date(fecha_salida) = '$fecha' AND time(fecha_salida) <= '$hora_llegada'";
+  //echo $q;
+  $qht = $objDataBase->Ejecutar( $q );
+}
+
+// Habitaciones disponibles: si o si
 if(empty($ids_habita_ocu)){
   $q = "SELECT * FROM hotel_habitacion"; // Si no hay ninguna ocupada, muestra todas como libres
 }else{
@@ -64,9 +72,29 @@ $qhd = $objDataBase->Ejecutar( $q );
   <div class="seccion-body">
 
     <!-- new section -->
-    <h3>Habitaciones disponibles</h3>
+    <h3>Habitaciones disponibles (A partir de las <?= get_option('hora_llegada') ?> horas)</h3>
     <ul class="list_habitaciones available">
       <?php
+      if(isset($qht) && $qht->num_rows > 0):
+  			while($habitacion = $qht->fetch_assoc()):
+          // Verificamos si la habitacion que debia desocuparse hoy, la volvieron a reservar desde hoy.
+          // Asi que comparamos si  hay registros con fecha de hoy, pero hora de registro mayor a la de llegada.
+          // Ej. Si hay registros con hora mayor a 14:30, significa que esta habitacion ha sido tomada, y por tanto no se mostrara como disponible.
+          $q = "SELECT r.*, h.id, h.numero_habitacion FROM hotel_reservacion r, hotel_habitacion h WHERE r.habitacion_id = h.id AND date(fecha_llegada) = '$fecha' AND time(fecha_llegada) >= '$hora_llegada'";
+          $qhdt = $objDataBase->Ejecutar( $q );
+          if($qhdt->num_rows == 0){
+      			?>
+      				<li value="<?= $habitacion['id'] ?>">
+                <a class="fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
+                  <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $habitacion['numero_habitacion'] ?>
+                  <br />
+                  <span>Disponible desde: <?= get_option('hora_llegada') ?> horas</span>
+                </a>
+              </li>
+      			<?php
+          }
+        endwhile;
+      endif;
       if($qhd->num_rows > 0):
   			while($habitacion = $qhd->fetch_assoc()):
   			?>
@@ -117,9 +145,9 @@ $qhd = $objDataBase->Ejecutar( $q );
 $columns_title_coltable = [
   'Fecha llegada' => 'fecha_llegada',
   'Fecha salida' => 'fecha_salida',
-  'Habitacion' => 'habitacion_id',
+  /*'Habitacion' => 'habitacion_id',
   'Cliente' => 'cliente_id',
-  'Personal' => 'personal_id',
+  'Personal' => 'personal_id',*/
   'Total habitacion' => 'total_habitacion',
   'Total adicionales' => 'total_adicionales',
   'Total reservacion' => 'total_reservacion'
@@ -144,6 +172,8 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
     <table id="table" class="tables table-striped">
       <thead>
         <tr>
+          <th>Habitacion</th>
+          <th>Cliente</th>
           <?php
           foreach ($columns_title_coltable as $key => $value) {
             ?>

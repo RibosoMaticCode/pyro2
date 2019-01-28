@@ -10,14 +10,15 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
+require_once 'funcs.php';
 
 $id = $_POST['id'];
 $productos = json_decode($_POST['productos_json'], true); // productos
 //$mesa_id = $_POST['mesa_id'];
 $estado = isset($_POST['estado']) ? $_POST['estado'] : 1;
 
-$hora_llegada = " 13:00:00";
-$hora_salida = " 12:30:00";
+$hora_llegada = " ".get_option('hora_llegada');
+$hora_salida = " ".get_option('hora_salida');
 
 // Validaciones
 // --- Fecha salida mayor a la de llegada
@@ -40,6 +41,9 @@ if($id==0){ // Nuevo Reservacion
 	  'fecha_llegada' => trim($_POST['fecha_llegada'].$hora_llegada),
 		'fecha_salida' => trim($_POST['fecha_salida'].$hora_salida),
 	  'fecha_registro' => date('Y-m-d G:i:s'),
+		'total_habitacion' => $_POST['total_habitacion'],
+		'total_adicionales' => $_POST['total_extras'],
+		'total_reservacion' => $_POST['total_final'],
 		'estado' => $estado
 	];
 
@@ -88,6 +92,9 @@ if($id==0){ // Nuevo Reservacion
 	  /*'habitacion_id' => $_POST['habitacion_id'],
 	  'fecha_llegada' => trim($_POST['fecha_llegada'].$hora_llegada),
 		'fecha_salida' => trim($_POST['fecha_salida'].$hora_salida),*/
+		'total_habitacion' => $_POST['total_habitacion'],
+		'total_adicionales' => $_POST['total_extras'],
+		'total_reservacion' => $_POST['total_final'],
 		'estado' => $estado
 	];
 	$r = $objDataBase->Update($table_name, $valores, ["id" => $id]);

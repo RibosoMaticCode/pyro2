@@ -32,4 +32,10 @@ function estado_habitacion($estado){
   }
 }
 
+function get_rows($table, $value, $column_id = "id"){
+	global $objDataBase;
+  $r = $objDataBase->Ejecutar("SELECT * FROM $table WHERE $column_id=$value");
+	$row = $r->fetch_assoc();
+	return $row;
+}
 ?>

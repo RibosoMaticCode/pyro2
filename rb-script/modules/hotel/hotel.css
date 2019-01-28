@@ -7,7 +7,9 @@
     font-weight: bold;
     font-size: 1.2em;
 }
-
+.list_habitaciones a img {
+    vertical-align: middle;
+}
 .list_habitaciones li {
     display: inline-block;
 }

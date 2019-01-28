@@ -3,6 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
+require_once 'funcs.php';
 
 /* parametros inciales */
 $file_prefix = "reservaciones";
@@ -63,6 +64,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 				  	Fecha Desde
 				    <input type="date" name="fecha_llegada" required value="<?php if(isset($row)) echo rb_sqldate_to($row['fecha_llegada'], 'Y-m-d'); else echo $today ?>" <?php if($id>0) echo "readonly" ?> />
 				  </label>
+					<label><strong>Check in: <?= get_option('hora_llegada')?></strong></label>
 				</div>
 				<div class="cols-6-md">
 					<label>
@@ -72,6 +74,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 						?>
 				    <input type="date" name="fecha_salida" required value="<?php if(isset($row)) echo rb_sqldate_to($row['fecha_salida'], 'Y-m-d'); else echo $tomorrow; ?>" />
 				  </label>
+					<label><strong>Check out: <?= get_option('hora_salida')?></strong></label>
 				</div>
 			</div>
 			<?php if($id>0): ?>
@@ -90,7 +93,8 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 						Total habitacion
 					</div>
 					<div class="cols-6-md">
-						<?= G_COIN ?> <span id="total_habitacion"><?= $habitacion['precio'] ?></span>
+						<?= G_COIN ?> <span id="total_habitacion_visible"><?= $habitacion['precio'] ?></span>
+						<input id="total_habitacion" type="hidden" name="total_habitacion" value="<?= $habitacion['precio'] ?>" />
 					</div>
 				</div>
 				<div class="cols-container">
@@ -98,7 +102,8 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 						Total extras
 					</div>
 					<div class="cols-6-md">
-						<?= G_COIN ?> <span id="total_extras"><?php if(isset($row)) echo $row['total_adicionales'] ?></span>
+						<?= G_COIN ?> <span id="total_extras_visible"><?php if(isset($row)) echo $row['total_adicionales'] ?></span>
+						<input id="total_extras" type="hidden" name="total_extras" value="<?php if(isset($row)) echo $row['total_adicionales'] ?>" />
 					</div>
 				</div>
 				<div class="cols-container">
@@ -106,7 +111,8 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 						Total Final
 					</div>
 					<div class="cols-6-md">
-						<?= G_COIN ?> <span id="total_final"><?php if(isset($row)) echo $row['total_reservacion'] ?></span>
+						<?= G_COIN ?> <span id="total_final_visible"><?php if(isset($row)) echo $row['total_reservacion'] ?></span>
+						<input id="total_final" type="hidden" name="total_final" value="<?php if(isset($row)) echo $row['total_reservacion'] ?>" />
 					</div>
 				</div>
 			</div>
@@ -194,27 +200,6 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 			$.fancybox.close();
 		});
 
-    // Boton Guardar
-    /*$('#frmNewEdit').submit(function(event){
-      event.preventDefault();
-  		$.ajax({
-  			method: "post",
-  			url: "<?= $save_path ?>",
-  			data: $( this ).serialize()
-  		})
-  		.done(function( data ) {
-  			if(data.resultado){
-					$.fancybox.close();
-  				notify(data.contenido);
-					setTimeout(function(){
-	          window.location.href = '<?= $urlreload ?>';
-	        }, 1000);
-  	  	}else{
-  				notify(data.contenido);
-  	  	}
-  		});
-    });*/
-
 		// GENERAR RESERVACION
 		// =======================================
 		$('#frmNewEdit').submit(function(event){
@@ -250,7 +235,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 					$.fancybox.close();
 					notify(data.contenido);
 					setTimeout(function(){
-						window.location.href = '<?= $urlreload ?>';
+						window.location.href = '<?= $urlreload ?>&date=<?= $today ?>';
 					}, 1000);
 				}else{
 					notify(data.contenido);
@@ -281,7 +266,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 		// =======================================
 		$('.plato').click(function(event){
 			var text_item = $(this).closest('li').text().trim();
-			console.log(text_item);
+			//console.log(text_item);
 			$('#plato_nombre').val(text_item);
 			$('#plato_cantidad').focus();
 			$('.cover_platos_list').hide();
@@ -291,6 +276,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 
 		// AÑADIR PUBLICACION
 		// =======================================
+		//var total_extras = 0;
 		$('.btnAdd').click(function (event){
 			event.preventDefault();
 
@@ -299,6 +285,21 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 			var plato_prec = $('#plato_prec_temp').val();
 			var plato_name = $('#plato_nombre').val();
 			var plato_cant = $('#plato_cantidad').val();
+
+			/*
+			// Calcular total extras
+			total_extras += plato_prec * plato_cant;
+			console.log("extras"+total_extras);
+			$('#total_extras').val(total_extras);
+			$('#total_extras_visible').html(total_extras);
+
+			// Calcular total reservacion
+			total_habitacion = $('#total_habitacion').val();
+			total_final = parseFloat(total_habitacion) + parseFloat(total_extras);
+			$('#total_final').val(total_final);
+			$('#total_final_visible').html(total_final);
+			*/
+
 
 			if(plato_id == "" || plato_name == ""){
 				$('#plato_nombre').addClass('error');
@@ -336,7 +337,9 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 				add(plato_id, plato_name, plato_cant, plato_prec);
 				$('.btnSend').show();
 			}
-				// limpiar datos y poner cursor
+
+			calcular_totales();
+			// limpiar datos y poner cursor
 			$('#plato_nombre').val("");
 			$('#plato_cantidad').val("");
 			$('#plato_id_temp').val("");
@@ -350,6 +353,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 			if( $(".plato-item").length == 0){
 				$('.btnSend').hide(); // ocultar boton submit sino hay elementos a guardar
 			}
+			calcular_totales();
 		});
 
 		// FUNCION AÑADIR PLATO AL PEDIDO
@@ -358,6 +362,36 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 			$('.pedido_detalles').append(
 				'<div class="cols-container plato-item" data-id="'+plato_id+'" data-prec="'+plato_prec+'" data-cant="'+plato_cant+'"><div class="cols-7-md">'+plato_name+'</div><div class="cols-2-md">'+plato_cant+'</div><div class="cols-2-md">'+plato_prec+'</div><div class="cols-1-md"><a class="delete" title="Quitar" href="#">x</a></div></div>'
 			);
+		}
+
+
+		function calcular_totales(){
+			//return "hola";
+			var total_extras=0;
+			var platos = {};
+
+			$(".plato-item").each(function(index, element){
+					//plato_id = $(element).attr("data-id");
+					plato_prec = $(element).attr("data-prec");
+					plato_cant = $(element).attr("data-cant");
+
+					//JavaScript does not support arrays with named indexes.
+					//plato = new Array( plato_id,  plato_cant, plato_prec);
+					subtotal = plato_prec * plato_cant;
+					console.log(subtotal);
+					total_extras += subtotal;
+			});
+
+			// Calcular total extras
+			console.log("extras"+total_extras);
+			$('#total_extras').val(total_extras);
+			$('#total_extras_visible').html(total_extras);
+
+			// Calcular total reservacion
+			total_habitacion = $('#total_habitacion').val();
+			total_final = parseFloat(total_habitacion) + parseFloat(total_extras);
+			$('#total_final').val(total_final);
+			$('#total_final_visible').html(total_final);
 		}
 
   });

@@ -1,7 +1,11 @@
 <?php
 while ($row = $qlist->fetch_assoc()):
+  $habitacion = get_rows('hotel_habitacion',$row['habitacion_id']);
+  $cliente = get_rows('crm_customers',$row['cliente_id']);
   ?>
 	<tr>
+    <td><?= $habitacion['numero_habitacion'] ?></td>
+    <td><?= $cliente['nombres'] ?> <?= $cliente['apellidos'] ?></td>
     <?php
     foreach ($columns_title_coltable as $key => $value) {
       ?>

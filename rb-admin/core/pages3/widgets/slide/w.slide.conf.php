@@ -15,11 +15,17 @@
 					<select id="slide_gallery" name="slide_gallery">
 				    <option value="0">Seleccionar</option>
 				    <?php
-				    while($r = $q->fetch_assoc()):
+				    /*while($r = $q->fetch_assoc()):
 				    ?>
-				    <option value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
+				    <option value="<?= $r['id'] ?>"><?= $r['nombre'] ?> (<?= $r['imagenes'] ?>)</option>
 				    <?php
-				    endwhile;
+					endwhile;*/
+						$galleries = rb_list_galleries();
+						foreach($galleries as $gallery){
+							?>
+							<option value="<?= $gallery['id'] ?>"><?= $gallery['nombre'] ?> (<?= $gallery['nrophotos'] ?>)</option>
+							<?php
+						}
 				    ?>
 				  </select>
 				</label>

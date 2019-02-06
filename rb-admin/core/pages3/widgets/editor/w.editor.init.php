@@ -6,7 +6,9 @@ $widget = [
   'name' => 'Editor',
   'desc' => 'Editor de texto WYSIWYG para HTML',
   'filejs' => 'file.js',
-  'img' => 'editor.png'
+  'img' => 'editor.png',
+  'file' => 'widgets/editor/w.editor.php',
+  'type' => 'html'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);

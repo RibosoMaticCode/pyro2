@@ -26,17 +26,23 @@ $html_content = '
   foreach($_SESSION['carrito'] as $codigo => $cantidad){
     $qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
     $product = $qp->fetch_assoc();
-		$tot = round($product['precio_oferta'] * $cantidad,2);
+		if($product['precio_oferta']==0) $precio_final = $product['precio'];
+		else $precio_final = $product['precio_oferta'];
+		$tot = round($precio_final * $cantidad,2);
     $photo = rb_get_photo_details_from_id($product['foto_id']);
 
     if(G_ENL_AMIG) $product_url = G_SERVER."/products/".$product['nombre_key']."/";
     else $product_url = G_SERVER."/?products=".$product['id'];
 
+		// Actualizar las salidas de cada producto
+		//$objDataBase->Update('plm_products', ['salidas' => 'salidas +'.$cantidad], ['id' => $product['id']]);
+		$objDataBase->Ejecutar('UPDATE plm_products SET salidas = salidas + 1 WHERE id ='.$product['id']);
+
     $html_content .= '
     <tr>
       <td style="text-align:center;"><img style="max-width:100px;" src="'.$photo['thumb_url'].'" alt="img" /></td>
       <td style="text-align:center;"><a href="'.$product_url.'">'.$product['nombre'].'</a></td>
-      <td style="text-align:center;">'.G_COIN.' '.number_format($product['precio_oferta'], 2).'</td>
+      <td style="text-align:center;">'.G_COIN.' '.number_format($precio_final, 2).'</td>
       <td style="text-align:center;">'.$cantidad.'</td>
       <td style="text-align:center;">'.G_COIN.' '.number_format($tot, 2).'</td>
     </tr>';

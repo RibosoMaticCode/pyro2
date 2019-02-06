@@ -6,7 +6,9 @@ $widget = [
   'name' => 'Código',
   'desc' => 'Editor de código HTML',
   'filejs' => 'file.js',
-  'img' => 'browser.png'
+  'img' => 'browser.png',
+  'file' => 'widgets/code/w.code.php',
+  'type' => 'htmlraw'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);

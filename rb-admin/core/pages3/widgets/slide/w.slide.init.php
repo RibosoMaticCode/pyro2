@@ -6,7 +6,9 @@ $widget = [
   'name' => 'Galeria',
   'desc' => 'Añade una galeria de imagenes',
   'filejs' => 'w.slide.js',
-  'img' => 'gallery.png'
+  'img' => 'gallery.png',
+  'file' => 'widgets/slide/w.slide.php',
+  'type' => 'slide'
 ];
 //Añadiendo al array principals widgets
 array_push($widgets, $widget);

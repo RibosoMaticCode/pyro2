@@ -122,6 +122,23 @@
     float: left;
     padding: 6px 0;
 }
+.border_empty {
+    border: 2px dashed #bbbbbb;
+    min-height: 200px;
+    background-color: #fff;
+    text-align: center;
+    position: relative;
+}
+
+.border_empty span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+    font-weight: bold;
+    color: gray;
+}
 
 /* PIE DE PAGINA */
 #footer {

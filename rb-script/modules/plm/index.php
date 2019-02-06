@@ -49,6 +49,13 @@ $menu1 = [
 			'url' => "module.php?pag=plm_config",
 			'url_imagen' => "none",
 			'pos' => 4
+		],
+		[
+			'key' => 'plm_info',
+			'nombre' => "Informacion",
+			'url' => "module.php?pag=plm_info",
+			'url_imagen' => "none",
+			'pos' => 5
 		]
 	]
 ];
@@ -62,14 +69,17 @@ if(!isset($_SESSION['carrito'])){
 	$_SESSION['carrito'] = $carrito;
 }
 
-// Widget
+// Widget para añadir a paginas
 $widget = [
-  'link_action' => 'addPlmUrl',
+  'link_action' => 'addPlmBlock',
   'dir' => 'plm',
-  'name' => 'PLM Url',
-  'desc' => 'Url navegacion product',
+  'name' => 'PLM Block',
+  'desc' => 'Muestra un bloque de productos con estilo personalizado',
   'filejs' => 'file.js',
-  'img_abs' => $rb_module_url.'widget-url.png'
+  'img_abs' => $rb_module_url.'widget.block.png',
+	'file' => 'widget.block.php',
+	'type' => 'plm_block',
+	'custom' => true
 ];
 array_push($widgets, $widget);
 
@@ -210,6 +220,7 @@ function plm_products_call_url(){
 		define('rm_metadescription', ""); //$product['descripcion'] - acortar
 		define('rm_metaauthor', G_METAAUTHOR);
 		define('rm_page_image', $photo['thumb_url'] );
+		$cantidad = 'salidas + 1';
 
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.php';
 		require_once( $file );
@@ -289,12 +300,13 @@ function plm_products_call_url(){
 		foreach($_SESSION['carrito'] as $codigo => $cantidad){
 			$qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
 			$product = $qp->fetch_assoc();
-			$tot = round($product['precio_oferta'] * $cantidad,2);
+			if($product['precio_oferta']==0) $precio_final = $product['precio'];
+			else $precio_final = $product['precio_oferta'];
+			$tot = round($precio_final * $cantidad,2);
 
 			$products[$i]['id'] = $product['id'];
 			$products[$i]['nombre'] = $product['nombre'];
-			//$products[$i]['precio_oferta'] = $product['precio_oferta'];
-			$products[$i]['precio'] = $product['precio_oferta'];
+			$products[$i]['precio'] = $precio_final;
 			$products[$i]['cantidad'] = $cantidad;
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
@@ -350,12 +362,13 @@ function plm_products_call_url(){
 		foreach($_SESSION['carrito'] as $codigo => $cantidad){
 			$qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
 			$product = $qp->fetch_assoc();
-			$tot = round($product['precio_oferta'] * $cantidad,2);
+			if($product['precio_oferta']==0) $precio_final = $product['precio'];
+			else $precio_final = $product['precio_oferta'];
+			$tot = round($precio_final * $cantidad,2);
 
 			$products[$i]['id'] = $product['id'];
 			$products[$i]['nombre'] = $product['nombre'];
-			//$products[$i]['precio_oferta'] = $product['precio_oferta'];
-			$products[$i]['precio'] = $product['precio_oferta'];
+			$products[$i]['precio'] = $precio_final;
 			$products[$i]['cantidad'] = $cantidad;
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
@@ -452,7 +465,7 @@ function plm_products_init(){
 	return $products_list;
 }
 
-add_shortcode('products_init','plm_products_init');
+add_shortcode('PLM_PRODUCTS_INIT','plm_products_init');
 
 // SHORTCODE : LINK DE CARRITO DE COMPRAS
 function plm_cart_link(){
@@ -467,7 +480,7 @@ function plm_cart_link(){
 	return $cart_link;
 }
 
-add_shortcode('cart_link', 'plm_cart_link');
+add_shortcode('PLM_LINK_CART', 'plm_cart_link');
 
 // SHORTCODE : FORMULARIO DE BUSQUEDA
 
@@ -482,7 +495,7 @@ function plm_frm_search_products(){
 	return $frm_search;
 }
 
-add_shortcode('frm_search_products', 'plm_frm_search_products');
+add_shortcode('PLM_FRM_SEARCH', 'plm_frm_search_products');
 
 // ------ CONFIGURACIN PRODUCTOS ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_config"):
@@ -495,6 +508,19 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_config"):
 	}
 	add_function('module_title_page','plm_config_title');
 	add_function('module_content_main','plm_config');
+endif;
+
+// ------ CONFIGURACIN PRODUCTOS ------ //
+if(isset($_GET['pag']) && $_GET['pag']=="plm_info"):
+	function plm_info_title(){
+		return "Informacion de PLM";
+	}
+	function plm_info(){
+		global $rb_module_url;
+		include_once 'info.php';
+	}
+	add_function('module_title_page','plm_info_title');
+	add_function('module_content_main','plm_info');
 endif;
 
 // ------ PEDIDOS DE PRODUCTOS ------ //
@@ -523,12 +549,12 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_category"):
 	add_function('module_content_main','plm_category');
 endif;
 
-// Configurador de widget
-function plm_url_config(){
+// Añdir los Configuradores de los widgets
+function plm_widget_block_config(){
 	global $rb_module_url;
-	include_once 'widget.url.config.php';
+	include_once 'widget.block.config.php';
 }
-add_function('modals-config','plm_url_config');
+add_function('modals-config','plm_widget_block_config');
 
 
 // PARA LA SECCION PANEL DEL USUARIO

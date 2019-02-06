@@ -20,6 +20,9 @@ $array_modules = json_decode($modules_prev, true);
 // Incluir los modulos externos desde la base de datos
 require_once 'modules.list.php';
 
+// Cargar los widgets del sistemas y personalizados (de los modulos)
+require_once 'widgets.system.php';
+
 $rb_title = "Panel Inicial | ".G_TITULO;
 include_once 'header.php';
 ?>

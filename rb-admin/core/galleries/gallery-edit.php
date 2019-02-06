@@ -20,7 +20,9 @@ if(isset($_GET["id"])){
                 <span class="post-submit">
       <input class="submit" name="guardar" type="submit" value="Guardar" />
       <a href="<?= G_SERVER ?>/rb-admin/?pag=gal"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
-
+      <?php if(isset($row)): ?>
+<a class="btn-primary" href="index.php?pag=imgnew&opc=nvo&album_id=<?php echo $row['id'] ?>">Subir imágenes</a>
+<?php endif ?>
                 </span>
             </div>
         </div>
@@ -58,7 +60,7 @@ if(isset($_GET["id"])){
                     </label>
                   </div>
                 </section>
-              <?php if(isset($row)): ?>
+              <?php /*if(isset($row)): ?>
                 <section class="seccion">
                   <div class="seccion-body">
                     <a class="btn-primary" href="index.php?pag=imgnew&opc=nvo&album_id=<?php echo $row['id'] ?>">Subir imágenes</a>
@@ -69,7 +71,7 @@ if(isset($_GET["id"])){
                   </label>
                   </div>
                 </section>
-              <?php endif ?>
+              <?php endif*/ ?>
         <input name="mode" value="<?php echo $mode ?>" type="hidden" />
   <input name="id" value="<?php if(isset($row))echo $row['id'] ?>" type="hidden" />
   <input name="section" value="gal" type="hidden" />

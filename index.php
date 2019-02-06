@@ -11,7 +11,11 @@ $modules_prev = rb_get_values_options('modules_load');
 // Convierte json a array
 $array_modules = json_decode($modules_prev, true);
 
+// Incluir los modulos externos desde la base de datos
 require_once 'rb-admin/modules.list.php';
+
+// Cargar los widgets del sistemas y personalizados (de los modulos)
+require_once 'rb-admin/widgets.system.php';
 
 // VARIABLES CON DATOS DE CABECERA GENERALES
 define('rm_titlesite', G_TITULO);

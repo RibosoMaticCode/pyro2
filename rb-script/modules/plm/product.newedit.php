@@ -26,7 +26,7 @@ $categories = json_decode($option['plm_value'], true);
       <div class="navigation">
         <a href="#">Productos</a> <i class="fas fa-angle-right"></i> <span>Nuevo producto</span>
       </div>
-    	<button type="submit">Guardar</button>
+    	<button type="submit" form="frmproduct">Guardar</button>
     	<a class="button" href="http://dev.pyro2/rb-admin/module.php?pag=plm_products">Volver</a>
     </div>
   </div>
@@ -114,6 +114,33 @@ $categories = json_decode($option['plm_value'], true);
       						</div>
         	</div>
         </section>
+        <section class="seccion">
+        	<div class="seccion-header">
+        		<h3>Opciones del producto</h3>
+        	</div>
+          <div class="seccion-body">
+            <div id="wrap_options" class="wrap_options">
+
+            </div>
+            <div class="cols-container">
+              <div class="cols-6-md">
+                <a href="#" class="add_item">Añadir opcion</a>
+              </div>
+              <div class="cols-6-md cols-content-right">
+                <a href="#" class="edit_variants">Editar las variantes</a>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="seccion">
+          <div class="seccion-header">
+            <h3>Variantes</h3>
+          </div>
+          <div class="seccion-body">
+            <div class="wrap_variants">
+            </div>
+          </div>
+        </section>
       </div>
       <div class="cols-4-md col-padding-left">
         <section class="seccion">
@@ -141,31 +168,31 @@ $categories = json_decode($option['plm_value'], true);
             <h3>Imágenes</h3>
           </div>
           <div class="seccion-body">
-                <label>
-                  Imagen del producto
-                  <script>
-                    $(document).ready(function() {
-                      $(".foto_id").filexplorer({
-                        inputHideValue: "<?php if(isset($row)) echo $row['foto_id']; else echo "0"; ?>"
-                      });
-                    });
-                  </script>
-                  <input type="text" readonly name="foto_id" class="foto_id" value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['foto_id'] : 0 ); echo $photos['src']; ?>" />
-                </label>
-                <label>
-                  Galeria de imagenes
-                  <select name="galeria_id">
-                    <option value="0">Seleccionar galeria</option>
-                    <?php
-                    $galleries = rb_list_galleries();
-                    foreach($galleries as $gallery){
-                      ?>
-                      <option <?php if(isset($row) && $row['galeria_id']==$gallery['id']) echo "selected" ?> value="<?= $gallery['id'] ?>"><?= $gallery['nombre'] ?> (<?= $gallery['nrophotos'] ?>)</option>
-                      <?php
-                    }
-                    ?>
-                  </select>
-                </label>
+            <label>
+              Imagen del producto
+              <script>
+                $(document).ready(function() {
+                  $(".foto_id").filexplorer({
+                    inputHideValue: "<?php if(isset($row)) echo $row['foto_id']; else echo "0"; ?>"
+                  });
+                });
+              </script>
+              <input type="text" readonly name="foto_id" class="foto_id" value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['foto_id'] : 0 ); echo $photos['src']; ?>" />
+            </label>
+            <label>
+              Galeria de imagenes
+              <select name="galeria_id">
+                <option value="0">Seleccionar galeria</option>
+                <?php
+                $galleries = rb_list_galleries();
+                foreach($galleries as $gallery){
+                  ?>
+                  <option <?php if(isset($row) && $row['galeria_id']==$gallery['id']) echo "selected" ?> value="<?= $gallery['id'] ?>"><?= $gallery['nombre'] ?> (<?= $gallery['nrophotos'] ?>)</option>
+                  <?php
+                }
+                ?>
+              </select>
+            </label>
           </div>
         </section>
       </div>
@@ -174,10 +201,23 @@ $categories = json_decode($option['plm_value'], true);
 </div>
 <script>
   $(document).ready(function() {
-    // Boton Cancelar
-    /*$('.CancelFancyBox').on('click',function(event){
-      $.fancybox.close();
-    });*/
+    // Add element to grupo
+    $('.add_item').on('click',function(event){
+      event.preventDefault();
+      $.ajax({
+  			method: "get",
+  			url: "<?= G_SERVER ?>/rb-script/modules/plm/newoption.html"
+  		})
+  		.done(function( data ) {
+  			$('.wrap_options').append(data);
+  		});
+    });
+
+    // Quitar element del grupo
+    $("#wrap_options").on("click", ".remove_item", function (event) {
+      event.preventDefault();
+		  $(this).closest(".cover_option").fadeOut().remove();
+    });
 
     // Boton Guardar
     $('#frmproduct').submit(function(event){
@@ -193,12 +233,38 @@ $categories = json_decode($option['plm_value'], true);
           $.fancybox.close();
           notify(data.contenido);
           setTimeout(function(){
-            window.location.href = '<?= $urlreload ?>';
+            window.location.href = '<?= $urlreload ?>&product_id='+data.id;
           }, 1000);
         }else{
           notify(data.contenido);
         }
       });
+    });
+
+    // Generar variantes
+    $('.edit_variants').on('click',function(event){
+      event.preventDefault();
+
+      var nodes = Array.prototype.slice.call( document.getElementById('wrap_options').children );
+      console.log(nodes.length);
+      var numItems = nodes.length;
+      var arrays = {};
+
+      for (var i = 0; i <= numItems-1; i++) {
+        var cover1 = nodes[i].getElementsByClassName("cols-3-md");
+        var opcion_nombre = cover1.item(0).getElementsByTagName("input").item(0).value;
+        console.log(opcion_nombre);
+
+        var cover2 = nodes[i].getElementsByClassName("cols-8-md");
+        var opcion_alternativas = cover2.item(0).getElementsByTagName("input").item(0).value;
+        console.log(opcion_alternativas);
+
+        array = opcion_alternativas.split("\\s*,\\s*");
+        arrays[i] = array;
+        console.log(array[0]);
+      }
+
+      console.log(arrays);
     });
   });
 </script>

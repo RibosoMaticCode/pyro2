@@ -15,61 +15,73 @@
     content: " ";
 	clear:both;
 }
+.cols-1-sm,
 .cols-1-md,
 .cols-1-lg{
 	width:calc( 8.3333% * 1 );
 	float:left;
 }
+.cols-2-sm,
 .cols-2-md,
 .cols-2-lg{
 	width:calc( 8.3333% * 2 );
 	float:left;
 }
+.cols-3-sm,
 .cols-3-md,
 .cols-3-lg{
 	width:calc( 8.3333% * 3 );
 	float:left;
 }
+.cols-4-sm,
 .cols-4-md,
 .cols-4-lg{
 	width:calc( 8.3333% * 4);
 	float:left;
 }
+.cols-5-sm,
 .cols-5-md,
 .cols-5-lg{
 	width:calc( 8.3333% * 5 );
 	float:left;
 }
+.cols-6-sm,
 .cols-6-md,
 .cols-6-lg{
 	width:calc( 8.3333% * 6 );
 	float:left;
 }
+.cols-7-sm,
 .cols-7-md,
 .cols-7-lg{
 	width:calc( 8.3333% * 7 );
 	float:left;
 }
+.cols-8-sm,
 .cols-8-md,
 .cols-8-lg{
 	width:calc( 8.3333% * 8 );
 	float:left;
 }
+.cols-9-sm,
 .cols-9-md,
 .cols-9-lg{
 	width:calc( 8.3333% * 9 );
 	float:left;
 }
+.cols-10-sm,
 .cols-10-md,
 .cols-10-lg{
 	width:calc( 8.3333% * 10 );
 	float:left;
 }
+.cols-11-sm,
 .cols-11-md,
 .cols-11-lg{
 	width:calc( 8.3333% * 11 );
 	float:left;
 }
+.cols-12-sm,
 .cols-12-md,
 .cols-12-lg{
 	width:calc( 8.3333% * 12 );

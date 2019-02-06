@@ -1813,6 +1813,7 @@ function rb_show_bar_admin(){
 
 function rb_show_block($box, $type="page"){ //Muestra bloque
   global $objDataBase;
+  global $widgets;
   if(isset($box['box_save_id'])){
     $box_save_id = $box['box_save_id'];
   }else{
@@ -1896,6 +1897,36 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
         $block_id = $widget['widget_save_id'];
         include ABSPATH.'rb-script/modules/pages.view3/widgets.customs.php'; //
       }else{
+        // $widgets = array global que contiene widgets del sistema y personalizados
+        $widget_type = $widget['widget_type'];
+        // Recorreremos para ver si hay coincidencias
+        /* FORMA  1
+        foreach ($widgets as $widget_save => $info) {
+          echo $info['type'];
+          if($info['type'] == $widget_type){
+            echo ".-";
+            if( isset($info['custom']) ){
+              $dir_module = ABSPATH.'rb-script/modules/';
+              include $dir_module.$info['dir'].'/'.$info['type'].'.frontend.php';
+            }else{
+              $dir_module = ABSPATH.'rb-admin/core/pages3/';
+              include $dir_module.'widgets/'.$info['dir'].'/'.$info['type'].'.frontend.php';
+            }
+          }
+        }*/
+        /* FORMA 2 */
+        $clave = array_search($widget_type, array_column($widgets, 'type')); // https://stackoverflow.com/questions/8102221/php-multidimensional-array-searching-find-key-by-specific-value
+        //echo "<strong>".$widgets[$clave]['type']."</strong>";
+        if( isset($widgets[$clave]['custom']) ){
+          $dir_module = ABSPATH.'rb-script/modules/';
+          include $dir_module.$widgets[$clave]['dir'].'/'.$widgets[$clave]['type'].'.frontend.php';
+        }else{
+          $dir_module = ABSPATH.'rb-admin/core/pages3/';
+          include $dir_module.'widgets/'.$widgets[$clave]['dir'].'/'.$widgets[$clave]['type'].'.frontend.php';
+        }
+        //echo $clave;
+        /*
+        FORMA 3 - VERSION ANTERIOR
         switch ($widget['widget_type']) {
           case 'html':
             echo '<div class="'.$widget['widget_class'].'">';
@@ -2062,9 +2093,6 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
             break;
           case 'post1':
             echo '<div class="'.$widget['widget_class'].'">';
-            /*?>
-            <div class="cols">
-            <?php*/
             // Destripar configuracion
             $category_id = $widget['widget_values']['cat'];
             $num_posts = $widget['widget_values']['count'];
@@ -2164,12 +2192,9 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
               </div>
               <?php
             }
-            /*?>
-            </div>
-            <?php*/
             echo '</div>';
             break;
-        }
+        }*/
       }
     }
     echo '</div><!--end col or coverwidgets-->';// end col or coverwidgets

@@ -49,7 +49,7 @@ if($id==0){ // Nuevo
 }else{ // Update
 	$r = $objDataBase->Update('plm_products', $valores, ["id" => $id]);
 	if($r['result']){
-		$arr = ['resultado' => true, 'contenido' => 'Elemento actualizado' ];
+		$arr = ['resultado' => true, 'contenido' => 'Elemento actualizado', 'id' => $id ];
 	}else{
 		$arr = ['resultado' => false, 'contenido' => $r['error']];
 	}

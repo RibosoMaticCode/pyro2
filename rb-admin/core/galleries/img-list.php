@@ -4,6 +4,12 @@ if ( defined('G_ALBUMID')) $album_id = $AlbumID;
 else $album_id = $_GET['album_id'];
 
 $result = $objDataBase->Ejecutar("SELECT p.*, a.nombre FROM photo p, albums a WHERE p.album_id = a.id AND album_id=".$album_id." ORDER BY orden");
+if($result->num_rows ==0 ){
+  ?>
+  <div class="border_empty"><span>No hay ninguna imagen</span></div>
+  <?php
+}
+
 while ($row = $result->fetch_assoc()){
 ?>
   <li class="grid-1" data-id="<?= $row['id'] ?>">

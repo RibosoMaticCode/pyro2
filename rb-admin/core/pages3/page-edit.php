@@ -134,7 +134,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 															$block_id = $widget['widget_save_id'];
 															include 'widget-custom.php';
 														}else{
-												    	switch ($widget['widget_type']) {
+												    	/*switch ($widget['widget_type']) {
 													      case 'html':
 																	include 'widgets/editor/w.editor.php';
 																	break;
@@ -156,7 +156,24 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 																case 'sidebar':
 																	include 'widgets/sidebar/w.sidebar.php';
 																	break;
-												    	}
+												    	}*/
+															//print_r($widgets);
+															// $widgets = array global que contiene widgets del sistema y personalizados
+															$widget_type = $widget['widget_type'];
+
+															// Recorreremos para ver si hay coincidencias
+															// forma 1:
+															foreach ($widgets as $widget_save => $info) {
+																if($widget_type == $info['type']){
+																	if( isset($info['custom']) ){
+																		$dir_module = ABSPATH.'rb-script/modules/';
+																		include $dir_module.$info['dir'].'/'.$info['file'];
+																	}else{
+																		include 'widgets/'.$info['dir'].'/'.$info['file'];
+																	}
+																}
+															}
+															// forma 2: se encuentra en el archivo funciones.php -> f: rb_show_block
 														}
 														unset($data_saved_id);
 												  }

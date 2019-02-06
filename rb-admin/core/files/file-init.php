@@ -28,27 +28,32 @@ $(document).ready(function() {
 		if ( eliminar ) {
 			$('input:checkbox[name=items]:checked').each(function(){
 				item_id = $(this).val();
+        var item_li = $(this).closest('li');
+        console.log(item_li);
 				url = 'core/files/file-del.php?id='+item_id;
 				$.ajax({
 					url: url,
 					cache: false,
 					type: "GET"
 				}).done(function( data ) {
-          if(data.result==0){
+          if(data.result==1){
+            item_li.fadeOut();
+          }else{
             notify('Ocurrio un error inesperado. Intente luego.');
             return false;
           }
         });
 			});
       notify('Los datos seleccionados fueron eliminados correctamente.');
-      setTimeout(function(){
+      /*setTimeout(function(){
         window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=explorer';
-      }, 1000);
+      }, 1000);*/
 		}
 	});
   // DELETE ITEM
   $('.del-item').click(function( event ){
     var item_id = $(this).attr('data-id');
+    item_li = $(this).closest('li');
     var eliminar = confirm("[?] Esta a punto de eliminar este dato. Continuar?");
 
   	if ( eliminar ) {
@@ -59,9 +64,10 @@ $(document).ready(function() {
   			success: function(data){
           if(data.result = 1){
             notify('El dato fue eliminado correctamente.');
-            setTimeout(function(){
+            item_li.fadeOut();
+            /*setTimeout(function(){
               window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=explorer';
-            }, 1000);
+            }, 1000);*/
           }else{
             notify('Ocurrio un error inesperado. Intente luego.');
           }

@@ -9,10 +9,12 @@
         foreach($products as $product){
         ?>
         <div class="cols-3-md">
+          <div class="item_cat">
             <div class="product-item">
-              <?php if($product['descuento']>0): ?>
-              <div class="product-discount">-<?= $product['descuento'] ?>%</div>
-              <?php endif ?>
+              <a href="<?= $product['url'] ?>">
+                <?php if($product['descuento']>0): ?>
+                <div class="product-discount">-<?= $product['descuento'] ?>%</div>
+                <?php endif ?>
                 <div class="product-item-cover-img" style="background-image:url('<?= $product['image_url'] ?>')">
                 </div>
                 <div class="product-item-desc">
@@ -27,8 +29,9 @@
                         <?php endif ?>
                     </div>
                 </div>
-                <a href="<?= $product['url'] ?>">Ver detalles</a>
+              </a>
             </div>
+          </div>
         </div>
         <?php
         }

@@ -4,10 +4,10 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 
-$type = "plm_url";
-$action = "showConfigPlmUrl";
-$block_title = "PLM Url";
-$url_img = G_SERVER."/rb-script/modules/plm/widget-url.png";
+$type = "plm_block";
+$action = "showConfigPlmBlock";
+$block_title = "PLM Block";
+$url_img = G_SERVER."/rb-script/modules/plm/widget.block.png";
 if(isset($widget)){
 	$widget_id = $widget['widget_id'];
 }else{

@@ -98,6 +98,7 @@ rb_set_values_options('map-x', $_POST['map-x']);
 rb_set_values_options('map-y', $_POST['map-y']);
 rb_set_values_options('map-zoom', $_POST['map-zoom']);
 rb_set_values_options('map-desc', addslashes($_POST['map-desc']));
+rb_set_values_options('files_allowed', $_POST['files_allowed']);
 // redes sociales
 rb_set_values_options('fb', $_POST['fb']);
 rb_set_values_options('tw', $_POST['tw']);

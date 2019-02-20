@@ -1,6 +1,7 @@
 <?php
 $estilo = $widget['widget_values']['estilo'];
 $tipo = $widget['widget_values']['tipo'];
+$class = $widget['widget_class'];
 $limite = 8; // default
 global $objDataBase;
 // I. Consulta sql
@@ -42,7 +43,7 @@ endwhile;
 switch($estilo){
   case 1:
     ?>
-    <div class="cols-container">
+    <div class="cols-container <?= $class ?>">
     <?php
     $i = 1;
     foreach($products as $product){
@@ -69,7 +70,6 @@ switch($estilo){
             <?php endif ?>
           </div>
         </div>
-        <!--<a href="<?= $product['url'] ?>">Ver detalles</a>-->
         </a>
       </div>
       <?php

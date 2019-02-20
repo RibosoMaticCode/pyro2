@@ -66,6 +66,10 @@ $btnCancel = $type."_cancel";
 
 		// Mostrar Configurador de Widget
 		$("#boxes").on("click", ".<?= $action ?>", function (event) {
+			event.preventDefault();
+			// reset campos
+			$('#<?= $type ?>_class_css').val("");
+
 			// valores por defecto iniciales
 			var widget_id = $(this).closest(".widget").attr('data-id');
 	    var widget_class = $(this).closest(".widget").attr('data-class');
@@ -73,6 +77,7 @@ $btnCancel = $type."_cancel";
 			var widget_json_values = JSON.parse(widget_values_string);
 			$('#<?= $type ?>_id').val(widget_id);
 
+			$('#<?= $type ?>_class_css').val(widget_class);
 			$('#<?= $type ?>_estilo').val(widget_json_values.estilo);
 			$('#<?= $type ?>_tipo').val(widget_json_values.tipo);
 
@@ -82,6 +87,7 @@ $btnCancel = $type."_cancel";
 
 		// Aceptando los cambios
 	  $('#<?= $btnAccept ?>').click(function() {
+			event.preventDefault();
 			var widget_id = $('#<?= $type ?>_id').val();
 			$('#'+ widget_id).attr('data-class', $('#<?= $type ?>_class_css').val());
 

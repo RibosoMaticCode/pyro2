@@ -125,8 +125,10 @@ class DataBase{
 			$cols_vals .= $coma.$key;
 			$coma = ", ";
 		}
+		$q = "SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' IN NATURAL LANGUAGE MODE) ".$condition_add;
+
 		// campo score para ver prioridad de resultado: "SELECT *, MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) AS score FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' ) ORDER BY score DESC";
-		return $conexion->query("SELECT * FROM $table WHERE MATCH ( $cols_vals ) AGAINST ( '$data_to_search' WITH QUERY EXPANSION) ".$condition_add);
+		return $conexion->query($q);
 	}
 }
 $objDataBase = new DataBase;

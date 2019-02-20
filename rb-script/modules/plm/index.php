@@ -131,6 +131,7 @@ endif;
 // Llamadas por url (o llamadas amigables)
 function plm_products_call_url(){
 	include_once 'funcs.php';
+	$items_to_show = get_option('products_count_category');
 	// Enlaces amigables
 	if(G_ENL_AMIG):
 		$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
@@ -150,6 +151,11 @@ function plm_products_call_url(){
 						$category = $requestURI[2];
 						$category_info = get_category_info($category, true);
 						$category = $category_info['id'];
+						if( isset($requestURI[3]) && $requestURI[3] > 0 ){
+							$p = $requestURI[3];
+						}else{
+							$p = 1;
+						}
 					}else{
 						header( 'Location: '.G_SERVER.'/products/');
 					}
@@ -157,6 +163,11 @@ function plm_products_call_url(){
 					$seccion = "search";
 					if( isset($requestURI[2]) ){
 						$search = $requestURI[2];
+						if( isset($requestURI[3]) && $requestURI[3] > 0 ){
+							$p = $requestURI[3];
+						}else{
+							$p = 1;
+						}
 					}else{
 						header( 'Location: '.G_SERVER.'/products/');
 					}
@@ -183,12 +194,22 @@ function plm_products_call_url(){
 			$seccion = "category";
 			if( $_GET['category']!=""){
 				$category = $_GET['category'];
+				if( isset($_GET['p']) && $_GET['p']!="" && $_GET['p'] > 0 ){ // Si la pagina esta definida, y no esta vacia ni es 0
+					$p = $_GET['p'];
+				}else{
+					$p = 1; // Por defecto pagina 1
+				}
 			}
 		endif;
 		if( isset($_GET['product_search']) ): // URL_SERVER/?product_search=<termino-a-buscar>
 			$seccion = "search";
 			if( $_GET['product_search']!=""){
 				$search = $_GET['product_search'];
+				if( isset($_GET['p']) && $_GET['p']!="" && $_GET['p'] > 0 ){ // Si la pagina esta definida, y no esta vacia ni es 0
+					$p = $_GET['p'];
+				}else{
+					$p = 1; // Por defecto pagina 1
+				}
 			}
 		endif;
 		if( isset($_GET['shopping-cart']) ):
@@ -213,6 +234,7 @@ function plm_products_call_url(){
 
 		$product = $qs->fetch_assoc();
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
+		$category = get_category_info($product['categoria']);
 
 		define('rm_title', $product['nombre']." | ".G_TITULO);
 		define('rm_title_page', $product['nombre']);
@@ -222,7 +244,17 @@ function plm_products_call_url(){
 		define('rm_page_image', $photo['thumb_url'] );
 		$cantidad = 'salidas + 1';
 
-		$file = ABSPATH.'rb-script/modules/plm/product.front.view.php';
+		$view_style = get_option('frontview_product');
+		switch ($view_style) {
+			case 1:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view1.php';
+				break;
+
+			default:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.php';
+				break;
+		}
+
 		require_once( $file );
 
 		die();
@@ -230,7 +262,10 @@ function plm_products_call_url(){
 
 	// Mostrar solo listado por categoria
 	if(isset($seccion) && isset($category)):
-		$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY id DESC");
+		$start = ($p - 1) * $items_to_show;
+		$qsAll = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY id");
+		$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY id DESC LIMIT $start, $items_to_show");
+		$total_products = $qsAll->num_rows;
 		$products = [];
 		$i=0;
 		while($product = $qs->fetch_assoc()):
@@ -239,19 +274,38 @@ function plm_products_call_url(){
 			$products[$i]['precio_oferta'] = $product['precio_oferta'];
 			$products[$i]['precio'] = $product['precio'];
 			$products[$i]['descuento'] = $product['descuento'];
+			$products[$i]['categoria'] = $product['categoria'];
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
 		endwhile;
+		$category_info = get_category_info($category);
 
-		define('rm_title', "Productos | ".G_TITULO);
-		define('rm_title_page', "Productos");
+		define('rm_title', $category_info['nombre']." | ".G_TITULO);
+		define('rm_title_page', $category_info['nombre']);
 		define('rm_metakeywords', "");
-		define('rm_metadescription', "Listado de productos");
+		define('rm_metadescription', "Listado de productos en categoria ".$category_info['nombre']);
 		define('rm_metaauthor', G_METAAUTHOR);
 		define('rm_page_image', '' );
+
+		// Definiendo el paginado
+		if($p>1){
+			$CurrentPage = $p;
+			$NextPage = $CurrentPage+1;
+			$PrevPage = $CurrentPage-1;
+		}else{
+			$CurrentPage = 1;
+			$NextPage = 2;
+			$PrevPage = 0;
+		}
+		$TotalPage  = floor($total_products / $items_to_show);
+		if($total_products % $items_to_show) $TotalPage++;
+		$LastPage = $TotalPage;
+
+		if($NextPage > $TotalPage) $NextPage = 0;
+		if($CurrentPage == $TotalPage) $LastPage = 0;
 
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
 		require_once( $file );
@@ -261,9 +315,11 @@ function plm_products_call_url(){
 
 	// Mostrar solo listado por busqueda
 	if(isset($seccion) && isset($search)):
-		//$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY id DESC");
-		$qs = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], ' AND mostrar=1');
+		$start = ($p - 1) * $items_to_show;
+		$qsAll = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], ' AND mostrar=1');
+		$qs = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], " AND mostrar=1 LIMIT $start, $items_to_show");
 		$CountResult = $qs->num_rows;
+		$total_products = $qsAll->num_rows;
 		$products = [];
 		$i=0;
 		while($product = $qs->fetch_assoc()):
@@ -272,6 +328,7 @@ function plm_products_call_url(){
 			$products[$i]['precio_oferta'] = $product['precio_oferta'];
 			$products[$i]['precio'] = $product['precio'];
 			$products[$i]['descuento'] = $product['descuento'];
+			$products[$i]['categoria'] = $product['categoria'];
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
@@ -285,6 +342,23 @@ function plm_products_call_url(){
 		define('rm_metadescription', "Resultado de busqueda");
 		define('rm_metaauthor', G_METAAUTHOR);
 		define('rm_page_image', '' );
+
+		// Definiendo el paginado
+		if($p>1){
+			$CurrentPage = $p;
+			$NextPage = $CurrentPage+1;
+			$PrevPage = $CurrentPage-1;
+		}else{
+			$CurrentPage = 1;
+			$NextPage = 2;
+			$PrevPage = 0;
+		}
+		$TotalPage  = floor($total_products / $items_to_show);
+		if($total_products % $items_to_show) $TotalPage++;
+		$LastPage = $TotalPage;
+
+		if($NextPage > $TotalPage) $NextPage = 0;
+		if($CurrentPage == $TotalPage) $LastPage = 0;
 
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
 		require_once( $file );
@@ -426,7 +500,14 @@ add_function('call_modules_url','plm_products_call_url');
 
 // CSS Front End
 function plm_front_css(){
+	include_once 'funcs.php';
 	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/product.front.css'>\n";
+	$view_style = get_option('frontview_product');
+	switch ($view_style) {
+		case 1:
+			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/plm_style1.css'>\n";
+			break;
+	}
 	return $css;
 }
 add_function('theme_header','plm_front_css');

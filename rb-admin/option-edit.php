@@ -218,7 +218,10 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="alcance" type="radio" value="1" <?php if(rb_get_values_options('alcance')=='1') echo "checked=\"checked\""?> />
               Privado - para acceder al index tendra que loguearse previamente
             </label>
-
+            <label>Tipos de archivos permitidos para subir:
+              <span class="info">Escriba la extensión y separe por comas</span>
+              <input  name="files_allowed" type="text" value="<?= rb_get_values_options('files_allowed') ?>" />
+            </label>
           </div>
           <div class="cols-6-md col-padding">
             <label>Enlace amigable para el sitio web:</label>

@@ -143,7 +143,8 @@ $opciones_valores = array(
 	"more_fields_register" => '{"nombres":"Nombres"}',
 	"repet_pass_register" => 0,
 	"after_login_url" => "[RUTA_SITIO]?pa=panel",
-	"sidebar_id" => 0
+	"sidebar_id" => 0,
+	"files_allowed" => "jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf,svg"
 );
 
 if(isset($_POST)):

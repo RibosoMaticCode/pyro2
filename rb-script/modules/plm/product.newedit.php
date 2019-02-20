@@ -24,10 +24,15 @@ $categories = json_decode($option['plm_value'], true);
   <div id="toolbar">
     <div class="inside_toolbar">
       <div class="navigation">
-        <a href="#">Productos</a> <i class="fas fa-angle-right"></i> <span>Nuevo producto</span>
+        <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=plm_products">Productos</a> <i class="fas fa-angle-right"></i>
+        <?php if(isset($row)): ?>
+          <?= rb_fragment_letters($row['nombre'], 40) ?>
+        <?php else: ?>
+          <span>Nuevo producto</span>
+        <?php endif ?>
       </div>
     	<button type="submit" form="frmproduct">Guardar</button>
-    	<a class="button" href="http://dev.pyro2/rb-admin/module.php?pag=plm_products">Volver</a>
+    	<a class="button" href="<?= G_SERVER ?>/rb-admin/module.php?pag=plm_products">Volver</a>
     </div>
   </div>
   <form id="frmproduct" class="form">
@@ -75,9 +80,9 @@ $categories = json_decode($option['plm_value'], true);
       				        </label>
       							</div>
       							<div class="cols-4-md">
-      								<label title="Figurara como precio principal">
+      								<label title="Este valor se autogenera, cuando se establece el porcentaje de descuento">
       				          Precio con Descuento
-      				          <input type="number" step=".01" name="precio_oferta" value="<?php if(isset($row)) echo $row['precio_oferta'] ?>" />
+      				          <input type="number" readonly step=".01" name="precio_oferta" value="<?php if(isset($row)) echo $row['precio_oferta'] ?>" />
       				        </label>
       							</div>
       						</div>
@@ -116,7 +121,7 @@ $categories = json_decode($option['plm_value'], true);
         </section>
         <section class="seccion">
         	<div class="seccion-header">
-        		<h3>Opciones del producto</h3>
+        		<h3>Opciones del producto</h3> <em>en desarrollo</em>
         	</div>
           <div class="seccion-body">
             <div id="wrap_options" class="wrap_options">
@@ -132,7 +137,7 @@ $categories = json_decode($option['plm_value'], true);
             </div>
           </div>
         </section>
-        <section class="seccion">
+        <!--<section class="seccion">
           <div class="seccion-header">
             <h3>Variantes</h3>
           </div>
@@ -140,7 +145,7 @@ $categories = json_decode($option['plm_value'], true);
             <div class="wrap_variants">
             </div>
           </div>
-        </section>
+        </section>-->
       </div>
       <div class="cols-4-md col-padding-left">
         <section class="seccion">

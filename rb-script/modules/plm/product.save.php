@@ -16,9 +16,8 @@ $desc = $_POST['descuento'];
 if($prec > 0 && $desc > 0){
 	$prec_desc = round($prec - ($prec * ($desc/100)), 2);
 }else{
-	$prec_desc =	$_POST['precio_oferta'];
+	$prec_desc =	0;//$_POST['precio_oferta'];
 }
-
 
 $valores = [
   'nombre' => $_POST['nombre'],

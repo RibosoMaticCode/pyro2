@@ -60,7 +60,8 @@ $(document).ready(function() {
 
   // Tabs
   $('#tabcontent1').show(); // first tab content hide
-  $('.tabs-buttons input').click(function(event){ 
+  $('.tabs-buttons input').on('click', function(event) {
+  //$('.tabs-buttons input').click(function(event){
     $('.tabs-sections section').hide();
     if($('.tabs-buttons input:checked')){
       var tab_id = $(this).attr('id').substr(3,2);

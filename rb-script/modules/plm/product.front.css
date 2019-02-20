@@ -61,8 +61,16 @@
 .item_cat{
   padding: 15px;
 }
+.products-category-title {
+    padding: 20px 15px 5px;
+    font-size: .95em;
+}
+.products-category-title h1{
+    font-size: 1.4em;
+    font-family: Light;
+}
 .products {
-    padding: 20px 15px;
+    padding: 10px 0;
 }
 .product-item {
     border: 1px solid #e8e8e8;
@@ -88,6 +96,7 @@
     height: 52px;
     overflow: hidden;
     font-size: 1em;
+    font-family:Light;
 }
 .product-item-price-before{
     text-decoration: line-through;
@@ -97,7 +106,7 @@
     height: 26px;
 }
 .product-item-price-now{
-    font-weight:bold;
+    font-family:Semibold;
     font-size: 1.4em;
 }
 
@@ -194,4 +203,48 @@
 .block_wait_message a {
     color: #fff;
     text-decoration: underline;
+}
+
+/* CATEGORY PAGINATION */
+.category-pagination{
+	background-color: #fff;
+	border-bottom: 1px solid #E4E4E4;
+	margin-bottom: 20px;
+	margin-top: -1px;
+	padding-top: 20px;
+}
+.category-pagination ul{
+	float: right;
+    margin-right: 20px;
+    margin-top: -16px;
+}
+.category-pagination ul li{
+	float:left;
+	border: 1px solid  #ddd;
+	list-style-type:none;
+	max-width:33px;
+	margin-left: -1px;
+	background-color:#fff;
+}
+.category-pagination ul li:first-child{
+	border-radius:4px 0 0 4px;
+}
+.category-pagination ul li:last-child{
+	border-radius: 0 4px 4px 0;
+}
+.category-pagination ul li a{
+	padding: 6px 12px;
+	display:block;
+	font-size:.9em;
+}
+.category-pagination .page-disabled{
+	cursor:not-allowed;
+}
+.category-pagination .page-disabled a{
+	background-color:#F1F0F0;
+	pointer-events: none;
+}
+.category-pagination a.page-resalt {
+	font-weight:bold;
+	pointer-events: none;
 }

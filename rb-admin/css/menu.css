@@ -128,3 +128,6 @@ li a.selected::after{
 .hidden li a span{
 	text-transform:none!important
 }
+.items li ul li a span {
+    font-family: condensed-light;
+}

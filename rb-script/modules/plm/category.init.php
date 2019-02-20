@@ -59,11 +59,9 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
         ?>
       </div>
     </div>
-    <pre>
     <?php
     //print_r(list_category(0));
     ?>
-    </pre>
   </div>
 </section>
 <script>

@@ -1,4 +1,4 @@
-<span class="info">Archivos permitidos: jpg, png, gif, doc, docx, xls, xlsx, pdf. Tamaño máximo: <?php echo ini_get("upload_max_filesize"); ?></span>
+<span class="info">Archivos permitidos: <?= rb_get_values_options('files_allowed') ?>. Tamaño máximo: <?php echo ini_get("upload_max_filesize"); ?></span>
 <?php
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
@@ -18,7 +18,7 @@ $(document).ready(function(){
 	    fileName: "myfile",
 	    formData: {"albumid":"0", "user_id" : "<?= G_USERID ?>"},
 	    urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
-	    allowedTypes:"jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf",
+	    allowedTypes:"<?= rb_get_values_options('files_allowed') ?>",
 	    returnType:"json", //json
 			showStatusAfterSuccess: false,
 		onSuccess:function(files,data,xhr)

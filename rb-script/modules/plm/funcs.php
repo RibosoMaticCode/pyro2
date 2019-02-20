@@ -62,10 +62,10 @@ function products_related($product_id, $limit=5){
 	// Info del producto
 	$qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=$product_id");
 	$product_info = $qp->fetch_assoc();
-	$search = rb_cambiar_nombre($product_info['nombre']."-".$product_info['marca']."-".$product_info['modelo']); // Concatenamos informarcion a buscar
+	$search = rb_cambiar_nombre($product_info['nombre']." ".$product_info['marca']." ".$product_info['modelo']); // Concatenamos informarcion a buscar
 
-	$qs = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], ' AND mostrar=1 LIMIT $limit');
-
+	$qs = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], " AND mostrar=1 AND id <> $product_id LIMIT $limit");
+	if($qs->num_rows == 0) return false;
 	$i=0;
 	while($product = $qs->fetch_assoc()):
 		$products[$i]['id'] = $product['id'];
@@ -134,5 +134,22 @@ function delete_category($categoria_id){
  		}
 	}
 	return true;
+}
+
+function url_category_page($category_id, $page){
+	$category = get_category_info($category_id);
+	if(G_ENL_AMIG){
+		if($page==1){
+			return $category['url'];
+		}else{
+			return $category['url'].$page.'/';
+		}
+	}else{
+		if($page==1){
+			return $category['url'];
+		}else{
+			return $category['url'].'&p='.$page;
+		}
+	}
 }
 ?>

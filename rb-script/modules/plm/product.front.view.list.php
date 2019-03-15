@@ -12,25 +12,25 @@
     <div class="category-pagination">
 			<ul>
         <li<?php if($CurrentPage==1) echo " class='page-disabled'" ?>>
-					<a href="<?= $category_info['url'] ?>">«</a>
+					<a href="<?= url_page($term, 1, $type) ?>">«</a>
 				</li>
 				<li<?php if($PrevPage==0) echo " class='page-disabled'" ?>>
-					<a href="<?= url_category_page($product['categoria'], $PrevPage) ?>">‹</a>
+					<a href="<?= url_page($term, $PrevPage, $type) ?>">‹</a>
 				</li>
 				<?php
 				for ($i = 1; $i <= $TotalPage; $i++):
 				?>
 				<li>
-					<a <?php if($CurrentPage==$i) echo " class='page-resalt'" ?>href="<?= url_category_page($product['categoria'], $i) ?>"><?= $i ?></a>
+					<a <?php if($CurrentPage==$i) echo " class='page-resalt'" ?>href="<?= url_page($term, $i, $type) ?>"><?= $i ?></a>
 				</li>
 				<?php
 				endfor;
 				?>
 				<li<?php if($NextPage==0) echo " class='page-disabled'" ?>>
-					<a href="<?= url_category_page($product['categoria'], $NextPage) ?>">›</a>
+					<a href="<?= url_page($term, $NextPage, $type) ?>">›</a>
 				</li>
 				<li<?php if($LastPage==0) echo " class='page-disabled'" ?>>
-					<a href="<?= url_category_page($product['categoria'], $LastPage) ?>">»</a>
+					<a href="<?= url_page($term, $LastPage, $type) ?>">»</a>
 				</li>
 			</ul>
 		</div>
@@ -70,25 +70,25 @@
     <div class="category-pagination" style="margin-bottom:60px">
 			<ul>
         <li<?php if($CurrentPage==1) echo " class='page-disabled'" ?>>
-					<a href="<?= $category_info['url'] ?>">«</a>
+					<a href="<?= url_page($term, 1, $type) ?>">«</a>
 				</li>
 				<li<?php if($PrevPage==0) echo " class='page-disabled'" ?>>
-					<a href="<?= url_category_page($product['categoria'], $PrevPage) ?>">‹</a>
+					<a href="<?= url_page($term, $PrevPage, $type) ?>">‹</a>
 				</li>
 				<?php
 				for ($i = 1; $i <= $TotalPage; $i++):
 				?>
 				<li>
-					<a <?php if($CurrentPage==$i) echo " class='page-resalt'" ?>href="<?= url_category_page($product['categoria'], $i) ?>"><?= $i ?></a>
+					<a <?php if($CurrentPage==$i) echo " class='page-resalt'" ?>href="<?= url_page($term, $i, $type) ?>"><?= $i ?></a>
 				</li>
 				<?php
 				endfor;
 				?>
 				<li<?php if($NextPage==0) echo " class='page-disabled'" ?>>
-					<a href="<?= url_category_page($product['categoria'], $NextPage) ?>">›</a>
+					<a href="<?= url_page($term, $NextPage, $type) ?>">›</a>
 				</li>
 				<li<?php if($LastPage==0) echo " class='page-disabled'" ?>>
-					<a href="<?= url_category_page($product['categoria'], $LastPage) ?>">»</a>
+					<a href="<?= url_page($term, $LastPage, $type) ?>">»</a>
 				</li>
 			</ul>
 		</div>

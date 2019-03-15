@@ -13,9 +13,14 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once 'funcs.php';
 
 $id = $_POST['id'];
+
 $productos = json_decode($_POST['productos_json'], true); // productos
-//$mesa_id = $_POST['mesa_id'];
 $estado = isset($_POST['estado']) ? $_POST['estado'] : 1;
+if($estado==2){
+	$fecha_ocupado = date('Y-m-d G:i:s');
+}else{
+	$fecha_ocupado = "0000-00-00 00:00:00"; // Solo reservado
+}
 
 $hora_llegada = " ".get_option('hora_llegada');
 $hora_salida = " ".get_option('hora_salida');
@@ -33,18 +38,29 @@ if($_POST['fecha_llegada'] < $today){
 	die(json_encode($arr));
 }
 
+if($_POST['cliente_id']==0){
+	$arr = ['resultado' => false, 'contenido' => 'Seleccione un cliente.'];
+	die(json_encode($arr));
+}
+
+//codigo secreto cliente
+$codigo = $_POST['codigo_secreto_cliente'];
+
 if($id==0){ // Nuevo Reservacion
 	$valores = [
 	  'cliente_id' => $_POST['cliente_id'],
+		'ocupantes_ids' => $_POST['ocupantes_ids'],
 	  'habitacion_id' => $_POST['habitacion_id'],
 	  'personal_id' => G_USERID,
 	  'fecha_llegada' => trim($_POST['fecha_llegada'].$hora_llegada),
 		'fecha_salida' => trim($_POST['fecha_salida'].$hora_salida),
 	  'fecha_registro' => date('Y-m-d G:i:s'),
+		'fecha_ocupado' => $fecha_ocupado,
 		'total_habitacion' => $_POST['total_habitacion'],
 		'total_adicionales' => $_POST['total_extras'],
 		'total_reservacion' => $_POST['total_final'],
-		'estado' => $estado
+		'estado' => $estado,
+		'codigo_secreto_cliente' => $codigo
 	];
 
 	$r = $objDataBase->Insert($table_name, $valores);
@@ -87,11 +103,17 @@ if($id==0){ // Nuevo Reservacion
 		die(json_encode($arr));
 	}
 }else{ // Update
+	$reservacion = get_rows('hotel_reservacion', $id, 'id');
+	if($reservacion['codigo_secreto_cliente']!=$codigo){
+		$arr = ['resultado' => false, 'contenido' => 'Codigo secreto no coincide'];
+		die(json_encode($arr));
+	}
 	//print_r($productos); // $productos, contiene lista de productos en el reservacion temporal
 	$valores = [
 	  /*'habitacion_id' => $_POST['habitacion_id'],
-	  'fecha_llegada' => trim($_POST['fecha_llegada'].$hora_llegada),
-		'fecha_salida' => trim($_POST['fecha_salida'].$hora_salida),*/
+	  'fecha_llegada' => trim($_POST['fecha_llegada'].$hora_llegada),*/
+		'ocupantes_ids' => $_POST['ocupantes_ids'],
+		'fecha_salida' => trim($_POST['fecha_salida'].$hora_salida),
 		'total_habitacion' => $_POST['total_habitacion'],
 		'total_adicionales' => $_POST['total_extras'],
 		'total_reservacion' => $_POST['total_final'],

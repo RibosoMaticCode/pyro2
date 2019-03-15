@@ -130,6 +130,7 @@ rb_set_values_options('block_footer_ids', $_POST['block_footer_id']);
 
 rb_set_values_options('show_terms_register', $_POST['show_terms_register']);
 rb_set_values_options('pass_security', $_POST['pass_security']);
+rb_set_values_options('repit_pass_register', $_POST['repit_pass_register']);
 rb_set_values_options('more_fields_register', $_POST['more_fields_register']);
 rb_set_values_options('after_login_url', trim($_POST['after_login_url']));
 

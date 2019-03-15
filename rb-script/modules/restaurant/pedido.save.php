@@ -7,10 +7,21 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
+require_once 'funcs.php';
 
 $id = $_POST['id']; // pedido_id
 $platos = json_decode($_POST['platos_json'], true);
 $mesa_id = $_POST['mesa_id'];
+
+// Obtenemos datos del empleado
+$personal_codigo = $_POST['personal_code'];
+$personal = get_rows('rest_personal', $personal_codigo, 'codigo');
+if(!$personal){
+	$arr = ['resultado' => false, 'contenido' => 'Codigo del personal no existe.'];
+	die(json_encode($arr));
+}else{
+	$personal_id = $personal['id'];
+}
 
 if($id==0){ // Nuevo Pedido
 	$valores = [
@@ -35,7 +46,7 @@ if($id==0){ // Nuevo Pedido
 				'precio' => $detalle['prec'],
 				'hora_inicio' => date('Y-m-d G:i:s'),
 				'cantidad' => $detalle['cant'],
-				'codigo' => $_POST['personal_code'],
+				'codigo' => $personal_id,
 				'subtotal' => $importe,
 				'estado' => 1
 			];

@@ -244,6 +244,7 @@ a.page-resalt {
 
 /* TABLES */
 .tables{
+	border-spacing: 0;
 	width: 100%;
 	text-align: left;
 	clear: both;
@@ -277,4 +278,9 @@ a.page-resalt {
 }
 .tables td.col_center {
     text-align: center;
+}
+.tables tfoot tr:last-child td{
+	border-bottom:0;
+	background-color:#f3f3f3;
+	font-weight:bold;
 }

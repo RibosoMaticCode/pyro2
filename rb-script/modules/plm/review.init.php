@@ -1,21 +1,14 @@
 <?php
+require_once 'funcs.php';
 /* Parametros iniciales para CRUD basico */
-$title_section = "Personal";
-$file_prefix = "personal";
-$table_name = "rest_personal";
-$module_dir = "restaurant";
-$key = "rest_personal";
+$title_section = "Reseñas";
+$file_prefix = "review";
+$table_name = "plm_comments";
+$module_dir = "plm";
+$key = "plm_comments";
 
 $newedit_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".newedit.php";
 $urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
-
-$columns_title_coltable = [
-  'Nombres' => 'nombres',
-  'Apellidos' => 'apellidos',
-  'Fecha registro' => 'fecha_registro',
-  'Telefono' => 'telefono',
-  'Correo' => 'correo'
-];
 
 /* start */
 $objDataBase = new DataBase;
@@ -43,14 +36,12 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
     <table id="table" class="tables table-striped">
       <thead>
         <tr>
-          <th>Imagen</th>
-          <?php
-          foreach ($columns_title_coltable as $key => $value) {
-            ?>
-            <th><?= $key ?></th>
-            <?php
-          }
-          ?>
+          <th>Producto</th>
+          <th>Fecha registro</th>
+          <th>Comentario</th>
+          <th>Calificacion</th>
+          <th>Estado</th>
+          <th>Usuario</th>
           <th>Acciones</th>
         </tr>
       </thead>

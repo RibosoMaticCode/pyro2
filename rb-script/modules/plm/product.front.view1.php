@@ -131,10 +131,126 @@
       <div class="cols-9-md cover-tabs"><!-- descripcion and comments -->
         <div class="product-tabs">
           <a class="selected" href="#">Detalles del producto</a>
+          <a href="#review_list">Reseñas</a>
         </div>
         <div class="product-description">
           <?= $product['descripcion'] ?>
         </div>
+        <!--<div class="product-tabs">
+          <a class="selected" href="#">Reseñas</a>
+        </div>-->
+        <div id="review_list" class="product-review-list">
+          <?php
+          $comments = review_list($product['id']);
+          if(count($comments)>0){
+            ?>
+            <ul class="product-review-detail">
+              <li class="review-detail-headers">
+                <div class="cols-container">
+                  <div class="cols-3-md user-nickname">
+                    Comprador
+                  </div>
+                  <div class="cols-9-md user-review">
+                    Reseña
+                  </div>
+                </div>
+              </li>
+            <?php
+            foreach ($comments as $comment) {
+              $user = rb_get_user_info($comment['user_id']);
+              ?>
+              <li>
+                <div class="cols-container">
+                  <div class="cols-3-md review-user">
+                    <img src="<?= $user['url_img']?>" alt="user icon" />
+                    <span class="review-nickname">
+                      <?= $user['nickname'] ?>
+                    </span>
+                  </div>
+                  <div class="cols-9-md review-detail">
+                    <span class="review-date"><?= rb_sqldate_to($comment['date_register'],'d') ?> de <?= rb_mes_nombre(rb_sqldate_to($comment['date_register'],'m')) ?>, <?= rb_sqldate_to($comment['date_register'],'Y H:i') ?></span>
+                    <div class="review-comment"><strong><?= $comment['title'] ?></strong> <?= $comment['comment'] ?></div>
+                    <div class="review-imgs">
+                    <?php
+                    if($comment['img_ids']!=""):
+                      $img_ids = explode(",", $comment['img_ids']);
+                      foreach ($img_ids as $img_id) {
+                        $photo = rb_get_photo_details_from_id($img_id);
+                        ?>
+                        <a class="fancy" data-fancybox-group="gallery_<?= $comment['id']?>" href="<?= $photo['file_url']?>"><img src="<?= $photo['thumb_url'] ?>" alt="thumb" /></a>
+                        <?php
+                      }
+                    endif;
+                    ?>
+                    </div>
+                    <span class="review-score"><?= $comment['score'] ?> <i class="fas fa-star"></i></span>
+                  </div>
+                </div>
+              </li>
+              <?php
+            }
+            ?>
+            </ul>
+          <?php
+          }
+          ?>
+        </div>
+        <?php
+        if(G_ACCESOUSUARIO){
+          ?>
+          <div id="review-form" class="product-review-form">
+            <h3>Escribe tu reseña</h3>
+            <form id="review_form" class="form">
+              <input type="hidden" name="img_ids" value="" />
+              <input type="hidden" name="comment_id" value="0" />
+              <input type="hidden" name="product_url" value="<?= $product['url'] ?>" />
+              <input type="hidden" name="product_review_id" value="<?= $product['id'] ?>" />
+              <label>Califica (requerido)</label>
+                <ul class="review-core-list">
+                  <li>
+                    <input id="score1" type="radio" name="review_score" value="1" required /><label title="No me gustó" class="score1" for="score1"><i class="fas fa-star"></i></label>
+                  </li>
+                  <li>
+                    <input id="score2" type="radio" name="review_score" value="2" /><label title="Regular" class="score2" for="score2"><i class="fas fa-star"></i></label>
+                  </li>
+                  <li>
+                    <input id="score3" type="radio" name="review_score" value="3" /><label title="Está bien" class="score3" for="score3"><i class="fas fa-star"></i></label>
+                  </li>
+                  <li>
+                    <input id="score4" type="radio" name="review_score" value="4" /><label title="Me gustó" class="score4" for="score4"><i class="fas fa-star"></i></label>
+                  </li>
+                  <li>
+                    <input id="score5" type="radio" name="review_score" value="5" /><label title="Me encantó" class="score5" for="score5"><i class="fas fa-star"></i></label>
+                  </li>
+                </ul>
+              <label>Título (opcional)
+                <input type="text" name="review_title" />
+              </label>
+              <label>Comentario (requerido)
+                <textarea name="review_comment" required rows="6"></textarea>
+              </label>
+            </form>
+            <?php
+              include_once 'plugin.upload.php';
+            ?>
+            <div class="cover-preview-imgs">
+              <ul id="preview-imgs">
+              </ul>
+            </div>
+            <div class="form">
+              <button form="review_form" type="submit">Publicar</button>
+            </div>
+          </div>
+          <?php
+        }else{
+          ?>
+          <div class="review-login-before">
+            <h4>Escribe tu reseña</h4>
+            <a href="<?= G_SERVER ?>/login.php?redirect=<?= urlencode($product['url']) ?>#review-form">Iniciar sesion</a>
+          </div>
+          <?php
+        }
+        ?>
       </div>
       <div class="cols-3-md side-related"><!-- related products -->
         <h4>Productos relacionados</h4>
@@ -218,8 +334,8 @@ $(document).ready(function() {
       if(data.resultado){
         alert(data.contenido);
         // Actualizar contador de productos en carrito
-        if($('#cart_count').length>0){
-          $('#cart_count').html(data.cant_new);
+        if($('.plm_cart_count').length>0){
+          $('.plm_cart_count').html(data.cant_new);
         }
       }else{
         alert(data.contenido);
@@ -238,6 +354,53 @@ $(document).ready(function() {
     }
     $('#product_total').html(numberWithCommas( (cant * price).toFixed(2) ));
   }
+
+  var img_ids = [];
+  // Save review
+  $('#review_form').submit( function(event){
+    event.preventDefault();
+    product_url = $('input[name=product_url]').val();
+    // Recorrer la lista y capturar los ids
+
+    $("#preview-imgs li").each(function(){
+      img_ids.push( $(this).attr('data-id') );
+    });
+    console.log(img_ids);
+    $('input[name=img_ids]').val(img_ids);
+
+    $.ajax({
+      method: "post",
+      url: "<?= G_DIR_MODULES_URL ?>plm/review.save.php",
+      data: $( '#review_form' ).serialize()
+    })
+    .done(function( data ) {
+      if(data.resultado){
+        alert("Comentario añadido");
+        setTimeout(function(){
+  				window.location.href = product_url;
+  			}, 500);
+      }else{
+        alert(data.contenido);
+      }
+    });
+  });
+
+  // Remove imagen in form
+  $( "#preview-imgs" ).on( "click", ".remove-img", function(event) {
+    event.preventDefault();
+    var photo_id = $(this).closest('li').attr('data-id');
+    $.ajax({
+      method: "get",
+      url: "<?= G_SERVER ?>/rb-admin/core/files/file-del.php?id="+photo_id
+    })
+    .done(function( data ) {
+      if(data.result){
+        $('#previmg_'+photo_id).fadeOut().remove();
+      }else{
+        alert(data.message);
+      }
+    });
+  });
 });
 </script>
 <?php rb_footer(['footer-allpages.php'], false) ?>

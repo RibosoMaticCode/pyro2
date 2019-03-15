@@ -13,17 +13,20 @@ $urlreload=G_SERVER.'/rb-admin/module.php?pag=plm_config';
     <span class="info">Desarrollado por Jesus Liñán para Blackpyro</span>
   </div>
   <div class="seccion-body">
-    <p>Cuenta con las siguientes caracteristicas</p>
+    <p>Cuenta con las siguientes caracteristicas:</p>
 		<ul>
-<li>Gestiona listado de productos con informaion como precio, descuento, marca, modelos, detalles, foto y galeria, etc.</li>
-<li>Gestiona categorias de poroductos</li>
-<li>Listado de productos por categoria</li>
-<li>Buscador de productos.</li>
-<li>Pagina con detalles de cada producto registrado.</li>
-<li>Permite añadir producto a carrito de compra.</li>
-<li>Permite generar una orden del pedido.</li>
-<li>Permite el pago con tarjeta (configurado para culqi.com)</li>
-<li>Añade opcion al panel del usuario final, para ver sus pedido realizados.</li>
-</ul>
+			<li>Gestiona listado de productos con su informacion como: precio, descuento, marca, modelos, detalles, foto y galeria, etc.</li>
+			<li>Gestiona categorias y subcategorias de productos</li>
+			<li>Listado de productos por categoria.</li>
+			<li>Buscador de productos. Y lista resultados.</li>
+			<li>Pagina con detalles de cada producto registrado.</li>
+			<li>Permite añadir producto a carrito de compra.</li>
+			<li>Permite generar una orden del pedido.</li>
+			<li>Permite el pago con tarjeta (configurado para culqi.com)</li>
+			<li>Añade opcion al panel del usuario final, para ver sus pedido realizados.</li>
+			<li>Permite al usuario final escribir su reseña. Y usuario admin moderarlas.</li>
+			<li>Añade un widget para mostrar bloques de productos de diferentes diseños.</li>
+			<li>Entre otras funciones.</li>
+		</ul>
   </div>
 </section>

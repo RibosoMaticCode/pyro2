@@ -1,5 +1,3 @@
-<pre><?php// print_r(array_values($widgets)) ?>
-</pre>
 <?php rb_header(array('header-allpages.php')) ?>
 <div class="wrap-content">
 <?php

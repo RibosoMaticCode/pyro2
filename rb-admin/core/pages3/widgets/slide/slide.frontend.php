@@ -17,9 +17,15 @@ foreach ($fotos as $foto) {
     <?php
   }
   if($typegallery==1){ // simple galeria
-    $width = 100/$quantity;
+    if($quantity>0){
+      $width = 100/$quantity;
+      $style = 'style="width:'.$width.'%"';
+    }else{
+      $style = "";
+    }
+
     ?>
-    <div class="rb-cover-img" style="width:<?= $width ?>%">
+    <div class="rb-cover-img" <?= $style ?>>
       <?php if($widget['widget_values']['activelink']==1): ?>
         <a class="fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
       <?php else: ?>

@@ -6,10 +6,23 @@ require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once ABSPATH.'rb-script/funciones.php';
 
+if(!G_ACCESOUSUARIO){
+	$arr = array('result' => false, 'message' => 'No puede completarse esta accion', 'detail' => 'Usuario no inicio sesion' );
+  die(json_encode($arr));
+}
+if(!isset($_GET['id']) || $_GET['id']==0 || $_GET['id']==""){
+	$arr = array('result' => false, 'message' => 'No puede completarse esta accion', 'detail' => 'No hay valor a eliminar' );
+  die(json_encode($arr));
+}
 $value_id = $_GET['id'];
+$q = "SELECT * FROM photo WHERE id=".$value_id;
+$qr = $objDataBase->Ejecutar($q);
+$r = $qr->fetch_assoc();
 
-$q = $objDataBase->Ejecutar("SELECT src, type FROM photo WHERE id=$value_id");
-$r = $q->fetch_assoc();
+if(G_USERID<>$r['usuario_id']){
+	$arr = array('result' => false, 'message' => 'No puede completarse esta accion', 'detail' => 'Usuario no es el propietario' );
+  die(json_encode($arr));
+}
 $src_img = $r['src'];
 $fileType = $r['type'];
 

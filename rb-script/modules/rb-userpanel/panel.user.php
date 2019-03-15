@@ -57,6 +57,25 @@ function show_nivel($nivel_id){
 			<label class="col"><span>Ciudad:</span>
 				<input class="itext" type="text" id="cir" name="cir" value="<?= $UsuarioItem['ciudad'] ?>"  />
 			</label>
+			<label class="col"><span>Pais:</span>
+				<?php
+				require_once ABSPATH.'rb-script/countries.list.php';
+				?>
+				<!--<input class="itext" type="text" id="pai" name="pai" value="<?= $UsuarioItem['pais'] ?>"  />-->
+				<select id="pai" name="pai">
+					<option value="0">[Seleccione]</option>
+					<?php
+					foreach ($paises as $pais) {
+						?>
+						<option value="<?= $pais ?>" <?php if($UsuarioItem['pais']==$pais) echo "selected" ?>><?= $pais ?></option>
+						<?php
+					}
+					?>
+				</select>
+			</label>
+			<label class="col"><span>Codigo postal:</span>
+				<input class="itext" type="text" id="cop" name="cop" value="<?= $UsuarioItem['codigo_postal'] ?>"  />
+			</label>
 			<label class="col"><span>Telefono Movil *:</span>
 				<input class="itext" type="text" id="tem" name="tem" value="<?= $UsuarioItem['telefono-movil'] ?>"  />
 			</label>
@@ -72,13 +91,13 @@ function show_nivel($nivel_id){
 			<h3>Cambiar contrase&ntilde;a</h3>
 			<?php
 			if(isset($_GET['msg'])){
-			    switch($_GET['msg']):
-                    case 1:
-                        imprimir('<h3>Se cambio con exito la contrase&ntilde;a</h3>');
-                    break;
-                    default:
-                endswitch;
-            }
+				switch($_GET['msg']):
+					case 1:
+						imprimir('<h3>Se cambio con exito la contrase&ntilde;a</h3>');
+						break;
+					default:
+        endswitch;
+      }
 			?>
 			<label class="col"><span>Contrase&ntilde;a:</span>
 				<input class="itext" type="password" id="p1" name="pass1" />

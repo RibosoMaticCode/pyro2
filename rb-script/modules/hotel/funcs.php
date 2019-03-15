@@ -15,26 +15,31 @@ function get_option($option){
 
 function estado_habitacion($estado){
   switch ($estado) {
+		case '0':
+      return "Anulado";
+      break;
     case '1':
       return "Reservado";
       break;
     case '2':
       return "Ocupado";
       break;
-    case '0':
-      return "Anulado";
-      break;
     case '3':
-      return "Pagado";
-    default:
-      // code...
-      break;
+      return "Finalizado";
   }
 }
 
 function get_rows($table, $value, $column_id = "id"){
 	global $objDataBase;
-  $r = $objDataBase->Ejecutar("SELECT * FROM $table WHERE $column_id=$value");
+	if(is_numeric($value)){
+		$r = $objDataBase->Ejecutar("SELECT * FROM $table WHERE `$column_id`=$value");
+	}else{
+		$r = $objDataBase->Ejecutar("SELECT * FROM $table WHERE `$column_id`='$value'");
+	}
+
+	if($r->num_rows == 0){
+		return false;
+	}
 	$row = $r->fetch_assoc();
 	return $row;
 }

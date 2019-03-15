@@ -18,16 +18,15 @@ include 'islogged.php';
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/responsive.css" />
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/menu.css" />
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/fonts.css" />
-	<!--<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/font-awesome.css" />-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/resource/nestable/nestable.css" />
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/pages3/pages3.css" />
 	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/forms/forms.edit.css" />
 	<!-- modulos css -->
 	<?= do_action('panel_header_css') ?>
-	<script src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.1.min.js"></script>
+	<script src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.2.min.js"></script>
 	<script src="<?= G_SERVER ?>/rb-admin/js/func.js"></script>
-	<script src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>
+	<!--<script src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>-->
 	<!-- modulos js -->
 	<?= do_action('panel_header_js') ?>
 	<!-- Add fancyBox -->

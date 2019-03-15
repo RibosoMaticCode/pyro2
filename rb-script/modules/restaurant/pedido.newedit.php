@@ -3,6 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
+require_once 'funcs.php';
 
 /* parametros inciales */
 $file_prefix = "pedido";
@@ -35,8 +36,17 @@ $mesa = $qm->fetch_assoc();
 	<input type="hidden" id="pedido_id" name="id" value="<?php if(isset($pedido)) echo $pedido['id']; ?>" required />
 	<input type="hidden" name="platos_json" id="platos_json" />
 	<!-- campos inicio -->
+	<?php if(isset($pedido)): ?>
+		<?php
+		$personal = get_rows('rest_personal', $pedido['codigo'], 'codigo');
+		?>
+ 	<label>
+		Nombres personal
+    <input type="text" name="personal_name" readonly value="<?= $personal['nombres']?> <?= $personal['apellidos']?>" />
+	</label>
+	<?php endif ?>
   <label>
-    Personal (codigo autorizacion)
+    Codigo personal (<em>codigo para generar pedido o hacer cambios</em>)
     <input type="password" name="personal_code" required autocomplete="off" />
   </label>
 	<div class="cols-container container_plato_filter">

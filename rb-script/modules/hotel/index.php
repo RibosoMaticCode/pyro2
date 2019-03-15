@@ -98,7 +98,11 @@ if(isset($_GET['pag']) && $_GET['pag']=="hotel_reservaciones"):
 	}
 	function hotel_reservaciones(){
 		global $rb_module_url;
-		include_once 'reservaciones.init.php';
+		if(isset($_GET['res_id'])){
+			include_once 'reservaciones.newedit.php';
+		}else{
+			include_once 'reservaciones.init.php';
+		}
 	}
 	add_function('module_title_page','hotel_reservaciones_title');
 	add_function('module_content_main','hotel_reservaciones');

@@ -36,8 +36,12 @@ if( isset($_GET['parent_id']) ){
   </label>
   <label>
     Descripcion
-    <textarea name="descripcion"><?php if(isset($row)) echo $row['apellidos'] ?></textarea>
+    <textarea name="descripcion"><?php if(isset($row)) echo $row['descripcion'] ?></textarea>
   </label>
+	<label>
+		<input type="checkbox" name="link" <?php if(isset($row) && $row['islink']==0) echo "checked" ?>> Link vacio
+		<span class="info">No llevar a ningun lado</span>
+	</label>
   <label>
     Foto
 		<script>
@@ -57,7 +61,7 @@ if( isset($_GET['parent_id']) ){
 			$qc = $objDataBase->Ejecutar("SELECT * FROM plm_category ORDER BY nombre");
 			while($category = $qc->fetch_assoc()){
 				?>
-				<option value="<?= $category['id'] ?>" <?php if(isset($row) && $row['categoria']==$category['id']){ echo "selected"; }elseif($category['id']==$parent_id){ echo "selected"; } ?>><?= $category['nombre'] ?></option>
+				<option value="<?= $category['id'] ?>" <?php if(isset($row) && $row['parent_id']==$category['id']){ echo "selected"; }elseif($category['id']==$parent_id){ echo "selected"; } ?>><?= $category['nombre'] ?></option>
 				<?php
 			}
 			?>

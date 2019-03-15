@@ -55,11 +55,11 @@ $(document).ready(function() {
 		<div class="content-edit">
 			<section class="seccion">
 				<div class="seccion-body">
-					<label>Nombre:
+					<label>Asunto:
 						<input name="name" id="form_name" type="text" value="<?php if(isset($row)) echo $row['name'] ?>" required />
 					</label>
 					<label>
-						Contenido previo (opcional)
+						Contenido previo al formulario (opcional)
 						<span class="info">Puede incluir HTML</span>
 						<textarea id="form_intro" name="form_intro" class=" mceEditor"><?php if(isset($row)) echo $row['intro'] ?></textarea>
 					</label>
@@ -83,7 +83,7 @@ $(document).ready(function() {
 						<input name="mails" id="form_mails" type="text" value="<?php if(isset($row)) echo $row['mails'] ?>" />
 					</label>
 					<label>
-						Mensaje de respuesta (opcional)
+						Mensaje de respuesta luego del envio (opcional)
 						<span class="info">Puede incluir HTML</span>
 						<textarea id="form_respuesta" name="form_respuesta" class=" mceEditor"><?php if(isset($row)) echo $row['respuesta'] ?></textarea>
 					</label>

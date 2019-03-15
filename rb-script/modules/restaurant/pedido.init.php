@@ -17,11 +17,12 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM rest_mesa ORDER BY id ASC");
       while($mesa = $qlist->fetch_assoc()){
         ?>
         <div class="cover-mesa">
-          <a accesskey="<?= $mesa['id'] ?>" class="mesa fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?mesa=<?= $mesa['id'] ?>">
+          <a accesskey="<?= $mesa['id'] ?>" class="mesa <?php if($mesa['estado']==1) echo "ocupada" ?> fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?mesa=<?= $mesa['id'] ?>">
+            <img src="<?= G_DIR_MODULES_URL.$module_dir ?>/table.png" alt="mensa" />
             <span><?= $mesa['nombre'] ?></span>
-            <?php if($mesa['estado']==1){ ?>
+            <?php /*if($mesa['estado']==1){ ?>
             <span>En proceso..</span>
-            <?php } ?>
+            <?php } */ ?>
           </a>
         </div>
         <?php

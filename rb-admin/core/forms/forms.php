@@ -136,7 +136,7 @@ function show_form( $params ){ // Mostrar el formulario segun su id
 	$formhtml = "
 	<script>
 	$(document).ready(function() {
-		$('#".$form['name_id']."').submit(function (){
+		$('#".$form['name_id']."').submit(function (event){
 			event.preventDefault();
 			$.ajax({
 				method: 'post',

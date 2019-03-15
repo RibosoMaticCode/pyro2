@@ -7,8 +7,8 @@
  */
 (function ($) {
     if ($.fn.ajaxForm == undefined) {
-        //$.getScript("http://malsup.github.io/jquery.form.js");
-        $.getScript("resource/jquery.file.upload/jquery.form.js");
+        $.getScript("https://malsup.github.io/jquery.form.js"); // Online
+        //$.getScript("resource/jquery.file.upload/jquery.form.js"); //Local
     }
     var feature = {};
     feature.fileapi = $("<input type='file'/>").get(0).files !== undefined;
@@ -37,6 +37,7 @@
             showCancel: true,
             showAbort: true,
             showDone: true,
+            showView: false,
             showDelete:false,
             showError: true,
             showStatusAfterSuccess: true,
@@ -44,7 +45,7 @@
             showFileCounter:true,
             fileCounterStyle:"). ",
             showProgress:false,
-            onSelect:function(files){ return true;},            
+            onSelect:function(files){ return true;},
             onSubmit: function (files, xhr) {},
             onSuccess: function (files, response, xhr) {},
             onError: function (files, status, message) {},
@@ -80,13 +81,13 @@
             s.dragDrop = false;
         }
 
-        
+
         var obj = this;
 
         var uploadLabel = $('<div>' + $(this).html() + '</div>');
         $(uploadLabel).addClass(s.uploadButtonClass);
 
-        //wait form ajax Form plugin and initialize		
+        //wait form ajax Form plugin and initialize
         (function checkAjaxFormLoaded() {
             if ($.fn.ajaxForm) {
 
@@ -237,7 +238,7 @@
             		fileNameStr = obj.fileCounter + s.fileCounterStyle + files[i].name
             	else
             		fileNameStr = files[i].name;
-            		
+
                 pd.filename.html(fileNameStr);
                 var form = $("<form style='display:block; position:absolute;left: 150px;' class='" + obj.formGroup + "' method='" + s.method + "' action='" + s.url + "' enctype='" + s.enctype + "'></form>");
                 form.appendTo('body');
@@ -281,11 +282,11 @@
                 var fileArray = [];
                 if (this.files) //support reading files
                 {
-                    for (i = 0; i < this.files.length; i++) 
+                    for (i = 0; i < this.files.length; i++)
                     {
                         fileArray.push(this.files[i].name);
                     }
-                   
+
                     if(s.onSelect(this.files) == false)
 	                	return;
                 } else {
@@ -329,20 +330,20 @@
 
 
             });
-            
+
 	         form.css({'margin':0,'padding':0});
             var uwidth=$(uploadLabel).width()+10;
             if(uwidth == 10)
             	uwidth =120;
-            	
+
             var uheight=uploadLabel.height()+10;
             if(uheight == 10)
             	uheight = 35;
 
 			uploadLabel.css({position: 'relative',overflow:'hidden',cursor:'default'});
-			fileInput.css({/*position: 'absolute','cursor':'pointer',  
+			fileInput.css({/*position: 'absolute','cursor':'pointer',
 							'top': '0px',
-							'width': uwidth,  
+							'width': uwidth,
 							'height':uheight,
 							'left': '0px',
 							'z-index': '2',
@@ -354,7 +355,7 @@
 							*/});
 	         form.appendTo(uploadLabel);
 
-            //dont hide it, but move it to 
+            //dont hide it, but move it to
            /* form.css({
                 margin: 0,
                 padding: 0,
@@ -445,38 +446,36 @@
                 },
                 uploadProgress: function (event, position, total, percentComplete) {
 		            //Fix for smaller file uploads in MAC
-                	if(percentComplete > 98) percentComplete =98; 
-                	
+                	if(percentComplete > 98) percentComplete =98;
+
                     var percentVal = percentComplete + '%';
                     if (percentComplete > 1) pd.progressbar.width(percentVal)
-                    if(s.showProgress) 
+                    if(s.showProgress)
                     {
                     	pd.progressbar.html(percentVal);
                     	pd.progressbar.css('text-align', 'center');
                     }
-	                
+
                 },
                 success: function (data, message, xhr) {
                     obj.responses.push(data);
                     pd.progressbar.width('100%')
                     if(s.showProgress)
-                    { 
+                    {
                     	pd.progressbar.html('100%');
                     	pd.progressbar.css('text-align', 'center');
-                    }	
-	                
+                    }
+
                     pd.abort.hide();
                     s.onSuccess.call(this, fileArray, data, xhr);
                     if (s.showStatusAfterSuccess) {
+                        // Ver boton editar
                         if (s.showDone) {
-                        	//alert(data);
-                        	//alert(message);
-                        	//alert(xhr);
-                            /*pd.done.show();*/
+                          //console.log(data);
                             pd.linkfile.show();
-                            
+
                             //next line add by Jesus Liñan 12/02/15 04:22pm
-                            pd.linkfile.html('<a target="'+s.target+'" href="'+s.urlimgedit+data+'">Editar</a>');
+                            pd.linkfile.html('<a target="'+s.target+'" href="'+s.urlimgedit+data.last_id+'">Editar</a>');
                             pd.done.click(function () {
                                 pd.statusbar.hide("slow");
                                 pd.statusbar.remove();
@@ -484,6 +483,13 @@
                         } else {
                             pd.done.hide();
                         }
+                        // Ver boton ver //next line add by Jesus Liñan 06/03/19 03:34pm
+                        if (s.showView) {
+                            // Programar
+                        } else {
+                            pd.done.hide();
+                        }
+                        // Ver boton eliminar
                         if(s.showDelete)
                         {
                         	pd.del.show();

@@ -4,8 +4,9 @@
 
 require_once ABSPATH."global.php";
 require_once ABSPATH.'rb-script/class/rb-database.class.php';*/
+require_once "funcs.php";
 $urlreload=G_SERVER.'/rb-admin/module.php?pag=plm_products';
-include_once ABSPATH.'rb-admin/tinymce/tinymce.mini.config.php';
+include_once ABSPATH.'rb-admin/tinymce/tinymce.config.php';
 $objDataBase = new Database;
 
 if( isset($_GET['product_id']) ){
@@ -157,12 +158,27 @@ $categories = json_decode($option['plm_value'], true);
               Categoria
               <select name="categoria">
                 <?php
-                $qc = $objDataBase->Ejecutar("SELECT * FROM plm_category ORDER BY nombre");
-                while($category = $qc->fetch_assoc()){
-                  ?>
-                  <option value="<?= $category['id'] ?>" <?php if(isset($row) && $row['categoria']==$category['id']) echo "selected" ?>><?= $category['nombre'] ?></option>
-                  <?php
+                if(isset($row)):
+                  $selected_id = $row['categoria'];
+                else:
+                  $selected_id = 0;
+                endif;
+
+                $categorias = list_category(0);
+                $nivel = 0;
+                function show_categories_list($categorias,$nivel, $selected_id){
+                  $newedit_path = G_DIR_MODULES_URL."plm/category.newedit.php";
+                  foreach ($categorias as $categoria) {
+                    ?>
+                    <option value="<?= $categoria['id'] ?>" <?php if($categoria['id']==$selected_id) echo "selected" ?>><?php echo str_repeat("-", $nivel) ?> <?= $categoria['nombre'] ?></option>
+                    <?php
+                    if(isset($categoria['items'])){
+                      show_categories_list($categoria['items'], $nivel+1, $selected_id);
+                    }
+                  }
                 }
+
+                show_categories_list($categorias, $nivel, $selected_id);
                 ?>
               </select>
             </label>

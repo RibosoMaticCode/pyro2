@@ -120,22 +120,8 @@
 		width:100%!important;
 	}
 }
-@media screen and (max-width : 350px){
-	.cols-1-sm,
-	.cols-2-sm,
-	.cols-3-sm,
-	.cols-4-sm,
-	.cols-5-sm,
-	.cols-6-sm,
-	.cols-7-sm,
-	.cols-8-sm,
-	.cols-9-sm,
-	.cols-10-sm,
-	.cols-11-sm,
-	.cols-12-sm{
-		width:100%!important;
-	}
-}
+/* el sufijo -sm (small), mantendra su tamaño no importa que tanto se ajuste la pantalla de dispositvo */
+
 .inner-margin{
 	padding:0 15px;
 }

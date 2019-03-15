@@ -32,11 +32,13 @@
 <script>
 $(document).ready(function() {
   $( ".bg" ).click(function(event) {
+    event.preventDefault();
     $(".bg").fadeOut();
     $(".winfloat").hide();
   });
 
   $('.view_order').click( function(event){
+    event.preventDefault();
     console.log($(this).next('.details').html());
     var content_details = $(this).next('.details').html();
     $(".winfloat").html(content_details);

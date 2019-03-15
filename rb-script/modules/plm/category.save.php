@@ -12,13 +12,18 @@ require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 $id = $_POST['id'];
+$islink = 1; // nombre de categoria servira como link
+if(isset($_POST['link'])){
+	$islink = 0;
+}
 
 $valores = [
   'nombre' => $_POST['nombre'],
   'nombre_enlace' => rb_cambiar_nombre(trim($_POST['nombre'])),
   'descripcion' => trim($_POST['descripcion']),
 	'foto_id' => $_POST['foto_id_id'],
-	'parent_id' => $_POST['parent_id']
+	'parent_id' => $_POST['parent_id'],
+	'islink' => $islink
 ];
 
 if($id==0){ // Nuevo

@@ -240,6 +240,9 @@ function rb_get_user_info($User_id){
 		$UserArray['telefono_fijo'] = $Users['telefono-fijo'];
 		$UserArray['correo'] = $Users['correo'];
 		$UserArray['direccion'] = $Users['direccion'];
+    $UserArray['ciudad'] = $Users['ciudad'];
+    $UserArray['codigo_postal'] = $Users['codigo_postal'];
+    $UserArray['pais'] = $Users['pais'];
     $UserArray['photo_id'] = $Users['photo_id'];
 		$UserArray['url_img'] = rb_get_img_profile($Users['id']);
 		$UserArray['url'] = rb_url_link( 'user', $Users['id'] );

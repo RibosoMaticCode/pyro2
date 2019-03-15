@@ -1,7 +1,11 @@
 <?php
 while ($row = $qlist->fetch_assoc()):
+  $photo = rb_get_photo_details_from_id($row['foto_id']);
   ?>
 	<tr>
+    <td>
+      <img style="max-width:50px" src="<?= $photo['thumb_url'] ?>" alt="imagen" />
+    </td>
     <?php
     foreach ($columns_title_coltable as $key => $value) {
       ?>

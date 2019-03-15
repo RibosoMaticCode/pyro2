@@ -18,3 +18,20 @@ ul.categories_list li .option {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* listado de reseñas */
+.review-imgs a img {
+    max-width: 60px;
+    height: auto;
+}
+.review-imgs{
+  padding: 5px 0;
+}
+.review-imgs div {
+    display: inline-block;
+    text-align:center;
+}
+
+.review-imgs div a {
+    display:block;
+}

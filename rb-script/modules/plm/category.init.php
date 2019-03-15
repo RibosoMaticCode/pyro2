@@ -33,21 +33,29 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
         <?php
         $categorias = list_category(0);
 
-        function show_categories($categorias){
+        function show_categories_backend($categorias){
           $newedit_path = G_DIR_MODULES_URL."plm/category.newedit.php";
           echo "<ul class='categories_list'>\n";
           foreach ($categorias as $categoria) {
             ?>
             <li>
               <div><?= $categoria['nombre'] ?>
+                <?php
+                if($categoria['islink']==1){
+                  ?>
+                  <a target="_blank" href="<?= $categoria['url'] ?>"><i class="fas fa-external-link-alt"></i></a>
+                  <?php
+                }
+                ?>
                 <div class="option">
                   <a class="fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?parent_id=<?= $categoria['id'] ?>" title="Añadir categoria aqui"><i class="fa fa-plus-circle"></i></a>
+                  <a class="fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?id=<?= $categoria['id'] ?>" title="Editar"><i class="fas fa-edit"></i></a>
                   <a href="#" title="Eliminar. Tambien se eliminaran sus items." class="del" data-item="<?= $categoria['id'] ?>"><i class="fa fa-times"></i></a>
                 </div>
               </div>
               <?php
               if(isset($categoria['items'])){
-                show_categories($categoria['items']);
+                show_categories_backend($categoria['items']);
               }?>
             </li>
             <?php
@@ -55,7 +63,7 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
           echo "</ul>";
         }
 
-        show_categories($categorias);
+        show_categories_backend($categorias);
         ?>
       </div>
     </div>

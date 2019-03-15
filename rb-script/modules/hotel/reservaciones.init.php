@@ -23,7 +23,8 @@ if(isset($_GET['date'])){
 $objDataBase = new DataBase;
 
 // Habitaciones ocupadas
-$q = "SELECT h.*, r.* FROM hotel_reservacion r, hotel_habitacion h WHERE h.id = r.habitacion_id AND '$fecha$hora_llegada' >= r.fecha_llegada AND r.fecha_salida >= '$fecha$hora_salida'";
+// Consultamos que habitaciones estan reservadas/ocupadas en el rango de fechas dadas. Obviamos las reservaciones finalizadas (estado=3)
+$q = "SELECT h.*, r.* FROM hotel_reservacion r, hotel_habitacion h WHERE h.id = r.habitacion_id AND '$fecha$hora_llegada' >= r.fecha_llegada AND r.fecha_salida >= '$fecha$hora_salida' AND (r.estado=1 OR r.estado=2)";
 $qho = $objDataBase->Ejecutar( $q );
 
 // Determinar Habitaciones disponibles:
@@ -39,7 +40,7 @@ $hoy = date('Y-m-d'); // Fecha actual
 if($fecha > $hoy){
   // Consulta si hay habitaciones que se desocupan a la hora del chekcout de este dia
   // Ej. Esto lista las habitaciones que se desocuparan hoy a las 14:30 horas, por lo tanto deben estar disponibles para elegir
-  $q = "SELECT r.*, h.id, h.numero_habitacion FROM hotel_reservacion r, hotel_habitacion h WHERE r.habitacion_id = h.id AND date(fecha_salida) = '$fecha' AND time(fecha_salida) <= '$hora_llegada'";
+  $q = "SELECT r.*, h.id, h.numero_habitacion FROM hotel_reservacion r, hotel_habitacion h WHERE r.habitacion_id = h.id AND date(fecha_salida) = '$fecha' AND time(fecha_salida) <= '$hora_llegada' AND (r.estado=1 OR r.estado=2)";
   //echo $q;
   $qht = $objDataBase->Ejecutar( $q );
 }
@@ -70,7 +71,6 @@ $qhd = $objDataBase->Ejecutar( $q );
     </ul>
   </div>
   <div class="seccion-body">
-
     <!-- new section -->
     <h3>Habitaciones disponibles (A partir de las <?= get_option('hora_llegada') ?> horas)</h3>
     <ul class="list_habitaciones available">
@@ -85,7 +85,7 @@ $qhd = $objDataBase->Ejecutar( $q );
           if($qhdt->num_rows == 0){
       			?>
       				<li value="<?= $habitacion['id'] ?>">
-                <a class="fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
+                <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
                   <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $habitacion['numero_habitacion'] ?>
                   <br />
                   <span>Disponible desde: <?= get_option('hora_llegada') ?> horas</span>
@@ -99,7 +99,7 @@ $qhd = $objDataBase->Ejecutar( $q );
   			while($habitacion = $qhd->fetch_assoc()):
   			?>
   				<li value="<?= $habitacion['id'] ?>">
-            <a class="fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
+            <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
               <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $habitacion['numero_habitacion'] ?>
             </a>
           </li>
@@ -113,14 +113,14 @@ $qhd = $objDataBase->Ejecutar( $q );
 			?>
     </ul>
     <h3>Habitaciones reservadas</h3>
-    <ul class="list_habitaciones occupied">
+    <ul class="list_habitaciones">
       <?php
       $qho->data_seek(0);
         if($qho->num_rows > 0):
   			while($reservacion = $qho->fetch_assoc()):
   			?>
   				<li value="<?= $reservacion['habitacion_id'] ?>">
-            <a class="fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>?res_id=<?= $reservacion['id'] ?>&date=<?= $fecha ?>">
+            <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=<?= $reservacion['id'] ?>&hab=<?= $reservacion['habitacion_id'] ?>&date=<?= $fecha ?>" class="<?php if($reservacion['estado']==1) echo "reservado"; else echo "ocupado"?>" href="<?= $newedit_path ?>?res_id=<?= $reservacion['id'] ?>&date=<?= $fecha ?>">
               <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $reservacion['numero_habitacion'] ?>
               <br/>
             <span>Llegada : <?= rb_sqldate_to($reservacion['fecha_llegada'], 'd-m-Y H:i')?></span><br />
@@ -142,27 +142,17 @@ $qhd = $objDataBase->Ejecutar( $q );
 
 <!-- listado -->
 <?php
-$columns_title_coltable = [
-  'Fecha llegada' => 'fecha_llegada',
-  'Fecha salida' => 'fecha_salida',
-  /*'Habitacion' => 'habitacion_id',
-  'Cliente' => 'cliente_id',
-  'Personal' => 'personal_id',*/
-  'Total habitacion' => 'total_habitacion',
-  'Total adicionales' => 'total_adicionales',
-  'Total reservacion' => 'total_reservacion'
-];
-
 $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
 ?>
 <section class="seccion">
   <div class="seccion-header">
-    <h3>Listado de reservaciones</h3>
+    <h3>Historial de reservaciones</h3>
   </div>
   <div class="seccion-body">
     <script>
       $(document).ready(function() {
         $('#table').DataTable({
+          "order": [[ 0, "desc" ]],
           "language": {
             "url": "resource/datatables/Spanish.json"
           }
@@ -172,16 +162,15 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
     <table id="table" class="tables table-striped">
       <thead>
         <tr>
+          <th>Codigo Reservacion</th>
+          <th>Fecha registro</th>
           <th>Habitacion</th>
           <th>Cliente</th>
-          <?php
-          foreach ($columns_title_coltable as $key => $value) {
-            ?>
-            <th><?= $key ?></th>
-            <?php
-          }
-          ?>
+          <th>Fechas reservación</th>
           <th>Estado</th>
+          <th>Ocupado desde</th>
+          <th>Fin de la estadia</th>
+          <th>Total</th>
           <th>Acciones</th>
         </tr>
       </thead>

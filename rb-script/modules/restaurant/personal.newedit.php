@@ -21,28 +21,40 @@ if( isset($_GET['id']) ){
   $id = 0;
 }
 ?>
-<form id="frmNewEdit" class="form" style="max-width:400px">
+<form id="frmNewEdit" class="form pw-workaround" style="max-width:400px">
 	<input type="hidden" name="id" value="<?= $id ?>" required />
 	<!-- campos inicio -->
   <label>
     Nombres
-    <input type="text" name="nombres" required value="<?php if(isset($row)) echo $row['nombres'] ?>" />
+    <input type="text" name="nombres" required value="<?php if(isset($row)) echo $row['nombres'] ?>" autocomplete="off" />
   </label>
   <label>
     Apellidos
-    <input type="text" name="apellidos" required value="<?php if(isset($row)) echo $row['apellidos'] ?>" />
+    <input type="text" name="apellidos" required value="<?php if(isset($row)) echo $row['apellidos'] ?>" autocomplete="off" />
+  </label>
+	<label>
+    Codigo / Firma para autorizacion
+		<span class="info">Combinacion de letras y numeros. Max. 4 caracteres</span>
+    <input type="password" autocomplete="new-password" name="codigo" required value="<?php if(isset($row)) echo $row['codigo'] ?>" maxlength="4" />
   </label>
   <label>
     Telefono
-    <input type="tel" name="telefono" required value="<?php if(isset($row)) echo $row['telefono'] ?>" />
+    <input type="tel" name="telefono" required value="<?php if(isset($row)) echo $row['telefono'] ?>" autocomplete="off" />
   </label>
   <label>
     Correo
-    <input type="email" name="correo" required value="<?php if(isset($row)) echo $row['correo'] ?>" />
+    <input type="email" name="correo" required value="<?php if(isset($row)) echo $row['correo'] ?>" autocomplete="off" />
   </label>
   <label>
     Foto
-    <input type="text" name="foto_id" value="<?php if(isset($row)) echo $row['foto_id'] ?>" />
+		<script>
+			$(document).ready(function() {
+				$(".foto_plato").filexplorer({
+					inputHideValue: "<?php if(isset($row)) echo $row['foto_id']; else echo "0"; ?>"
+				});
+			});
+		</script>
+    <input type="text" readonly name="foto_id" class="foto_plato" value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['foto_id'] : 0 ); echo $photos['src']; ?>" />
   </label>
 	<!-- campos final -->
   <div class="cols-container">

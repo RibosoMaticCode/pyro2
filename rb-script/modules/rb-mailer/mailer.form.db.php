@@ -63,7 +63,7 @@ if( isset($_POST['g-recaptcha-response']) ){
   	if($arr['success']==""){
   		$recaptcha_msg = 'spam';
   	}
-	  
+
 	if($arr['success']==1){
   		$recaptcha_msg = 'done';
   	}
@@ -83,7 +83,7 @@ if($recaptcha_msg=="spam"){
 $form = $r->fetch_assoc();
 
 // Valores de los campos del formulario
-$values = $_POST['valores']; 
+$values = $_POST['valores'];
 
 // Verificar existencia de ciertos elementos y validarlos
 $keys_config = json_decode($form['validations'], true); // Pasamos campos a validar en formato JSON a Array PHP
@@ -153,11 +153,11 @@ foreach ($values as $key => $value) {
 $email_content .= "--<br />El e-mail fue enviado a través del formulario de la web.";
 
 // Destinatarios :
-$recipient = rb_get_values_options('mail_destination'); //"dweb@emocion.pe";
+$recipient = $form['mails']=="" ? rb_get_values_options('mail_destination') : $form['mails']; //"dweb@emocion.pe";
 //$cc = "dweb@emocion.pe"; -> copia, habilitar luego
 
 // Configuracion del cabecera
-$subject = "Formulario de Contacto";
+$subject = $form['name'];//"Formulario de Contacto";
 $from_name = rb_get_values_options('name_sender');
 $mail_no_reply = rb_get_values_options('mail_sender');
 //$mail_reply = "info@".G_HOSTNAME; -> correo de respuesta, habilitar luego
@@ -172,7 +172,7 @@ $email_headers .= "Content-Type: text/html; UTF-8\r\n";
 // Send the email.
 if (mail($recipient, $subject, $email_content, $email_headers)) {
 	if($form['respuesta']==""){
-		$rsptaHtml = "Envio correcto de la informacion";
+		$rsptaHtml = "Envio correcto de la informacion del formulario.";
 	}else{
 		$rsptaHtml = $form['respuesta'];
 	}

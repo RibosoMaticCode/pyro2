@@ -14,12 +14,12 @@ $widget = json_decode($row['contenido'], true);
 switch ($widget['widget_type']) {
   case 'html':
     echo '<div class="'.$widget['widget_class'].'">';
-    echo rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content']));
+    echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
     echo '</div>';
     break;
   case 'htmlraw':
     echo '<div class="'.$widget['widget_class'].'">';
-    echo rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content']));
+    echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
     echo '</div>';
     break;
   case 'slide':

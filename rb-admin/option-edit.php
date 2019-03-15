@@ -331,6 +331,16 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               Contraseñas seguras
             </label>
 
+            <label>Requerir repetir contraseñas al registrarse</label>
+            <label class="lbl-listoptions">
+              <input name="repit_pass_register" type="radio" value="1" <?php if(rb_get_values_options('repit_pass_register')==1) echo "checked=\"checked\""?> />
+              Si
+            </label>
+            <label class="lbl-listoptions">
+              <input name="repit_pass_register" type="radio" value="0" <?php if(rb_get_values_options('repit_pass_register')==0) echo "checked=\"checked\""?> />
+              No
+            </label>
+
             <label>Campos adicionales en formulario de registro:
               <span class="info">Se acepta formato JSON. Valor por defecto: {"nombres":"Nombres"}</span>
               <input name="more_fields_register" type="text" value='<?= rb_get_values_options('more_fields_register') ?>' />

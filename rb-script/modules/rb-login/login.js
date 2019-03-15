@@ -137,7 +137,8 @@ $(document).ready(function() {
     }
   }
   */
-  $("#frmRegister").submit(function(e) {
+
+  /* $("#frmRegister").submit(function(e) {
     e.preventDefault();
     var url = "../rb-script/modules/rb-login/user.register.php";
       $.ajax({
@@ -175,5 +176,5 @@ $(document).ready(function() {
     $('.bg').hide();
     $('.terms').hide();
     $('.btnRegister').prop('disabled', false);
-  });
+  }); */
 });

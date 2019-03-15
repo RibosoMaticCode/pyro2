@@ -5,12 +5,25 @@
     width: 25%;
 }
 a.mesa {
-    border: 1px solid #999;
     width: 90%;
     display: block;
     margin: 5% auto;
     text-align: center;
     padding: 10px 0;
+    background-color: #a5a5a5;
+}
+a.mesa img {
+    max-width: 40px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+a.mesa span {
+    color: #fff;
+    font-weight: bold;
+}
+a.mesa.ocupada {
+    background-color: red;
 }
 .cover_plato_filter{
   position: relative;
@@ -43,11 +56,10 @@ a.plato img {
     background-color:#fdfdfd;
 }
 .pedido_detalles .plato-item{
-  font-weight: bold;
   border-bottom:1px solid #c7c7c7;
   padding: 8px 15px;
   background-color:#fff;
-  font-size: .95em;
+  font-size: .85em;
 }
 .container_plato_filter div {
     padding: 2px;

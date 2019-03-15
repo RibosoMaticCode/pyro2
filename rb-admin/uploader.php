@@ -57,7 +57,7 @@ if(G_ACCESOUSUARIO>0){
 	    }
 		}
 
-		$arr = ['resultado' => true, 'last_id' => $ultimo_id, 'type' => $fileType ];
+		$arr = ['resultado' => true, 'last_id' => $ultimo_id, 'type' => $fileType, 'filename' => $fileName ];
 	}
 
 }else{

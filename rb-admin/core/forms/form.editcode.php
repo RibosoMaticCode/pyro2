@@ -11,7 +11,7 @@
 		<button class="button" id="codeForm-btncancel">Cancelar</button>
 	</div>
 </div>
-<script src="https://ajaxorg.github.io/ace-builds/src/ace.js"></script>
+<script src="https://ajaxorg.github.io/ace-builds/src-min/ace.js"></script>
 <script>
     var editor1 = ace.edit("htmlraw_text");
     editor1.getSession().setMode("ace/mode/html");

@@ -26,6 +26,8 @@ if(isset($_POST)){
 
 	$cr = $_POST['cir'];
 	$tf = $_POST['tef'];
+	$pa = $_POST['pai'];
+	$cp = $_POST['cop'];
 	//$tm = $_POST['tem'];
 	if(empty($_POST['tem'])):
 		$arr = [ 'result' => false, 'message' => 'Telefono movil es obligatorio' ];
@@ -49,6 +51,8 @@ if(isset($_POST)){
 		'apellidos' => $ap,
 		'direccion' => $di,
 		'ciudad' => $cr,
+		'pais' => $pa,
+		'codigo_postal' => $cp,
 		'telefono-movil' => $tm,
 		'telefono-fijo' => $tf,
 		'correo' => $mail

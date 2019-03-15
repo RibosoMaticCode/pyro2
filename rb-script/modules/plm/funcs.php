@@ -13,6 +13,20 @@ function get_option($option){
   return rb_BBCodeToGlobalVariable($option['plm_value']);
 }
 
+// INFORMACION DEL PRODUCTO
+function get_product_info($product_id){
+	global $objDataBase;
+	$r = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$product_id);
+	$product = $r->fetch_assoc();
+	if(G_ENL_AMIG):
+		$product['url']=G_SERVER."/products/".$product['nombre_key']."/";
+	else:
+		$product['url']=G_SERVER."/?products=".$product['id'];
+	endif;
+	return $product;
+}
+
+// INFORMACION DE LA CATEGORIA
 function get_category_info($category_id, $bykey = false){
 	global $objDataBase;
 	if($bykey){
@@ -37,6 +51,7 @@ function get_category_info($category_id, $bykey = false){
   return $Category;
 }
 
+// LISTADO DE PRODUCTOS RECIENTES
 function products_recent($limit=5){
 	global $objDataBase;
 	$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id DESC LIMIT $limit");
@@ -57,6 +72,7 @@ function products_recent($limit=5){
 	return $products;
 }
 
+// LISTADO DE PRODUCTOS RELACIONADOS
 function products_related($product_id, $limit=5){
 	global $objDataBase;
 	// Info del producto
@@ -82,16 +98,22 @@ function products_related($product_id, $limit=5){
 	return $products;
 }
 
+// LISTADO DE CATEGORIAS
 function list_category($parent_id){
 	global $objDataBase;
 
 	$array_main = [];
 
-	$result = $objDataBase->Ejecutar("SELECT c.id, c.nombre, c.nombre_enlace, c.descripcion, c.foto_id, SubTable.Count FROM `plm_category` c
+	$result = $objDataBase->Ejecutar("SELECT c.id, c.nombre, c.nombre_enlace, c.descripcion, c.foto_id, c.islink, SubTable.Count FROM `plm_category` c
     LEFT OUTER JOIN (SELECT parent_id, COUNT(*) AS Count FROM `plm_category` GROUP BY parent_id) SubTable ON c.id = SubTable.parent_id
     WHERE c.parent_id=". $parent_id);
 
 	while ($row = $result->fetch_assoc()):
+		if(G_ENL_AMIG):
+			$url = G_SERVER."/products/category/".$row['nombre_enlace']."/";
+		else:
+			$url = G_SERVER."/?category=".$row['id'];
+		endif;
 		if ($row['Count'] > 0) {
 			$array = [
 				'id' => $row['id'],
@@ -99,6 +121,8 @@ function list_category($parent_id){
 				'nombre_enlace' => $row['nombre_enlace'],
 				'descripcion' => $row['descripcion'],
 				'foto_id' => $row['foto_id'],
+				'url' => $url,
+				'islink' => $row['islink'],
 				'items' => list_category( $row['id'] )
 			];
 		}elseif ($row['Count']==0) {
@@ -107,7 +131,9 @@ function list_category($parent_id){
 				'nombre' => $row['nombre'],
 				'nombre_enlace' => $row['nombre_enlace'],
 				'descripcion' => $row['descripcion'],
-				'foto_id' => $row['foto_id']
+				'foto_id' => $row['foto_id'],
+				'url' => $url,
+				'islink' => $row['islink']
 			];
 
 		}
@@ -117,6 +143,7 @@ function list_category($parent_id){
 	return $array_main;
 }
 
+// BORRAR CATEGORIA POR ID, Y SUS SUBCATEGORIAS
 function delete_category($categoria_id){
 	global $objDataBase;
 	$r = $objDataBase->Ejecutar("SELECT a.id, a.nombre, subcat.Count FROM plm_category a
@@ -136,20 +163,69 @@ function delete_category($categoria_id){
 	return true;
 }
 
-function url_category_page($category_id, $page){
-	$category = get_category_info($category_id);
-	if(G_ENL_AMIG){
-		if($page==1){
-			return $category['url'];
-		}else{
-			return $category['url'].$page.'/';
-		}
+// LISTADO DE COMENTARIOS, SEGUN ID DEL PRODUCTO
+function review_list($product_id=0){
+	global $objDataBase;
+	if($product_id > 0){
+		$qr = $objDataBase->Ejecutar("SELECT * FROM plm_comments WHERE product_id = $product_id ORDER BY date_register DESC");
 	}else{
-		if($page==1){
-			return $category['url'];
-		}else{
-			return $category['url'].'&p='.$page;
-		}
+		$qr = $objDataBase->Ejecutar("SELECT * FROM plm_comments ORDER BY date_register DESC");
+	}
+	$comments = $qr->fetch_all(MYSQLI_ASSOC);
+	return $comments;
+}
+
+// URL DE PAGINACION SEGUN CATEGORIA, BUSQUEDA, ETC
+function url_page($term, $page, $type){
+	switch ($type) {
+		case 'cat':
+			$category = get_category_info($term);
+			if(G_ENL_AMIG){
+				if($page==1){
+					return $category['url'];
+				}else{
+					return $category['url'].$page.'/';
+				}
+			}else{
+				if($page==1){
+					return $category['url'];
+				}else{
+					return $category['url'].'&p='.$page;
+				}
+			}
+			break;
+
+		case 'search':
+			if(G_ENL_AMIG){
+				if($page==1){
+					return G_SERVER."/products/search/".$term."/";
+				}else{
+					return G_SERVER."/products/search/".$term."/".$page."/";
+				}
+			}else{
+				if($page==1){
+					return G_SERVER."/?product_search=".$term;
+				}else{
+					return G_SERVER."/?product_search=".$term."&p=".$page;
+				}
+			}
+			break;
+
+		case 'all':
+			if(G_ENL_AMIG){
+				if($page==1){
+					return G_SERVER."/products/";
+				}else{
+					return G_SERVER."/products/".$page."/";
+				}
+			}else{
+				if($page==1){
+					return G_SERVER."/?products";
+				}else{
+					return G_SERVER."/?product&p=".$page;
+				}
+			}
+		break;
 	}
 }
 ?>

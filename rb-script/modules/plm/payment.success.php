@@ -89,7 +89,7 @@ if($r['result']){
 	$recipient = $cliente['correo'];
 
 	// Configuracion del cabecera
-	$subject = $cliente['nombres']."gracias por tu pedido";
+	$subject = $cliente['nombres']." gracias por tu pedido";
 	$from_name = rb_get_values_options('name_sender');
 	$mail_no_reply = rb_get_values_options('mail_sender');
 

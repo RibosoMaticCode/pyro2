@@ -44,18 +44,25 @@ $menu1 = [
 			'pos' => 3
 		],
 		[
+			'key' => 'plm_comments',
+			'nombre' => "Reseñas",
+			'url' => "module.php?pag=plm_comments",
+			'url_imagen' => "none",
+			'pos' => 4
+		],
+		[
 			'key' => 'plm_config',
 			'nombre' => "Configuracion",
 			'url' => "module.php?pag=plm_config",
 			'url_imagen' => "none",
-			'pos' => 4
+			'pos' => 5
 		],
 		[
 			'key' => 'plm_info',
 			'nombre' => "Informacion",
 			'url' => "module.php?pag=plm_info",
 			'url_imagen' => "none",
-			'pos' => 5
+			'pos' => 6
 		]
 	]
 ];
@@ -97,7 +104,9 @@ function plm_title(){
 	return "Gestion de productos";
 }
 
-/* CUSTOMS FUNCTIONS */
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+//+++++++++++++++++++++ 			CUSTOMS FUNCTIONS				++++++++++++++++++++++++ //
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
 // BACKEND //
 
@@ -144,7 +153,7 @@ function plm_products_call_url(){
 		if( $numsItemArray > 0 ):
 			if( $requestURI[0] == "products" ):
 				$seccion = $requestURI[0];
-
+				$p = 1;
 				if( isset($requestURI[1]) && $requestURI[1]=="category"): // Si es categoria : URL_SERVER/products/category/<categoria>/
 					$seccion = "category";
 					if( isset($requestURI[2]) ){
@@ -171,6 +180,12 @@ function plm_products_call_url(){
 					}else{
 						header( 'Location: '.G_SERVER.'/products/');
 					}
+				elseif( isset($requestURI[1]) && is_numeric($requestURI[1])): // Si es paginado de listado : URL_SERVER/products/<pagina-numero>/
+					if( $requestURI[1] > 1 ){
+						$p = $requestURI[1];
+					}else{
+						header( 'Location: '.G_SERVER.'/products/');
+					}
 				elseif( isset($requestURI[1]) ): // Si es solo un producto : URL_SERVER/products/<nombre-producto>/
 					$product = $requestURI[1];
 				endif;
@@ -188,6 +203,11 @@ function plm_products_call_url(){
 			$seccion = "products";
 			if( $_GET['products']!=""){
 				$product = $_GET['products'];
+				if( isset($_GET['p']) && $_GET['p']!="" && $_GET['p'] > 0 ){ // Si la pagina esta definida, y no esta vacia ni es 0
+					$p = $_GET['p'];
+				}else{
+					$p = 1; // Por defecto pagina 1
+				}
 			}
 		endif;
 		if( isset($_GET['category']) ): // URL_SERVER/?category=<categoria_id>
@@ -233,6 +253,12 @@ function plm_products_call_url(){
 		endif;
 
 		$product = $qs->fetch_assoc();
+		if(G_ENL_AMIG):
+			$product['url']=G_SERVER."/products/".$product['nombre_key']."/";
+		else:
+			$product['url']=G_SERVER."/?products=".$product['id'];
+		endif;
+
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
 		$category = get_category_info($product['categoria']);
 
@@ -307,6 +333,8 @@ function plm_products_call_url(){
 		if($NextPage > $TotalPage) $NextPage = 0;
 		if($CurrentPage == $TotalPage) $LastPage = 0;
 
+		$type = "cat";
+		$term = $category;
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
 		require_once( $file );
 
@@ -318,7 +346,7 @@ function plm_products_call_url(){
 		$start = ($p - 1) * $items_to_show;
 		$qsAll = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], ' AND mostrar=1');
 		$qs = $objDataBase->Search($search, 'plm_products', ['nombre', 'descripcion', 'marca', 'modelo'], " AND mostrar=1 LIMIT $start, $items_to_show");
-		$CountResult = $qs->num_rows;
+		$CountResult = $qsAll->num_rows;
 		$total_products = $qsAll->num_rows;
 		$products = [];
 		$i=0;
@@ -360,6 +388,8 @@ function plm_products_call_url(){
 		if($NextPage > $TotalPage) $NextPage = 0;
 		if($CurrentPage == $TotalPage) $LastPage = 0;
 
+		$type = "search";
+		$term = $search;
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
 		require_once( $file );
 
@@ -467,8 +497,10 @@ function plm_products_call_url(){
 
 	// Mostrar solo listado -- all products
 	if(isset($seccion)):
-		$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id DESC");
-
+		$start = ($p - 1) * $items_to_show;
+		$qsAll = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id DESC");
+		$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id DESC LIMIT $start, $items_to_show");
+		$total_products = $qsAll->num_rows;
 		$i=0;
 		while($product = $qs->fetch_assoc()):
 			$products[$i]['id'] = $product['id'];
@@ -490,6 +522,24 @@ function plm_products_call_url(){
 		define('rm_metaauthor', G_METAAUTHOR);
 		define('rm_page_image', '' );
 
+		// Definiendo el paginado
+		if($p>1){
+			$CurrentPage = $p;
+			$NextPage = $CurrentPage+1;
+			$PrevPage = $CurrentPage-1;
+		}else{
+			$CurrentPage = 1;
+			$NextPage = 2;
+			$PrevPage = 0;
+		}
+		$TotalPage  = floor($total_products / $items_to_show);
+		if($total_products % $items_to_show) $TotalPage++;
+		$LastPage = $TotalPage;
+
+		if($NextPage > $TotalPage) $NextPage = 0;
+		if($CurrentPage == $TotalPage) $LastPage = 0;
+
+		$type = "all";
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
 		require_once( $file );
 
@@ -511,6 +561,25 @@ function plm_front_css(){
 	return $css;
 }
 add_function('theme_header','plm_front_css');
+
+// Añdir los Configuradores de los widgets
+function plm_widget_block_config(){
+	global $rb_module_url;
+	include_once 'widget.block.config.php';
+}
+add_function('modals-config','plm_widget_block_config');
+
+
+// PARA LA SECCION PANEL DEL USUARIO
+function plm_userpanel(){
+	include_once 'user.panel.php';
+}
+
+add_function('panel_user_section','plm_userpanel');
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+//+++++++++++++++++++++ 				SHORTCODES					++++++++++++++++++++++++ //
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
 // SHORT CODE - PRODUCTOS PAGINA INICIAL //
 
@@ -554,14 +623,27 @@ function plm_cart_link(){
 	else $urlreload = G_SERVER."/?shopping-cart";
 	if(isset($_SESSION['carrito'])){
 		$cant = count($_SESSION['carrito']);
-		$cart_link = '<a href="'.$urlreload.'">Ver carrito (<span id="cart_count">'.$cant.'</span>)</a>';
+		$cart_link = '<a href="'.$urlreload.'"><i class="fas fa-shopping-cart"></i> Ver carrito (<span class="plm_cart_count">'.$cant.'</span>)</a>';
 	}else{
-		$cart_link = '<a href="'.$urlreload.'">Ver carrito</a>';
+		$cart_link = '<a href="'.$urlreload.'"><i class="fas fa-shopping-cart"></i> Ver carrito</a>';
 	}
 	return $cart_link;
 }
 
 add_shortcode('PLM_LINK_CART', 'plm_cart_link');
+
+// SHORTCODE : LINK DE CARRITO DE COMPRAS
+function plm_cart_count(){
+	if(G_ENL_AMIG) $urlreload = G_SERVER."/shopping-cart/";
+	else $urlreload = G_SERVER."/?shopping-cart";
+	if(isset($_SESSION['carrito'])){
+		$cant = count($_SESSION['carrito']);
+		$cart_link = '<span class="plm_cart_count cart_count_mini">'.$cant.'</span>';
+	}
+	return $cart_link;
+}
+
+add_shortcode('PLM_CART_COUNT', 'plm_cart_count');
 
 // SHORTCODE : FORMULARIO DE BUSQUEDA
 
@@ -569,14 +651,40 @@ function plm_frm_search_products(){
 	$frm_search = '
 	<div class="plm_cover_frm_search">
 		<form id="plm_frm_search" action="'.G_SERVER.'/rb-script/modules/plm/product.search.php" method="get">
-			<input type="text" name="plm_product_term" />
-			<button>Buscar</button>
+			<input type="text" name="plm_product_term" placeholder="Quiero comprar ..." />
+			<button><i class="fas fa-search"></i></button>
 		</form>
 	</div>';
 	return $frm_search;
 }
 
 add_shortcode('PLM_FRM_SEARCH', 'plm_frm_search_products');
+
+// SHORTCODE : LISTADO DE CATEGORIAS
+function show_categories_frotend($categorias, $nivel=0){
+	$menu = '<ul class="categories_list nivel'.$nivel.'">';
+	foreach ($categorias as $categoria) {
+		if($categoria['islink']==1){
+			$categoria_link = $categoria['url'];
+		}else{
+			$categoria_link = "#";
+		}
+		$menu .='<li><a href="'.$categoria_link.'">'.$categoria['nombre'].'</a>';
+		if(isset($categoria['items'])){
+			$menu .= show_categories_frotend($categoria['items'], $nivel+1);
+		}
+		$menu .='</li>';
+	}
+	$menu .='</ul>';
+	return $menu;
+}
+
+function plm_list_front_categories(){
+	$categorias = list_category(0);
+	return show_categories_frotend($categorias);
+}
+
+add_shortcode('PLM_LIST_CATEGORIES', 'plm_list_front_categories');
 
 // ------ CONFIGURACIN PRODUCTOS ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_config"):
@@ -590,6 +698,10 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_config"):
 	add_function('module_title_page','plm_config_title');
 	add_function('module_content_main','plm_config');
 endif;
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+//+++++++++++++++++++++ 				URL ACTION					++++++++++++++++++++++++ //
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
 // ------ CONFIGURACIN PRODUCTOS ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_info"):
@@ -630,17 +742,15 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_category"):
 	add_function('module_content_main','plm_category');
 endif;
 
-// Añdir los Configuradores de los widgets
-function plm_widget_block_config(){
-	global $rb_module_url;
-	include_once 'widget.block.config.php';
-}
-add_function('modals-config','plm_widget_block_config');
-
-
-// PARA LA SECCION PANEL DEL USUARIO
-function plm_userpanel(){
-	include_once 'user.panel.php';
-}
-
-add_function('panel_user_section','plm_userpanel');
+// ------ COMENTARIOS DE PRODUCTOS ------ //
+if(isset($_GET['pag']) && $_GET['pag']=="plm_comments"):
+	function plm_comments_title(){
+		return "Reseñas de productos";
+	}
+	function plm_comments(){
+		global $rb_module_url;
+		include_once 'review.init.php';
+	}
+	add_function('module_title_page','plm_comments_title');
+	add_function('module_content_main','plm_comments');
+endif;

@@ -105,22 +105,22 @@ function sus_form(){
 		';
 		if($jsonconfig['Nombres']=="show"){
 			$form .= '<div class="sus_fiel">
-			<input type="text" name="nombres" placeholder="Nombres" required />
+			<input type="text" name="nombres" placeholder="Introduce tus nombres" required />
 			</div>';
 		}
 		if($jsonconfig['Correo']=="show"){
 			$form .= '<div class="sus_fiel">
-			<input type="text" name="correo" placeholder="Email" required />
+			<input type="text" name="correo" placeholder="Introduce tu correo electronico" required />
 			</div>';
 		}
 		if($jsonconfig['Telefono']=="show"){
 			$form .= '<div class="sus_fiel">
-			<input type="text" name="telefono" placeholder="Telefono" required />
+			<input type="text" name="telefono" placeholder="Introduce tu numero de telefono" required />
 			</div>';
 		}
 		$form .= '</div>
 		<div class="sus_coverbutton">
-			<button class="sus_btnsend" type="submit">Enviar</button>
+			<button class="sus_btnsend" type="submit">Suscribir</button>
 		</div>
 	</form>
 	<script>

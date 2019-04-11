@@ -58,6 +58,9 @@ if(isset($_GET["id"])){
 <!--													<input readonly name="imagen-categoria" type="text" class="explorer-file" value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" />-->
                       <input name="imgfondo" type="text" class="explorer-file" readonly value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" />
                     </label>
+                    <label>
+                      <input type="checkbox" name="private" <?php if(isset($row) && $row['private']==1) echo "checked" ?>> Galería privada
+                    </label>
                   </div>
                 </section>
               <?php /*if(isset($row)): ?>

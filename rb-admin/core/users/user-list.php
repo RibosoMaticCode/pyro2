@@ -28,7 +28,7 @@ while ( $row = $result->fetch_assoc() ):
   ?>
   <tr>
     <td>
-      <input id="user-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
+      <input id="user-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" data-userkey="<?= $row['user_key'] ?>" data-userid="<?= rb_encrypt_decrypt("encrypt", $row['id'], $row['user_key'], $key_web) ?>" />
     </td>
     <td><?= $row['nickname'] ?></td>
     <td>

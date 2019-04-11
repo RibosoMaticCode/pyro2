@@ -19,6 +19,7 @@ while ($row = $q->fetch_assoc()):
 ?>
 <tr>
   <td><input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" /></td>
+  <td><?= $row['id'] ?></td>
   <td><img style="max-width:70px" src="<?= $photo['thumb_url'] ?>" alt="Imagen portada" /></td>
   <td>
     <h3><?= $row['nombre']?></h3>

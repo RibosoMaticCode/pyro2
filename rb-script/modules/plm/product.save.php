@@ -19,6 +19,8 @@ if($prec > 0 && $desc > 0){
 	$prec_desc =	0;//$_POST['precio_oferta'];
 }
 
+// Revisar si tiene opciones de combos
+
 $valores = [
   'nombre' => $_POST['nombre'],
   'nombre_key' => $nombre_key,
@@ -35,12 +37,39 @@ $valores = [
   'categoria' => $_POST['categoria'],
   'usuario_id' => G_USERID,
 	'estado' => $_POST['estado'],
-	'sku' => $_POST['sku']
+	'sku' => $_POST['sku'],
+	'options' => $_POST['opciones'],
+	'options_variants' => $_POST['array_combos']
 ];
 
 if($id==0){ // Nuevo
 	$r = $objDataBase->Insert('plm_products', $valores);
 	if($r['result']){
+		$product_id = $r['insert_id'];
+		/* GRUPO DE OPCIONES */
+		//$variants = [];
+
+		if(isset($_POST['variant_name'])){
+		  $names = $_POST['variant_name'];
+		  $prices = $_POST['variant_price'];
+			$states = $_POST['variant_state'];
+			$visibles = $_POST['variant_visible'];
+			$galleries = $_POST['variant_gallery_id'];
+
+		  $i=0;
+		  foreach($names as $name){
+				$variant = [
+					'product_id' =>$product_id,
+		      'name' => $names[$i],
+		      'price' => $prices[$i],
+		      'state' => $states[$i],
+		      'visible' => $visibles[$i],
+		      'gallery_id' => $galleries[$i]
+				];
+				$objDataBase->Insert('plm_products_variants', $variant);
+		    $i++;
+		  }
+		}
 		$arr = ['resultado' => true, 'contenido' => 'Elemento añadido', 'id' => $r['insert_id'] ];
 	}else{
 		$arr = ['resultado' => false, 'contenido' => $r['error']];

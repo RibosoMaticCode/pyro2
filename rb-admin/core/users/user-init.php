@@ -26,9 +26,18 @@ $(document).ready(function() {
 
 		var eliminar = confirm("[?] Esta seguro de eliminar los "+len+ " items?");
 		if ( eliminar ) {
+      users_delete = {};
 			$('input:checkbox[name=items]:checked').each(function(){
 				item_id = $(this).val();
-				url = 'core/users/user-del.php?id='+item_id;
+        userkey = $(this).attr('data-userkey');
+        userid = $(this).attr('data-userid');
+
+        user_delete = {};
+        user_delete['userkey'] = userkey;
+        user_delete['userid'] = userid;
+
+        users_delete[item_id] = user_delete;
+				/*url = 'core/users/user-del.php?id='+item_id;
 				$.ajax({
 					url: url,
 					cache: false,
@@ -38,18 +47,23 @@ $(document).ready(function() {
             notify('Datos eliminados, pero usuario "admin" no');
             return false;
           }
-        });
+        });*/
 			});
-      notify('Los datos seleccionados fueron eliminados correctamente.');
+      $.fancybox({
+          href : '<?= G_SERVER ?>/rb-admin/core/users/user.del.auth.php?users='+JSON.stringify(users_delete)
+      }, {
+          type: 'ajax'
+      });
+      console.log(users_delete);
+      /*notify('Los datos seleccionados fueron eliminados correctamente.');
       setTimeout(function(){
         window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=usu';
-      }, 1000);
+      }, 1000);*/
 		}
 	});
   // DELETE ITEM
-  $('.del-item').click(function( event ){
+  /*$('.del-item').click(function( event ){
     var item_id = $(this).attr('data-id');
-    //var eliminar = confirm("[?] Esta a punto de eliminar este usuario. Continuar?");
     var pass_admin = prompt("Solo usuarios nivel ADMIN, pueden eliminar cuentas. \nPor favor ingresa tu contraseña");
   	if (pass_admin != null) {
   		$.ajax({
@@ -68,7 +82,7 @@ $(document).ready(function() {
   			}
   		});
   	}
-  });
+  });*/
 });
 </script>
 <div class="wrap-content-list">

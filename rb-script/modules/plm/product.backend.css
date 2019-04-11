@@ -35,3 +35,11 @@ ul.categories_list li .option {
 .review-imgs div a {
     display:block;
 }
+
+/* variantes del producto */
+.variants_header {
+    background-color: #E0E0E0;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 0;
+}

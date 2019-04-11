@@ -34,6 +34,9 @@ function create_htaccess($dir){
  	#RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 
 	RewriteBase $dir/
+	# Para evitar errores con vinculos de facebook
+	# RewriteCond %{QUERY_STRING} "fbclid=" [NC]
+	# RewriteRule (.*) $dir/$1? [R=301,L]
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d

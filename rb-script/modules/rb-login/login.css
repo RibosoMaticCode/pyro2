@@ -258,9 +258,10 @@ button[disabled]{
 	}
 	.version{
 		position: absolute;
-		bottom:0;
+		top:0;
 		right:0;
 		padding: 5px;
+		font-size: .8em;
 	}
 	.tooltip .tooltiptext{
 		left:0;

@@ -87,6 +87,7 @@ $(document).ready(function() {
             <thead>
               <tr>
                 <th><input type="checkbox" value="all" id="select_all" /></th>
+                <th>ID</th>
                 <th>Portada</th>
                 <th>Nombre</th>
                 <th>Grupo</th>

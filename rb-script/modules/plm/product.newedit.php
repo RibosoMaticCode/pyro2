@@ -69,13 +69,13 @@ $categories = json_decode($option['plm_value'], true);
       						</div>
       						<div class="cols-container">
       							<div class="cols-4-md">
-      								<label>
+      								<label title="Si existe variantes de productos. El precio sera determinado por las variantes.">
       				          Precio Normal
       				          <input type="number" step=".01" name="precio" required value="<?php if(isset($row)) echo $row['precio'] ?>" />
       				        </label>
       							</div>
       							<div class="cols-4-md">
-      								<label title="Si establece este valor, el precio con descuento se autogenerara">
+      								<label title="Si establece este valor, el precio con descuento se autogenerara. Se aplica tambien a las variantes de productos.">
       				          Descuento
       				          <input type="number" name="descuento" value="<?php if(isset($row)) echo $row['descuento'] ?>" />
       				        </label>
@@ -148,7 +148,7 @@ $categories = json_decode($option['plm_value'], true);
                       Visible
                     </div>
                     <div class="cols-2-md">
-                      <a title="Crear / Ver galerias" target="_blank" href="<?= G_SERVER ?>/rb-admin/index.php?pag=gal">Galeria ID</a>
+                      <a title="Crear / Ver galerias" target="_blank" href="<?= G_SERVER ?>/rb-admin/index.php?pag=explorer">Imagen ID</a>
                     </div>
                   </div>
                   <div id="wrap_variants">
@@ -158,27 +158,27 @@ $categories = json_decode($option['plm_value'], true);
                       if($qv->num_rows > 0) {
                         while($variant = $qv->fetch_assoc()){
                           ?>
-                          <div class="cols-container" id="<?= $variant['name'] ?>">
+                          <div class="cols-container" id="<?= preg_replace('/[^a-zA-Z0-9]/', '', $variant['name']) ?>">
                             <div class="cols-4-md">
-                              <input type="text" readonly name="variant_name[]" value="<?= $variant['name'] ?>" />
+                              <input type="text" class="variant_name" readonly name="variant_name[]" value="<?= $variant['name'] ?>" />
                             </div>
                             <div class="cols-2-md">
-                              <input type="text" name="variant_price[]" value="<?= $variant['price'] ?>" />
+                              <input type="text" class="variant_price" name="variant_price[]" value="<?= $variant['price'] ?>" />
                             </div>
                             <div class="cols-2-md">
-                              <select name="variant_state[]">
-                                <option value="Stock" <?php if($variant['state']==1) echo "selected" ?>>Stock</option>
-                                <option value="Agotado" <?php if($variant['state']==0) echo "selected" ?>>Agotado</option>
+                              <select class="variant_state" name="variant_state[]">
+                                <option value="1" <?php if($variant['state']==1) echo "selected" ?>>Stock</option>
+                                <option value="0" <?php if($variant['state']==0) echo "selected" ?>>Agotado</option>
                               </select>
                             </div>
                             <div class="cols-2-md">
-                              <select name="variant_visible[]">
-                                <option value="Si" <?php if($variant['visible']==1) echo "selected" ?>>Si</option>
-                                <option value="No" <?php if($variant['visible']==0) echo "selected" ?>>No</option>
+                              <select class="variant_visible" name="variant_visible[]">
+                                <option value="1" <?php if($variant['visible']==1) echo "selected" ?>>Si</option>
+                                <option value="0" <?php if($variant['visible']==0) echo "selected" ?>>No</option>
                               </select>
                             </div>
                             <div class="cols-2-md">
-                              <input type="text" name="variant_gallery_id[]" value="<?= $variant['gallery_id']?>" />
+                              <input type="text" class="variant_gallery_id" name="variant_gallery_id[]" value="<?= $variant['gallery_id']?>" />
                             </div>
                           </div>
                           <?php
@@ -187,8 +187,8 @@ $categories = json_decode($option['plm_value'], true);
                     }
                     ?>
                   </div>
-                  <input type="text" name="opciones" value='<?php if(isset($row)) echo $row['options'] ?>' />
-                  <input type="text" name="array_combos" value='<?php if(isset($row)) echo $row['options_variants'] ?>' />
+                  <input type="hidden" name="opciones" value='<?php if(isset($row)) echo $row['options'] ?>' />
+                  <input type="hidden" name="array_combos" value='<?php if(isset($row)) echo $row['options_variants'] ?>' />
                 </section>
                 <section id="tabcontent2">
                   <div id="wrap_options" class="wrap_options">
@@ -359,6 +359,11 @@ $categories = json_decode($option['plm_value'], true);
         array_alternativas = opcion_alternativas.split(",").map(function(item) { //https://stackoverflow.com/questions/7695997/split-the-sentences-by-and-remove-surrounding-spaces
           return item.trim(); // remover espacios en blanco en el item
         });
+        console.log(array_alternativas);
+        if(array_alternativas.includes("")){
+          alert("Exiten elementos vacios. Corriga eso!");
+          return false;
+        }
         alternativa = {};
         duplicates = find_duplicate_in_array(array_alternativas);
         if(duplicates.length>0){

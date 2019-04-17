@@ -47,8 +47,6 @@ if($id==0){ // Nuevo
 	if($r['result']){
 		$product_id = $r['insert_id'];
 		/* GRUPO DE OPCIONES */
-		//$variants = [];
-
 		if(isset($_POST['variant_name'])){
 		  $names = $_POST['variant_name'];
 		  $prices = $_POST['variant_price'];
@@ -56,12 +54,20 @@ if($id==0){ // Nuevo
 			$visibles = $_POST['variant_visible'];
 			$galleries = $_POST['variant_gallery_id'];
 
+
 		  $i=0;
 		  foreach($names as $name){
+				if($prices[$i] > 0 && $desc > 0){
+					$price_desc = round($prices[$i] - ($prices[$i] * ($desc/100)), 2);
+				}else{
+					$price_desc =	0;
+				}
 				$variant = [
 					'product_id' =>$product_id,
 		      'name' => $names[$i],
 		      'price' => $prices[$i],
+					'discount' => $desc,
+					'price_discount' => $price_desc,
 		      'state' => $states[$i],
 		      'visible' => $visibles[$i],
 		      'gallery_id' => $galleries[$i]
@@ -78,6 +84,38 @@ if($id==0){ // Nuevo
 	$r = $objDataBase->Update('plm_products', $valores, ["id" => $id]);
 	if($r['result']){
 		$arr = ['resultado' => true, 'contenido' => 'Elemento actualizado', 'id' => $id ];
+		/* GRUPO DE OPCIONES */
+		if(isset($_POST['variant_name'])){
+			// Eliminamos combinacions previas
+			$objDataBase->Ejecutar('DELETE FROM plm_products_variants WHERE product_id='.$id);
+
+		  $names = $_POST['variant_name'];
+		  $prices = $_POST['variant_price'];
+			$states = $_POST['variant_state'];
+			$visibles = $_POST['variant_visible'];
+			$galleries = $_POST['variant_gallery_id'];
+
+		  $i=0;
+		  foreach($names as $name){
+				if($prices[$i] > 0 && $desc > 0){
+					$price_desc = round($prices[$i] - ($prices[$i] * ($desc/100)), 2);
+				}else{
+					$price_desc =	0;
+				}
+				$variant = [
+					'product_id' =>$id,
+		      'name' => $names[$i],
+		      'price' => $prices[$i],
+					'discount' => $desc,
+					'price_discount' => $price_desc,
+		      'state' => $states[$i],
+		      'visible' => $visibles[$i],
+		      'gallery_id' => $galleries[$i]
+				];
+				$objDataBase->Insert('plm_products_variants', $variant);
+		    $i++;
+		  }
+		}
 	}else{
 		$arr = ['resultado' => false, 'contenido' => $r['error']];
 	}

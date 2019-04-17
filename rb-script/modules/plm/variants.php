@@ -3,58 +3,15 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-/* start */
+// Devolver formato JSON
 header('Content-type: application/json; charset=utf-8');
 
+//calculate all the possible comobos creatable from a given choices array
 /* demo de la estructura a combinar
 $data1[]=array('azul', 'rojo', 'verde');
 $data1[]=array('pequeño','mediano');
 $data1[]=array('nuevo','usado');
-
-echo "<pre>";
-print_r($data1);
-echo "</pre>"; */
-
-// Obtenemos combos guardados en la base de datos
-/*$variants_array = [];
-if($_GET['product_id']>0){
-  $product_id = $_GET['product_id'];
-  $qv = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE product_id =".$product_id);
-  if($qv->num_rows > 0) {
-    while($variant = $qv->fetch_assoc()){
-      array_push($variants_array, $variant['name']);
-    }
-  }
-}*/
-// Ver arrays
-$develop_view = false;
-
-// Obtenemos combos previos, si hubiera
-$variants_array = json_decode($_GET['array_prev'], true);
-$previos = [];
-foreach ($variants_array as $key) {
-	array_push($previos, $key['name']);
-}
-
-//print_r($previos);
-// Verificar si hay elementos repetidos
-/**/
-
-$combos_json = json_decode($_GET['array'], true);
-
-// Obtenemos combos nuevos generados
-$combos=possible_combos($combos_json);
-
-/*foreach(array_count_values($combos) as $val => $c) // verificar repetidos a nivel de servidor
-    if($c > 1) {
-			$arr = [
-				'result' => false,
-				'message' => "Hay alternativas repetidas."
-			];
-			die( json_encode($arr, JSON_FORCE_OBJECT) );
-		};*/
-
-//calculate all the possible comobos creatable from a given choices array
+*/
 function possible_combos($groups, $prefix='') {
     $result = array();
     $group = array_shift($groups); // array_shift : Quita un elemento del principio del array y es asignada a la variable,
@@ -72,6 +29,23 @@ function possible_combos($groups, $prefix='') {
     return $result;
 }
 
+// Ver arrays -> para prueba de desarrollo
+$develop_view = false;
+
+// Obtenemos combinaciones previos, si hubiera
+$variants_array = json_decode($_GET['array_prev'], true);
+$previos = [];
+foreach ($variants_array as $key) {
+	array_push($previos, $key['name']); // Pasamos aun array unidimensional
+}
+
+// Generamos nuevas combinaciones, las pasamos a un array
+$combos_json = json_decode($_GET['array'], true);
+
+// Obtenemos combos nuevos generados
+$combos=possible_combos($combos_json);
+
+// Array con elementos a eliminar
 $eliminar = [];
 if($develop_view){
 	echo "array guardado";
@@ -81,20 +55,22 @@ if($develop_view){
 	print_r($combos);
 }
 
+// Verificamos si hay elementos en array de combinaciones previas
 if(count($previos)>0){
+	// Recorremos cada elemento
   foreach ($previos as $key=>$value) {
-		//echo "existe |".$value."|?";
+		// Verificacmos si valor existen en el array de combos nuevas
     if(in_array(trim($value), $combos, true)){
-
+			// Si existe los eliminamos del combo nuevo
 			$clave = array_search($value, $combos);
       unset($combos[$clave]);
-      //echo " SI\n";
     }else{
-			//echo " NO\n";
+			// Si no existe, entonces tendremos que retirarlo
+			// Los pasamos al array $eliminar
 			array_push($eliminar, preg_replace('/[^a-zA-Z0-9]/', '', $previos[$key]));
-			//echo $previos[$key];
 		}
   }
+	// Reiniciamos el array combos nuevos (con la eliminacion de algunos elementos se pierde numeracion de indices)
 	$combos = array_values($combos);
 }
 
@@ -105,11 +81,13 @@ if($develop_view){
 	echo "array eliminar";
 	print_r($eliminar);
 }
+
+// Finalmente arrojamos todos los array obtenidos
 $arr = [
 	'result' => true,
-	'previos' => $previos,
-	'nuevos' => $combos,
-	'eliminar' =>  $eliminar
+	'previos' => $previos, // Los que se enviaron previamente
+	'nuevos' => $combos, // Las nuevos elementos
+	'eliminar' =>  $eliminar // Los que sera retirados, por que ya no existen en los elementos enviados previamente
 ];
 
 die(json_encode($arr, JSON_FORCE_OBJECT)); // Forzamos a retornar json en formato objeto para ser leido por javascript como tal,No como array

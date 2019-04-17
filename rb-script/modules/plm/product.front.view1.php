@@ -30,47 +30,88 @@
               <h3><?= $product['nombre'] ?></h3>
               <div class="product-price-info">
                 <?php
-                if($product['descuento']>0):
-                ?>
-                <div class="cols-container"> <!-- normal -->
-                  <div class="cols-6-md">
-                    <strong>Precio normal:</strong>
+                // VERIFICAMOS SI HAY VARIANTES
+                $qv = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE product_id=".$product['id']);
+                if($qv->num_rows > 0){
+                  // SI HAY VARIANTES DE PRODUCTOS
+                  ?>
+                  <div class="prices">
+                    <div class="notice">Seleccione las alternativas disponibles</div>
                   </div>
-                  <div class="cols-6-md">
-                    <span style="text-decoration:line-through"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
+                  <div class="options_variants">
+                  <?php
+                  $options = json_decode($product['options_variants'], true);
+                  foreach ($options as $key => $value) {
+                    ?>
+                    <div class="cols-container variants">
+                      <div class="cols-3-md">
+                        <?= $key ?>
+                      </div>
+                      <div class="cols-9-md">
+                        <?php
+                        foreach ($options[$key] as $alternativa => $valor) {
+                          ?>
+                          <a class="check_available" id="<?= $valor ?>" data-id="<?= $valor ?>" href="#"><?= $valor ?></a>
+                          <?php
+                        }
+                        ?>
+                      </div>
+                    </div>
+                    <?php
+                  }
+                  ?>
                   </div>
-                </div>
-                <?php
-                endif;
-                ?>
-                <div class="cols-container"> <!-- oferta -->
-                  <div class="cols-6-md">
-                    <strong>Precio final:</strong>
-                  </div>
-                  <div class="cols-6-md">
+                  <?php
+                }else{
+                  // SINO HAY VARIANTES DE PRODUCTOS
+                  ?>
+                  <div class="prices">
                     <?php
                     if($product['descuento']>0):
                     ?>
-                    <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio_oferta'], 2) ?></span>
-                    <?php
-                    else:
-                    ?>
-                    <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
+                    <div class="cols-container"> <!-- normal -->
+                      <div class="cols-6-md">
+                        <strong>Precio normal:</strong>
+                      </div>
+                      <div class="cols-6-md">
+                        <span style="text-decoration:line-through"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
+                      </div>
+                    </div>
                     <?php
                     endif;
                     ?>
+                    <div class="cols-container"> <!-- oferta -->
+                      <div class="cols-6-md">
+                        <strong>Precio final:</strong>
+                      </div>
+                      <div class="cols-6-md">
+                        <?php
+                        if($product['descuento']>0):
+                        ?>
+                        <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio_oferta'], 2) ?></span>
+                        <?php
+                        else:
+                        ?>
+                        <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
+                        <?php
+                        endif;
+                        ?>
+                      </div>
+                    </div>
+                    <?php if($product['descuento']>0): ?>
+                    <div class="cols-container"> <!-- descuento -->
+                      <div class="cols-6-md">
+                        <strong>Ahorras:</strong>
+                      </div>
+                      <div class="cols-6-md">
+                        <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio']-$product['precio_oferta'], 2) ?></span> (<?= $product['descuento'] ?>%)
+                      </div>
+                    </div>
+                    <?php endif ?>
                   </div>
-                </div>
-                <?php if($product['descuento']>0): ?>
-                <div class="cols-container"> <!-- descuento -->
-                  <div class="cols-6-md">
-                    <strong>Ahorras:</strong>
-                  </div>
-                  <div class="cols-6-md">
-                    <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio']-$product['precio_oferta'], 2) ?></span> (<?= $product['descuento'] ?>%)
-                  </div>
-                </div>
-                <?php endif ?>
+                  <?php
+                }
+                ?>
               </div>
             </div>
           </div>
@@ -294,6 +335,65 @@
 $(document).ready(function() {
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // Check available
+  $('.check_available').click( function(event){
+    event.preventDefault();
+    if($(this).hasClass('isSelected')){
+      $(this).removeClass('isSelected');
+      console.log(create_combo_string());
+      return false;
+    }
+    var cover = $(this).closest('.variants');
+    cover.find('.check_available').removeClass('isSelected');
+    $(this).addClass('isSelected');
+    var combo_string = create_combo_string();
+    console.log(create_combo_string());
+
+    if(!combo_string==""){
+      $.ajax({
+        method: "get",
+        url: "<?= G_DIR_MODULES_URL ?>plm/product.front.variants.price.php?combo="+combo_string
+      })
+      .done(function( data ) {
+        console.log(data);
+      });
+    }
+    /*
+    if($(this).hasClass('isDisabled')){
+      return false;
+    }
+    $('.check_available').removeClass('isSelected isDisabled');
+    $(this).addClass('isSelected');
+    var id = $(this).attr('data-id');
+    //console.log(id);
+    event.preventDefault();
+    $.ajax({
+      method: "get",
+      url: "<?= G_DIR_MODULES_URL ?>plm/front.end.verify.options.php?option="+id+"&product_id=<?= $product['id']?>"
+    })
+    .done(function( data ) {
+      var size = Object.keys(data['elements_hidden']).length;
+      for (var i = 0; i < size; i++) {
+        console.log(data.elements_hidden[i]);
+        $('#'+data.elements_hidden[i]).addClass('isDisabled');
+      }
+    });*/
+  });
+
+  function create_combo_string(){
+    var separator = "";
+    var combo = "";
+    $(".options_variants .variants").each(function(index, element) {
+      var option = $(this).find(".isSelected").text();
+      if(!option==""){
+        combo = combo + separator + option;
+        separator = " | ";
+      }
+    });
+    // Buscar en la base de datos
+    return combo.trim();
   }
 
   // Boton Mas

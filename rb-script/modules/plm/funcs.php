@@ -228,4 +228,37 @@ function url_page($term, $page, $type){
 		break;
 	}
 }
+
+// VERIFICA SI TIENE VARIANTES, Y OBTIENE OTROS DATOS
+function product_have_variants($product_id){
+	global $objDataBase;
+	$response = [];
+	$qv = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE product_id =".$product_id);
+	if($qv->num_rows > 0){
+		$variant = $qv->fetch_assoc();
+		if($variant['price_discount'] > 0){
+			$colname = "price_discount";
+		}else{
+			$colname = "price";
+		}
+		$qmaxp = $objDataBase->Ejecutar("SELECT MAX($colname) AS price_max FROM plm_products_variants WHERE product_id =".$product_id);
+		$price= $qmaxp->fetch_assoc();
+		$pricemax = $price['price_max'];
+
+		$qminp = $objDataBase->Ejecutar("SELECT MIN($colname) AS price_min FROM plm_products_variants WHERE product_id =".$product_id);
+		$price= $qminp->fetch_assoc();
+		$pricemin = $price['price_min'];
+
+		$response=[
+			'result' => true,
+			'price_max' => $pricemax,
+			'price_min' => $pricemin
+		];
+	}else{
+		$response=[
+			'result' => false
+		];
+	}
+	return $response;
+}
 ?>

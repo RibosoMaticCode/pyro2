@@ -418,8 +418,6 @@ function rb_image_exists($name_img){
 /* MUESTRA COMENTARIOS DE ARTICULOS */
 function rb_comments_from_post($article_id){
   global $objDataBase;
-	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-comentarios.class.php");
-	$objComentario = new Comentarios;*/
 
 	$q = $objDataBase->Ejecutar("SELECT *,  DATE_FORMAT(fecha, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha, '%d') as fecha_dia, DATE_FORMAT(fecha, '%M') as fecha_mes_l, DATE_FORMAT(fecha, '%m') as fecha_mes, DATE_FORMAT(fecha, '%Y') as fecha_anio FROM comentarios WHERE articulo_id=$article_id");
 
@@ -442,8 +440,6 @@ function rb_comments_from_post($article_id){
 
 /* MUESTRA CATEGORIAS DE POST EN PARTICULAR */
 function rb_show_category_from_post($article_id){
-	/*require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	$objArticulo = new Articulos;*/
   global $objDataBase;
 
 	$q = $objDataBase->Ejecutar("SELECT c.* FROM categorias c, articulos_categorias ac, articulos a WHERE c.id=ac.categoria_id AND ac.articulo_id= a.id AND a.id =$article_id");
@@ -462,8 +458,6 @@ function rb_show_category_from_post($article_id){
 /* MUESTRA CONTENIDO DE UNA PÁGINA EN PARTICULAR */
 function rb_show_specific_page($page_id){
   global $objDataBase;
-	/*require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-paginas.class.php");*/
 
 	if($page_id=="") return false;
 	//$objPagina = new Paginas;
@@ -604,11 +598,6 @@ function rb_get_post_by_category($category_id="*", $starred=false, $show_post=fa
 
 // Muestra publicaciones destacadas
 function rb_get_post_stars($post_max = 4){
-	/*require_once( dirname( dirname(__FILE__) ) ."/global.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-articulos.class.php");
-	require_once( dirname( dirname(__FILE__) ) ."/rb-script/class/rb-fotos.class.php");
-
-	$objArticulo = new Articulos;*/
 	$q = $objDataBase->Ejecutar( "SELECT *, DATE_FORMAT(fecha_creacion, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(fecha_creacion, '%m') as fecha_mes, DATE_FORMAT(fecha_creacion, '%Y') as fecha_anio FROM articulos WHERE portada=1 LIMIT $post_max" );
 	return rb_return_post_array($q);
 }
@@ -1903,21 +1892,6 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
         // $widgets = array global que contiene widgets del sistema y personalizados
         $widget_type = $widget['widget_type'];
         // Recorreremos para ver si hay coincidencias
-        /* FORMA  1
-        foreach ($widgets as $widget_save => $info) {
-          echo $info['type'];
-          if($info['type'] == $widget_type){
-            echo ".-";
-            if( isset($info['custom']) ){
-              $dir_module = ABSPATH.'rb-script/modules/';
-              include $dir_module.$info['dir'].'/'.$info['type'].'.frontend.php';
-            }else{
-              $dir_module = ABSPATH.'rb-admin/core/pages3/';
-              include $dir_module.'widgets/'.$info['dir'].'/'.$info['type'].'.frontend.php';
-            }
-          }
-        }*/
-        /* FORMA 2 */
         $clave = array_search($widget_type, array_column($widgets, 'type')); // https://stackoverflow.com/questions/8102221/php-multidimensional-array-searching-find-key-by-specific-value
         //echo "<strong>".$widgets[$clave]['type']."</strong>";
         if( isset($widgets[$clave]['custom']) ){
@@ -1927,277 +1901,6 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
           $dir_module = ABSPATH.'rb-admin/core/pages3/';
           include $dir_module.'widgets/'.$widgets[$clave]['dir'].'/'.$widgets[$clave]['type'].'.frontend.php';
         }
-        //echo $clave;
-        /*
-        FORMA 3 - VERSION ANTERIOR
-        switch ($widget['widget_type']) {
-          case 'html':
-            echo '<div class="'.$widget['widget_class'].'">';
-            echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
-            echo '</div>';
-            break;
-          case 'htmlraw':
-            echo '<div class="'.$widget['widget_class'].'">';
-            echo rb_shortcode(rb_BBCodeToGlobalVariable(html_entity_decode($widget['widget_content'])));
-            echo '</div>';
-            break;
-          case 'sidebar':
-            echo '<div class="'.$widget['widget_class'].'">';
-            $SidebarId = $widget['widget_values']['name'];
-            $Sidebar = rb_show_specific_page($SidebarId);
-            $array_content = json_decode($Sidebar['contenido'], true);
-            foreach ($array_content['boxes'] as $box) {
-              rb_show_block($box, "sidebar");
-            }
-            echo '</div>';
-            break;
-          case 'slide':
-            echo '<div class="clear '.$widget['widget_class'].'">';
-            $gallery_id = $widget['widget_values']['gallery_id'];
-            $typegallery = $widget['widget_values']['type'];
-            $quantity = $widget['widget_values']['quantity'];
-            $limit = $widget['widget_values']['limit'];
-            $activelink = $widget['widget_values']['activelink'];
-            $fotos = rb_get_images_from_gallery($gallery_id, $limit);
-            foreach ($fotos as $foto) {
-              if($typegallery==2){ // slide
-                ?>
-                <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
-                  <?php if($widget['widget_values']['show_title']==1): ?>
-                    <div class="camera_caption"><?= $foto['title'] ?></div>
-                  <?php endif ?>
-                </div>
-                <?php
-              }
-							if($typegallery==1){ // simple galeria
-								$width = 100/$quantity;
-                ?>
-                <div class="rb-cover-img" style="width:<?= $width ?>%">
-								 	<?php if($widget['widget_values']['activelink']==1): ?>
-                  	<a class="fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
-                  <?php else: ?>
-                    <a class="fancy" data-fancybox-group="gallery" href="<?= $foto['goto_url'] ?>">
-                  <?php endif ?>
-                  	<div>
-											<div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
-											<div class="shadow"></div>
-											<?php if($widget['widget_values']['show_title']==1): ?>
-											<?= $foto['title'] ?>
-											<?php endif ?>
-                  	</div>
-										</a>
-                </div>
-                <?php
-              }
-            }
-            echo '</div>';//<div class="clear"></div>';
-            break;
-          case 'youtube1':
-            $yt_list = explode(",", $widget['widget_values']['videos']);
-            $count_yt_list = count($yt_list);
-            $count_by_row = $widget['widget_values']['quantity'];
-            ?>
-            <div class="<?= $widget['widget_class'] ?> rb-youtube-grid">
-              <?php
-              $width = round(100 / $count_by_row, 2);
-              $i=0;
-              while($i<$count_yt_list):
-                ?>
-                <div style="width:<?= $width?>%">
-                  <iframe width="100%" height="275" src="https://www.youtube.com/embed/<?= $yt_list[$i] ?>?modestbranding=0&autohide=1&showinfo=0" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>
-                </div>
-                <?php
-                $i++;
-              endwhile;
-              ?>
-            </div>
-            <?php
-            break;
-          case 'galleries':
-            ?>
-            <img style="display:none" src='<?= G_SERVER ?>/rb-script/modules/pages.view3/spinner.gif' alt="spinner" />
-            <script>
-            $(document).ready(function() {
-              $('.rb-cover-galleries').on('click', '.back_gallery',function() {
-                $('.rb-cover-galleries').show();
-                $('.rb-gallery-photos').hide();
-              });
-
-              $('.gallery_show').click(function(event){
-                event.preventDefault();
-                var gallery_id = $(this).attr('data-galleryid');
-
-                $.ajax({
-                    method: "GET",
-                    url: "<?= G_SERVER ?>/rb-script/modules/pages.view3/show.gallery.ajax.php?gallery_id="+gallery_id,
-                    beforeSend: function() {
-                      $('.rb-cover-galleries').hide();
-                      $('.rb-gallery-photos').show();
-                      $('.rb-gallery-photos').html("<img src='<?= G_SERVER ?>/rb-script/modules/pages.view3/spinner.gif' />");
-                    },
-                }).done(function( data ) {
-                  $('.rb-gallery-photos').html(data);
-                });
-              });
-            });
-            </script>
-            <div class="rb-wrap-galleries">
-            <?php
-            echo '<div class="rb-cover-galleries '.$widget['widget_class'].'">';
-            $show_by_file = $widget['widget_values']['quantity'];
-            $groupname = $widget['widget_values']['group'];
-            $limit = $widget['widget_values']['limit'];
-            $link = $widget['widget_values']['link'];
-            $Galleries = rb_list_galleries($limit, $groupname);
-            $CountGalleries = count($Galleries);
-            $porcent_width = round(100/$show_by_file,2);
-            $i=1; // contador por fila
-            $j=1; // contador general
-            foreach ($Galleries as $Gallery) {
-              if($i==1){
-                echo '<div class="rb-gallery-container">'; // open rb-gallery-container
-              }
-							echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">'; // open rb-gallery
-								if($link==0)
-								echo '<a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">';
-
-								if($link==1)
-								echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">';
-
-								echo '<div>'; // open div (no name)
-
-                echo '<div class="rb-bg-gallery" style="background-image:url(\''.$Gallery['url_bgimagetn'].'\')" />'; // open rb-bg-gallery
-								echo '</div>'; // close rb-bg-gallery
-
-                echo '<div class="rb-gallery-info">'; // open rb-gallery-info
-                	echo '<span class="rb-gallery-title">'.$Gallery['nombre'].'</span>';
-                	echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
-								echo '</div>'; // close rb-gallery-info
-
-								echo '</div>'; // close div
-
-								echo '</a>';
-
-              echo '</div>'; // close rb-gallery
-              if($j==$CountGalleries || $i==$show_by_file){
-                echo '</div>'; // Close rb-gallery-container
-                $i=1;
-              }else{
-                $i++;
-              }
-              $j++;
-            }
-            echo '</div>'; // close rb-cover-galleries
-            ?>
-            </div>
-            <div class="rb-gallery-photos">
-            </div>
-            <?php
-            break;
-          case 'post1':
-            echo '<div class="'.$widget['widget_class'].'">';
-            // Destripar configuracion
-            $category_id = $widget['widget_values']['cat'];
-            $num_posts = $widget['widget_values']['count'];
-            $ord = $widget['widget_values']['ord'];
-            $tit = $widget['widget_values']['tit'];
-            $typ = $widget['widget_values']['typ'];
-            $desc = $widget['widget_values']['desc'];
-						$link = $widget['widget_values']['link'];
-						$byrow = $widget['widget_values']['byrow'];
-						$width_post = 100;
-						if($typ==0){
-							$width_post = round(100/$byrow,2);
-						}
-
-            if($tit!=""){
-              ?>
-              <h2><?= $tit ?></h2>
-              <?php
-            }
-            if($typ==0 || $typ==1){
-              ?>
-              <div class="post-<?= $typ ?>">
-              <?php
-              if($category_id==0) $category_id="*";
-							$Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
-							$i=1;
-							$j=1;
-              foreach ($Posts as $PostRelated) {
-								if($i==1){
-									?>
-									<div class="post-wrap clear">
-									<?php
-								}
-                ?>
-                <div class="post-list clear" style="width:<?= $width_post?>%">
-                  <div class="post">
-                    <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
-                    <!--<span class="post-category"></span>-->
-                    <div class="post-desc">
-                    <h2><a href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
-                    <?php if($desc==1): ?>
-                      <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
-                    <?php endif ?>
-                    <?php if($link==1): ?>
-                      <br />
-                      <a class="post-more" href="<?= $PostRelated['url'] ?>">Leer mas</a>
-                    <?php endif ?>
-                    </div>
-                  </div>
-                </div>
-								<?php
-								if($j==$num_posts || $i==$byrow){
-									?>
-									</div>
-									<?php
-									$i=1;
-								}else{
-									$i++;
-								}
-								$j++;
-								?>
-                <?php
-              }
-              ?>
-              </div>
-              <?php
-            }
-            if($typ==2 || $typ==3){
-              ?>
-              <div class="post-<?= $typ ?>">
-              <?php
-              $i=1;
-              $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
-              foreach ($Posts as $PostRelated) {
-                if($i==1){
-                  ?>
-                  <div class="left">
-                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_pri_max']  ?>)">
-                    </div>
-                    <h2><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h2>
-                    <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
-                  </div>
-                  <?php
-                }else{
-                  ?>
-                  <div class="right">
-                    <div class="image" style="background-image:url(<?= $PostRelated['url_img_pri_max']  ?>)">
-                    </div>
-                    <h3><a href="<?= $PostRelated['url']  ?>"><?= $PostRelated['titulo']  ?></a></h3>
-                    <!--<a href="<?= $PostRelated['url'] ?>">Leer mas</a>-->
-                  </div>
-                  <?php
-                }
-                $i++;
-              }
-              ?>
-              </div>
-              <?php
-            }
-            echo '</div>';
-            break;
-        }*/
       }
     }
     echo '</div><!--end col or coverwidgets-->';// end col or coverwidgets
@@ -2227,14 +1930,6 @@ function rb_header($add_header = array(), $page=true){
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$header;
       }
     }elseif($show_header==2){
-      /* old version
-      $block_header_id_arrays = explode(",",$block_header_id);
-      foreach ($block_header_id_arrays as $key => $value) {
-        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
-        $boxsave = $qb->fetch_assoc();
-        $box = json_decode($boxsave['contenido'], true);
-        rb_show_block($box);
-      }*/
       // New version
       $Header = rb_show_specific_page($block_header_id);
       $array_content = json_decode($Header['contenido'], true);
@@ -2245,14 +1940,6 @@ function rb_header($add_header = array(), $page=true){
   }else{
     // Si son paginas de las plantilla
     if(G_BLOCK_HEADER!="0"){
-      /* old version
-      $block_header_id_arrays = explode(",",G_BLOCK_HEADER);
-      foreach ($block_header_id_arrays as $key => $value) {
-        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
-        $boxsave = $qb->fetch_assoc();
-        $box = json_decode($boxsave['contenido'], true);
-        rb_show_block($box);
-      }*/
       // New version
       $Header = rb_show_specific_page(G_BLOCK_HEADER);
       $array_content = json_decode($Header['contenido'], true);
@@ -2290,13 +1977,6 @@ function rb_footer($add_footer = array(), $page=true){
         include_once ABSPATH."rb-temas/".G_ESTILO."/".$footer;
       }
     }elseif($show_footer==2){
-      /*$block_footer_id_arrays = explode(",",$block_footer_id);
-      foreach ($block_footer_id_arrays as $key => $value) {
-        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
-        $boxsave = $qb->fetch_assoc();
-        $box = json_decode($boxsave['contenido'], true);
-        rb_show_block($box);
-      }*/
       // New version
       $Footer = rb_show_specific_page($block_footer_id);
       $array_content = json_decode($Footer['contenido'], true);
@@ -2307,13 +1987,6 @@ function rb_footer($add_footer = array(), $page=true){
   }else{
     // Si son paginas de las plantilla
     if(G_BLOCK_FOOTER!="0"){
-      /*$block_footer_id_arrays = explode(",",G_BLOCK_FOOTER);
-      foreach ($block_footer_id_arrays as $key => $value) {
-        $qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=".$value);
-        $boxsave = $qb->fetch_assoc();
-        $box = json_decode($boxsave['contenido'], true);
-        rb_show_block($box);
-      }*/
       // New version
       $Footer = rb_show_specific_page(G_BLOCK_FOOTER);
       $array_content = json_decode($Footer['contenido'], true);
@@ -2343,18 +2016,10 @@ function rb_sidebar($add_sidebar = array()){
   	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
 
   require_once ABSPATH."global.php";
-  /*foreach ($add_sidebar as $block) {
-    include_once ABSPATH."rb-temas/".G_ESTILO."/".$block;
-  }*/
   include_once ABSPATH."rb-temas/".G_ESTILO."/sidebar.php";
 }
 
 function rb_validar_mail($pMail) { // Antes validar_mail, solo usado en registro de usuario
-  /*if (ereg("^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@+([_a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]{2,200}\.[a-zA-Z]{2,6}$", $pMail ) ) {
-		return true;
-	}else{
-		return false;
-	}*/
   if (filter_var($pMail, FILTER_VALIDATE_EMAIL)) {
     return true;
   }else{
@@ -2548,6 +2213,17 @@ function rb_link_gallery($gallery_id){
     <?php
     $i++;
   }
+}
+
+function searchForId($id, $array) { // Buscar valor dentro un array multidimensional
+  $response = [];
+   foreach ($array as $key => $val) {
+       if ($val['id'] === $id) {
+         $response = ['result' => true, 'key' => $key];
+           return $response;
+       }
+   }
+   return false;
 }
 
 ?>

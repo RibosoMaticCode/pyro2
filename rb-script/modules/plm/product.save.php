@@ -64,13 +64,14 @@ if($id==0){ // Nuevo
 				}
 				$variant = [
 					'product_id' =>$product_id,
+					'variant_id' => $product_id.($i+1),
 		      'name' => $names[$i],
 		      'price' => $prices[$i],
 					'discount' => $desc,
 					'price_discount' => $price_desc,
 		      'state' => $states[$i],
 		      'visible' => $visibles[$i],
-		      'gallery_id' => $galleries[$i]
+		      'image_id' => $galleries[$i]
 				];
 				$objDataBase->Insert('plm_products_variants', $variant);
 		    $i++;
@@ -104,13 +105,14 @@ if($id==0){ // Nuevo
 				}
 				$variant = [
 					'product_id' =>$id,
+					'variant_id' => $id.($i+1),
 		      'name' => $names[$i],
 		      'price' => $prices[$i],
 					'discount' => $desc,
 					'price_discount' => $price_desc,
 		      'state' => $states[$i],
 		      'visible' => $visibles[$i],
-		      'gallery_id' => $galleries[$i]
+		      'image_id' => $galleries[$i]
 				];
 				$objDataBase->Insert('plm_products_variants', $variant);
 		    $i++;

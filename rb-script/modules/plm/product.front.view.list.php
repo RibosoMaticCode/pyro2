@@ -49,7 +49,18 @@
                 </div>
                 <div class="product-item-desc">
                     <h3><?= $product['nombre'] ?></h3>
-                    <div class="product-item-price">
+                    <?php
+                    $response = product_have_variants($product['id']);
+                    if( $response['result'] ){
+                      ?>
+                      <div class="product-item-price">
+                        <span class="product-item-before">Desde / Hasta</span>
+                        <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($response['price_min'], 2) ?> - <?= number_format($response['price_max'], 2) ?></span>
+                      </div>
+                      <?php
+                    }else{
+                      ?>
+                      <div class="product-item-price">
                         <?php if($product['precio_oferta']>0): ?>
                           <span class="product-item-price-before">Normal: <?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
                           <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product['precio_oferta'], 2) ?></span>
@@ -57,7 +68,10 @@
                           <span class="product-item-price-before"></span>
                           <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
                         <?php endif ?>
-                    </div>
+                      </div>
+                      <?php
+                    }
+                    ?>
                 </div>
               </a>
             </div>

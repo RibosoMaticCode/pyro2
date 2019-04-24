@@ -23,11 +23,27 @@ $html_content = '
   <tbody>';
 
   $totsum = 0;
-  foreach($_SESSION['carrito'] as $codigo => $cantidad){
+	$cart = $_SESSION['carrito'];
+	foreach($cart as $item){
+		$codigo = $item['product_id'];
+		$cantidad = $item['cant'];
+		$combo_id = $item['variant_id'];
+
     $qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
     $product = $qp->fetch_assoc();
-		if($product['precio_oferta']==0) $precio_final = $product['precio'];
-		else $precio_final = $product['precio_oferta'];
+
+		if($combo_id>0){
+			$qc = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE variant_id=".$combo_id);
+			$combo = $qc->fetch_assoc();
+			if($combo['price_discount']==0) $precio_final = $combo['price'];
+			else $precio_final = $combo['price_discount'];
+			$variant_details = "<br />Variante: ".$combo['name'];
+		}else{
+			if($product['precio_oferta']==0) $precio_final = $product['precio'];
+			else $precio_final = $product['precio_oferta'];
+			$variant_details = "";
+		}
+
 		$tot = round($precio_final * $cantidad,2);
     $photo = rb_get_photo_details_from_id($product['foto_id']);
 
@@ -41,7 +57,7 @@ $html_content = '
     $html_content .= '
     <tr>
       <td style="text-align:center;"><img style="max-width:100px;" src="'.$photo['thumb_url'].'" alt="img" /></td>
-      <td style="text-align:center;"><a href="'.$product_url.'">'.$product['nombre'].'</a></td>
+      <td style="text-align:center;"><a href="'.$product_url.'">'.$product['nombre'].'</a><span>'.$variant_details.'</span></td>
       <td style="text-align:center;">'.G_COIN.' '.number_format($precio_final, 2).'</td>
       <td style="text-align:center;">'.$cantidad.'</td>
       <td style="text-align:center;">'.G_COIN.' '.number_format($tot, 2).'</td>

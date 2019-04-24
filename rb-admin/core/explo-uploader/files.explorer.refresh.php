@@ -27,7 +27,7 @@ if( $q->num_rows ):
 	<?php
 	while ( $row = $q->fetch_assoc() ):
 	?>
-	<li><a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">
+	<li><a class="explorer-file" title="ID: <?= $row['id'] ?>" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#">
 		<?php
 		if(rb_file_type($row['type']) == "image"):
 			echo "<img class='thumb' width=\"100\" src=\"../rb-media/gallery/tn/".utf8_encode($row['tn_src'])."\" />";

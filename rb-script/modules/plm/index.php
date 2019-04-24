@@ -401,15 +401,32 @@ function plm_products_call_url(){
 		$products = [];
 		$totsum = 0;
 		$i = 0;
-		foreach($_SESSION['carrito'] as $codigo => $cantidad){
+		$cart = $_SESSION['carrito'];
+
+		foreach($cart as $item){
+			$codigo = $item['product_id'];
+			$cantidad = $item['cant'];
+			$combo_id = $item['variant_id'];
 			$qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
 			$product = $qp->fetch_assoc();
-			if($product['precio_oferta']==0) $precio_final = $product['precio'];
-			else $precio_final = $product['precio_oferta'];
-			$tot = round($precio_final * $cantidad,2);
 
+			if($combo_id>0){
+				$qc = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE variant_id=".$combo_id);
+				$combo = $qc->fetch_assoc();
+				if($combo['price_discount']==0) $precio_final = $combo['price'];
+				else $precio_final = $combo['price_discount'];
+				$variant_details = "<br />Variante: ".$combo['name'];
+			}else{
+				if($product['precio_oferta']==0) $precio_final = $product['precio'];
+				else $precio_final = $product['precio_oferta'];
+				$variant_details = "";
+			}
+
+			$tot = round($precio_final * $cantidad,2);
 			$products[$i]['id'] = $product['id'];
 			$products[$i]['nombre'] = $product['nombre'];
+			$products[$i]['variant_id'] = $combo_id;
+			$products[$i]['variant'] = $variant_details;
 			$products[$i]['precio'] = $precio_final;
 			$products[$i]['cantidad'] = $cantidad;
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
@@ -463,15 +480,32 @@ function plm_products_call_url(){
 		$totsum = 0;
 		$i = 0;
 		$user = rb_get_user_info(G_USERID);
-		foreach($_SESSION['carrito'] as $codigo => $cantidad){
+		$cart = $_SESSION['carrito'];
+
+		foreach($cart as $item){
+			$codigo = $item['product_id'];
+			$cantidad = $item['cant'];
+			$combo_id = $item['variant_id'];
 			$qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
 			$product = $qp->fetch_assoc();
-			if($product['precio_oferta']==0) $precio_final = $product['precio'];
-			else $precio_final = $product['precio_oferta'];
-			$tot = round($precio_final * $cantidad,2);
 
+			if($combo_id>0){
+				$qc = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE variant_id=".$combo_id);
+				$combo = $qc->fetch_assoc();
+				if($combo['price_discount']==0) $precio_final = $combo['price'];
+				else $precio_final = $combo['price_discount'];
+				$variant_details = "<br />Variante: ".$combo['name'];
+			}else{
+				if($product['precio_oferta']==0) $precio_final = $product['precio'];
+				else $precio_final = $product['precio_oferta'];
+				$variant_details = "";
+			}
+
+			$tot = round($precio_final * $cantidad,2);
 			$products[$i]['id'] = $product['id'];
 			$products[$i]['nombre'] = $product['nombre'];
+			$products[$i]['variant_id'] = $combo_id;
+			$products[$i]['variant'] = $variant_details;
 			$products[$i]['precio'] = $precio_final;
 			$products[$i]['cantidad'] = $cantidad;
 			$photo = rb_get_photo_details_from_id($product['foto_id']);

@@ -99,6 +99,12 @@
     font-size: 1em;
     font-family:Light;
 }
+.product-item-before{
+    display: block;
+    color: gray;
+    padding: 5px 0;
+    height: 26px;
+}
 .product-item-price-before{
     text-decoration: line-through;
     display: block;

@@ -178,7 +178,7 @@ $categories = json_decode($option['plm_value'], true);
                               </select>
                             </div>
                             <div class="cols-2-md">
-                              <input type="text" class="variant_gallery_id" name="variant_gallery_id[]" value="<?= $variant['gallery_id']?>" />
+                              <input type="text" class="variant_gallery_id" name="variant_gallery_id[]" value="<?= $variant['image_id']?>" />
                             </div>
                           </div>
                           <?php

@@ -8,10 +8,10 @@
       <div class="cols-9-md">
         <div class="cols-container">
           <div class="cols-5-md"> <!-- photo and gallery -->
-            <a class="fancy" data-fancybox-group="visor" href="<?= $photo['file_url'] ?>">
+            <a id="product_image_url" class="fancy" data-fancybox-group="visor" href="<?= $photo['file_url'] ?>">
               <!--<img src="<?= $photo['file_url'] ?>" alt="imagen" />-->
               <div class="product-cover-image">
-                <img src="<?= $photo['file_url'] ?>" alt="imagen" />
+                <img id="product_image" src="<?= $photo['file_url'] ?>" alt="imagen" />
               </div>
             </a>
             <?php
@@ -32,9 +32,15 @@
                 <?php
                 // VERIFICAMOS SI HAY VARIANTES
                 $qv = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE product_id=".$product['id']);
+                $have_variants = false;
                 if($qv->num_rows > 0){
+                  $have_variants = true;
                   // SI HAY VARIANTES DE PRODUCTOS
                   ?>
+                  <div class="cover_prices_range">
+                    <?php $response = product_have_variants($product['id']) ?>
+                    <span class="price_range"><?= G_COIN ?> <?= number_format($response['price_min'], 2) ?> - <?= number_format($response['price_max'], 2) ?></span> / unidad
+                  </div>
                   <div class="prices">
                     <div class="notice">Seleccione las alternativas disponibles</div>
                   </div>
@@ -120,15 +126,21 @@
       <div class="cols-3-md"><!-- calculate total -->
         <div class="product-calculate">
           <form class="frm_cart" method="post" id="frm_cart">
+            <input type="hidden" value="" id="variant_name" name="variant_name">
+            <input type="hidden" value="" id="variant_id" name="variant_id">
             <input type="hidden" value="<?= $product['id'] ?>" name="product_id">
             <?php
-            if($product['precio_oferta']>0):
-              $precio_format = number_format($product['precio_oferta'], 2);
-              $precio = $product['precio_oferta'];
-            else:
-              $precio_format = number_format($product['precio'], 2);
-              $precio = $product['precio'];
-            endif;
+            if($have_variants){
+              $precio = 0.00;
+            }else{
+              if($product['precio_oferta']>0):
+                $precio_format = number_format($product['precio_oferta'], 2);
+                $precio = $product['precio_oferta'];
+              else:
+                $precio_format = number_format($product['precio'], 2);
+                $precio = $product['precio'];
+              endif;
+            }
             ?>
             <input type="hidden" id="product_price" value="<?= $precio ?>" />
             <?php
@@ -139,7 +151,11 @@
                 <h3>Precio total:</h3>
               </div>
               <div class="cols-7-md">
-                <span class="product-total"><?= G_COIN ?> <span id="product_total"><?= $precio_format ?></span></span>
+                <?php if($have_variants){ ?>
+                  <span class="product-total"><?= G_COIN ?> <span id="product_total">0.00</span></span>
+                <?php }else{ ?>
+                  <span class="product-total"><?= G_COIN ?> <span id="product_total"><?= $precio_format ?></span></span>
+                <?php } ?>
               </div>
             </div>
             <div class="cols-container line-quantity">
@@ -152,7 +168,7 @@
                 <a id="btnmas" class="cantidad-botton" href="#">+</a>
               </div>
             </div>
-            <button class="btnaddcart" type="button"><i class="fas fa-shopping-cart"></i> Añadir al carrito</button>
+            <button <?php if($have_variants) echo "disabled" ?> class="btnaddcart" type="button"><i class="fas fa-shopping-cart"></i> Añadir al carrito</button>
             <?php else: ?>
             <h3>Agotado</h3>
             <?php endif ?>
@@ -300,31 +316,31 @@
         if(!$products){
           echo "No se encontraron relacionados";
         }else{
-          foreach ($products as $product) {
+          foreach ($products as $product_rel) {
             ?>
             <div class="product-item">
-              <a href="<?= $product['url'] ?>">
-              <?php if($product['descuento']>0): ?>
-                <div class="product-discount">-<?= $product['descuento'] ?>%</div>
+              <a href="<?= $product_rel['url'] ?>">
+              <?php if($product_rel['descuento']>0): ?>
+                <div class="product-discount">-<?= $product_rel['descuento'] ?>%</div>
               <?php endif ?>
-              <div class="product-item-cover-img" style="background-image:url('<?= $product['image_url'] ?>')">
+              <div class="product-item-cover-img" style="background-image:url('<?= $product_rel['image_url'] ?>')">
               </div>
               <div class="product-item-desc">
-                <h3><?= $product['nombre'] ?></h3>
+                <h3><?= $product_rel['nombre'] ?></h3>
                 <div class="product-item-price">
-                  <?php if($product['precio_oferta']>0): ?>
-                    <span class="product-item-price-before">Normal: <?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
-                    <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product['precio_oferta'], 2) ?></span>
+                  <?php if($product_rel['precio_oferta']>0): ?>
+                    <span class="product-item-price-before">Normal: <?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>
+                    <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product_rel['precio_oferta'], 2) ?></span>
                   <?php else: ?>
                     <span class="product-item-price-before"></span>
-                    <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
+                    <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>
                   <?php endif ?>
                 </div>
               </div>
               </a>
             </div>
             <?php
-          }
+          }//
         }
         ?>
       </div>
@@ -342,44 +358,60 @@ $(document).ready(function() {
     event.preventDefault();
     if($(this).hasClass('isSelected')){
       $(this).removeClass('isSelected');
-      console.log(create_combo_string());
+      //console.log(create_combo_string());
+      $('.prices').empty().append('<div class="notice">Seleccione las alternativas disponibles</div>');
+      $('.cover_prices_range').show();
+      $('#product_total').empty().append('0.00');
+      $('#product_price').val('0.00');
+      $('.btnaddcart').attr('disabled',true);
       return false;
     }
     var cover = $(this).closest('.variants');
     cover.find('.check_available').removeClass('isSelected');
     $(this).addClass('isSelected');
     var combo_string = create_combo_string();
-    console.log(create_combo_string());
+    $('#variant_name').val(combo_string);
+    //console.log(create_combo_string());
 
     if(!combo_string==""){
       $.ajax({
         method: "get",
-        url: "<?= G_DIR_MODULES_URL ?>plm/product.front.variants.price.php?combo="+combo_string
+        url: "<?= G_DIR_MODULES_URL ?>plm/product.front.variants.price.php?combo="+combo_string+"&product_id=<?= $product['id'] ?>"
       })
       .done(function( data ) {
-        console.log(data);
+        //console.log(data);
+        if(data.result){
+          $('.cover_prices_range').hide();
+          $('.btnaddcart').attr('disabled',false);
+          $('.prices').empty().append(data.html);
+          $('#product_image_url').attr('href', data.image_url);
+          $('#product_image').attr('src', data.image_url);
+          if(data.discount>0){
+            $('#product_price').val(data.price_discount);
+            $('#product_total').empty().append(data.price_discount);
+          }else{
+            $('#product_price').val(data.price);
+            $('#product_total').empty().append(data.price);
+          }
+          $('#txtCantidad').val('1');
+          $('#variant_id').val(data.variant_id);
+        }
+        if(data.result==false){
+          $('.prices').empty().append('<div class="notice">Seleccione las alternativas disponibles</div>');
+          $('.cover_prices_range').show();
+          $('#product_total').empty().append('0.00');
+          $('#product_price').val('0.00');
+          $('.btnaddcart').attr('disabled',true);
+        }
       });
     }
-    /*
-    if($(this).hasClass('isDisabled')){
-      return false;
+    if(combo_string==""){
+      $('.prices').empty().append('<div class="notice">Seleccione las alternativas disponibles</div>');
+      $('.cover_prices_range').show();
+      $('#product_total').empty().append('0.00');
+      $('#product_price').val('0.00');
+      $('.btnaddcart').attr('disabled',true);
     }
-    $('.check_available').removeClass('isSelected isDisabled');
-    $(this).addClass('isSelected');
-    var id = $(this).attr('data-id');
-    //console.log(id);
-    event.preventDefault();
-    $.ajax({
-      method: "get",
-      url: "<?= G_DIR_MODULES_URL ?>plm/front.end.verify.options.php?option="+id+"&product_id=<?= $product['id']?>"
-    })
-    .done(function( data ) {
-      var size = Object.keys(data['elements_hidden']).length;
-      for (var i = 0; i < size; i++) {
-        console.log(data.elements_hidden[i]);
-        $('#'+data.elements_hidden[i]).addClass('isDisabled');
-      }
-    });*/
   });
 
   function create_combo_string(){

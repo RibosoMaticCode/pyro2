@@ -22,7 +22,7 @@
 								<td style="width:120px"><img style="max-width:100px;" src="<?= $product['image_url'] ?>" alt="img" /></td>
 								<td><a href="<?= $product['url'] ?>"><?= $product['nombre'] ?></a>
 									<span><?= $product['variant'] ?></span>
-									<br /><br /><a href="<?= G_SERVER ?>/rb-script/modules/plm/cart.del.php?id=<?= $product['id'] ?>&variant_id=<?= $product['variant_id'] ?>">Eliminar</a></td>
+									<br /><br /><a href="<?= G_SERVER ?>rb-script/modules/plm/cart.del.php?id=<?= $product['id'] ?>&variant_id=<?= $product['variant_id'] ?>">Eliminar</a></td>
 								<td class="col_right"><?= G_COIN." ".number_format($product['precio'],2) ?></td>
 								<td class="col_center"><?= $product['cantidad'] ?></td>
 								<td class="col_right"><?= G_COIN." ".number_format($tot,2) ?></td>
@@ -47,7 +47,7 @@
 			<?php
 			if(count($products)>0):
 				if(G_ACCESOUSUARIO==0): ?>
-					<a class="btn-cart-next" href="<?= G_SERVER ?>/login.php?redirect=<?= $pre_payment_url ?>">Continuar con mi compra</a>
+					<a class="btn-cart-next" href="<?= G_SERVER ?>login.php?redirect=<?= $pre_payment_url ?>">Continuar con mi compra</a>
 				<?php else: ?>
 					<a class="btn-cart-next" href="<?= $pre_payment_url ?>">Continuar con mi compra</a>
 				<?php

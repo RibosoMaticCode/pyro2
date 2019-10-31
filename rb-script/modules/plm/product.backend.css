@@ -43,3 +43,17 @@ ul.categories_list li .option {
     font-weight: bold;
     padding: 3px 0;
 }
+
+/* seccion informacion */
+.plm_backend_text .plm_logo{
+  float:left;
+  margin:0 10px 10px 0;
+}
+.plm_backend_text li{
+  list-style-type: initial!important;
+  margin-left:20px!important;
+}
+.plm_backend_text li,
+.plm_backend_text p{
+  font-size: .9em;
+}

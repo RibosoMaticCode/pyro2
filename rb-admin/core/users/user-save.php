@@ -6,8 +6,8 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/class/rb-usuarios.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/class/rb-users.class.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 // Modo
 $mode=$_POST['mode'];
@@ -112,7 +112,7 @@ if($mode=="new"){
 		'user_key' => md5(microtime().rand())
 	];
 
-	$r = $objDataBase->Insert('usuarios', $valores);
+	$r = $objDataBase->Insert(G_PREFIX."users", $valores);
 	if($r['result']){
     $ultimo_id= $r['insert_id'];
 
@@ -181,9 +181,9 @@ if($mode=="new"){
 		'photo_id' => $photo
 	];
 
-	$r = $objDataBase->Update('usuarios', $valores, ["id" => $id]);
+	$r = $objDataBase->Update(G_PREFIX."users", $valores, ["id" => $id]);
 	if($r['result']){
-    if($change_pwd==1) $objDataBase->EditarPorCampo("usuarios", "password", md5(trim($pwd)),$id);
+    if($change_pwd==1) $objDataBase->EditarPorCampo(G_PREFIX."users", "password", md5(trim($pwd)),$id);
 
     $objDataBase->EditarPorCampo("usuarios", "bio", $bio, $id);
     $objDataBase->EditarPorCampo("usuarios", "tw", $tw, $id);

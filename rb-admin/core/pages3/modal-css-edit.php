@@ -1,7 +1,7 @@
 <!-- MODAL WINDOWS HTML EDITOR AND CONFIGURATION -->
 <!-- ========================================== -->
 <?php
-$fname = $_SERVER['DOCUMENT_ROOT'].G_DIRECTORY."/rb-temas/".G_ESTILO."/css/styles-add.css";
+$fname = $_SERVER['DOCUMENT_ROOT'].G_DIRECTORY."/rb-themes/".G_ESTILO."/css/styles-add.css";
 $myfile = fopen($fname, "r") or die("¡No se puede abrir el archivo!");
 $content = fread($myfile,filesize($fname));
 fclose($myfile);
@@ -17,7 +17,7 @@ fclose($myfile);
 			<div id="editor-css-content"><?= $content ?></div>
 		</div>
 		<div class="editor-footer">
-			<button type="submit" class="btn-primary" id="editor-css-btn-accept">Cambiar</button>
+			<button type="submit" class="btn-primary button" id="editor-css-btn-accept">Cambiar</button>
 			<button type="button" class="button" id="editor-css-btn-cancel">Cancelar</button>
 		</div>
 	</form>
@@ -40,7 +40,7 @@ fclose($myfile);
 			event.preventDefault();
 	  	$.ajax({
 		  	method: "POST",
-		  	url: "<?= G_SERVER ?>/rb-admin/core/pages2/write-file-css.php",
+		  	url: "<?= G_SERVER ?>rb-admin/core/pages3/write-file-css.php",
 		  	data: $( "#form-editor-css" ).serialize()
 			}).done(function( msg ) {
 				console.log(msg);

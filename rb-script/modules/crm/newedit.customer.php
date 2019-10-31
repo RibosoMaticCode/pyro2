@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH."global.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=customers';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=customers';
 
 if( isset($_GET['id']) ){
   $id=$_GET['id'];
@@ -67,7 +67,7 @@ if( isset($_GET['id']) ){
   		//tinyMCE.triggerSave(); //save first tinymce en textarea
   		$.ajax({
   			method: "post",
-  			url: "<?= G_SERVER ?>/rb-script/modules/crm/save.customer.php",
+  			url: "<?= G_SERVER ?>rb-script/modules/crm/save.customer.php",
   			data: $( this ).serialize()
   		})
   		.done(function( data ) {

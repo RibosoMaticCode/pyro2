@@ -4,7 +4,8 @@ header('Content-type: application/json; charset=utf-8');
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 if($_POST){
@@ -13,13 +14,13 @@ if($_POST){
   if(!empty( $sitekey ) && !empty( $secretkey )){
     // Site key save
     if(rb_get_values_options('sitekey')==""){
-      $objDataBase->Insert('opciones', ['opcion' => 'sitekey', 'valor' => $sitekey]); // Guarda nuevo
+      $objDataBase->Insert(G_PREFIX.'configuration', ['option_name' => 'sitekey', 'value' => $sitekey]); // Guarda nuevo
     }else{
       rb_set_values_options('sitekey', $sitekey); // Actuailiza
     }
     // Secret key save
     if(rb_get_values_options('secretkey')==""){
-      $objDataBase->Insert('opciones', ['opcion' => 'secretkey', 'valor' => $secretkey]); // Guarda nuevo
+      $objDataBase->Insert(G_PREFIX.'configuration', ['option_name' => 'secretkey', 'value' => $secretkey]); // Guarda nuevo
     }else{
       rb_set_values_options('secretkey', $secretkey); // Actualiza
     }

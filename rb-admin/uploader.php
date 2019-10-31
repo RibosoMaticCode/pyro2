@@ -3,15 +3,16 @@ header('Content-type: application/json; charset=utf-8');
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
 
-require_once(ABSPATH."global.php");
-require_once(ABSPATH."rb-script/funciones.php");
-require_once(ABSPATH."rb-script/class/rb-database.class.php");
+require_once ABSPATH."global.php";
+require_once ABSPATH."rb-script/funcs.php";
+require_once ABSPATH."rb-script/class/rb-database.class.php";
 
 if(G_ACCESOUSUARIO>0){
 	$album_id = $_POST['albumid'];
 	$user_id = $_POST['user_id'];
 	$dir_gallery =  ABSPATH."rb-media/gallery/";
 	$dir_gallery_thumbs = ABSPATH."rb-media/gallery/tn/";
+	$watermark = rb_get_values_options('water_mark_image');
 
 	if(isset($_FILES["myfile"])){
 
@@ -33,11 +34,20 @@ if(G_ACCESOUSUARIO>0){
 
 			// Comprimiendo y guardan en directorio
 			//rb_compress($_FILES["myfile"]["tmp_name"], $dir_gallery.$fileName);
+			$fileType = $_FILES["myfile"]["type"];
 
-			move_uploaded_file($_FILES["myfile"]["tmp_name"],$dir_gallery.$fileName);
+			// Verificar si hay marca de agua
+			if ( $watermark > 0 && $fileType == "image/jpeg"){
+				// Aplicar marca de agua
+				$photos = rb_get_photo_from_id( rb_get_values_options('water_mark_image') );
+				$WaterMark = ABSPATH."rb-media/gallery/".$photos['src'];
+				addImageWatermark($_FILES["myfile"]["tmp_name"], $WaterMark, $dir_gallery.$fileName, 10);
+			}else{
+				move_uploaded_file($_FILES["myfile"]["tmp_name"],$dir_gallery.$fileName);
+			}
 
 			// Creando thumbnails
-			$fileType = $_FILES["myfile"]["type"];
+
 			if($fileType == "image/png" || $fileType == "image/jpeg" || $fileType == "image/gif") rb_createThumbnail($fileName, $dir_gallery_thumbs, $dir_gallery, 300);
 
 			// Almacenando informacion de archivo en base de datos
@@ -51,13 +61,13 @@ if(G_ACCESOUSUARIO>0){
 				'usuario_id' => $user_id
 			];
 
-			$r = $objDataBase->Insert('photo', $valores);
+			$r = $objDataBase->Insert(G_PREFIX."files", $valores);
 	    if($r['result']){
 				$ultimo_id = $r['insert_id'];
 	    }
 		}
 
-		$arr = ['resultado' => true, 'last_id' => $ultimo_id, 'type' => $fileType, 'filename' => $fileName ];
+		$arr = ['resultado' => true, 'last_id' => $ultimo_id, 'type' => $fileType, 'filename' => $fileName, 'watermark' => $watermark ];
 	}
 
 }else{

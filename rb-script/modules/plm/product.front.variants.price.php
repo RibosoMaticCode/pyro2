@@ -20,6 +20,7 @@ if($qr->num_rows > 0){
   $descuento = $variant['discount'];
   $precio_oferta = $variant['price_discount'];
 	$variant_id = $variant['variant_id'];
+	$state = $variant['state'];
 	$image = rb_get_photo_details_from_id($variant['image_id']);
 	$image_url = $image['file_url'];
 
@@ -64,6 +65,7 @@ if($qr->num_rows > 0){
 		'result' => true,
 		'price' => $precio_normal,
 		'discount' => $descuento,
+		'state' => $state,
 		'price_discount' => $precio_oferta,
 		'html' => $html,
 		'variant_id' => $variant_id,

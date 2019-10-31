@@ -4,7 +4,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 function get_option($option){
   global $objDataBase;
@@ -17,11 +17,14 @@ function get_option($option){
 function get_product_info($product_id){
 	global $objDataBase;
 	$r = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$product_id);
+	if($r->num_rows == 0){
+		return false;
+	}
 	$product = $r->fetch_assoc();
 	if(G_ENL_AMIG):
-		$product['url']=G_SERVER."/products/".$product['nombre_key']."/";
+		$product['url']=G_SERVER."products/".$product['nombre_key']."/";
 	else:
-		$product['url']=G_SERVER."/?products=".$product['id'];
+		$product['url']=G_SERVER."?products=".$product['id'];
 	endif;
 	return $product;
 }
@@ -39,9 +42,9 @@ function get_category_info($category_id, $bykey = false){
   $category = $r->fetch_assoc();
 
 	if(G_ENL_AMIG):
-		$Category['url'] = G_SERVER."/products/category/".$category['nombre_enlace']."/";
+		$Category['url'] = G_SERVER."products/category/".$category['nombre_enlace']."/";
 	else:
-	  $Category['url'] = G_SERVER."/?category=".$category['id'];
+	  $Category['url'] = G_SERVER."?category=".$category['id'];
 	endif;
 	$Category['id'] = $category['id'];
 	$Category['nombre'] = $category['nombre'];
@@ -63,8 +66,8 @@ function products_recent($limit=5){
 		$products[$i]['precio_oferta'] = $product['precio_oferta'];
 		$products[$i]['precio'] = $product['precio'];
 		$products[$i]['descuento'] = $product['descuento'];
-		if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-		else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+		if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+		else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
 		$products[$i]['image_url'] = $photo['file_url'];
 		$i++;
@@ -89,8 +92,8 @@ function products_related($product_id, $limit=5){
 		$products[$i]['precio_oferta'] = $product['precio_oferta'];
 		$products[$i]['precio'] = $product['precio'];
 		$products[$i]['descuento'] = $product['descuento'];
-		if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-		else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+		if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+		else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
 		$products[$i]['image_url'] = $photo['file_url'];
 		$i++;
@@ -110,9 +113,9 @@ function list_category($parent_id){
 
 	while ($row = $result->fetch_assoc()):
 		if(G_ENL_AMIG):
-			$url = G_SERVER."/products/category/".$row['nombre_enlace']."/";
+			$url = G_SERVER."products/category/".$row['nombre_enlace']."/";
 		else:
-			$url = G_SERVER."/?category=".$row['id'];
+			$url = G_SERVER."?category=".$row['id'];
 		endif;
 		if ($row['Count'] > 0) {
 			$array = [
@@ -198,15 +201,15 @@ function url_page($term, $page, $type){
 		case 'search':
 			if(G_ENL_AMIG){
 				if($page==1){
-					return G_SERVER."/products/search/".$term."/";
+					return G_SERVER."products/search/".$term."/";
 				}else{
-					return G_SERVER."/products/search/".$term."/".$page."/";
+					return G_SERVER."products/search/".$term."/".$page."/";
 				}
 			}else{
 				if($page==1){
-					return G_SERVER."/?product_search=".$term;
+					return G_SERVER."?product_search=".$term;
 				}else{
-					return G_SERVER."/?product_search=".$term."&p=".$page;
+					return G_SERVER."?product_search=".$term."&p=".$page;
 				}
 			}
 			break;
@@ -214,15 +217,15 @@ function url_page($term, $page, $type){
 		case 'all':
 			if(G_ENL_AMIG){
 				if($page==1){
-					return G_SERVER."/products/";
+					return G_SERVER."products/";
 				}else{
-					return G_SERVER."/products/".$page."/";
+					return G_SERVER."products/".$page."/";
 				}
 			}else{
 				if($page==1){
-					return G_SERVER."/?products";
+					return G_SERVER."?products";
 				}else{
-					return G_SERVER."/?product&p=".$page;
+					return G_SERVER."?product&p=".$page;
 				}
 			}
 		break;

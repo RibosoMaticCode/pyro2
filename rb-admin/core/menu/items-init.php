@@ -3,11 +3,11 @@
 // MOSTRAR LA ESTRUCTURA DE EDICION DEL MENU
 //require_once(ABSPATH."rb-script/class/rb-articulos.class.php");
 $mainmenu_id = $_GET['id'];
-$r = $objDataBase->Ejecutar("SELECT * FROM menus WHERE id=$mainmenu_id");
+$r = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."menus WHERE id=".$mainmenu_id);
 $menu = $r->fetch_assoc();
 $menu_asincrono = true;
 ?>
-<script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
+<script src="<?= G_SERVER ?>rb-admin/resource/ui/jquery-ui.js"></script>
 <script>
 	$(document).ready(function() {
 		$( ".column" ).sortable({
@@ -44,7 +44,7 @@ $menu_asincrono = true;
 		});
 
 		<?php
-		$result = $objDataBase->Ejecutar("SELECT * FROM menus_items ORDER BY id DESC LIMIT 1");
+		$result = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."menus_items ORDER BY id DESC LIMIT 1");
 		$row = $result->fetch_assoc();
 		?>
 
@@ -88,7 +88,7 @@ $menu_asincrono = true;
 			//return false;
 			$.ajax({
 				type: 'POST',
-				url: '<?= G_SERVER ?>/rb-admin/core/menu/items-save.php',
+				url: '<?= G_SERVER ?>rb-admin/core/menu/items-save.php',
 				data: {
 					mainmenu_id: <?= $mainmenu_id ?>,
 					json: JSON.stringify(out)},
@@ -98,7 +98,7 @@ $menu_asincrono = true;
 				console.log(data);
 				if(data==1){
 					notify("Actualizando menu");
-					window.location.href = '<?=  G_SERVER ?>/rb-admin/index.php?pag=menu&id=<?= $mainmenu_id ?>&m=ok';
+					window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=menu&id=<?= $mainmenu_id ?>&m=ok';
 				}else{
 					notify("Ocurrio un error");
 				}
@@ -213,12 +213,12 @@ $menu_asincrono = true;
 						case 'pag':
 							type_det = "Pagina";
 						break;
-						case 'art':
+						/*case 'art':
 							type_det = "Publicacion de Blog";
 						break;
 						case 'cat':
 							type_det = "Categoria de Blog";
-						break;
+						break;*/
 					}
 					var item = '<li class="item" data-id="item'+last_item+'" data-title="'+title+'" data-url="'+url+'" data-menumain="<?= $mainmenu_id ?>" data-type="'+type+'" data-style="" data-img="">';
 						item += '<div class="header"><span class="item-title">'+title+'</span> ['+type_det+']</div>';
@@ -240,7 +240,7 @@ $menu_asincrono = true;
 	                    item += '   <label>Clase CSS (se aplica a los subitems):';
                        	item += '		<input id="item-menu-css-'+last_item+'" name="estilo" class="menu_style" type="text" value="" />';
                        	item += '	</label>';
-                       	item += '<button class="delete">Eliminar</button>';
+                       	item += '<button class="button delete">Eliminar</button>';
                    		item += '</div>';
                    		item += '<ul class="column item sortable"></ul> ';//<ul class='column item hidden'></ul>
                    		item += '</li>';
@@ -249,7 +249,6 @@ $menu_asincrono = true;
 				}
 	});
 </script>
-<h2 class="title">Menu <?= $menu['nombre'] ?></h2>
 <?php if (!in_array("menu", $array_help_close)): ?>
 	<div class="help" data-name="menu">
 		<h4>Información</h4>
@@ -258,11 +257,15 @@ $menu_asincrono = true;
 		<p>Para establecerlo en la página inicial, debes ir a la seccion Opciones y establecerlo desde allí.</p>
 	</div>
 <?php endif ?>
-<div id="sidebar-left">
-	<ul class="buttons-edition">
-		<li><a id="savesubitems" class="btn-primary" href="#">Guardar Menu</a></li>
-		<li><a class="button" href="<?= G_SERVER ?>/rb-admin/?pag=menus">Volver</a></li>
-	</ul>
+<div id="toolbar">
+	<div class="inside_toolbar">
+		<div class="navigation">
+			<a href="<?= G_SERVER ?>rb-admin/?pag=menus">Menús</a> <i class="fas fa-angle-right"></i>
+			<span><?= $menu['nombre'] ?></span>
+		</div>
+		<a id="savesubitems" class="button btn-primary" href="#">Guardar Menu</a>
+		<a class="button" href="<?= G_SERVER ?>rb-admin/?pag=menus">Volver</a>
+	</div>
 </div>
 <div class="content-edit form">
 	<section class="seccion">
@@ -282,7 +285,7 @@ $menu_asincrono = true;
 						Página
 					</a>
 				</li>
-				<li>
+				<!--<li>
 					<a id="btn-list-art" href="#">
 						Artículo
 					</a>
@@ -291,7 +294,7 @@ $menu_asincrono = true;
 					<a id="btn-list-cat" href="#">
 						Categoría
 					</a>
-				</li>
+				</li>-->
 				<li>
 					<a id="btn-list-per" href="#">
 						Personalizado
@@ -303,7 +306,7 @@ $menu_asincrono = true;
 				<div id="list-pag" class="item-menu-selected">
 					<div class="list-pag">
 					<?php
-					$q = $objDataBase->Ejecutar("SELECT * FROM paginas");
+					$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages");
 					while($r = $q->fetch_assoc()):
 					?>
 						<label class="label_checkbox"><input type="checkbox" value="<?= $r['id'] ?>" data-type="pag" data-title="<?= $r['titulo'] ?>" name="paginas[]"><?= $r['titulo'] ?></label>
@@ -312,13 +315,13 @@ $menu_asincrono = true;
 					?>
 					</div>
 					<div>
-						<button id="btn-add-pages">Añadir al Menú</button>
+						<button class="button" id="btn-add-pages">Añadir al Menú</button>
 					</div>
 				</div>
-				<div id="list-art" style="display: none">
+				<!--<div id="list-art" style="display: none">
 					<div class="list-art">
 					<?php
-					$q = $objDataBase->Ejecutar("SELECT * FROM articulos");
+					/*$q = $objDataBase->Ejecutar("SELECT * FROM articulos");
 					while($r = $q->fetch_assoc()):
 					?>
 						<label class="label_checkbox"><input type="checkbox" value="<?= $r['id'] ?>" data-type="art" data-title="<?= $r['titulo'] ?>" name="articulos[]"><?= $r['titulo'] ?></label>
@@ -338,13 +341,13 @@ $menu_asincrono = true;
 					?>
 						<label class="label_checkbox"><input type="checkbox" value="<?= $r['id'] ?>" data-type="cat" data-title="<?= $r['nombre'] ?>" name="categorias[]"><?= $r['nombre'] ?></label>
 					<?php
-					endwhile;
+				endwhile;*/
 					?>
 					</div>
 					<div>
 						<button id="btn-add-categories">Añadir al Menú</button>
 					</div>
-				</div>
+				</div>-->
 				<div id="list-per" style="display: none">
 					<div class="list-per">
 					<form id="menu_item_per_frm" data-type="per">
@@ -356,7 +359,7 @@ $menu_asincrono = true;
 							<span>URL</span>
 							<input type="text" required name="menu_item_url" id="menu_item_url" />
 						</label>
-						<button id="btn-add-custom">Añadir al Menú</button>
+						<button class="button" id="btn-add-custom">Añadir al Menú</button>
 					</form>
 					<p>Puedes usar estas variables globales</p>
 					<ul>

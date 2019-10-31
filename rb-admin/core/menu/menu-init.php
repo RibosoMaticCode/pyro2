@@ -45,7 +45,7 @@ $(document).ready(function() {
 			});
       notify('Los datos seleccionados fueron eliminados correctamente.');
       setTimeout(function(){
-        window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=menus';
+        window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=menus';
       }, 1000);
 		}
 	});
@@ -63,7 +63,7 @@ $(document).ready(function() {
           if(data.result = 1){
             notify('El dato fue eliminado correctamente.');
             setTimeout(function(){
-              window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=menus';
+              window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=menus';
             }, 1000);
           }else{
             notify('Ocurrio un error inesperado. Intente luego.');
@@ -74,25 +74,33 @@ $(document).ready(function() {
   });
 });
 </script>
-<div id="sidebar-left">
-  <ul class="buttons-edition">
-    <li><a class="btn-primary" href="../rb-admin/?pag=menus&amp;opc=nvo">Menú Nuevo</a></li>
-  </ul>
-</div>
 <div class="wrap-content-list">
   <section class="seccion">
     <div class="seccion-header">
       <h2>Menus</h2>
+      <ul class="buttons">
+        <li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/?pag=menus&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+      </ul>
     </div>
     <div class="seccion-body">
       <div id="content-list">
         <div id="resultado">
-          <table id="t_categorias" class="tables" border="0" cellpadding="0" cellspacing="0">
+          <script>
+            $(document).ready(function() {
+              $('#table').DataTable({
+                "language": {
+                  "url": "resource/datatables/Spanish.json"
+                }
+              });
+            } );
+          </script>
+          <table id="table" class="tables table-striped">
             <thead>
               <tr>
                 <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
                 <th>Nombre</th>
-                <th>Como usarlo</th>
+                <th>Shortcode</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody id="itemstable">

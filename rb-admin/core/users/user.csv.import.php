@@ -4,8 +4,8 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
-require_once ABSPATH.'rb-script/class/rb-usuarios.class.php';
+require_once ABSPATH.'rb-script/funcs.php';
+require_once ABSPATH.'rb-script/class/rb-users.class.php';
 
 $filename = "lista.csv";
 if ( file_exists($filename) && ($fh = fopen($filename, "r"))!==false ) {
@@ -66,13 +66,12 @@ foreach ($csvData as $key) {
             'correo' => $mail,
             'tipo' => $tipo,
             'fecharegistro' => date('Y-m-d G:i:s'),
-            //'fecha_activar' => $date_2d,
             'ultimoacceso' => date('Y-m-d G:i:s'),
             'activo' => $admin_active_user,
             'user_key' => md5(microtime().rand())
         ];
 
-        $r = $objDataBase->Insert('usuarios', $valores);
+        $r = $objDataBase->Insert(G_PREFIX."users", $valores);
         if($r['result']){
             $message.="Importacion exitosa";
         }
@@ -86,7 +85,7 @@ foreach ($csvData as $key) {
     echo "<td>".$nickname."</td>";
     echo "<td>".$pass."</td>";
     echo "<td>$message</td>";
-    echo "</tr>";    
+    echo "</tr>";
 }
 ?>
 </table>

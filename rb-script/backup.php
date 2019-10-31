@@ -2,7 +2,7 @@
 header('Content-type: application/json; charset=utf-8');
 
 require_once '../global.php';
-require_once 'funciones.php';
+require_once 'funcs.php';
 if(G_ACCESOUSUARIO>0){
   $response = rb_backup_data();
   if($response['response']){

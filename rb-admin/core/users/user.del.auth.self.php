@@ -33,7 +33,7 @@ $(document).ready(function() {
     event.preventDefault();
     $.ajax({
       data: $( this ).serialize(),
-      url: '<?= G_SERVER ?>/rb-admin/core/users/user.del.self.php',
+      url: '<?= G_SERVER ?>rb-admin/core/users/user.del.self.php',
       cache: false,
       type: "POST",
       success: function(data){
@@ -41,7 +41,7 @@ $(document).ready(function() {
           $.fancybox.close();
           notify( data.message );
           setTimeout(function(){
-	          window.location.href = '<?= G_SERVER ?>/login.php?out';
+	          window.location.href = '<?= G_SERVER ?>login.php?out';
 	        }, 1000);
         }else{
           notify(data.message);

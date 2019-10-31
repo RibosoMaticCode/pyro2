@@ -5,7 +5,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 if(empty($_POST['title_enlace'])) $titulo_enlace = rb_cambiar_nombre(utf8_encode(trim($_POST['title'])));
 else $titulo_enlace = $_POST['title_enlace'];
@@ -28,7 +28,7 @@ $valores = [
 ];
 
 if($mode=="new"):
-	$result = $objDataBase->Insert('paginas', $valores);
+	$result = $objDataBase->Insert(G_PREFIX.'pages', $valores);
 	if($result['result']):
 		$ultimo_id = $result['insert_id'];
 		$arr = array('resultado' => 'ok', 'contenido' => 'Pagina guardada.', 'url' => G_SERVER, 'last_id' => $ultimo_id, 'reload' => true );
@@ -38,7 +38,7 @@ if($mode=="new"):
 		die(json_encode($arr));
 	endif;
 elseif($mode=="update"):
-	$result = $objDataBase->Update('paginas', $valores, ["id" => $pagina_id]);
+	$result = $objDataBase->Update(G_PREFIX.'pages', $valores, ["id" => $pagina_id]);
 	if($result['result']):
 		$arr = array('resultado' => 'ok', 'contenido' => 'Contenido actualizado', 'url' => G_SERVER, 'last_id' => $pagina_id, 'reload' => false );
 		die(json_encode($arr));

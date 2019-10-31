@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 $message_id = $_GET['message_id'];
@@ -18,7 +18,7 @@ $condicion = [
   'usuario_id' => $receiver_id
 ];
 
-$r = $objDataBase->Update('mensajes_usuarios', $valores_actualizar, $condicion);
+$r = $objDataBase->Update(G_PREFIX.'messages_users', $valores_actualizar, $condicion);
 if($r['result']){
   $arr = ['resultado' => true, 'contenido' => 'Mensajes aprobado' ];
 }else{
@@ -27,7 +27,7 @@ if($r['result']){
 //print_r($arr);
 
 // Actualizar Asunto a $aprobado
-$r = $objDataBase->Update('mensajes', ['asunto' => "Mensaje aprobado"], ['id' => $this_message_id]);
+$r = $objDataBase->Update(G_PREFIX.'messages_users', ['asunto' => "Mensaje aprobado"], ['id' => $this_message_id]);
 if($r['result']){
   $arr = ['resultado' => true, 'contenido' => 'Asunto actualizado' ];
 }else{
@@ -40,7 +40,7 @@ $from_name = G_TITULO;
 $mail_no_reply = "noreply@".G_HOSTNAME;
 $recipient = $user_data['correo'];
 $subject = "Tienes un nuevo mensaje interno";
-$email_content = "Tienes un mensaje en la web de ".G_TITULO.". Accede a tu cuenta para revisarlo: <a href='".G_SERVER."/login.php'>Acceder a mi cuenta</a>";
+$email_content = "Tienes un mensaje en la web de ".G_TITULO.". Accede a tu cuenta para revisarlo: <a href='".G_SERVER."login.php'>Acceder a mi cuenta</a>";
 // Build the email headers. // El que envia es el sender no el usuario
 $email_headers = "From: $from_name <$mail_no_reply> \r\n";
 //$email_headers .= "Cc: $cc \r\n";
@@ -55,6 +55,6 @@ if (mail($recipient, $subject, $email_content, $email_headers)) {
 	echo "Oops! Algo salio mal y no pudimos enviar tu mensaje.";
 }
 
-$enlace=G_SERVER.'/rb-admin/index.php?pag=men';
+$enlace=G_SERVER.'rb-admin/index.php?pag=men';
 header('Location: '.$enlace);
 ?>

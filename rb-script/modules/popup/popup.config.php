@@ -2,7 +2,7 @@
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 $url_img = rb_get_values_options('popup_url_img');
@@ -60,14 +60,14 @@ $(document).ready(function() {
 		event.preventDefault();
 		$.ajax({
 			method: "post",
-			url: "<?= G_SERVER ?>/rb-script/modules/popup/popup.saveconfig.php",
+			url: "<?= G_SERVER ?>rb-script/modules/popup/popup.saveconfig.php",
 			data: $( this ).serialize()
 		})
 		.done(function( data ) {
 			if(data.result){
 				notify(data.contenido);
 				setTimeout(function(){
-					window.location.href = '<?= G_SERVER ?>/rb-admin/module.php?pag=popup_config';
+					window.location.href = '<?= G_SERVER ?>rb-admin/module.php?pag=popup_config';
 				}, 800);
 	  	}else{
 				notify(data.contenido);

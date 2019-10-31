@@ -7,7 +7,7 @@ $module_dir = "plm";
 $key = "plm_category";
 
 $newedit_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".newedit.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 require_once ABSPATH."rb-script/modules/plm/funcs.php";
 
 $columns_title_coltable = [

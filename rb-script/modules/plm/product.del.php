@@ -11,10 +11,14 @@ $id = $_GET['id'];
 
 // Borrar de la DB
 $r = $objDataBase->Ejecutar('DELETE FROM plm_products WHERE id='.$id);
-if($r){
-	$arr = ['resultado' => true, 'contenido' => 'Elemento eliminado' ];
+if(G_ACCESOUSUARIO){
+	if($r){
+		$arr = ['resultado' => true, 'contenido' => 'Elemento eliminado' ];
+	}else{
+		$arr = ['resultado' => false, 'contenido' => $r['error']];
+	}
 }else{
-	$arr = ['resultado' => false, 'contenido' => $r['error']];
+	$arr = ['resultado' => false, 'contenido' => 'Usuario no inicio sesion'];
 }
 die(json_encode($arr));
 ?>

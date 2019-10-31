@@ -14,7 +14,7 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM crm_customers ORDER BY id DESC");
             $('#report1').DataTable({
               "language": {
                 "url": "resource/datatables/Spanish.json"
-              } 
+              }
             });
           } );
         </script>
@@ -36,8 +36,8 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM crm_customers ORDER BY id DESC");
               $last15 =  count_last_days($row['id'], 15)->num_rows;
               $last30 =  count_last_days($row['id'], 30)->num_rows;
               ?>
-              <td><a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>/rb-script/modules/crm/visit.details.php?id=<?= $row['id'] ?>&days=15"><?= $last15 ?></a></td>
-              <td><a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>/rb-script/modules/crm/visit.details.php?id=<?= $row['id'] ?>&days=30"><?= $last30 ?></a></td>
+              <td><a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>rb-script/modules/crm/visit.details.php?id=<?= $row['id'] ?>&days=15"><?= $last15 ?></a></td>
+              <td><a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>rb-script/modules/crm/visit.details.php?id=<?= $row['id'] ?>&days=30"><?= $last30 ?></a></td>
             </tr>
             <?php
           endwhile;

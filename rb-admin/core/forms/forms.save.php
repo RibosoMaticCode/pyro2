@@ -20,7 +20,7 @@ $columns_vals = [
 // tipo de accion
 if( $mode=="new" ){
 	$columns_vals['name_id'] = rb_cambiar_nombre( utf8_encode( trim( $_POST['name'] ) ) );
-	$result = $objDataBase->Insert('forms', $columns_vals);
+	$result = $objDataBase->Insert(G_PREFIX.'forms', $columns_vals);
 	if( $result['result'] ){
 		$arr = array('result' => true, 'message' => 'Formulario guardado', 'url' => G_SERVER, 'last_id' => $result['insert_id'] );
 	}else{
@@ -28,7 +28,7 @@ if( $mode=="new" ){
 	}
 }elseif( $mode=="update" ){
 	$id = $_POST['id'];
-	$result = $objDataBase->Update('forms', $columns_vals, ['id' => $id]);
+	$result = $objDataBase->Update(G_PREFIX.'forms', $columns_vals, ['id' => $id]);
 	if( $result['result'] ){
 		$arr = array('result' => true, 'message' => 'Formulario actualizado', 'url' => G_SERVER, 'last_id' => $id );
 	}else{

@@ -2,7 +2,8 @@
   <div class="seccion-header">
     <h2>Suscriptores</h2>
     <ul class="buttons">
-      <li><a class="btn-primary fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php">Nuevo</a></li>
+      <li><a class="button btn-primary fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php">Nuevo</a></li>
+      <li><a href="<?= G_DIR_MODULES_URL ?>suscripciones/list.print.php" class="button">Ver listado</a></li>
     </ul>
   </div>
   <div class="seccion-body">
@@ -12,7 +13,7 @@
           $('#table').DataTable({
             "language": {
               "url": "resource/datatables/Spanish.json"
-            } 
+            }
           });
         } );
       </script>
@@ -20,6 +21,7 @@
         <thead>
           <tr>
             <th>Fecha</th>
+            <th>ID Documento</th>
             <th>Nombres</th>
             <th>Correo</th>
             <th>Telefono</th>
@@ -35,7 +37,7 @@
 </section>
 
 <?php
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=rb_sus_susc';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=rb_sus_susc';
 ?>
 <script>
 // Eliminar evento del dia
@@ -46,7 +48,7 @@ $('.del').on("click", function(event){
     var id = $(this).attr('data-item');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/suscripciones/del.suscriptor.php?id="+id
+      url: "<?= G_SERVER ?>rb-script/modules/suscripciones/del.suscriptor.php?id="+id
     })
     .done(function( data ) {
       if(data.resultado){

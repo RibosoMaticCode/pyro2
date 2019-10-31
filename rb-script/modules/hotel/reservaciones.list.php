@@ -20,7 +20,7 @@ while ($row = $qlist->fetch_assoc()):
     <td><?= rb_sqldate_to($row['fecha_finalizacion'], 'd-m-Y H:i') ?></td>
     <td>S/. <?= $row['total_reservacion'] ?></td>
 		<td class="row-actions">
-      <a title="Editar" class="edit" data-item="<?= $row['id'] ?>" href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=<?= $row['id'] ?>&date=<?= $fecha ?>">
+      <a title="Editar" class="edit" data-item="<?= $row['id'] ?>" href="<?= G_SERVER ?>rb-admin/module.php?pag=hotel_reservaciones&res_id=<?= $row['id'] ?>&date=<?= $fecha ?>">
         <i class="fa fa-edit"></i>
       </a>
       <!--<a title="Eliminar" class="del" data-item="<?= $row['id'] ?>" href="#">

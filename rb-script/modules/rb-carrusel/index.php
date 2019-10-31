@@ -4,7 +4,7 @@ Module Name: Galeria carrusel
 Plugin URI: http://kenwheeler.github.io/slick/
 Description: Convierte una galería en un carrusel de fotos. Usa el plugin slick.js
 Author: Jesus Liñan
-Version: 1.1
+Version: 1.0.0
 Author URI: http://ribosomatic.com
 PageConfig: carrusel
 */
@@ -80,13 +80,13 @@ function show_carrusel( $params ){ // Mostrar el formulario segun su id
 	return $carrusel_html;
 }
 
-$r = $objDataBase->Ejecutar('SELECT id FROM albums');
+$r = $objDataBase->Ejecutar('SELECT id FROM '.G_PREFIX.'galleries');
 while($gallery = $r->fetch_assoc()){
 	add_shortcode('carrusel', 'show_carrusel', ['id' => $gallery['id'] ]);
 }
 
-function test1(){
+/*function test1(){
 	return "Esto es una demostración de como usar los shortcodes - primitivo";
 }
-add_shortcode('carrusel_all', 'test1');
+add_shortcode('carrusel_all', 'test1');*/
 ?>

@@ -3,9 +3,11 @@
 * Instalador: Establece valores iniciales em la tabla Opciones
 * Ultima actualizacion : 24-01-17
 */
-require_once("../rb-script/funciones.php");
+//require_once("../global.php");
+require_once("../rb-script/funcs.php");
 require_once("../rb-script/class/rb-database.class.php");
 
+define('G_PREFIX', 'py_');
 $key_web = randomPassword(12,1,"lower_case,upper_case,numbers,special_symbols");
 
 //function crear htaccess
@@ -35,8 +37,9 @@ function create_htaccess($dir){
 
 	RewriteBase $dir/
 	# Para evitar errores con vinculos de facebook
-	# RewriteCond %{QUERY_STRING} "fbclid=" [NC]
+	# RewriteCond %{QUERY_STRING} \"fbclid=\" [NC]
 	# RewriteRule (.*) $dir/$1? [R=301,L]
+	
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
@@ -111,8 +114,8 @@ $opciones_valores = array(
 	"in" => "",
 	"pin" => "",
 	"whatsapp" => "",
-	"base_publication" => "articulo",
-	"base_category" => "categoria",
+	/*"base_publication" => "articulo",
+	"base_category" => "categoria",*/
 	"base_gallery" => "galeria",
 	"base_search" => "busqueda",
 	"base_user" => "usuario",
@@ -127,9 +130,9 @@ $opciones_valores = array(
 	"modules_load" => "[]",
 	"name_sender" => "No-Reply",
 	"directorio_url" => $directory,
-	"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img\/icon_home.png","pos":1,"show":true,"item":null},"blogs":{"key":"blogs","nombre":"Blog","url":"#","url_imagen":"img\/icon_post.png","pos":2,"show":true,"item":[{"key":"art","nombre":"Publicaciones","url":"index.php?pag=art","url_imagen":"none","pos":1},{"key":"cat","nombre":"Categorias","url":"index.php?pag=cat","url_imagen":"none","pos":1}]},"files":{"key":"files","nombre":"Archivos","url":"#","url_imagen":"img\/icon_media.png","pos":3,"show":true,"item":[{"key":"explorer","nombre":"Explorar","url":"index.php?pag=explorer","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de de imagenes","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img\/icon_user.png","pos":4,"show":true,"item":{"0":{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},"2":{"key":"men","nombre":"Mensajeria","url":"index.php?pag=men","url_imagen":"none","pos":1},"3":{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}}},"visual":{"key":"visual","nombre":"Contenidos y Estructuras","url":"#","url_imagen":"img\/icon_design.png","pos":5,"show":true,"item":[{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantilla","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',
+	"menu_panel" => '{"index":{"key":"index","nombre":"Inicio","url":"index.php","url_imagen":"img\/icon_home.png","pos":1,"show":true,"item":null},"files":{"key":"files","nombre":"Archivos","url":"#","url_imagen":"img\/icon_media.png","pos":3,"show":true,"item":[{"key":"explorer","nombre":"Explorar","url":"index.php?pag=explorer","url_imagen":"none","pos":1},{"key":"gal","nombre":"Galeria de imagenes","url":"index.php?pag=gal","url_imagen":"none","pos":1}]},"users":{"key":"users","nombre":"Usuarios","url":"#","url_imagen":"img\/icon_user.png","pos":4,"show":true,"item":{"0":{"key":"usu","nombre":"Gestionar","url":"index.php?pag=usu","url_imagen":"none","pos":1},"2":{"key":"men","nombre":"Mensajeria","url":"index.php?pag=men","url_imagen":"none","pos":1},"3":{"key":"nivel","nombre":"Niveles de acceso","url":"index.php?pag=nivel","url_imagen":"none","pos":1}}},"visual":{"key":"visual","nombre":"Contenidos","url":"#","url_imagen":"img\/icon_design.png","pos":5,"show":true,"item":[{"key":"pages","nombre":"Paginas","url":"index.php?pag=pages","url_imagen":"none","pos":1},{"key":"menus","nombre":"Menus","url":"index.php?pag=menus","url_imagen":"none","pos":1},{"key":"editfile","nombre":"Plantilla","url":"index.php?pag=editfile","url_imagen":"none","pos":1}]}}',
 	"alcance" => "1",
-	"version" => "2.0.6",
+	"version" => "3.0.0",
 	"sidebar" => "0",
 	"sidebar_pos" => "left",
 	"sidebar_id" => "0",
@@ -147,7 +150,9 @@ $opciones_valores = array(
 	"repet_pass_register" => 0,
 	"after_login_url" => "[RUTA_SITIO]?pa=panel",
 	"sidebar_id" => 0,
-	"files_allowed" => "jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf,svg"
+	"files_allowed" => "jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf,svg",
+	"gallery_groups" => "",
+	"water_mark_image" => 0
 );
 
 if(isset($_POST)):
@@ -160,18 +165,18 @@ if(isset($_POST)):
 	if($usuario_pass != $usuario_pass1) die("Contraseñas no coinciden");
 
 	/* USUARIO INICIAL */
-	$response = $objDataBase->Insertar("INSERT INTO usuarios (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
+	$response = $objDataBase->Insertar("INSERT INTO ".G_PREFIX."users (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
 		VALUES ('admin', '".md5($usuario_pass)."', 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");
 
 	if($response['result']==true):
 		$usuario_id = $response['insert_id'];
 
 		// ACTIVANDO USUARIO
-		$objDataBase->EditarPorCampo('usuarios','activo',1,$usuario_id);
+		$objDataBase->EditarPorCampo(G_PREFIX."users",'activo',1,$usuario_id);
 
 		// Recorrer array de valores para ingresarlos como valores por defecto
 		foreach($opciones_valores as $option  => $value){
-			$objDataBase->Ejecutar("INSERT INTO opciones (opcion, valor) VALUES ('$option','$value')");
+			$objDataBase->Ejecutar("INSERT INTO ".G_PREFIX."configuration (option_name, value) VALUES ('$option','$value')");
 		}
 
 		/* VALORES INICIALES PARA EL BLOG */
@@ -181,9 +186,9 @@ if(isset($_POST)):
 		rb_set_values_options( "name_sender", $sitio_titulo); // Nombre en el correo
 
 		// Niveles de usuarios
-		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (1, 'Administrador', 'admin', 'Administra y gestiona la configuración de TODO el sitio web')");
-		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (2, 'Usuario Gestionador', 'user-panel', 'Usuario con acceso para gestionar solo parte del sitio web')");
-		$objDataBase->Ejecutar("INSERT INTO usuarios_niveles (id, nombre, nivel_enlace, descripcion) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar el sitio web')");
+		$objDataBase->Ejecutar("INSERT INTO ".G_PREFIX."users_levels (id, nombre, nivel_enlace, descripcion) VALUE (1, 'Administrador', 'admin', 'Administra y gestiona la configuración de TODO el sitio web')");
+		$objDataBase->Ejecutar("INSERT INTO ".G_PREFIX."users_levels (id, nombre, nivel_enlace, descripcion) VALUE (2, 'Usuario Gestionador', 'user-panel', 'Usuario con acceso para gestionar solo parte del sitio web')");
+		$objDataBase->Ejecutar("INSERT INTO ".G_PREFIX."users_levels (id, nombre, nivel_enlace, descripcion) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar el sitio web')");
 
 		create_htaccess($directory);
 		header('Location: '.$sitio_url."/login.php");

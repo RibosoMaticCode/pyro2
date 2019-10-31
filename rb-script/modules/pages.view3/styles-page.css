@@ -270,6 +270,19 @@ span.rb-gallery-desc {
   padding: 10px;
 }
 
+.rb-youtube-grid a {
+    background-position: center;
+    background-size: cover;
+    height: 200px;
+    position: relative;
+}
+.rb-youtube-play-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @media screen and (max-width: 425px) {
   .post-0{
     display: block;

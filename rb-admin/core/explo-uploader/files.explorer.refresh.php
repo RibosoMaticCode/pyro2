@@ -14,12 +14,12 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once(ABSPATH.'rb-script/class/rb-database.class.php');
-require_once(ABSPATH.'rb-script/funciones.php');
+require_once(ABSPATH.'rb-script/funcs.php');
 
 if(G_USERTYPE == 1):
-	$q = $objDataBase->Ejecutar("SELECT * FROM photo ORDER BY id DESC");
+	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files ORDER BY id DESC");
 else:
-	$q = $objDataBase->Ejecutar("SELECT * FROM photo WHERE usuario_id=".G_USERID." ORDER BY id DESC");
+	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE usuario_id=".G_USERID." ORDER BY id DESC");
 endif;
 if( $q->num_rows ):
 ?>

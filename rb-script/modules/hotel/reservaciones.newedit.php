@@ -13,7 +13,7 @@ $table_name = "hotel_reservacion";
 $key = "hotel_reservaciones";
 $module_dir = "hotel";
 $save_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".save.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 
 /* customers */
 $qc = $objDataBase->Ejecutar("SELECT * FROM crm_customers");
@@ -32,12 +32,12 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 <div class="inside_contenedor_frm">
 	<div id="toolbar">
     <div class="inside_toolbar">
-    	<a class="button" href="http://dev.pyro2/rb-admin/module.php?pag=hotel_reservaciones">Volver</a>
+    	<a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=hotel_reservaciones">Volver</a>
 			<div class="cols-4-md cols-content-left">
 				<?php if ($id==0): ?>
-					<button type="submit" form="frmNewEdit">Realizar reservacion</button>
+					<button class="button btn-primary" type="submit" form="frmNewEdit">Realizar reservacion</button>
 				<?php else: ?>
-					<button type="submit" form="frmNewEdit">Actualizar datos</button>
+					<button class="button btn-primary" type="submit" form="frmNewEdit">Actualizar datos</button>
 				<?php endif ?>
 			</div>
     </div>
@@ -164,7 +164,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
 									  </label>
 									</div>
 									<div class="cols-2-md">
-										<button class="btnAdd" type="button"><i class="fas fa-plus"></i></button>
+										<button class="btnAdd button btn-primary" type="button"><i class="fas fa-plus"></i></button>
 									</div>
 								</div>
 								<div class="pedido_detalles">
@@ -565,6 +565,7 @@ if( isset($_GET['res_id']) && $_GET['res_id'] > 0 ){
     // Mostrar explorer
     var type="various";
     $('.show_explorer').click(function(event){
+      event.preventDefault();
       type = $(this).attr('data-type');
       $('.explorer').attr('data-type',type);
       controles(type);

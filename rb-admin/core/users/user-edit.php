@@ -8,7 +8,7 @@ $mode;
 if(isset($_GET["id"])){
   // if define realice the query
   $id=$_GET["id"];
-  $cons_art = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=$id");
+  $cons_art = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users WHERE id=".$id);
   $row=$cons_art->fetch_assoc();
   $mode = "update";
 }else{
@@ -39,7 +39,7 @@ $(document).ready(function() {
     $.ajax({
       async: false,
       method: "post",
-      url: "<?= G_SERVER ?>/rb-admin/core/users/user-save.php",
+      url: "<?= G_SERVER ?>rb-admin/core/users/user-save.php",
       data: $( this ).serialize()
     })
     .done(function( data ) {
@@ -48,9 +48,9 @@ $(document).ready(function() {
           notify(data.contenido);
           setTimeout(function(){
             if(data.profile){
-              window.location.href = '<?= G_SERVER ?>/rb-admin/?pag=usu&opc=edt&id='+data.insert_id+'&profile&m=ok';
+              window.location.href = '<?= G_SERVER ?>rb-admin/?pag=usu&opc=edt&id='+data.insert_id+'&profile&m=ok';
             }else{
-              window.location.href = '<?= G_SERVER ?>/rb-admin/?pag=usu&opc=edt&id='+data.insert_id+'&m=ok';
+              window.location.href = '<?= G_SERVER ?>rb-admin/?pag=usu&opc=edt&id='+data.insert_id+'&m=ok';
             }
 	        }, 1500);
           break;
@@ -77,12 +77,6 @@ $(document).ready(function() {
           pointInputText( $('#password1'), data.contenido );
           break;
       }
-      /*if(data.resultado){
-        //$.fancybox.close();
-        notify(data.contenido);
-      }else{
-        notify(data.contenido);
-      }*/
     });
   });
 });
@@ -98,17 +92,24 @@ $(document).ready(function() {
   ?>
   <div id="toolbar">
     <div class="inside_toolbar">
-      <span class="post-submit">
-        <input class="submit" name="guardar" type="submit" value="Guardar" />
+      <div class="navigation">
+        <a href="<?= G_SERVER ?>rb-admin/?pag=usu">Usuarios</a> <i class="fas fa-angle-right"></i>
+        <?php if(isset($row)): ?>
+          <span><?= $row['nombres'] ?></span>
+        <?php else: ?>
+          <span>Nuevo usuario</span>
+        <?php endif ?>
+      </div>
+        <input class="btn-primary" name="guardar" type="submit" value="Guardar" />
         <?php
         if(!isset($_GET['profile'])):
         ?>
-        <a href="<?= G_SERVER ?>/rb-admin/?pag=usu"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Volver a listado" /></a>
-        <a href="<?= G_SERVER ?>/rb-admin/?pag=usu&opc=nvo">Nuevo usuario</a>
+        <a class="button" href="<?= G_SERVER ?>rb-admin/?pag=usu">Cancelar</a>
+        <a class="button" href="<?= G_SERVER ?>rb-admin/?pag=usu&opc=nvo">Nuevo usuario</a>
         <?php
         endif;
         ?>
-      </span>
+
     </div>
   </div>
   <div>
@@ -206,7 +207,7 @@ $(document).ready(function() {
             <label title="Tipo de Usuario" for="tipo" >Tipo de usuario:
               <select name="tipo" id="tipo">
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles ORDER BY nombre");
+                $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels ORDER BY nombre");
                 while($r = $q->fetch_assoc()):
                 ?>
                 <option <?php if( rb_get_values_options('nivel_user_register') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
@@ -220,7 +221,7 @@ $(document).ready(function() {
             <label title="Tipo de Usuario" for="tipo" >Tipo de usuario:
               <select name="tipo" id="tipo">
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles ORDER BY nombre");
+                $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels ORDER BY nombre");
                 while($r = $q->fetch_assoc()):
                 ?>
                 <option <?= isset($row) && $row['tipo']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
@@ -243,7 +244,7 @@ $(document).ready(function() {
                       var email = $('#mail').val();
                       $.ajax({
                         method: "get",
-                        url: "<?= G_SERVER ?>/rb-admin/core/users/autogenerate.php",
+                        url: "<?= G_SERVER ?>rb-admin/core/users/autogenerate.php",
                         data: "email="+email
                       }).done(function( data ) {
                         if(data.result){
@@ -289,7 +290,7 @@ $(document).ready(function() {
               <select name="grupo">
                 <option value="0">[Ninguno]</option>
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_grupos");
+                $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_groups");
                 while($r = $q->fetch_assoc() ):
                 ?>
                   <option <?= isset($row) && $row['grupo_id']==$r['id'] ? "selected=\"selected\"" : "" ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
@@ -307,7 +308,7 @@ $(document).ready(function() {
       if(isset($row)){
         if(G_USERID == $row['id']){
           ?>
-          <a class="fancyboxForm fancybox.ajax" style="color:red;font-weight:bold" href="<?= G_SERVER ?>/rb-admin/core/users/user.del.auth.self.php?user_key=<?= $row['user_key'] ?>&user_id=<?= rb_encrypt_decrypt("encrypt", $row['id'], $row['user_key'], $key_web) ?>">Eliminar mi cuenta</a>
+          <a class="fancyboxForm fancybox.ajax" style="color:red;font-weight:bold" href="<?= G_SERVER ?>rb-admin/core/users/user.del.auth.self.php?user_key=<?= $row['user_key'] ?>&user_id=<?= rb_encrypt_decrypt("encrypt", $row['id'], $row['user_key'], $key_web) ?>">Eliminar mi cuenta</a>
           <?php
         }
       }

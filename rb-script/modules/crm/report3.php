@@ -19,9 +19,9 @@
               var days = $('#period_month').val();
               $.ajax({
                 method: "get",
-                url: "<?= G_SERVER ?>/rb-script/modules/crm/report3.details.php?days="+days,
+                url: "<?= G_SERVER ?>rb-script/modules/crm/report3.details.php?days="+days,
                 beforeSend: function(){
-                  $('#content-report3').html('<img src="<?= G_SERVER ?>/rb-script/modules/crm/spinner.gif" alt="Wait" />')
+                  $('#content-report3').html('<img src="<?= G_SERVER ?>rb-script/modules/crm/spinner.gif" alt="Wait" />')
                 }
               })
               .done(function( data ) {

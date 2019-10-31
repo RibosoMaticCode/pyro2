@@ -10,11 +10,15 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 $id = $_GET['id'];
 
 // Borrar de la DB
-$r = $objDataBase->Ejecutar('DELETE FROM suscriptores WHERE id='.$id);
-if($r){
-	$arr = ['resultado' => true, 'contenido' => 'Suscriptor eliminado' ];
+if(G_ACCESOUSUARIO){
+	$r = $objDataBase->Ejecutar('DELETE FROM suscriptores WHERE id='.$id);
+	if($r){
+		$arr = ['resultado' => true, 'contenido' => 'Suscriptor eliminado' ];
+	}else{
+		$arr = ['resultado' => false, 'contenido' => $r['error']];
+	}
 }else{
-	$arr = ['resultado' => false, 'contenido' => $r['error']];
+	$arr = ['resultado' => false, 'contenido' => 'No ha iniciado sesion'];
 }
 die(json_encode($arr));
 ?>

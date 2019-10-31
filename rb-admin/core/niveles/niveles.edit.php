@@ -2,7 +2,7 @@
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
-	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE id=$id");
+	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels WHERE id=$id");
 	$row= $q->fetch_assoc();
 	$mode = "update";
 }else{
@@ -10,13 +10,19 @@ if(isset($_GET["id"])){
 }
 ?>
 <div class="inside_contenedor_frm">
-<form class="form" id="nivel-form" method="post" action="../rb-admin/core/niveles/niveles.save.php">
+<form class="form" id="nivel-form" method="post" action="<?= G_SERVER ?>rb-admin/core/niveles/niveles.save.php">
 	<div id="toolbar">
 		<div class="inside_toolbar">
-			<span class="post-submit">
-				<input class="submit" name="guardar" type="submit" value="Guardar" />
-				<a href="?pag=nivel"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
-			</span>
+			<div class="navigation">
+        <a href="<?= G_SERVER ?>rb-admin/?pag=nivel">Niveles de acceso</a> <i class="fas fa-angle-right"></i>
+        <?php if(isset($row)): ?>
+          <span><?= $row['nombre'] ?></span>
+        <?php else: ?>
+          <span>Nuevo nivel</span>
+        <?php endif ?>
+      </div>
+				<input class="btn-primary" name="guardar" type="submit" value="Guardar" />
+				<a class="button" href="?pag=nivel">Cancelar</a>
 		</div>
 	</div>
 			<section class="seccion">
@@ -38,15 +44,12 @@ if(isset($_GET["id"])){
 					<label>Descripción:
 						<textarea name="descripcion"><?php if(isset($row)) echo $row['descripcion'] ?></textarea>
 					</label>
-					<!--<label>Permisos:
-						<textarea name="permisos"><?php if(isset($row)) echo $row['permisos'] ?></textarea>
-					</label>-->
 					<!-- niveles -->
 					<?php if(isset($row)): ?>
 					<div>
 	          <h3 class="subtitle">Permisos para el menu</h3>
 	          <div class="col-padding">
-	            <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
+	            <script src="<?= G_SERVER ?>rb-admin/resource/ui/jquery-ui.js"></script>
 	            <script>
 	              $( function() {
 	                $( "#sortable" ).sortable({
@@ -79,7 +82,7 @@ if(isset($_GET["id"])){
 
 	                  $.ajax({
 	                    method: "GET",
-	                    url: "<?= G_SERVER ?>/rb-admin/core/niveles/save.order.panelmenu.php",
+	                    url: "<?= G_SERVER ?>rb-admin/core/niveles/save.order.panelmenu.php",
 	                    dataType: "json",
 	                    data: {mydata : myJsonString, nivel_id : nivel_id}
 	                  }).done(function( data ) {
@@ -93,7 +96,7 @@ if(isset($_GET["id"])){
 	                });
 	              } );
 	            </script>
-							<div>
+
 	              <ul id="sortable" class="menu-list-edit">
 	                <?php
 									// Obtener estrutura del menu del gestor
@@ -108,7 +111,7 @@ if(isset($_GET["id"])){
 	                foreach ($menu_panel as $module => $value) {
 	                  ?>
 	                  <li data-key='<?= $value['key'] ?>' data-pos='<?= $value['pos'] ?>' class="ui-state-default">
-	                    <img src="<?= G_SERVER ?>/rb-admin/img/drag-icon.png" alt="icon" />
+	                    <img src="<?= G_SERVER ?>rb-admin/img/drag-icon.png" alt="icon" />
 	                    <span><?= $value['nombre'] ?></span>
 	                    <label>
 	                      <input type="checkbox" value="1" id="chk_<?= $value['key'] ?>" <?php if($value['show']==0) echo " checked "?> /> Ocultar
@@ -118,15 +121,15 @@ if(isset($_GET["id"])){
 	                }
 	                ?>
 	              </ul>
-	              <button class="button btnSaveOrderMenu" type="button">Guardar orden</button>
-							</div>
+	              <button class="button btn-primary btnSaveOrderMenu" type="button">Guardar permisos</button>
+
 	          </div>
 	        </div>
 					<?php endif ?>
 					<!-- niveles -->
 				</div>
 			</section>
-		
+
 	<input name="section" value="nivel" type="hidden" />
 	<input name="mode" value="<?php echo $mode ?>" type="hidden" />
 	<input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />

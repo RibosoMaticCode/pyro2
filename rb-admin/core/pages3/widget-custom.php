@@ -4,14 +4,14 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 if(isset($_GET['custom_id'])){
 	$id = $_GET['custom_id'];
 }else{
 	$id = $block_id;
 }
-$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=$id");
+$qb = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages_blocks WHERE id=".$id);
 $row= $qb->fetch_assoc();
 $widget = json_decode($row['contenido'], true);
 $data_saved_id = $row['id'];

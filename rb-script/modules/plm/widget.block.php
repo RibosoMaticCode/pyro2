@@ -7,7 +7,7 @@ require_once ABSPATH.'global.php';
 $type = "plm_block";
 $action = "showConfigPlmBlock";
 $block_title = "PLM Block";
-$url_img = G_SERVER."/rb-script/modules/plm/widget.block.png";
+$url_img = G_SERVER."rb-script/modules/plm/widget.block.png";
 if(isset($widget)){
 	$widget_id = $widget['widget_id'];
 }else{

@@ -11,7 +11,7 @@ $mainmenu_id = $_GET['id'];
 function rb_menus_edition($mainmenu_id, $parent, $level) {
 	global $objDataBase;
 
-	$result = $objDataBase->Ejecutar("SELECT mi.nivel, mi.id, mi.mainmenu_id, mi.nombre, mi.url, mi.tipo, mi.style, mi.img, Items.Count FROM menus_items mi  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM menus_items GROUP BY menu_id) Items ON mi.id = Items.menu_id WHERE mi.menu_id=". $parent." AND mi.mainmenu_id=".$mainmenu_id. " ORDER BY id");
+	$result = $objDataBase->Ejecutar("SELECT mi.nivel, mi.id, mi.mainmenu_id, mi.nombre, mi.url, mi.tipo, mi.style, mi.img, Items.Count FROM ".G_PREFIX."menus_items mi  LEFT OUTER JOIN (SELECT menu_id, COUNT(*) AS Count FROM ".G_PREFIX."menus_items GROUP BY menu_id) Items ON mi.id = Items.menu_id WHERE mi.menu_id=". $parent." AND mi.mainmenu_id=".$mainmenu_id. " ORDER BY id");
     while ($row = $result->fetch_assoc()):
     	$class_nivel = "margen_". $row['nivel'];
     	//$tipo = trim($row['tipo']);
@@ -22,12 +22,12 @@ function rb_menus_edition($mainmenu_id, $parent, $level) {
 				case 'pag':
 					$type_det = "Pagina";
 				break;
-				case 'art':
+				/*case 'art':
 					$type_det = "Publicacion de Blog";
 				break;
 				case 'cat':
 					$type_det = "Categoria de Blog";
-				break;
+				break;*/
 			}
         if ($row['Count'] > 0):
             ?>
@@ -55,7 +55,7 @@ function rb_menus_edition($mainmenu_id, $parent, $level) {
             		<label>Clase CSS (Se aplica a los subitems):
             			<input id="item-menu-css-<?= $row['id'] ?>" name="estilo" class="menu_style" type="text" value="<?= $row['style'] ?>" />
             		</label>
-            		<button class="delete">Eliminar</button>
+            		<button class="button delete">Eliminar</button>
             	</div>
             	<ul class="column item sortable">
             		<?php rb_menus_edition($mainmenu_id, $row['id'], $level + 1) ?>
@@ -88,7 +88,7 @@ function rb_menus_edition($mainmenu_id, $parent, $level) {
             		<label>Clase CSS (Se aplica a los subitems):
             			<input id="item-menu-css-<?= $row['id'] ?>" name="estilo" class="menu_style" type="text" value="<?= $row['style'] ?>" />
             		</label>
-            		<button class="delete">Eliminar</button>
+            		<button class="button delete">Eliminar</button>
             	</div>
             	<ul class="column item sortable">
             		<?php rb_menus_edition($mainmenu_id, $row['id'], $level + 1) ?>

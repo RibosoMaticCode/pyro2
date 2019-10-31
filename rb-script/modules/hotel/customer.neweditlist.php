@@ -63,7 +63,7 @@
             </label>
             <div class="cols-container">
               <div class="cols-6-md cols-content-left">
-                <button type="submit">Guardar</button>
+                <button class="button btn-primary" type="submit">Guardar</button>
               </div>
             </div>
           </form>
@@ -90,7 +90,7 @@
       type = $('.explorer').attr('data-type');
       $.ajax({
         method: "post",
-        url: "<?= G_SERVER ?>/rb-script/modules/crm/save.customer.php",
+        url: "<?= G_SERVER ?>rb-script/modules/crm/save.customer.php",
         data: $( this ).serialize()
       })
       .done(function( data ) {
@@ -116,7 +116,7 @@
       $.ajax({
         method: "get",
         dataType : 'json',
-        url: "<?= G_SERVER ?>/rb-script/modules/hotel/customer.list.json.php"
+        url: "<?= G_SERVER ?>rb-script/modules/hotel/customer.list.json.php"
       })
       .done(function( data ) {
         result = JSON.parse("["+data+"]");

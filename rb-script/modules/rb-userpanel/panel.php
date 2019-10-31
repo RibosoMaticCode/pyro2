@@ -2,7 +2,7 @@
 $rm_menu = "cuenta";
 $rm_slide = false;
 rb_header(['header-allpages.php'], false);
-$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=".G_USERID);
+$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users WHERE id=".G_USERID);
 $UsuarioItem = $q->fetch_assoc();
 
 if(isset($_GET['section'])){

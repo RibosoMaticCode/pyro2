@@ -23,7 +23,6 @@ foreach ($fotos as $foto) {
     }else{
       $style = "";
     }
-
     ?>
     <div class="rb-cover-img" <?= $style ?>>
       <?php if($widget['widget_values']['activelink']==1): ?>
@@ -43,6 +42,5 @@ foreach ($fotos as $foto) {
     <?php
   }
 }
-echo '</div>';//<div class="clear"></div>';
-//break;
+echo '</div>';
 ?>

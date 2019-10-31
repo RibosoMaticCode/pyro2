@@ -29,7 +29,7 @@ $(document).ready(function() {
 		if ( eliminar ) {
 			$('input:checkbox[name=items]:checked').each(function(){
 				item_id = $(this).val();
-				url = 'core/pages2/page-del.php?id='+item_id;
+				url = 'core/pages3/page-del.php?id='+item_id;
 				$.ajax({
 					url: url,
 					cache: false,
@@ -43,7 +43,7 @@ $(document).ready(function() {
 			});
       notify('Los datos seleccionados fueron eliminados correctamente.');
       setTimeout(function(){
-        window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=pages';
+        window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=pages';
       }, 1000);
 		}
 	});
@@ -54,14 +54,14 @@ $(document).ready(function() {
 
   	if ( eliminar ) {
   		$.ajax({
-  			url: 'core/pages2/page-del.php?id='+item_id,
+  			url: 'core/pages3/page-del.php?id='+item_id,
   			cache: false,
   			type: "GET",
   			success: function(data){
           if(data.result = 1){
             notify('El dato fue eliminado correctamente.');
             setTimeout(function(){
-              window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=pages';
+              window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=pages';
             }, 1000);
           }else{
             notify('Ocurrio un error inesperado. Intente luego.');
@@ -73,17 +73,26 @@ $(document).ready(function() {
 });
 </script>
   <section class="seccion">
-    <div class="seccion-header">  
+    <div class="seccion-header">
       <h2>Paginas</h2>
       <ul class="buttons">
-        <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=pages&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
-        <li><a class="btn-delete" rel="pages" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+        <li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/?pag=pages&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+        <li><a class="button btn-delete" rel="pages" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
       </ul>
     </div>
     <div class="seccion-body">
       <div id="content-list">
           <div id="resultado"> <!-- ajax asyncron here -->
-          <table id="t_articulos" class="tables" border="0" cellpadding="0" cellspacing="0">
+            <script>
+              $(document).ready(function() {
+                $('#table').DataTable({
+                  "language": {
+                    "url": "resource/datatables/Spanish.json"
+                  }
+                });
+              } );
+            </script>
+            <table id="table" class="tables table-striped">
               <thead>
                   <tr>
                     <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
@@ -99,9 +108,6 @@ $(document).ready(function() {
               </tbody>
           </table>
           </div>
-      </div>
-      <div id="pagination">
-      <?php include('page-paginate.php') ?>
       </div>
     </div>
   </section>

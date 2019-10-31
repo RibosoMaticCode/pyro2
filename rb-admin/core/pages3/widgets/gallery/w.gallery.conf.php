@@ -49,7 +49,7 @@
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="galleries_id" value="" /> <!-- ID UNICO DEL BLOQUE -->
-		<button class="btn-primary" id="galleries_form-btn-accept">Cambiar</button>
+		<button class="button btn-primary" id="galleries_form-btn-accept">Cambiar</button>
 		<button class="button" id="galleries_form-btn-cancel">Cancelar</button>
 	</div>
 </div>

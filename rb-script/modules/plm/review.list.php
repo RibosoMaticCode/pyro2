@@ -1,11 +1,15 @@
 <?php
 while ($row = $qlist->fetch_assoc()):
   $product= get_product_info($row['product_id']);
+  if(!$product){
+    $product['url'] = "#";
+    $product['nombre'] = "[Producto ya no existe]";
+  }
   $user = rb_get_user_info($row['user_id']);
   ?>
 	<tr>
     <td>
-      <a target="_blank" href="<?= $product['url'] ?>"><?= $product['nombre'] ?></a>
+      <a title="ID <?= $row['id'] ?>" target="_blank" href="<?= $product['url'] ?>"><?= $product['nombre'] ?></a>
     </td>
     <td>
       <?= rb_sqldate_to($row['date_register'], 'd-m-Y') ?><br />
@@ -52,7 +56,7 @@ while ($row = $qlist->fetch_assoc()):
       </a>
     </td>
     <td>
-      <a href="<?= G_SERVER ?>/rb-admin/index.php?pag=usu&opc=edt&id=<?= $row['user_id'] ?>"><?= $user['nickname'] ?></a>
+      <a href="<?= G_SERVER ?>rb-admin/index.php?pag=usu&opc=edt&id=<?= $row['user_id'] ?>"><?= $user['nickname'] ?></a>
     </td>
 		<td class="row-actions">
       <a title="Editar" class="edit fancyboxForm fancybox.ajax" data-item="<?= $row['id'] ?>" href="<?= $newedit_path ?>?id=<?= $row['id'] ?>">
@@ -75,7 +79,7 @@ $(document).ready(function() {
     var value = $(this).attr('data-value');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/plm/review.change.php?id="+id+"&value="+value+"&field=state"
+      url: "<?= G_SERVER ?>rb-script/modules/plm/review.change.php?id="+id+"&value="+value+"&field=state"
     })
     .done(function( data ) {
       if(data.resultado){
@@ -104,7 +108,7 @@ $(document).ready(function() {
       console.log("b:"+cover_id);
       $.ajax({
         method: "get",
-        url: "<?= G_SERVER ?>/rb-admin/core/files/file-del.php?id="+photo_id
+        url: "<?= G_SERVER ?>rb-admin/core/files/file-del.php?id="+photo_id
       })
       .done(function( data ) {
         if(data.result){
@@ -118,7 +122,7 @@ $(document).ready(function() {
           console.log(img_ids);
           $.ajax({
             type: "GET",
-            url: "<?= G_SERVER ?>/rb-script/modules/plm/review.change.php?id="+cover_id+"&value="+img_ids+"&field=img_ids"
+            url: "<?= G_SERVER ?>rb-script/modules/plm/review.change.php?id="+cover_id+"&value="+img_ids+"&field=img_ids"
           })
           .done(function( data ) {
             if(!data.result){

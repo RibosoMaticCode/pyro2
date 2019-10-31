@@ -18,7 +18,7 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM crm_visits ORDER BY id DESC");
             $('#table').DataTable({
               "language": {
                 "url": "resource/datatables/Spanish.json"
-              } 
+              }
             });
           } );
         </script>
@@ -39,7 +39,7 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM crm_visits ORDER BY id DESC");
     </div>
   </section>
 <?php
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=visits';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=visits';
 ?>
 <script>
 // Eliminar item
@@ -50,7 +50,7 @@ $('.del').on("click", function(event){
     var id = $(this).attr('data-item');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/crm/del.visit.php?id="+id
+      url: "<?= G_SERVER ?>rb-script/modules/crm/del.visit.php?id="+id
     })
     .done(function( data ) {
       if(data.resultado){

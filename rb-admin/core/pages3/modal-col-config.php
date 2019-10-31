@@ -17,7 +17,7 @@
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="col_id" value="" />
-		<button class="btn-primary" id="FrmEditCol-BtnAccept">Cambiar</button>
+		<button class="button btn-primary" id="FrmEditCol-BtnAccept">Cambiar</button>
 		<button class="button" id="FrmEditCol-BtnCancel">Cancelar</button>
 	</div>
 </div>

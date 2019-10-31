@@ -1,5 +1,5 @@
 <?php
-require_once '../rb-script/funciones.php';
+require_once '../rb-script/funcs.php';
 if(is_https()){
 	$protocol = "https://";
 }else{
@@ -20,6 +20,7 @@ $rm_urlinstall = $rm_url;
 		<link rel="shortcut icon" href="<?= $rm_url ?>/rb-script/images/blackpyro-logo.png">
 		<link rel="apple-touch-icon" href="<?= $rm_url ?>/rb-script/images/blackpyro-logo.png">
 		<link rel="stylesheet" href="<?= $rm_url ?>/rb-script/modules/rb-login/login.css">
+		<link rel="stylesheet" href="<?= $rm_url ?>/rb-admin/css/fonts.css">
 	</head>
 
 	<body>

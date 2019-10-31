@@ -47,8 +47,8 @@ $html_content = '
 		$tot = round($precio_final * $cantidad,2);
     $photo = rb_get_photo_details_from_id($product['foto_id']);
 
-    if(G_ENL_AMIG) $product_url = G_SERVER."/products/".$product['nombre_key']."/";
-    else $product_url = G_SERVER."/?products=".$product['id'];
+    if(G_ENL_AMIG) $product_url = G_SERVER."products/".$product['nombre_key']."/";
+    else $product_url = G_SERVER."?products=".$product['id'];
 
 		// Actualizar las salidas de cada producto
 		//$objDataBase->Update('plm_products', ['salidas' => 'salidas +'.$cantidad], ['id' => $product['id']]);

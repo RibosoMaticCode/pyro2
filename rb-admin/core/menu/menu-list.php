@@ -1,27 +1,19 @@
 <?php
-$result = $objDataBase->Ejecutar("SELECT * FROM menus");
+$result = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."menus");
 while ($row = $result->fetch_assoc()):
 ?>
 <tr>
   <td><input id="art-<?= $row['id']?>" type="checkbox" value="<?= $row['id']?>" name="items" /></td>
   <td>
-    <h3>
-      <?= $row['nombre']?>
-    </h3>
-    <div class='options'>
-      <span>
-        <a title="Elementos" href='<?= G_SERVER ?>/rb-admin/index.php?pag=menu&amp;id=<?= $row['id']?>'>Añadir / Editar elementos</a>
-      </span>
-      <span>
-        <a title="Editar" href='<?= G_SERVER ?>/rb-admin/index.php?pag=menus&amp;opc=edt&amp;id=<?= $row['id']?>'>Cambiar Nombre</a>
-      </span>
-      <span>
-        <a style="color:red" href="#" title="Eliminar" class="del-item" data-id="<?= $row['id']?>">Eliminar</a>
-      </span>
-    </div>
+    <?= $row['nombre']?>
   </td>
   <td>
     <p class="info">Aplicarlo en el codigo: <br /><code>&lt;?php rb_display_menu(<?= $row['id']?>) ?&gt;</code></p>
+  </td>
+  <td class="row-actions">
+    <a title="Añadir elementos" class="edit" href='<?= G_SERVER ?>rb-admin/index.php?pag=menu&amp;id=<?= $row['id']?>'><i class="fas fa-plus"></i></a>
+    <a title="Editar" class="edit" href='<?= G_SERVER ?>rb-admin/index.php?pag=menus&amp;opc=edt&amp;id=<?= $row['id']?>'><i class="fa fa-edit"></i></a>
+    <a href="#" title="Eliminar" class="del del-item" data-id="<?= $row['id']?>"><i class="fa fa-times"></i></a>
   </td>
 </tr>
 <?php

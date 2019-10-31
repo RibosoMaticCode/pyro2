@@ -1,8 +1,8 @@
 <?php
 /*
-Module Name: Gestion de Clientes 1.0
+Module Name: Gestion de Clientes 2.0
 Plugin URI: http://emocion.pe
-Description: Gestion de base de datos de clientes y relacionados
+Description: Gestion de base de datos de clientes y relacionados (27/09/19)
 Author: Jesus Liñan
 Version: 1.0
 Author URI: http://ribosomatic.com
@@ -10,8 +10,8 @@ Author URI: http://ribosomatic.com
 
 // Valores iniciales
 $rb_modure_dir = "crm";
-$rb_module_url = G_SERVER."/rb-script/modules/$rb_modure_dir/";
-$rb_module_url_img = G_SERVER."/rb-script/modules/$rb_modure_dir/crm.png";
+$rb_module_url = G_SERVER."rb-script/modules/$rb_modure_dir/";
+$rb_module_url_img = G_SERVER."rb-script/modules/$rb_modure_dir/crm.png";
 
 // Ubicacion en el Menu
 $menu1 = [

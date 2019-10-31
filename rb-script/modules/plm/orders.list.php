@@ -29,7 +29,7 @@ $(document).ready(function() {
     var value = $(this).attr('data-value');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/plm/product.change.php?id="+id+"&value="+value
+      url: "<?= G_SERVER ?>rb-script/modules/plm/product.change.php?id="+id+"&value="+value
     })
     .done(function( data ) {
       if(data.resultado){

@@ -1,1 +1,9 @@
-config.php
+_keylog/*
+_rb-themes/*
+.htaccess
+.gitignore
+rb-media/*
+rb-script/modules/metro/*
+rb-script/modules/feria_suscrip/*
+rb-script/modules/plm/lib/*
+rb-themes/metro3/

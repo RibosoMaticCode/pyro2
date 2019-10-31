@@ -19,6 +19,10 @@ switch($tipo){
     // recientes - recents
     $q = "SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id DESC LIMIT $limite";
   break;
+  case 4:
+    // antiguos - olds
+    $q = "SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id ASC LIMIT $limite";
+  break;
 }
 
 $qr = $objDataBase->Ejecutar($q);
@@ -32,8 +36,8 @@ while($product = $qr->fetch_assoc()):
   $products[$i]['precio_oferta'] = $product['precio_oferta'];
   $products[$i]['precio'] = $product['precio'];
   $products[$i]['descuento'] = $product['descuento'];
-  if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-  else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+  if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+  else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
   $photo = rb_get_photo_details_from_id($product['foto_id']);
   $products[$i]['image_url'] = $photo['file_url'];
   $i++;

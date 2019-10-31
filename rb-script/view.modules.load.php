@@ -10,9 +10,9 @@
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
 
-require_once ABSPATH.'rb-admin/hook.php';
+require_once ABSPATH.'rb-script/hook.php';
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 // Carga lista de modulos en formato Json desde la DB
 $modules_prev = rb_get_values_options('modules_load');
@@ -26,7 +26,7 @@ print_r($array_modules);
 echo "</pre>";
 
 // Carga las funciones pesonalizadas de los modulos
-require_once ABSPATH.'rb-admin/modules.list.php';
+require_once ABSPATH.'rb-script/modules.list.php';
 
 echo "Ubicacion y funcion enlazada<pre>";
 print_r($hooks);

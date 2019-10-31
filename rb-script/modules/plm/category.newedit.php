@@ -10,7 +10,7 @@ $table_name = "plm_category";
 $key = "plm_category";
 $module_dir = "plm";
 $save_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".save.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 
 /* start */
 if( isset($_GET['id']) ){

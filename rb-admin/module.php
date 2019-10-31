@@ -1,5 +1,5 @@
 <?php
-require_once 'hook.php';
+require_once '../rb-script/hook.php';
 require_once 'admin.php';
 include 'islogged.php';
 
@@ -14,7 +14,7 @@ $array_modules = json_decode($modules_prev, true);
 include_once ABSPATH.'rb-admin/core/grupos/group.php';
 
 // Incluir los modulos externos desde la base de datos
-require_once 'modules.list.php';
+require_once '../rb-script/modules.list.php';
 
 $rb_title_module = do_action('module_title_page') ? do_action('module_title_page') : (isset($title_page) ? $title_page : "");
 $rb_title = $rb_title_module." | ".G_TITULO; // antes $rb_module_title

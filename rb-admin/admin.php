@@ -1,17 +1,17 @@
 <?php
 // VALORES INICIALES - DEBE IR EN TODOS FILES
-require('../global.php');
-include 'islogged.php';
+require_once '../global.php';
+include_once 'islogged.php';
 
 // redirect
 //$url_to_redirect = G_SERVER.$_SERVER['REQUEST_URI'];
 $url_to_redirect = "http://".G_HOSTNAME.$_SERVER['REQUEST_URI']; // Sin website funciona con HTTPS, podria haber problemas.
 $menu_panel = array();
-require_once ABSPATH."rb-script/funciones.php";
-require_once ABSPATH."rb-script/class/rb-usuarios.class.php";
+require_once ABSPATH."rb-script/funcs.php";
+require_once ABSPATH."rb-script/class/rb-users.class.php";
 
 // Verificar si permisos del usuario, tienen una estructura de menu personalizada
-$q_permisos = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE id=".G_USERNIVELID);
+$q_permisos = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels WHERE id=".G_USERNIVELID);
 $r_permisos = $q_permisos->fetch_assoc();
 if(strlen($r_permisos['permisos'])>0){
 	$menu_panel = json_decode($r_permisos['permisos'], true);
@@ -39,9 +39,9 @@ if(is_dir($dir_raiz4)==false){
 }
 
 /* CREAR CATEGORIA SI NO HAY NINGUNA */
-$q = $objDataBase->Ejecutar("SELECT * FROM categorias");
+$q = $objDataBase->Ejecutar("SELECT * FROM blog_categories");
 $num_categories = $q->num_rows;
-if( $num_categories == 0 ) $objDataBase->Ejecutar("INSERT INTO categorias (nombre_enlace, nombre, acceso) VALUES ('pordefecto', 'Por defecto', 'public')");
+if( $num_categories == 0 ) $objDataBase->Ejecutar("INSERT INTO blog_categories (nombre_enlace, nombre, acceso) VALUES ('pordefecto', 'Por defecto', 'public')");
 
 // CONSULTAR COOKIE QUE CONTIENE AYUDAS OCULTAS
 if (isset($_COOKIE['help_close'])) $array_help_close = unserialize($_COOKIE['help_close']);
@@ -60,7 +60,7 @@ if(G_ACCESOUSUARIO==0){
 	$userType = $_SESSION['type'];
 
 	// DATOS DEL USUARIO A VARIABLES GLOBALES
-	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=".G_USERID);
+	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users WHERE id=".G_USERID);
 	$root = $q->fetch_assoc();
 	//$root = mysql_fetch_array($q);
 	define("G_USERNAME",$_SESSION['usr']);

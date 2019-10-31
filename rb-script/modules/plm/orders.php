@@ -38,5 +38,5 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM plm_orders ORDER BY id DESC");
   </div>
 </section>
 <?php
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=plm_orders';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=plm_orders';
 ?>

@@ -1,10 +1,10 @@
 <?php
-require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
+require_once(ABSPATH."rb-script/class/rb-users.class.php");
 global $objDataBase;
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
-	$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_grupos WHERE id=$id");
+	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_groups WHERE id=".$id);
 	$row= $q->fetch_assoc();
 	$mode = "update";
 }else{
@@ -12,13 +12,19 @@ if(isset($_GET["id"])){
 }
 ?>
 <div class="inside_contenedor_frm">
-<form id="nivel-form" class="form" method="post" action="../rb-admin/core/grupos/group.save.php">
+<form id="nivel-form" class="form" method="post" action="<?= G_SERVER?>rb-admin/core/grupos/group.save.php">
 	<div id="toolbar">
     <div class="inside_toolbar">
-			<span class="post-submit">
-				<input class="submit" name="guardar" type="submit" value="Guardar" />
-				<a href="?pag=gru"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar/Volver" /></a>
-			</span>
+			<div class="navigation">
+        <a href="<?= G_SERVER ?>rb-admin/module.php?pag=gru">Grupos</a> <i class="fas fa-angle-right"></i>
+        <?php if(isset($row)): ?>
+          <span><?= $row['nombre'] ?></span>
+        <?php else: ?>
+          <span>Nuevo grupo</span>
+        <?php endif ?>
+      </div>
+				<input class="btn-primary" name="guardar" type="submit" value="Guardar" />
+				<a class="button" href="?pag=gru">Cancelar</a>
 		</div>
 	</div>
 			<section class="seccion">

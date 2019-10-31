@@ -2,37 +2,36 @@
 if(G_USERTYPE == "admin"):
   $q = $objDataBase->Ejecutar("SELECT a . * , (
           SELECT COUNT( id )
-          FROM photo
+          FROM ".G_PREFIX."files
           WHERE album_id = a.id
           ) AS nrophotos
-          FROM  `albums` a ORDER BY fecha DESC");
+          FROM  ".G_PREFIX."galleries a ORDER BY fecha DESC");
 else:
   $q = $objDataBase->Ejecutar("SELECT a . * , (
           SELECT COUNT( id )
-          FROM photo
+          FROM ".G_PREFIX."files
           WHERE album_id = a.id
           ) AS nrophotos
-          FROM  `albums` a WHERE usuario_id =".G_USERID. " ORDER BY fecha DESC");
+          FROM  ".G_PREFIX."galleries a WHERE usuario_id =".G_USERID. " ORDER BY fecha DESC");
 endif;
 while ($row = $q->fetch_assoc()):
   $photo = rb_get_photo_details_from_id($row['photo_id']);
 ?>
 <tr>
   <td><input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" /></td>
-  <td><?= $row['id'] ?></td>
-  <td><img style="max-width:70px" src="<?= $photo['thumb_url'] ?>" alt="Imagen portada" /></td>
   <td>
-    <h3><?= $row['nombre']?></h3>
-    <div class="options">
-      <span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=gal&amp;album_id=<?= $row['id']?>">Añadir / Ver fotos</a></span>
-      <span><a href="<?= G_SERVER ?>/rb-admin/index.php?pag=gal&amp;opc=edt&id=<?= $row['id']?>">Editar</a></span>
-      <span><a href='#' style="color:red" class="del-item" data-id="<?= $row['id']?>">Eliminar</a></span>
-    </div>
+    <img style="max-width:70px;margin-right: 10px;vertical-align: middle;" src="<?= $photo['thumb_url'] ?>" alt="Imagen portada" />
+    <a title="Ver contenido" href="<?= G_SERVER ?>rb-admin/index.php?pag=gal&album_id=<?= $row['id']?>"><?= $row['nombre']?></a><br />
+    <span class="info"><?= $row['nrophotos']?> elementos</span>
   </td>
+  <td><?= rb_sqldate_to($row['fecha'], 'd')?> de <?= rb_mes_nombre(rb_sqldate_to($row['fecha'], 'm'))?>, <?= rb_sqldate_to($row['fecha'], 'Y')?></td>
   <td><?= $row['galeria_grupo']?></td>
-  <td><a target="_blank" href="<?= G_SERVER ?>/?gallery=<?= $row['id']?>">Link</a></td>
-  <td><?= $row['fecha']?></td>
-  <td><?= $row['nrophotos']?></td>
+  <td class="row-actions">
+      <a title="Editar" class="edit" href="<?= G_SERVER ?>rb-admin/index.php?pag=gal&amp;opc=edt&id=<?= $row['id']?>"><i class="fa fa-edit"></i></a>
+      <a title="Añadir imagenes" class="edit" href="<?= G_SERVER ?>rb-admin/index.php?pag=gal&amp;album_id=<?= $row['id']?>"><i class="fas fa-plus"></i></a>
+      <a title="Visualizar modo usuario final" target="_blank" class="edit" href="<?= G_SERVER ?>?gallery=<?= $row['id']?>"><i class="fa fa-external-link-alt"></i></a>
+      <a title="Eliminar" href='#' class="del del-item" data-id="<?= $row['id']?>"><i class="fa fa-times"></i></a>
+  </td>
 </tr>
 <?php
 endwhile;

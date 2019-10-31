@@ -42,7 +42,7 @@ $(document).ready(function() {
 			});
       notify('Los datos seleccionados fueron eliminados correctamente.');
       setTimeout(function(){
-        window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=nivel';
+        window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=nivel';
       }, 1000);
 		}
 	});
@@ -60,7 +60,7 @@ $(document).ready(function() {
           if(data.result = 1){
             notify('El dato fue eliminado correctamente.');
             setTimeout(function(){
-              window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=nivel';
+              window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=nivel';
             }, 1000);
           }else{
             notify('Ocurrio un error inesperado. Intente luego.');
@@ -76,25 +76,35 @@ $(document).ready(function() {
 		<div class="seccion-header">
 			<h2>Niveles de acceso</h2>
 			<ul class="buttons">
-				<li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=nivel&amp;opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
-				<li><a class="btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+				<li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/?pag=nivel&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+				<li><a class="button btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
 			</ul>
 		</div>
 		<div class="seccion-body">
-		<table class="tables">
-			<thead>
-				<tr>
-					<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-					<th>Nombre</th>
-					<th>Nivel key</th>
-					<th>Sub-Nivel key</th>
-					<th>Detalles</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php include('niveles.list.php') ?>
-			</tbody>
-		</table>
+			<script>
+        $(document).ready(function() {
+          $('#table').DataTable({
+            "language": {
+              "url": "resource/datatables/Spanish.json"
+            }
+          });
+        } );
+      </script>
+      <table id="table" class="tables table-striped">
+				<thead>
+					<tr>
+						<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
+						<th>Nombre</th>
+						<th>Nivel key</th>
+						<th>Sub-Nivel key</th>
+						<th>Detalles</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php include('niveles.list.php') ?>
+				</tbody>
+			</table>
 		</div>
 	</section>
 </div>

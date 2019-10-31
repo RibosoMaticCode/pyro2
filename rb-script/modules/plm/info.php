@@ -4,16 +4,17 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH."global.php";
 require_once ABSPATH."rb-script/modules/plm/funcs.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=plm_config';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
 ?>
 <div class="inside_contenedor_frm">
 <section class="seccion">
-  <div class="seccion-header">
+  <div class="seccion-header plm_backend_text">
+		<img class="plm_logo" src="<?= G_SERVER ?>rb-script/modules/plm/product.png" alt="info" />
     <h2>PLM - Gestionador de productos</h2>
-    <span class="info">Desarrollado por Jesus Liñán para Blackpyro</span>
+    <span class="info">Desarrollado por Jesus Liñán para Pyro. <strong>Version <?= get_option('version')?></strong></span>
   </div>
-  <div class="seccion-body">
-    <p>Cuenta con las siguientes caracteristicas:</p>
+  <div class="seccion-body plm_backend_text">
+		<p>Cuenta con las siguientes caracteristicas:</p>
 		<ul>
 			<li>Gestiona listado de productos con su informacion como: precio, descuento, marca, modelos, detalles, foto y galeria, etc.</li>
 			<li>Gestiona categorias y subcategorias de productos</li>

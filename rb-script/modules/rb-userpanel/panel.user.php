@@ -4,14 +4,14 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
-$q = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id=".G_USERID);
+$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users WHERE id=".G_USERID);
 $UsuarioItem = $q->fetch_assoc();
 
 function show_nivel($nivel_id){
 	global $objDataBase;
-	$q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id=$nivel_id");
+	$q = $objDataBase->Ejecutar("SELECT nombre FROM ".G_PREFIX."users_levels WHERE id=".$nivel_id);
 	$r = $q->fetch_assoc();
 	return $r['nombre'];
 }

@@ -4,7 +4,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 header('Content-type: application/json; charset=utf-8');
 // obtener id del usuario en sesion en navegador
@@ -18,13 +18,13 @@ if(isset($_SESSION['usr_id'])) {
 
     if($_GET['mode']=="rd"){
       //if($objDataBase->DesactivarRecibidos($id,$user_id)) echo "Good";
-      $objDataBase->Ejecutar("UPDATE mensajes_usuarios SET inactivo = 1 WHERE mensaje_id=$id AND usuario_id=$user_id");
+      $objDataBase->Ejecutar("UPDATE ".G_PREFIX."messages_users SET inactivo = 1 WHERE mensaje_id=$id AND usuario_id=$user_id");
       //include('listado.php');
       $arr = array('result' => 1, 'message' => "Mensaje recibido eliminado" );
       die(json_encode($arr));
     }elseif($_GET['mode']=="sd"){
       //if($objDataBase->DesactivarEnviados($id,$user_id)) echo "Good";
-      $objDataBase->Ejecutar("UPDATE mensajes SET inactivo = 1 WHERE remitente_id=$user_id AND id=$id");
+      $objDataBase->Ejecutar("UPDATE ".G_PREFIX."messages SET inactivo = 1 WHERE remitente_id=$user_id AND id=$id");
       //include('listado.php');
       $arr = array('result' => 1, 'message' => "Mensaje enviado eliminado" );
       die(json_encode($arr));

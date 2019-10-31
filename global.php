@@ -8,10 +8,14 @@ if ( !defined('ABSPATH') )
 //llamar a clase con las opciones basica del sitio
 require_once(ABSPATH."rb-script/class/rb-database.class.php");
 $objDataBase = new DataBase;
-require_once(ABSPATH.'rb-script/funciones.php');
+
+// Prefijo para las tablas del sistema
+define('G_PREFIX', 'py_');
+
+require_once(ABSPATH.'rb-script/funcs.php');
 
 // verifica datos en tabla, sino inicial el instalador
-$q = $objDataBase->Ejecutar("SELECT * FROM opciones");
+$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."configuration");
 if($q->num_rows==0){
 	// Fragmentamos la url
 	$url_parts = explode("/",$_SERVER['SCRIPT_NAME']);
@@ -50,10 +54,10 @@ define('G_ENL_AMIG', rb_get_values_options('enlaceamigable'));
 define('G_VERSION', rb_get_values_options('version'));
 
 //nombre del servidor http
-define('G_SERVER', rb_get_values_options('direccion_url'));
+define('G_SERVER', rb_get_values_options('direccion_url')."/");
 
 //nombre del servidor http
-define('G_DIR_MODULES_URL', G_SERVER."/rb-script/modules/");
+define('G_DIR_MODULES_URL', G_SERVER."rb-script/modules/");
 
 //si el sitio esta en un directorio
 define('G_DIRECTORY', rb_get_values_options('directorio_url'));
@@ -91,7 +95,7 @@ define('G_MAILSENDER', rb_get_values_options('mail_sender'));
 define('G_POSTPAGE', rb_get_values_options('post_by_category'));
 
 //define directorio del la url del tema
-define('G_URLTHEME',rb_get_values_options('direccion_url')."/rb-temas/".rb_get_values_options('tema'));
+define('G_URLTHEME',rb_get_values_options('direccion_url')."/rb-themes/".rb_get_values_options('tema')."/");
 
 // codigo pagina inicial
 define('G_INITIAL', rb_get_values_options('initial'));
@@ -128,8 +132,8 @@ define('G_BGLOGIN', rb_get_values_options('background-image'));
 define('G_LIBMAILNATIVE', rb_get_values_options('lib_mail_native'));
 
 // base url links amigables
-define('G_BASEPUB', rb_get_values_options('base_publication'));
-define('G_BASECAT', rb_get_values_options('base_category'));
+//define('G_BASEPUB', rb_get_values_options('base_publication'));
+//define('G_BASECAT', rb_get_values_options('base_category'));
 define('G_BASEUSER', rb_get_values_options('base_user'));
 define('G_BASESEAR', rb_get_values_options('base_search'));
 define('G_BASEPAGE', rb_get_values_options('base_page'));

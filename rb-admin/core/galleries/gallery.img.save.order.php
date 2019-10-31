@@ -11,7 +11,7 @@ $arrayOrder = json_decode($jsonOrder, true);
 foreach ($arrayOrder as $item => $value):
 	$file_id = $value['id'];
 	$file_order = $value['order'];
-  if( !$objDataBase->Ejecutar ("UPDATE photo SET orden = $file_order WHERE id = $file_id") ) die("0");
+  if( !$objDataBase->Ejecutar ("UPDATE ".G_PREFIX."files SET orden = ".$file_order." WHERE id = ".$file_id) ) die("0");
 endforeach;
 die("1");
 ?>

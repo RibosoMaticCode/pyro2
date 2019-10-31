@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 //$action = "voto_gestion";
 $objDataBase = new DataBase;
@@ -15,7 +15,7 @@ $objDataBase = new DataBase;
 	<p>Si deseas añadir/eliminar fotos en una galeria, debe ir a la seccion Galeria y/o Album.</p>
 </div>
 <?php
-$r = $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY id DESC");
+$r = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries ORDER BY id DESC");
 $suscriptores = $r->num_rows;
 ?>
 <section class="seccion">
@@ -35,8 +35,8 @@ $suscriptores = $r->num_rows;
         ?>
         <tr id="carrusel<?= $row['id'] ?>">
           <td><?= $row['nombre'] ?></td>
-          <td><a href="<?= G_SERVER ?>/rb-admin/?pag=gal&opc=edt&id=<?= $row['id'] ?>">Configurar</a></td>
-          <td><a target="_blank" href="<?= G_SERVER ?>/rb-script/modules/rb-carrusel/preview.php?id=<?= $row['id'] ?>">Ver</a></td>
+          <td><a href="<?= G_SERVER ?>rb-admin/?pag=gal&opc=edt&id=<?= $row['id'] ?>">Configurar</a></td>
+          <td><a target="_blank" href="<?= G_SERVER ?>rb-script/modules/rb-carrusel/preview.php?id=<?= $row['id'] ?>">Ver</a></td>
           <td><code>[carrusel id="<?= $row['id'] ?>"]</code></td>
         </tr>
         <?php

@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH."global.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=notifications';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=notifications';
 require_once 'funcs.php';
 
 if( isset($_GET['id']) ){
@@ -21,7 +21,7 @@ if( isset($_GET['id']) ){
     Para el cliente
     <select name="customer_id">
       <option value="0">Seleccionar</option>
-      <?php 
+      <?php
       $qc = $objDataBase->Ejecutar("SELECT * FROM crm_customers");
       while($rowc = $qc->fetch_assoc()){
         ?>
@@ -56,7 +56,7 @@ if( isset($_GET['id']) ){
   		tinyMCE.triggerSave(); //save first tinymce en textarea
   		$.ajax({
   			method: "post",
-  			url: "<?= G_SERVER ?>/rb-script/modules/crm/save.notification.php",
+  			url: "<?= G_SERVER ?>rb-script/modules/crm/save.notification.php",
   			data: $( this ).serialize()
   		})
   		.done(function( data ) {

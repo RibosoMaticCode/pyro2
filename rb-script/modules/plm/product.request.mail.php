@@ -23,7 +23,7 @@ $email_content .= "Referencia :".$_POST['referencia']."<br /><br />";
 
 $email_content .= "Datos del producto:<br /><br />";
 $email_content .= "Producto :".$_POST['producto_nombre']."<br />";
-$email_content .= "Link : ".G_SERVER."/products/".$_POST['url']."/<br />";
+$email_content .= "Link : ".G_SERVER."products/".$_POST['url']."/<br />";
 $email_content .= "Precio :".$_POST['precio']."<br />";
 
 $email_content .= "--<br />El e-mail fue enviado a través del sistema web.";

@@ -12,7 +12,7 @@ $rb_module_unique = "rb_sus";
 $rb_module_icon = "subscribe.png";
 
 // Valores por defecto. Quiza no sea necesario cambiar nada aqui
-$rb_module_url_main = G_SERVER."/rb-admin/module.php";
-$rb_module_url = G_SERVER."/rb-script/modules/$rb_module_directory/";
-$rb_module_url_img = G_SERVER."/rb-script/modules/$rb_module_directory/img/$rb_module_icon";
+$rb_module_url_main = G_SERVER."rb-admin/module.php";
+$rb_module_url = G_SERVER."rb-script/modules/$rb_module_directory/";
+$rb_module_url_img = G_SERVER."rb-script/modules/$rb_module_directory/img/$rb_module_icon";
 ?>

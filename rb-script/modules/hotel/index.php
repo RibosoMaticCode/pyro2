@@ -2,16 +2,16 @@
 /*
 Module Name: Sistema para hoteles
 Plugin URI: http://emocion.pe
-Description: Gestion hotelera
+Description: Gestion hotelera (27/09/19)
 Author: Jesus Liñan
-Version: 1.0
+Version: 2.0
 Author URI: http://ribosomatic.com
 */
 
 // Valores iniciales
 $rb_modure_dir = "hotel";
-$rb_module_url = G_SERVER."/rb-script/modules/$rb_modure_dir/";
-$rb_module_url_img = G_SERVER."/rb-script/modules/$rb_modure_dir/hotel.png";
+$rb_module_url = G_SERVER."rb-script/modules/$rb_modure_dir/";
+$rb_module_url_img = G_SERVER."rb-script/modules/$rb_modure_dir/hotel.png";
 
 // Ubicacion en el Menu
 $menu1 = [

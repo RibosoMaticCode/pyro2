@@ -1,6 +1,6 @@
 <?php
 /*
-Module Name: PLM Gestionador de productos de venta
+Module Name: Gestionador de productos de venta
 Plugin URI: http://emocion.pe
 Description: Crear y muestra detalles de productos o articulos para venta
 Author: Jesus Liñan
@@ -10,8 +10,8 @@ Author URI: http://ribosomatic.com
 
 // Valores iniciales
 $rb_modure_dir = "plm";
-$rb_module_url = G_SERVER."/rb-script/modules/$rb_modure_dir/";
-$rb_module_url_img = G_SERVER."/rb-script/modules/$rb_modure_dir/product.png";
+$rb_module_url = G_SERVER."rb-script/modules/$rb_modure_dir/";
+$rb_module_url_img = G_SERVER."rb-script/modules/$rb_modure_dir/product.png";
 
 // Ubicacion en el Menu
 $menu1 = [
@@ -166,7 +166,7 @@ function plm_products_call_url(){
 							$p = 1;
 						}
 					}else{
-						header( 'Location: '.G_SERVER.'/products/');
+						header( 'Location: '.G_SERVER.'products/');
 					}
 				elseif( isset($requestURI[1]) && $requestURI[1]=="search"): // Si es busqueda : URL_SERVER/products/search/<termino-a-buscar>/
 					$seccion = "search";
@@ -178,13 +178,13 @@ function plm_products_call_url(){
 							$p = 1;
 						}
 					}else{
-						header( 'Location: '.G_SERVER.'/products/');
+						header( 'Location: '.G_SERVER.'products/');
 					}
 				elseif( isset($requestURI[1]) && is_numeric($requestURI[1])): // Si es paginado de listado : URL_SERVER/products/<pagina-numero>/
 					if( $requestURI[1] > 1 ){
 						$p = $requestURI[1];
 					}else{
-						header( 'Location: '.G_SERVER.'/products/');
+						header( 'Location: '.G_SERVER.'products/');
 					}
 				elseif( isset($requestURI[1]) ): // Si es solo un producto : URL_SERVER/products/<nombre-producto>/
 					$product = $requestURI[1];
@@ -246,17 +246,17 @@ function plm_products_call_url(){
 	if(isset($seccion) && isset($product)):
 		if(G_ENL_AMIG):
 			$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE nombre_key='".$product."'");
-			$product_catalogue_link = G_SERVER."/products/";
+			$product_catalogue_link = G_SERVER."products/";
 		else:
 			$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$product);
-			$product_catalogue_link = G_SERVER."/?products";
+			$product_catalogue_link = G_SERVER."?products";
 		endif;
 
 		$product = $qs->fetch_assoc();
 		if(G_ENL_AMIG):
-			$product['url']=G_SERVER."/products/".$product['nombre_key']."/";
+			$product['url']=G_SERVER."products/".$product['nombre_key']."/";
 		else:
-			$product['url']=G_SERVER."/?products=".$product['id'];
+			$product['url']=G_SERVER."?products=".$product['id'];
 		endif;
 
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
@@ -301,8 +301,8 @@ function plm_products_call_url(){
 			$products[$i]['precio'] = $product['precio'];
 			$products[$i]['descuento'] = $product['descuento'];
 			$products[$i]['categoria'] = $product['categoria'];
-			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
@@ -357,8 +357,8 @@ function plm_products_call_url(){
 			$products[$i]['precio'] = $product['precio'];
 			$products[$i]['descuento'] = $product['descuento'];
 			$products[$i]['categoria'] = $product['categoria'];
-			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
@@ -432,13 +432,13 @@ function plm_products_call_url(){
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
 
-			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 
 			$totsum += $tot;
 			$i++;
 		}
-		if(G_ENL_AMIG) $pre_payment_url = G_SERVER."/pre-payment/";
+		if(G_ENL_AMIG) $pre_payment_url = G_SERVER."pre-payment/";
 		else $pre_payment_url = G_SERVER."?pre-payment";
 
 		define('rm_title', "Carrito de compras | ".G_TITULO);
@@ -511,16 +511,16 @@ function plm_products_call_url(){
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
 
-			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 
 			$totsum += $tot;
 			$i++;
 		}
-		if(G_ENL_AMIG) $cart_url = G_SERVER."/shopping-cart/";
-		else $cart_url = G_SERVER."/?shopping-cart";
+		if(G_ENL_AMIG) $cart_url = G_SERVER."shopping-cart/";
+		else $cart_url = G_SERVER."?shopping-cart";
 
-		$panel_user = G_SERVER."/?pa=panel&section=pedidos";
+		$panel_user = G_SERVER."?pa=panel&section=pedidos";
 
 		$file = ABSPATH.'rb-script/modules/plm/cart.pre.payment.php';
 		include_once 'funcs.php';
@@ -542,8 +542,8 @@ function plm_products_call_url(){
 			$products[$i]['precio_oferta'] = $product['precio_oferta'];
 			$products[$i]['precio'] = $product['precio'];
 			$products[$i]['descuento'] = $product['descuento'];
-			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
+			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
+			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
@@ -574,6 +574,7 @@ function plm_products_call_url(){
 		if($CurrentPage == $TotalPage) $LastPage = 0;
 
 		$type = "all";
+		$term = "";
 		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
 		require_once( $file );
 
@@ -624,8 +625,8 @@ function plm_products_init(){
 	while($product = $qs->fetch_assoc()):
 
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
-		if(G_ENL_AMIG) $product['url'] = G_SERVER."/products/".$product['nombre_key']."/";
-		else $product['url'] = G_SERVER."/?products=".$product['id'];
+		if(G_ENL_AMIG) $product['url'] = G_SERVER."products/".$product['nombre_key']."/";
+		else $product['url'] = G_SERVER."?products=".$product['id'];
 
 		$products_list .= '<div class="cols-3-md">
 		<div class="product-item">
@@ -653,8 +654,8 @@ add_shortcode('PLM_PRODUCTS_INIT','plm_products_init');
 
 // SHORTCODE : LINK DE CARRITO DE COMPRAS
 function plm_cart_link(){
-	if(G_ENL_AMIG) $urlreload = G_SERVER."/shopping-cart/";
-	else $urlreload = G_SERVER."/?shopping-cart";
+	if(G_ENL_AMIG) $urlreload = G_SERVER."shopping-cart/";
+	else $urlreload = G_SERVER."?shopping-cart";
 	if(isset($_SESSION['carrito'])){
 		$cant = count($_SESSION['carrito']);
 		$cart_link = '<a href="'.$urlreload.'"><i class="fas fa-shopping-cart"></i> Ver carrito (<span class="plm_cart_count">'.$cant.'</span>)</a>';
@@ -668,8 +669,8 @@ add_shortcode('PLM_LINK_CART', 'plm_cart_link');
 
 // SHORTCODE : LINK DE CARRITO DE COMPRAS
 function plm_cart_count(){
-	if(G_ENL_AMIG) $urlreload = G_SERVER."/shopping-cart/";
-	else $urlreload = G_SERVER."/?shopping-cart";
+	if(G_ENL_AMIG) $urlreload = G_SERVER."shopping-cart/";
+	else $urlreload = G_SERVER."?shopping-cart";
 	if(isset($_SESSION['carrito'])){
 		$cant = count($_SESSION['carrito']);
 		$cart_link = '<span class="plm_cart_count cart_count_mini">'.$cant.'</span>';
@@ -684,7 +685,7 @@ add_shortcode('PLM_CART_COUNT', 'plm_cart_count');
 function plm_frm_search_products(){
 	$frm_search = '
 	<div class="plm_cover_frm_search">
-		<form id="plm_frm_search" action="'.G_SERVER.'/rb-script/modules/plm/product.search.php" method="get">
+		<form id="plm_frm_search" action="'.G_SERVER.'rb-script/modules/plm/product.search.php" method="get">
 			<input type="text" name="plm_product_term" placeholder="Quiero comprar ..." />
 			<button><i class="fas fa-search"></i></button>
 		</form>

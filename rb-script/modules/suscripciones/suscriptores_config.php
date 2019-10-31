@@ -11,7 +11,7 @@
     <br />
     <p><strong>Modo obligatorio</strong></p>
     <p>Mediante código:</p>
-    <pre>&lt;a id="hidden_link" href="&lt;?= G_SERVER ?&gt;/rb-script/modules/suscripciones/suscrip.frm.frontend.php" class="fancySuscrip fancybox.ajax"&gt;Suscripcion&lt;/a&gt;<br />&lt;script type="text/javascript"&gt;<br />$(document).ready(function() {<br />$("#hidden_link").trigger("click");<br />});<br />&lt;/script&gt;</pre>
+    <pre>&lt;a id="hidden_link" href="&lt;?= G_SERVER ?&gt;rb-script/modules/suscripciones/suscrip.frm.frontend.php" class="fancySuscrip fancybox.ajax"&gt;Suscripcion&lt;/a&gt;<br />&lt;script type="text/javascript"&gt;<br />$(document).ready(function() {<br />$("#hidden_link").trigger("click");<br />});<br />&lt;/script&gt;</pre>
     <p>Mediante shortcode:</p>
     <pre>[suscripformreq]</pre>
     <p>En ambos casos, carga el formulario de suscripcion cuando se carga la página en cuestión. Esta opción obliga al visitante a suscribirse. Si no desea, redirecciona a la pagina inicial.</p>
@@ -44,7 +44,7 @@
   </div>
 </section>
 <?php
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=rb_sus_susc_config';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=rb_sus_susc_config';
 ?>
 <script>
 // Boton Guardar
@@ -52,7 +52,7 @@ $('#suscriptores_config').submit(function(event){
       event.preventDefault();
   		$.ajax({
   			method: "post",
-  			url: "<?= G_SERVER ?>/rb-script/modules/suscripciones/save.suscriptor.config.php",
+  			url: "<?= G_SERVER ?>rb-script/modules/suscripciones/save.suscriptor.config.php",
   			data: $( this ).serialize()
   		})
   		.done(function( data ) {

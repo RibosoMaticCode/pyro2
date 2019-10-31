@@ -8,16 +8,16 @@ require_once(ABSPATH.'global.php');
 <div id="mulitplefileuploader"></div>
 <div id="status"></div>
 <!-- Load multiples imagenes -->
-<link href="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
-<script src="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
+<link href="<?= G_SERVER ?>rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
+<script src="<?= G_SERVER ?>rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
 <script>
 $(document).ready(function(){
 	var settings = {
-	    url: "<?= G_SERVER ?>/rb-admin/uploader.php",
+	    url: "<?= G_SERVER ?>rb-admin/uploader.php",
 	    dragDrop:true,
 	    fileName: "myfile",
 	    formData: {"albumid":"0", "user_id" : "<?= G_USERID ?>"},
-	    urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
+	    urlimgedit: '<?= G_SERVER."rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
 	    allowedTypes:"<?= rb_get_values_options('files_allowed') ?>",
 	    returnType:"json", //json
 			showStatusAfterSuccess: false,

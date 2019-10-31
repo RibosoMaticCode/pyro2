@@ -12,7 +12,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $recaptcha_use = false;
 $recaptcha_msg = "";
@@ -27,7 +27,7 @@ if(!isset($_POST['form_id']) || $_POST['form_id']==""){
 }
 
 // Buscamos formulario en BD
-$r = $objDataBase->Ejecutar('SELECT * FROM forms WHERE id='.$_POST['form_id']);
+$r = $objDataBase->Ejecutar('SELECT * FROM '.G_PREFIX.'forms WHERE id='.$_POST['form_id']);
 if($r->num_rows == 0){
 	$rspmail = [
 		'result' => false,
@@ -85,56 +85,58 @@ $form = $r->fetch_assoc();
 // Valores de los campos del formulario
 $values = $_POST['valores'];
 
-// Verificar existencia de ciertos elementos y validarlos
-$keys_config = json_decode($form['validations'], true); // Pasamos campos a validar en formato JSON a Array PHP
+// Verificar existencia de elementos para validarlos
+if($form['validations']<>""){
+	$keys_config = json_decode($form['validations'], true); // Pasamos campos a validar en formato JSON a Array PHP
 
-foreach ($keys_config as $key => $value) {
-	// Verificamos si el campo a validar existe
-	if(array_key_exists($key, $values)==false){
-		$rspmail = [
-			'result' => false,
-			'msg' => "Campo ".$key." no existe. No podemos continuar"
-		];
-		die(json_encode($rspmail));
-	}else{
-		// Extraemos su configuracion de validacion
-		$settings = explode("|", $value);
+	foreach ($keys_config as $key => $value) {
+		// Verificamos si el campo a validar existe
+		if(array_key_exists($key, $values)==false){
+			$rspmail = [
+				'result' => false,
+				'msg' => "Campo ".$key." no existe. No podemos continuar"
+			];
+			die(json_encode($rspmail));
+		}else{
+			// Extraemos su configuracion de validacion
+			$settings = explode("|", $value);
 
-		// Navegamos por cada configuracion
-		foreach ($settings as $setting){
-			//echo $setting;
-			// Si requerido esta activo
-			if($setting=="req"){
-				if(trim($values[$key])==""){
-					$rspmail = [
-						'result' => false,
-						'msg' => "Campo ".$key." no debe quedar vacio"
-					];
-					die(json_encode($rspmail));
+			// Navegamos por cada configuracion
+			foreach ($settings as $setting){
+				//echo $setting;
+				// Si requerido esta activo
+				if($setting=="req"){
+					if(trim($values[$key])==""){
+						$rspmail = [
+							'result' => false,
+							'msg' => "Campo ".$key." no debe quedar vacio"
+						];
+						die(json_encode($rspmail));
+					}
 				}
-			}
 
-			// Si es min esta activo
-			if( substr($setting,0,3)=="min"){
-				$min_config = explode("=", $setting);
-				if( strlen(trim($values[$key])) <= $min_config[1]){
-					$rspmail = [
-						'result' => false,
-						'msg' => "Campo ".$key." debe tener mas de ".$min_config[1]." caracteres de longitud"
-					];
-					die(json_encode($rspmail));
+				// Si es min esta activo
+				if( substr($setting,0,3)=="min"){
+					$min_config = explode("=", $setting);
+					if( strlen(trim($values[$key])) <= $min_config[1]){
+						$rspmail = [
+							'result' => false,
+							'msg' => "Campo ".$key." debe tener mas de ".$min_config[1]." caracteres de longitud"
+						];
+						die(json_encode($rspmail));
+					}
 				}
-			}
 
-			// Si es max esta activo
-			if( substr($setting,0,3)=="max"){
-				$max_config = explode("=", $setting);
-				if( strlen(trim($values[$key])) > $max_config[1]){
-					$rspmail = [
-						'result' => false,
-						'msg' => "Campo ".$key." debe tener maximo ".$max_config[1]." caracteres de longitud"
-					];
-					die(json_encode($rspmail));
+				// Si es max esta activo
+				if( substr($setting,0,3)=="max"){
+					$max_config = explode("=", $setting);
+					if( strlen(trim($values[$key])) > $max_config[1]){
+						$rspmail = [
+							'result' => false,
+							'msg' => "Campo ".$key." debe tener maximo ".$max_config[1]." caracteres de longitud"
+						];
+						die(json_encode($rspmail));
+					}
 				}
 			}
 		}

@@ -6,7 +6,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
   <div id="toolbar">
     <div class="inside_toolbar">
       <span class="post-submit">
-        <input class="button" name="guardar" type="submit" value="Guardar" />
+        <input class="btn-primary" name="guardar" type="submit" value="Guardar" />
       </span>
     </div>
   </div>
@@ -76,21 +76,21 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="bgimage" type="text" class="explorer-bgimage" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('background-image') ); echo $photos['src']; ?>" />
             </label>
             <label title="Tema" for="tema">Plantilla del Sitio Web:
-              <span class="info">Las plantillas temas se guardan en la carpeta raiz <code>rb-temas</code></span>
+              <span class="info">Las plantillas temas se guardan en la carpeta raiz <code>rb-themes</code></span>
               <select  name="tema">
                 <option value="0">Ninguno</option>
-                <?php rb_list_themes('../rb-temas/',rb_get_values_options('tema')) ?>
+                <?php rb_list_themes('../rb-themes/',rb_get_values_options('tema')) ?>
               </select>
             </label>
           </div>
           <div class="cols-6-md col-padding">
             <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web?
-              <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Nueva página</a>
+              <a class="btn-secundary" href="<?= G_SERVER ?>rb-admin/?pag=pages">Nueva página</a>
               <span class="info">Puede elegir una en particular ó dejar por defecto según el tema instalado</span>
               <select  name="inicial">
                 <option value="0">Por defecto</option>
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=0 ORDER BY titulo");
+                $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=0 ORDER BY titulo");
 
                 while($r = $q->fetch_assoc()):
                   ?><option <?php if( rb_get_values_options('initial') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
@@ -102,7 +102,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <label>Bloque de cabecera personalizado
             <!--<input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />-->
             <?php
-  					$qh = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 ORDER BY titulo");
+  					$qh = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=1 ORDER BY titulo");
   					?>
   					<select name="block_header_id">
   						<option value="0">Ninguno</option>
@@ -115,7 +115,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <label>Bloque de pie de pagina personalizado
             <!--<input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />-->
             <?php
-  					$qf = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2 ORDER BY titulo");
+  					$qf = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=2 ORDER BY titulo");
   					?>
             <select name="block_footer_id">
   						<option value="0">Ninguno</option>
@@ -129,7 +129,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <select name="sidebar_id">
                 <option value="0">Por defecto</option>
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=3 ORDER BY titulo");
+                $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=3 ORDER BY titulo");
                 while($r = $q->fetch_assoc()):
                   ?><option <?php if( rb_get_values_options('sidebar_id') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['titulo'] ?></option><?php
                 endwhile;
@@ -182,8 +182,8 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         <div class="cols-container">
           <h3 class="subtitle">Funciones avanzadas</h3>
           <div class="cols-6-md col-padding">
-            <label title="Numero de Items por Página" for="style">Numero de Publicaciones por Página:
-              <span class="info">Cantidad de publicaciones a mostrar en el index (por defecto) y por categoria.</span>
+            <label for="style">Numero de elementos por página:
+              <span class="info">Valor general para todas las listas</span>
               <input  name="post_by_category" type="text" value="<?= rb_get_values_options('post_by_category') ?>" />
             </label>
 
@@ -222,6 +222,25 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <span class="info">Escriba la extensión y separe por comas</span>
               <input  name="files_allowed" type="text" value="<?= rb_get_values_options('files_allowed') ?>" />
             </label>
+            <label>Modulos, shortcodes, bbcode personalizados activos:
+              <span class="info">Muestra un listado de estos elementos que estan áctivos en el sistema. <a class="fancybox fancybox.ajax" href="<?= G_SERVER ?>rb-script/view.modules.load.php">Ver lista</a></span>
+            </label>
+            <!-- galeria grupos -->
+            <label>Grupos de galerias por defecto:
+              <input name="gallery_groups" type="text" value="<?= rb_get_values_options('gallery_groups') ?>" />
+            </label>
+            <!-- fin galeria grupos -->
+            <label>Imagen de marca de agua:
+              <span class="info">Establecer una imagen como sello a las imagenes subidas.</span>
+              <script>
+              $(document).ready(function() {
+                $(".explorer_water_mark_image").filexplorer({
+                  inputHideValue: "<?=  rb_get_values_options('water_mark_image') ?>"
+                });
+              });
+              </script>
+              <input name="water_mark_image" type="text" class="explorer_water_mark_image" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('water_mark_image') ); echo $photos['src']; ?>" />
+            </label>
           </div>
           <div class="cols-6-md col-padding">
             <label>Enlace amigable para el sitio web:</label>
@@ -235,23 +254,18 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               Enlace estandar. Ej. <code>/?art=mi-post-sobre-web</code>
             </label>
             <span class="info">Solo si activo la opción URL amigables podrá ver reflejados los cambios</span>
-            <label>Base para publicaciones:
-              <input type="text" name="base_pub" value="<?= rb_get_values_options('base_publication') ?>" />
-            </label>
-            <label>Base para categorias:
-              <input type="text" name="base_cat" value="<?= rb_get_values_options('base_category') ?>" />
-            </label>
-            <label>Base para usuarios:
+
+            <label>Base URL para usuarios:
               <input type="text" name="base_usu" value="<?= rb_get_values_options('base_user') ?>" />
             </label>
-            <label>Base para busquedas:
+            <label>Base URL para busquedas:
               <input type="text" name="base_bus" value="<?= rb_get_values_options('base_search') ?>" />
             </label>
-            <label>Base para paginado:
+            <label>Base URL para paginado:
               <input type="text" name="base_pag" value="<?= rb_get_values_options('base_page') ?>" />
             </label>
             <label>URL inicial por defecto del Gestor:
-              <span class="info">Por defecto la pagina inicial es index.php, pero se puede modificar aqui. <code><?= G_SERVER ?>/rb-admin/</code></span>
+              <span class="info">Por defecto la pagina inicial es index.php, pero se puede modificar aqui. <code><?= G_SERVER ?>rb-admin/</code></span>
               <input  name="index_custom" type="text" value="<?= rb_get_values_options('index_custom') ?>" />
             </label>
             <label>Copia de seguridad DB:
@@ -263,7 +277,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 event.preventDefault();
                 $.ajax({
         					type: 'GET',
-        					url: '<?= G_SERVER ?>/rb-script/backup.php',
+        					url: '<?= G_SERVER ?>rb-script/backup.php',
                   beforeSend: function(){
                     $('#img_loading, .bg-opacity').show();
                   }
@@ -282,11 +296,11 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         <div class="cols-container">
           <h3 class="subtitle">Gestión de usuarios</h3>
           <div class="cols-6-md col-padding">
-            <label>Nivel por defecto para usuarios nuevos: <a class="btn-secundary" href="<?= G_SERVER ?>/rb-admin/?pag=nivel">Nuevo nivel</a>
+            <label>Nivel por defecto para usuarios nuevos: <a class="btn-secundary" href="<?= G_SERVER ?>rb-admin/?pag=nivel">Nuevo nivel</a>
               <span class="info">Cuando se registra por primera vez, que nivel tendrá el usuario.</span>
               <select name="nivel_user_register">
                 <?php
-                $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles");
+                $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels");
                 while($r = $q->fetch_assoc()):
                 ?>
                 <option <?php if( rb_get_values_options('nivel_user_register') == $r['id'] ) echo " selected " ?> value="<?= $r['id'] ?>"><?= $r['nombre'] ?></option>
@@ -369,7 +383,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 <?php
                 $superadmins = json_decode(rb_get_values_options('user_superadmin'), true);
               	$array_admins_ids = explode(",", $superadmins['admin']);
-                $qa = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
+                $qa = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM ".G_PREFIX."users_levels un, ".G_PREFIX."users u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
                 while($ra = $qa->fetch_assoc()):
                   $checkbox = "";
                   if( in_array( $ra['id'] , $array_admins_ids) ){
@@ -457,7 +471,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <div class="cols-6-md col-padding">
               <label>De:</label>
               <?php
-              $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE nivel_enlace <> 'admin'");
+              $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels WHERE nivel_enlace <> 'admin'");
               while($r = $q->fetch_assoc()):
                 $checkbox = "";
                 if( in_array( $r['id'] , $array_senders_ids) ){
@@ -472,7 +486,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <div class="cols-6-md col-padding">
               <label>A:</label>
               <?php
-              $q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE nivel_enlace <> 'admin'");
+              $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels WHERE nivel_enlace <> 'admin'");
               while($r = $q->fetch_assoc()):
                 $checkbox = "";
                 if( in_array( $r['id'] , $array_receivers_ids) ){
@@ -490,7 +504,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <div class="cols-6-md col-padding">
               <label>Lista de usuarios admin:</label>
               <?php
-              $q = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM usuarios_niveles un, usuarios u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
+              $q = $objDataBase->Ejecutar("SELECT u.id, u.nombres, u.apellidos, un.nivel_enlace FROM ".G_PREFIX."users_levels un, ".G_PREFIX."users u WHERE u.tipo = un.id AND un.nivel_enlace = 'admin'");
               while($r = $q->fetch_assoc()):
                 $checkbox = "";
                 if( in_array( $r['id'] , $array_admins_ids) ){

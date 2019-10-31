@@ -38,6 +38,7 @@ $btnCancel = $type."_cancel";
 						<option value="1">Mas vendidos</option>
 						<option value="2">Mejores ofertas</option>
 						<option value="3">Nuevos</option>
+						<option value="4">Antiguos</option>
 					</select>
 				</label>
 			</div>
@@ -56,7 +57,7 @@ $btnCancel = $type."_cancel";
       var widgets = $(this).closest(".widgets");
       var widget_id = "widget"+uniqueId();
       $.ajax({
-          url: "<?= G_SERVER ?>/rb-script/modules/plm/widget.block.php?temp_id="+widget_id
+          url: "<?= G_SERVER ?>rb-script/modules/plm/widget.block.php?temp_id="+widget_id
       })
       .done(function( data ) {
         notify("Elemento añadido");

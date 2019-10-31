@@ -80,7 +80,7 @@ endif;
 // redirecciona a la pagina principal
 
 function sus_required(){
-	$action = "<a id='hidden_link' href='".G_SERVER."/rb-script/modules/suscripciones/suscrip.frm.frontendreq.php' class='fancySuscrip fancybox.ajax'>Suscripcion</a>
+	$action = "<a id='hidden_link' href='".G_SERVER."rb-script/modules/suscripciones/suscrip.frm.frontendreq.php' class='fancySuscrip fancybox.ajax'>Suscripcion</a>
 	<script type='text/javascript'>
 		$(document).ready(function() {
 			$('#hidden_link').trigger('click');
@@ -131,7 +131,7 @@ function sus_form(){
 
 		$.ajax({
 			method: "post",
-			url: "'.G_SERVER.'/rb-script/modules/suscripciones/save.suscriptor.php",
+			url: "'.G_SERVER.'rb-script/modules/suscripciones/save.suscriptor.php",
 			data: $( this ).serialize()
 			})
 			.done(function( data ) {

@@ -3,7 +3,7 @@
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
-	$qp = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE id=$id");
+	$qp = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE id=".$id);
 	$Page= $qp->fetch_assoc();
 	$mode = "update";
 }else{
@@ -14,24 +14,30 @@ $sfoot = isset($Page) ? $Page['show_footer'] : 0;
 $hcustid = isset($Page) ? $Page['header_custom_id'] : 0;
 $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 ?>
-<script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>
-<script src="<?= G_SERVER ?>/rb-admin/core/pages3/func.js"></script>
+<script src="<?= G_SERVER ?>rb-admin/resource/ui/jquery-ui.js"></script>
+<script src="<?= G_SERVER ?>rb-admin/core/pages3/func.js"></script>
 <div id="toolbar">
 	<div class="inside_toolbar">
-		<span class="post-submit">
-			<input class="submit" name="guardar" type="submit" value="Guardar" id="btnGuardar" />
-			<a class="button" href="<?= G_SERVER ?>/rb-admin/?pag=pages">Volver</a>
+		<div class="navigation">
+			<a href="<?= G_SERVER ?>rb-admin/?pag=pages">Páginas</a> <i class="fas fa-angle-right"></i>
+			<?php if(isset($Page)): ?>
+				<span><?= $Page['titulo'] ?></span>
+			<?php else: ?>
+				<span>Nueva página</span>
+			<?php endif ?>
+		</div>
+			<input class="btn-primary" name="guardar" type="submit" value="Guardar" id="btnGuardar" />
+			<a class="button" href="<?= G_SERVER ?>rb-admin/?pag=pages">Cancelar</a>
 			<?php
 			if(isset($_GET["id"])){
 			?>
-			<a title="Presionar Control para cargar en una pestaña aparte" class="fancybox fancybox.iframe button" href="<?= G_SERVER ?>/?p=<?= $Page['id'] ?>" target="_blank">Vista previa</a>
+			<a title="Presionar Control para cargar en una pestaña aparte" class="button" href="<?= G_SERVER ?>?p=<?= $Page['id'] ?>" target="_blank">Vista previa</a>
 			<?php
 			}
 			?>
-			<a class="button" href="#" id="editCSSFile">Editar CSS adicionales</a>
-			<a class="button" href="#" id="showConfigPage">Mas configuraciones</a>
+			<a class="button" href="#" id="editCSSFile">Editar CSS</a>
+			<a class="button" href="#" id="showConfigPage">Configuración</a>
 			<a class="button" href="#" id="showFilesUpload"><i class="fa fa-upload"></i> Subir archivos</a>
-		</span>
 	</div>
 </div>
 	<section class="seccion" style="overflow:initial">
@@ -76,7 +82,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 					    $box_save_id = 0;
 					  }
 					  if($box_save_id > 0){
-							$qb = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE id=$box_save_id");
+							$qb = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages_blocks WHERE id=".$box_save_id);
 							$boxsave = $qb->fetch_assoc();
 							$box = json_decode($boxsave['contenido'], true);
 							$box_saved_css = " saved";
@@ -196,7 +202,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 				<?php endif ?>
 				</ul>
 				<div class="wrap-boton-new-block">
-					<a id="boxNew" href="#" title="Añadir bloque"><img src="<?= G_SERVER ?>/rb-admin/img/more.png" alt="icon" /></a>
+					<a id="boxNew" href="#" title="Añadir bloque"><img src="<?= G_SERVER ?>rb-admin/img/more.png" alt="icon" /></a>
 				</div>
 			</div>
 		</div>
@@ -212,7 +218,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 		<label>Url de la pagina
 			<span class="info">Url amigable (generado automaticamente, si se deja en blanco)</span>
 			<span style="background:#fffcdf;padding:5px;border: 1px solid #FFEB3B;">
-				<?= G_SERVER ?>/<input type="text" style="display:inline-block;width:auto;padding:0;background:none;border:0;border-bottom:1px solid gray;" name="pagina_enlace" id="pagina_enlace" value="<?php if(isset($Page)) echo $Page['titulo_enlace']; else echo "" ?>"  size="<?php if(isset($Page)) echo strlen($Page['titulo_enlace']); else echo "" ?>" />/</span>
+				<?= G_SERVER ?><input type="text" style="display:inline-block;width:auto;padding:0;background:none;border:0;border-bottom:1px solid gray;" name="pagina_enlace" id="pagina_enlace" value="<?php if(isset($Page)) echo $Page['titulo_enlace']; else echo "" ?>"  size="<?php if(isset($Page)) echo strlen($Page['titulo_enlace']); else echo "" ?>" />/</span>
 		</label>
 		<label>Descripción<br />
 			<textarea rows="2" name="description" id="pagina_desc"><?php if(isset($Page)) echo $Page['description']; else echo "" ?></textarea>
@@ -284,9 +290,9 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 					<?php
 					if(isset($Page)){
 						$id = $Page['id'];
-						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1 AND id<>$id");
+						$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=1 AND id<>".$id);
 					}else{
-						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=1");
+						$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=1");
 					}
 					?>
 					<select name="sheader_custom_id">
@@ -311,9 +317,9 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 					<?php
 					if(isset($Page)){
 						$id = $Page['id'];
-						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2 AND id<>$id");
+						$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=2 AND id<>".$id);
 					}else{
-						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=2");
+						$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=2");
 					}
 					?>
 					<select name="sfooter_custom_id">
@@ -370,7 +376,7 @@ include_once 'widgets/code/w.code.conf.php';
 include_once 'widgets/editor/w.editor.conf.php';
 include_once 'widgets/gallery/w.gallery.conf.php';
 include_once 'widgets/youtube/w.youtube.conf.php';
-include_once 'widgets/pubs/w.pubs.conf.php';
+//include_once 'widgets/pubs/w.pubs.conf.php';
 include_once 'widgets/sidebar/w.sidebar.conf.php';
 include_once 'modal-css-edit.php';
 include_once 'modal-save-block.php';//widget

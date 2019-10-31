@@ -43,10 +43,10 @@ $(document).ready(function() {
       notify('Los datos seleccionados fueron eliminados correctamente.');
       setTimeout(function(){
         if(mode == "rd"){
-          window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=men';
+          window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=men';
         }
         if(mode == "sd"){
-          window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=men&opc=send';
+          window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=men&opc=send';
         }
       }, 1000);
 		}
@@ -69,10 +69,10 @@ $(document).ready(function() {
             notify('El dato fue eliminado correctamente.');
             setTimeout(function(){
               if(mode == "rd"){
-                window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=men';
+                window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=men';
               }
               if(mode == "sd"){
-                window.location.href = '<?= G_SERVER ?>/rb-admin/index.php?pag=men&opc=send';
+                window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=men&opc=send';
               }
             }, 1000);
           }else{
@@ -89,19 +89,28 @@ $(document).ready(function() {
     <div class="seccion-header">
       <h2>Mensajeria</h2>
       <ul class="buttons">
-        <li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/?pag=men&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
-        <li><a class="button" <?= $style_btn_default ?>href="<?= G_SERVER ?>/rb-admin/?pag=men"> <span class="button-label">Recibidos</span></a></li>
-        <li><a class="button" <?= $style_btn_1 ?>href="<?= G_SERVER ?>/rb-admin/?pag=men&opc=send"> <span class="button-label">Enviados</span></a></li>
-        <li><a class="btn-delete" rel="usu" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+        <li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/?pag=men&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+        <li><a class="button" <?= $style_btn_default ?>href="<?= G_SERVER ?>rb-admin/?pag=men"> <span class="button-label">Recibidos</span></a></li>
+        <li><a class="button" <?= $style_btn_1 ?>href="<?= G_SERVER ?>rb-admin/?pag=men&opc=send"> <span class="button-label">Enviados</span></a></li>
+        <li><a class="button btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
       </ul>
     </div>
     <div class="seccion-body">
       <div id="content-list">
         <div id="resultado">
-          <table id="t-enlaces" class="tables">
+          <script>
+            $(document).ready(function() {
+              $('#table').DataTable({
+                "language": {
+                  "url": "resource/datatables/Spanish.json"
+                }
+              });
+            } );
+          </script>
+          <table id="table" class="tables table-striped">
             <thead>
               <tr>
-                <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
+                <th><input type="checkbox" value="all" id="select_all" /></th>
                 <th>Asunto</th>
                 <?php if(isset($_GET['opc']) && $_GET['opc'] =="send"){ ?> <th>Destinatarios</th>
                 <?php }else{ ?> <th>Remitente</th><?php } ?>

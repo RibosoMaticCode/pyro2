@@ -45,7 +45,8 @@
 .item-user a{
 	display:initial!important;
 	padding:0!important;
-
+	font-weight: 400;
+	font-size:.95em;
 }
 .item-user a:hover{
 	background:none!important;
@@ -84,8 +85,8 @@
 	width:100%;
 	color:#fff;
 	text-transform:uppercase;
-	font-size:.9em;
-	font-family:condensed-regular;
+	font-size:.8em;
+	font-weight: 100;
 }
 .items li a:hover{
 	background-color:#3A404B
@@ -127,7 +128,4 @@ li a.selected::after{
 }
 .hidden li a span{
 	text-transform:none!important
-}
-.items li ul li a span {
-    font-family: condensed-light;
 }

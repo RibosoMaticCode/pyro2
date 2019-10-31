@@ -4,8 +4,8 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
-require_once ABSPATH.'rb-admin/hook.php';
+require_once ABSPATH.'rb-script/funcs.php';
+require_once ABSPATH.'rb-script/hook.php';
 // Carga formato js de la base de datos
 $modules_prev = rb_get_values_options('modules_load');
 
@@ -13,14 +13,14 @@ $modules_prev = rb_get_values_options('modules_load');
 $array_modules = json_decode($modules_prev, true);
 
 // Incluir los modulos externos desde la base de datos
-require_once ABSPATH.'rb-admin/modules.list.php';
+require_once ABSPATH.'rb-script/modules.list.php';
 
 /* INCLUDE WIDGETS DISPONIBLES */
 
 include_once ABSPATH.'rb-admin/core/pages3/widgets/editor/w.editor.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/slide/w.slide.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/gallery/w.gallery.init.php';
-include_once ABSPATH.'rb-admin/core/pages3/widgets/pubs/w.pubs.init.php';
+//include_once ABSPATH.'rb-admin/core/pages3/widgets/pubs/w.pubs.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/code/w.code.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/youtube/w.youtube.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
@@ -52,7 +52,7 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
 			if(isset($data['img_abs'])){
 				$url_img = $data['img_abs'];
 			}else{
-				$url_img = G_SERVER.'/rb-admin/core/pages3/widgets/'.$data['dir'].'/'.$data['img'];
+				$url_img = G_SERVER.'rb-admin/core/pages3/widgets/'.$data['dir'].'/'.$data['img'];
 			}
 			?>
 			<li>
@@ -64,12 +64,12 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
 	    </li>
 			<?php
 		}
-    $q = $objDataBase->Ejecutar("SELECT * FROM bloques WHERE tipo=0");
+    $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages_blocks WHERE tipo=0");
     while($r = $q->fetch_assoc()):
     ?>
     <li>
       <a class="addCustom" href="#" data-id="<?= $r['id'] ?>">
-				<img src="<?= G_SERVER ?>/rb-admin/core/pages3/save.png" alt="icon" />
+				<img src="<?= G_SERVER ?>rb-admin/core/pages3/save.png" alt="icon" />
 				<h4><?= $r['nombre'] ?></h4>
 				Elemento personalizado
 			</a>
@@ -80,7 +80,7 @@ include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
   </ul>
 	</div>
 	<div class="editor-footer">
-		<button class="btn-primary" id="widget-btn-accept">Cerrar</button>
+		<button class="button" id="widget-btn-accept">Cerrar</button>
 		<!--<button class="button" id="widget-btn-cancel">Cancelar</button>-->
 	</div>
 </div>

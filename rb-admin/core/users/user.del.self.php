@@ -4,7 +4,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $key_web = rb_get_values_options('key_web'); // podria ser key de la sesion de usuario
 
@@ -18,7 +18,7 @@ header('Content-type: application/json; charset=utf-8');
 $user_id = rb_encrypt_decrypt("decrypt", $user_id_enc, $user_key, $key_web);
 
 // Verificar password de este usuario
-$result_user = $objDataBase->Ejecutar("SELECT * FROM usuarios WHERE id = ".$user_id);
+$result_user = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users WHERE id = ".$user_id);
 $User = $result_user->fetch_assoc();
 
 if($User['nickname']=="admin"){
@@ -30,7 +30,7 @@ if($User['nickname']=="admin"){
 if($pass_user==$User['password']){
 
 	// Procedemos a borrar
-	$r = $objDataBase->Ejecutar("DELETE FROM usuarios WHERE id = $user_id");
+	$r = $objDataBase->Ejecutar("DELETE FROM ".G_PREFIX."users WHERE id = $user_id");
 	if($r){
 		// Cerrar session y todo lo demas
 	  $arr = array('result' => 1, 'message' => "Su cuenta fue eliminada. Cerraremos la sesión." );

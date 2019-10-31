@@ -19,10 +19,12 @@ $valores = [
 
 if($id==0){ // Nuevo
 	// Validar mail
-	$q = $objDataBase->Ejecutar("SELECT * FROM crm_customers WHERE correo='".$valores['correo']."'");
-	if($q->num_rows > 0){
-		$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.', 'continue' => true ];
-		die(json_encode($arr));
+	if($valores['correo']!=""){
+		$q = $objDataBase->Ejecutar("SELECT * FROM crm_customers WHERE correo='".$valores['correo']."'");
+		if($q->num_rows > 0){
+			$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.', 'continue' => true ];
+			die(json_encode($arr));
+		}
 	}
 
 	$r = $objDataBase->Insert('crm_customers', $valores);

@@ -22,8 +22,6 @@ if(empty($nom_id)){
   $nom_id = rb_cambiar_nombre($_POST['nombre']);
 }
 
-
-
 // tipo de accion
 if($mode=="new"){
 	$valores = [
@@ -37,13 +35,13 @@ if($mode=="new"){
 		'photo_id' => $imgfondo_id,
 		'private' => $private
 	];
-	$result = $objDataBase->Insert('albums', $valores);
+	$result = $objDataBase->Insert(G_PREFIX.'galleries', $valores);
   if($result['result']){
 		$ultimo_id = $result['insert_id'];
   }else {
     die("error");
   }
-  $urlreload=G_SERVER.'/rb-admin/index.php?pag=gal&opc=edt&id='.$ultimo_id."&m=ok";
+  $urlreload=G_SERVER.'rb-admin/index.php?pag=gal&opc=edt&id='.$ultimo_id."&m=ok";
   header('Location: '.$urlreload);
 }elseif($mode=="update"){
 	$valores = [
@@ -56,10 +54,9 @@ if($mode=="new"){
 	];
 
   $id = $_POST['id'];
-  //$objDataBase->Ejecutar("UPDATE albums SET nombre='$nom', descripcion='$des', nombre_enlace = '$nom_id', galeria_grupo= '$galeria_grupo', photo_id = $imgfondo_id WHERE id = $id");
-	$result = $objDataBase->Update('albums', $valores, ["id" => $id]);
+	$result = $objDataBase->Update(G_PREFIX.'galleries', $valores, ["id" => $id]);
 
-  $urlreload=G_SERVER.'/rb-admin/index.php?pag=gal&opc=edt&id='.$id."&m=ok";
+  $urlreload=G_SERVER.'rb-admin/index.php?pag=gal&opc=edt&id='.$id."&m=ok";
   header('Location: '.$urlreload);
 }
 ?>

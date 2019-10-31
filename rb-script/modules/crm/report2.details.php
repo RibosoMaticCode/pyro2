@@ -19,7 +19,7 @@ $qlist = $objDataBase->Ejecutar("SELECT *, count(id) as veces FROM crm_visits WH
     $('#report2').DataTable({
       "language": {
         "url": "resource/datatables/Spanish.json"
-      } 
+      }
     });
   });
 </script>
@@ -36,7 +36,7 @@ $qlist = $objDataBase->Ejecutar("SELECT *, count(id) as veces FROM crm_visits WH
     ?>
     <tr>
       <td><?= crm_customer_fullname($row['customer_id']) ?></td>
-      <td><a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>/rb-script/modules/crm/visit.details.php?id=<?= $row['customer_id'] ?>&days=15"><?= $row['veces'] ?></a></td>
+      <td><a class="fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>rb-script/modules/crm/visit.details.php?id=<?= $row['customer_id'] ?>&days=15"><?= $row['veces'] ?></a></td>
     </tr>
     <?php
     endwhile;

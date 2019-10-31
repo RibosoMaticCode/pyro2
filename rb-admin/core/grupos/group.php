@@ -3,8 +3,8 @@
 $rb_module_title = "Grupos";
 $rb_module_title_section = "Grupos";
 $rb_module_path = "Inicio > Grupos";
-$rb_module_url_main = G_SERVER."/rb-admin/index.php";
-$rb_module_url = G_SERVER."/rb-admin/core/grupos/";
+$rb_module_url_main = G_SERVER."rb-admin/index.php";
+$rb_module_url = G_SERVER."rb-admin/core/grupos/";
 $rb_module_url_img = "";
 
 // Menu
@@ -21,6 +21,13 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 		printf(" No tiene permiso de Administrador ");
 		die;
 	endif;
+
+	// Titulo de pagina
+	function group_title(){
+		return "Grupo de usuarios";
+	}
+	add_function('module_title_page','group_title');
+
 	// Contenido inicial
 	function group_admin_content(){
 		if(isset($_GET['opc'])):
@@ -66,7 +73,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 					});
 		      notify('Los datos seleccionados fueron eliminados correctamente.');
 		      setTimeout(function(){
-		        window.location.href = '<?= G_SERVER ?>/rb-admin/module.php?pag=gru';
+		        window.location.href = '<?= G_SERVER ?>rb-admin/module.php?pag=gru';
 		      }, 1000);
 				}
 			});
@@ -84,7 +91,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 		          if(data.result = 1){
 		            notify('El dato fue eliminado correctamente.');
 		            setTimeout(function(){
-		              window.location.href = '<?= G_SERVER ?>/rb-admin/module.php?pag=gru';
+		              window.location.href = '<?= G_SERVER ?>rb-admin/module.php?pag=gru';
 		            }, 1000);
 		          }else{
 		            notify('Ocurrio un error inesperado. Intente luego.');
@@ -100,16 +107,26 @@ if(isset($_GET['pag']) && $_GET['pag']=="gru"):
 				<div class="seccion-header">
 					<h2>Grupos</h2>
 					<ul class="buttons">
-						<li><a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/module.php?pag=gru&amp;opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
-						<li><a class="btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+						<li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/module.php?pag=gru&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+						<li><a class="button btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
 					</ul>
 				</div>
 				<div class="seccion-body">
-				<table class="tables">
+					<script>
+		        $(document).ready(function() {
+		          $('#table').DataTable({
+		            "language": {
+		              "url": "resource/datatables/Spanish.json"
+		            }
+		          });
+		        } );
+		      </script>
+		      <table id="table" class="tables table-striped">
 					<thead>
 						<tr>
 							<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
 							<th>Grupo</th>
+							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>

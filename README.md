@@ -1,4 +1,4 @@
-# pyro2.1
+# pyro3
 Gestor de contenidos basico con soporte de modulos
 
 - Gestor de blog por defecto. Manejo de categorias publicas y privadas

@@ -18,7 +18,7 @@
 		</div>
 	</div>
 	<div class="editor-footer">
-		<button class="btn-primary" id="btn1">Cambiar</button>
+		<button class="button btn-primary" id="btn1">Cambiar</button>
 		<button class="button" id="btn2">Cancelar</button>
 		<!-- nombres de los controles -->
 		<input type="hidden" id="control_id" value="" />

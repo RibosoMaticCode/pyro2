@@ -28,7 +28,7 @@
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="youtube1_id" value="" /> <!-- ID UNICO DEL BLOQUE -->
-		<button class="btn-primary" id="youtube1_form-btn-accept">Cambiar</button>
+		<button class="button btn-primary" id="youtube1_form-btn-accept">Cambiar</button>
 		<button class="button" id="youtube1_form-btn-cancel">Cancelar</button>
 	</div>
 </div>

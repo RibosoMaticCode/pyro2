@@ -3,7 +3,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];
-	$q = $objDataBase->Ejecutar("SELECT * FROM forms WHERE id=$id");
+	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."forms WHERE id=$id");
 	$row= $q->fetch_assoc();
 	$mode = "update";
 }else{
@@ -44,15 +44,22 @@ $(document).ready(function() {
 	});
 });
 </script>
-<div class="form">
-	<form id="frmForms">
+<div class="inside_contenedor_frm">
+	<form id="frmForms" class="form">
 		<div id="toolbar">
-			<div id="toolbar-buttons">
-				<button class="submit" id="SaveForm" type="submit">Guardar</button>
-				<a class="button" href="?pag=forms">Cancelar</a>
-			</div>
+			<div class="inside_toolbar">
+	      <div class="navigation">
+	        <a href="<?= G_SERVER ?>rb-admin/module.php?pag=forms">Formularios</a> <i class="fas fa-angle-right"></i>
+	        <?php if(isset($row)): ?>
+	          <span><?= $row['name'] ?></span>
+	        <?php else: ?>
+	          <span>Nuevo formulario</span>
+	        <?php endif ?>
+	      </div>
+	      <input class="btn-primary" name="guardar"  id="SaveForm" type="submit" value="Guardar" />
+	      <a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=forms">Cancelar</a>
+	    </div>
 		</div>
-		<div class="content-edit">
 			<section class="seccion">
 				<div class="seccion-body">
 					<label>Asunto:
@@ -89,7 +96,6 @@ $(document).ready(function() {
 					</label>
 				</div>
 			</section>
-		</div>
 		<input name="mode" id="form_mode" value="<?php echo $mode ?>" type="hidden" />
 		<input name="id" id="form_id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
 	</form>

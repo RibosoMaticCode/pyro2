@@ -1,4 +1,6 @@
 <?php
+// DECLRARA WIDGET DEL SISTEMA AQUI:
+
 // Datos de este widget
 $widget = [
   'link_action' => 'addHtmlRaw',
@@ -42,7 +44,7 @@ $widget = [
 array_push($widgets, $widget);
 
 // Datos de este widget
-$widget = [
+/*$widget = [
   'link_action' => 'addPost1',
   'dir' => 'pubs',
   'name' => 'Publicaciones',
@@ -53,7 +55,7 @@ $widget = [
   'type' => 'post1'
 ];
 //Añadiendo al array principals widgets
-array_push($widgets, $widget);
+array_push($widgets, $widget);*/
 
 // Datos de este widget
 $widget = [

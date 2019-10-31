@@ -10,7 +10,7 @@ $table_name = "hotel_producto";
 $key = "hotel_productos";
 $module_dir = "hotel";
 $save_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".save.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 
 /* start */
 if( isset($_GET['id']) ){
@@ -35,10 +35,10 @@ if( isset($_GET['id']) ){
 	<!-- campos final -->
   <div class="cols-container">
     <div class="cols-6-md cols-content-left">
-      <button type="submit">Guardar</button>
+      <button class="button btn-primary" type="submit">Guardar</button>
     </div>
     <div class="cols-6-md cols-content-right">
-      <button type="button" class="CancelFancyBox">Cancelar</button>
+      <button type="button" class="button CancelFancyBox">Cancelar</button>
     </div>
   </div>
 </form>

@@ -18,7 +18,7 @@
 					<select name="sidebar_name" id="sidebar_name">
 						<option value="0">Seleccionar</option>
 						<?php
-						$q = $objDataBase->Ejecutar("SELECT * FROM paginas WHERE type=3");
+						$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=3");
 						while($Pagina = $q->fetch_assoc()):
 							?>
 							<option value="<?= $Pagina['id']?>"><?= $Pagina['titulo']?></option>
@@ -32,7 +32,7 @@
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="sidebar_id" value="" /> <!-- ID UNICO DEL BLOQUE -->
-		<button class="btn-primary" id="sidebar_form-btn-accept">Cambiar</button>
+		<button class="button btn-primary" id="sidebar_form-btn-accept">Cambiar</button>
 		<button class="button" id="sidebar_form-btn-cancel">Cancelar</button>
 	</div>
 </div>

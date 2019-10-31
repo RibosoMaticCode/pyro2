@@ -3,16 +3,16 @@
  * Cambios rb-temas/'.G_ESTILO.'/ por rb-script/
  * para que archivos de login y recuperacion este en carpeta rb-script, en vez del tema
  */
-require_once 'rb-admin/hook.php';
+require_once 'rb-script/hook.php';
 require_once 'global.php';
-require_once 'rb-script/funciones.php';
-require_once 'rb-script/class/rb-usuarios.class.php';
+require_once 'rb-script/funcs.php';
+require_once 'rb-script/class/rb-users.class.php';
 require_once 'rb-script/class/rb-database.class.php';
 
 // Cargar los modulos externos
 $modules_prev = rb_get_values_options('modules_load');
 $array_modules = json_decode($modules_prev, true);
-require_once 'rb-admin/modules.list.php';
+require_once 'rb-script/modules.list.php';
 
 $url_panel = rb_get_values_options('direccion_url').'/rb-admin';
 if(rb_get_values_options('after_login_url')!=""):
@@ -24,7 +24,7 @@ endif;
 $rm_title = G_TITULO;
 $rm_subtitle = G_SUBTITULO;
 $rm_longtitle = G_TITULO . ( G_SUBTITULO=="" ? "" :  " - ".G_SUBTITULO );
-$rm_url = G_SERVER."/";
+$rm_url = G_SERVER;
 $rm_urltheme = G_URLTHEME."/";
 $response = "noajax";
 if(isset($_POST['response'])):
@@ -108,7 +108,7 @@ if(isset($_POST['login'])){
 
 				// Aprovechamos a eliminar esta cuenta, ya que nunca se activo.
 				$usuario = $objUsuario->mostrar($user,md5($pwd));
-				$objDataBase->Ejecutar("DELETE FROM usuarios WHERE id=".$usuario['id']);
+				$objDataBase->Ejecutar("DELETE FROM ".G_PREFIX."users WHERE id=".$usuario['id']);
 
 				if($response=="ajax"):
 					$rspta = Array(
@@ -129,7 +129,7 @@ if(isset($_POST['login'])){
 			$_SESSION['ultimoacceso'] =  $usuario['ultimoacceso'];
 
 			// actualizar columna ultimoacceso a fecha actual
-			$objDataBase->Ejecutar("UPDATE usuarios SET ultimoacceso=NOW() WHERE id=".$usuario['id']);
+			$objDataBase->Ejecutar("UPDATE ".G_PREFIX."users SET ultimoacceso=NOW() WHERE id=".$usuario['id']);
 			$idu = $usuario['id'];
 			//$objLog->Insertar();
 			rb_log_register( array($idu,$user,'Ingreso al sistema') );
@@ -174,8 +174,7 @@ if(isset($_POST['recovery'])){
 	$mail = $_POST['mail'];
 
 	// verificar existencia de correo
-	$qr = $objDataBase->Ejecutar("SELECT correo FROM usuarios WHERE correo = '$mail'");
-	//echo "SELECT correo FROM usuarios WHERE correo = '$mail'";
+	$qr = $objDataBase->Ejecutar("SELECT correo FROM ".G_PREFIX."users WHERE correo = '".$mail."'");
 
 	$CountPostReturn = $qr->num_rows;
 	if($CountPostReturn==0){
@@ -183,7 +182,7 @@ if(isset($_POST['recovery'])){
 		define('G_MESSAGELOGIN', $msg);
 	}else{
 		// verificar si campo recovery esta activado, sino se sale
-		$qr = $objDataBase->Ejecutar("SELECT recovery FROM usuarios WHERE correo = '$mail'");
+		$qr = $objDataBase->Ejecutar("SELECT recovery FROM ".G_PREFIX."users WHERE correo = '".$mail."'");
 		$UsuarioItem = $qr->fetch_assoc();
 		$recover = $UsuarioItem['recovery'];
 		if($recover==1){
@@ -194,7 +193,7 @@ if(isset($_POST['recovery'])){
 			require ABSPATH.'rb-script/modules/rb-login/recovery.mail.php';
 			if(mailer_recovery(G_TITULO, $mail, G_SERVER, G_HOSTNAME)==1){
 				// actualizar campo en tabla que active el recovery
-				$objDataBase->Ejecutar("UPDATE usuarios SET recovery=1 WHERE correo = '$mail'");
+				$objDataBase->Ejecutar("UPDATE ".G_PREFIX."users SET recovery=1 WHERE correo = '".$mail."'");
 
 				// msje del proceso efectuado
 				$msg="Se enviaron instrucciones a su correo para restablecer su contrase&ntilde;a, revise carpeta SPAM por si las dudas :-)";
@@ -237,7 +236,7 @@ if(isset($_GET['recovery'])){
 			}
 
 			// verificar si campo recovery esta activado, sino se sale
-			$qr = $objDataBase->Ejecutar("SELECT recovery FROM usuarios WHERE correo = '$mail'");
+			$qr = $objDataBase->Ejecutar("SELECT recovery FROM ".G_PREFIX."users WHERE correo = '".$mail."'");
 			$UsuarioItem = $qr->fetch_assoc();
 			$recover = $UsuarioItem['recovery'];
 			if($recover==0){
@@ -277,7 +276,7 @@ if(isset($_POST['newpass'])){
 	}
 
 	// buscando usuario ID por su mail
-	$qr = $objDataBase->Ejecutar("SELECT id FROM usuarios WHERE correo = '$mail'");
+	$qr = $objDataBase->Ejecutar("SELECT id FROM ".G_PREFIX."users WHERE correo = '".$mail."'");
 	$UsuarioItem = $qr->fetch_assoc();
 	$id = $UsuarioItem['id'];
 
@@ -285,7 +284,7 @@ if(isset($_POST['newpass'])){
 	$objDataBase->EditarPorCampo("usuarios","password", md5(trim($pwd)),$id);
 
 	// quitamos recovery mode
-	$objDataBase->Ejecutar("UPDATE usuarios SET recovery=0 WHERE correo = '$mail'");
+	$objDataBase->Ejecutar("UPDATE ".G_PREFIX."users SET recovery=0 WHERE correo = '".$mail."'");
 
 	$msg="se cambio la contrase&ntilde;a, no se olvide esta vez :-) ";
 	define('G_MESSAGELOGIN', $msg);
@@ -309,9 +308,9 @@ if(isset($_GET['active'])){
 	if($objUsuario->existe('correo',$md5user)==0):
 		//header('Location: '.G_SERVER.'/rb-script/message.php?title=No existe el usuario&desc=Registrese en nuestra web... Sera redireccionado&img=message.error.png');
 		echo "<h2 style='text-align:center'>No existe el usuario</h2>";
-		echo "<p style='text-align:center'><a href='".G_SERVER."/login.php?reg'>Registrese en nuestra web</a></p>";
+		echo "<p style='text-align:center'><a href='".G_SERVER."login.php?reg'>Registrese en nuestra web</a></p>";
 	else:
-		$q = $objDataBase->Ejecutar("SELECT id, activo FROM usuarios WHERE correo='$md5user'");
+		$q = $objDataBase->Ejecutar("SELECT id, activo FROM ".G_PREFIX."users WHERE correo='".$md5user."'");
 		$r = $q->fetch_assoc();
 		/*print_r($r);
 
@@ -319,11 +318,11 @@ if(isset($_GET['active'])){
 		if($r['activo']==1):
 			//header('Location: '.G_SERVER.'/rb-script/message.php?title=Usuario ya está activo&desc=Vaya la web e inicie sesión.&img=message.warning.png');
 			echo "<h2 style='text-align:center'>Usuario ya está activo</h2>";
-			echo "<p style='text-align:center'><a href='".G_SERVER."/login.php'>Inicie sesión</a></p>";
+			echo "<p style='text-align:center'><a href='".G_SERVER."login.php'>Inicie sesión</a></p>";
 			exit();
 		endif;
 
-		if($objDataBase->EditarPorCampo_Int("usuarios","activo", 1,$r['id'])):
+		if($objDataBase->EditarPorCampo_Int(G_PREFIX."users","activo", 1,$r['id'])):
 			//header('Location: '.G_SERVER.'/rb-script/message.php?title=Su cuenta ahora esta activa!&desc=Vaya la web e inicie sesión... Sera redireccionado&img=message.good.png');
 			echo "<h2 style='text-align:center'>Su cuenta ahora esta activa</h2>";
 			echo "<p style='text-align:center'><a href='".G_SERVER."/login.php'>Inicie sesión</a></p>";

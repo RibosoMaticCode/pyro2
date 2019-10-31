@@ -26,12 +26,6 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 			include('forms.edit.php');
 		else:
 		?>
-		<div id="sidebar-left">
-			<ul class="buttons-edition">
-				<li><a class="btn-primary" href="../rb-admin/module.php?pag=forms&amp;opc=nvo"><img src="img/add-white-16.png" alt="Nuevo"> Nuevo</a></li>
-				<li><a class="btn-delete" href="#" id="delete"><img src="img/del-white-16.png" alt="delete"> Eliminar</a></li>
-			</ul>
-		</div>
 		<script>
 		$(document).ready(function() {
 		  // SELECT ALL ITEMS CHECKBOXS
@@ -69,7 +63,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 					});
 		      notify('Los datos seleccionados fueron eliminados correctamente.');
 		      setTimeout(function(){
-		        window.location.href = '<?= G_SERVER ?>/rb-admin/module.php?pag=forms';
+		        window.location.href = '<?= G_SERVER ?>rb-admin/module.php?pag=forms';
 		      }, 1000);
 				}
 			});
@@ -87,7 +81,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 		          if(data.result = 1){
 		            notify('El dato fue eliminado correctamente.');
 		            setTimeout(function(){
-		              window.location.href = '<?= G_SERVER ?>/rb-admin/module.php?pag=forms';
+		              window.location.href = '<?= G_SERVER ?>rb-admin/module.php?pag=forms';
 		            }, 1000);
 		          }else{
 		            notify('Ocurrio un error inesperado. Intente luego.');
@@ -102,21 +96,35 @@ if(isset($_GET['pag']) && $_GET['pag']=="forms"):
 			<section class="seccion">
 				<div class="seccion-header">
 					<h2>Formularios</h2>
+					<ul class="buttons">
+						<li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/module.php?pag=forms&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+						<li><a class="button btn-delete" href="#" id="delete"><i class="fa fa-times"></i> <span class="button-label">Eliminar</span></a></li>
+					</ul>
 				</div>
 				<div class="seccion-body">
-				<table class="tables" border="0" cellpadding="0" cellspacing="0">
-					<thead>
-						<tr>
-							<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
-							<th>Nombre</th>
-							<th>Validaciones</th>
-							<th>Shortcode</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php include('forms.list.php') ?>
-					</tbody>
-				</table>
+					<script>
+		        $(document).ready(function() {
+		          $('#table').DataTable({
+		            "language": {
+		              "url": "resource/datatables/Spanish.json"
+		            }
+		          });
+		        } );
+		      </script>
+		      <table id="table" class="tables table-striped">
+						<thead>
+							<tr>
+								<th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
+								<th>Nombre</th>
+								<th>Validaciones</th>
+								<th>Shortcode</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php include('forms.list.php') ?>
+						</tbody>
+					</table>
 				</div>
 			</section>
 		</div>
@@ -130,7 +138,7 @@ endif;
 
 function show_form( $params ){ // Mostrar el formulario segun su id
 	global $objDataBase;
-	$r = $objDataBase->Ejecutar('SELECT * FROM forms WHERE id='.$params['id']);
+	$r = $objDataBase->Ejecutar('SELECT * FROM '.G_PREFIX.'forms WHERE id='.$params['id']);
 	$form = $r->fetch_assoc();
 
 	$formhtml = "
@@ -140,7 +148,7 @@ function show_form( $params ){ // Mostrar el formulario segun su id
 			event.preventDefault();
 			$.ajax({
 				method: 'post',
-				url: '".G_SERVER."/rb-script/modules/rb-mailer/mailer.form.db.php',
+				url: '".G_SERVER."rb-script/modules/rb-mailer/mailer.form.db.php',
 				data: $( this ).serialize()
 			})
 			.done(function( data ) {
@@ -174,7 +182,7 @@ function test(){
 * Hay que crear los shortcodes para cada formulario, ANTES de usarse en el sistema,
 * NO DURANTE, pues no es posible cuando se trata de funciones dinamicas.
 */
-$r = $objDataBase->Ejecutar('SELECT * FROM forms');
+$r = $objDataBase->Ejecutar('SELECT * FROM '.G_PREFIX.'forms');
 while($form = $r->fetch_assoc()){
 	add_shortcode('FORM', 'show_form', ['id' => $form['id'] ]);
 }

@@ -15,6 +15,7 @@
   background-image: linear-gradient(to bottom, #FFF, #FBFBFB);
   max-width: 100%;
   margin-right: 2px;
+  font-family: Poppins;
 }
 .form select{
 	padding:5px 8px!important;
@@ -26,20 +27,20 @@
 	outline:0;
 	border:1px solid gray;
 }
-.form button{
+/*.form button{
 	color: #fff;
   padding: 5px 15px;
   border-radius: 4px;
   font-size: .9em;
   display: inline-block;
   border: 0;
-}
-.form button[type="submit"]{
+}*/
+/*.form button[type="submit"]{
 	background-color: #4CAF50;
 }
 .form button[type="button"]{
 	background-color: #9E9E9E;
-}
+}*/
 .form label{
 	display: block;
   padding: 4px 0;

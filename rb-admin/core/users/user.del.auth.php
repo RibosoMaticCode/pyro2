@@ -50,23 +50,6 @@ $(document).ready(function() {
 	  // Send submit
 	  $('#del_user_auth').submit(function( event ){
 	    event.preventDefault();
-	    /*$.ajax({
-	      data: $( this ).serialize(),
-	      url: '<?= G_SERVER ?>/rb-admin/core/users/user-del.php',
-	      cache: false,
-	      type: "POST",
-	      success: function(data){
-	        if(data.result == 1){
-	          $.fancybox.close();
-	          notify( data.message );
-	          setTimeout(function(){
-		          window.location.href = '<?= G_SERVER ?>/rb-admin/?pag=usu';
-		        }, 1000);
-	        }else{
-	          notify(data.message);
-	        }
-	      }
-	    });*/
 			var users = $('input[name="users_array"]').val();
 			var users_json = JSON.parse(users);// pasa json string to objects
 			console.log(users_json);
@@ -78,7 +61,7 @@ $(document).ready(function() {
 				console.log(value.userid);
 				$.ajax({
 		      data: $( this ).serialize(),
-		      url: '<?= G_SERVER ?>/rb-admin/core/users/user-del.php',
+		      url: '<?= G_SERVER ?>rb-admin/core/users/user-del.php',
 		      cache: false,
 		      type: "POST",
 		      success: function(data){
@@ -86,7 +69,7 @@ $(document).ready(function() {
 		          $.fancybox.close();
 		          notify( data.message );
 		          setTimeout(function(){
-			          window.location.href = '<?= G_SERVER ?>/rb-admin/?pag=usu';
+			          window.location.href = '<?= G_SERVER ?>rb-admin/?pag=usu';
 			        }, 1000);
 		        }else{
 		          notify(data.message);
@@ -103,7 +86,7 @@ $(document).ready(function() {
 	    event.preventDefault();
 	    $.ajax({
 	      data: $( this ).serialize(),
-	      url: '<?= G_SERVER ?>/rb-admin/core/users/user-del.php',
+	      url: '<?= G_SERVER ?>rb-admin/core/users/user-del.php',
 	      cache: false,
 	      type: "POST",
 	      success: function(data){
@@ -111,7 +94,7 @@ $(document).ready(function() {
 	          $.fancybox.close();
 	          notify( data.message );
 	          setTimeout(function(){
-		          window.location.href = '<?= G_SERVER ?>/rb-admin/?pag=usu';
+		          window.location.href = '<?= G_SERVER ?>rb-admin/?pag=usu';
 		        }, 1000);
 	        }else{
 	          notify(data.message);

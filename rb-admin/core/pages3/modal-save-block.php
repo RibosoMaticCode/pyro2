@@ -27,7 +27,7 @@
 			var blo_id = $("#block_item_id").val();
 			$.ajax({
 		  	method: "POST",
-		  	url: "<?= G_SERVER ?>/rb-admin/core/pages3/save.block.php",
+		  	url: "<?= G_SERVER ?>rb-admin/core/pages3/save.block.php",
 		  	data: $( "#frm-block" ).serialize()
 			}).done(function( msg ) {
 				console.log(msg.id);

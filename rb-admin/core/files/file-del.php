@@ -1,10 +1,12 @@
 <?php
+header('Content-type: application/json; charset=utf-8');
+
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 if(!G_ACCESOUSUARIO){
 	$arr = array('result' => false, 'message' => 'No puede completarse esta accion', 'detail' => 'Usuario no inicio sesion' );
@@ -15,7 +17,7 @@ if(!isset($_GET['id']) || $_GET['id']==0 || $_GET['id']==""){
   die(json_encode($arr));
 }
 $value_id = $_GET['id'];
-$q = "SELECT * FROM photo WHERE id=".$value_id;
+$q = "SELECT * FROM ".G_PREFIX."files WHERE id=".$value_id;
 $qr = $objDataBase->Ejecutar($q);
 $r = $qr->fetch_assoc();
 
@@ -32,14 +34,13 @@ $ruta_tn = ABSPATH.'rb-media/gallery/tn/'.$src_img;
 unlink($ruta_image);
 if($fileType == "image/png" || $fileType == "image/jpeg" || $fileType == "image/gif") unlink($ruta_tn);
 
-$r = $objDataBase->Ejecutar("DELETE FROM photo WHERE id = $value_id");
+$r = $objDataBase->Ejecutar("DELETE FROM ".G_PREFIX."files WHERE id = $value_id");
 
-header('Content-type: application/json; charset=utf-8');
 if($r){
-  $arr = array('result' => 1, 'url' => G_SERVER );
+  $arr = array('result' => true, 'url' => G_SERVER );
   die(json_encode($arr));
 }else{
-  $arr = array('result' => 0, 'url' => G_SERVER );
+  $arr = array('result' => false, 'url' => G_SERVER );
   die(json_encode($arr));
 }
 ?>

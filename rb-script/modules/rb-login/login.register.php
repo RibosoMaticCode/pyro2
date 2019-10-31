@@ -6,12 +6,11 @@ else:
 		$page_title = "Registrarse";
 		require_once 'login.header.php'
 		?>
-		<!--<script src="<?= G_SERVER ?>/rb-script/modules/rb-login/login.js?url=<?= G_SERVER ?>"></script>-->
 		<script>
 			$(document).ready(function() {
 				$("#frmRegister").submit(function(e) {
 			    e.preventDefault();
-			    var url = "<?= G_SERVER ?>/rb-script/modules/rb-login/user.register.php";
+			    var url = "<?= G_SERVER ?>rb-script/modules/rb-login/user.register.php";
 			      $.ajax({
 			        type: "POST",
 			        url: url,

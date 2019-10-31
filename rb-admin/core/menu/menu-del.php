@@ -4,11 +4,11 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $value_id = $_GET['id'];
-$r = $objDataBase->Ejecutar("DELETE FROM menus WHERE id = $value_id");
-$r = $objDataBase->Ejecutar("DELETE FROM menus_items WHERE mainmenu_id = $value_id");
+$r = $objDataBase->Ejecutar("DELETE FROM ".G_PREFIX."menus WHERE id = $value_id");
+$r = $objDataBase->Ejecutar("DELETE FROM ".G_PREFIX."menus_items WHERE mainmenu_id = $value_id");
 header('Content-type: application/json; charset=utf-8');
 if($r){
   $arr = array('result' => 1, 'url' => G_SERVER );

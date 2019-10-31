@@ -7,7 +7,7 @@ require_once(ABSPATH."rb-script/class/rb-database.class.php");
 
 if(!isset($_POST['mainmenu_id'])) die ("Error: Id Main Menu no especificado");
 
-$objDataBase->Ejecutar("DELETE FROM menus_items WHERE mainmenu_id=".$_POST['mainmenu_id']);
+$objDataBase->Ejecutar("DELETE FROM ".G_PREFIX."menus_items WHERE mainmenu_id=".$_POST['mainmenu_id']);
 
 $directions = json_decode($_POST['json'],true);
 travel_json($directions);
@@ -15,10 +15,9 @@ echo "1";
 
 function travel_json($matriz, $padre_id = 0, $nivel = 0){  // De array a base de datos
 	global $objDataBase;
-	require_once(ABSPATH."rb-script/funciones.php");
+	require_once(ABSPATH."rb-script/funcs.php");
 
 	foreach($matriz as $row=>$value):
-		//echo "El item:". $value['id']."-".$value['title']."; tiene: ";
 		$menu_nombre = $value['title'];
 		$menu_nombre_enlace = rb_cambiar_nombre(trim($value['title']));
 		$menu_url = $value['url'];
@@ -28,7 +27,22 @@ function travel_json($matriz, $padre_id = 0, $nivel = 0){  // De array a base de
 		$menu_estilo = $value['style'];
 		$menu_img = $value['img'];
 
-		$response = $objDataBase->Insertar("INSERT INTO menus_items (nombre_enlace, nombre, url, menu_id, nivel, mainmenu_id, tipo, style, img) VALUES ('$menu_nombre_enlace', '$menu_nombre', '$menu_url', $padre_id, $nivel, $menu_menuid, '$menu_tipo', '$menu_estilo', '$menu_img')");
+		$data = [
+			'nombre_enlace' => $menu_nombre_enlace,
+			'nombre' => $menu_nombre,
+			'url' => $menu_url,
+			'menu_id' => $padre_id,
+			'nivel' => $nivel,
+			'mainmenu_id' => $menu_menuid,
+			'tipo' => $menu_tipo,
+			'style' => $menu_estilo,
+			'img' => $menu_img
+		];
+
+		/*$response = $objDataBase->Insertar("INSERT INTO ".G_PREFIX."menus_items (nombre_enlace, nombre, url, menu_id, nivel, mainmenu_id, tipo, style, img)
+		VALUES ('$menu_nombre_enlace', '$menu_nombre', '$menu_url', $padre_id, $nivel, $menu_menuid, '$menu_tipo', '$menu_estilo', '$menu_img')");*/
+		$response = $objDataBase->Insert(G_PREFIX."menus_items", $data);
+
 		if($response['result']) $nuevo_padre = $response['insert_id'];
 		else die("Ocurrio error");
 

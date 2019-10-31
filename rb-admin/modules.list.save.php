@@ -1,6 +1,6 @@
 <?php
 require_once "../global.php";
-require_once 'hook.php';;
+require_once '../rb-script/hook.php';;
 include 'islogged.php';
 
 // Capturando nombre del modulo
@@ -37,7 +37,7 @@ if(isset($_GET['action']) && $_GET['action']=='active'):
 			rb_set_values_options('menu_panel', json_encode($menu_panel_array, JSON_UNESCAPED_UNICODE));
 
 			// ACTUALIZAR MENU DE CADA NIVEL DE USUARIO, AÑADIENDO EL MENU DEL MODULO NUEVO
-			$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
+			$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
 			// Recorremos todos los niveles que tiene menus
 			while($row= $q->fetch_assoc()):
 				$nivel_id = $row['id'];
@@ -47,11 +47,11 @@ if(isset($_GET['action']) && $_GET['action']=='active'):
 
 				// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
 				$valores = [
-				  'permisos' => json_encode($menu_panel_nivel)
+				  'permisos' => json_encode($menu_panel_nivel, JSON_UNESCAPED_UNICODE)
 				];
 
 				//Guardando nueva estructura de menu, en los permisos del nivel de usuario
-				$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
+				$objDataBase->Update(G_PREFIX.'users_levels', $valores, ["id" => $nivel_id]);
 			endwhile;
 		}
 	}
@@ -80,7 +80,7 @@ if(isset($_GET['action']) && $_GET['action']=='desactive'):
 			rb_set_values_options('menu_panel', json_encode($menu_panel_array, JSON_UNESCAPED_UNICODE));
 
 			// ACTUALIZAR MENU DE CADA NIVEL
-			$q = $objDataBase->Ejecutar("SELECT * FROM usuarios_niveles WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
+			$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users_levels WHERE permisos <> ''");// Consultar si nivel tiene datos de su propio menu
 			// Recorremos todos los niveles que tiene menus
 			while($row= $q->fetch_assoc()):
 				$nivel_id = $row['id'];
@@ -92,11 +92,11 @@ if(isset($_GET['action']) && $_GET['action']=='desactive'):
 
 				// Asignar valor al campo permisos de la tabla usuario_niveles, que sera actualizado
 				$valores = [
-				  'permisos' => json_encode($menu_panel_nivel)
+				  'permisos' => json_encode($menu_panel_nivel, JSON_UNESCAPED_UNICODE)
 				];
 
 				//Guardando nueva estructura de menu, en los permisos del nivel de usuario
-				$objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
+				$objDataBase->Update(G_PREFIX.'users_levels', $valores, ["id" => $nivel_id]);
 			endwhile;
 		}
 	}
@@ -109,6 +109,6 @@ $array_modules_json = json_encode($array_modules);
 rb_set_values_options('modules_load',$array_modules_json);
 
 // Retornar a lista de modulos
-$urlreload =  G_SERVER."/rb-admin/modules.php";
+$urlreload =  G_SERVER."rb-admin/modules.php";
 header('Location: '.$urlreload);
 ?>

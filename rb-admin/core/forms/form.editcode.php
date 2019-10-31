@@ -7,7 +7,7 @@
     <div style="height:400px" id="htmlraw_text"></div>
   </div>
   <div class="editor-footer">
-		<button class="btn-primary" id="codeForm-btnaccept">Cambiar</button>
+		<button class="button btn-primary" id="codeForm-btnaccept">Cambiar</button>
 		<button class="button" id="codeForm-btncancel">Cancelar</button>
 	</div>
 </div>

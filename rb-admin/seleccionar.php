@@ -253,7 +253,7 @@ include 'islogged.php';
 					printf(" Sección no disponible ");
 					break;
 				endif;
-				include_once ABSPATH.'rb-script/modules/rb-editfile/editfile.php';
+				include_once ABSPATH.'rb-admin/core/editfile/editfile.php';
 			break;
 			default:
 				if( isset( $_GET['term'] ) && $_GET['term']!=" "){

@@ -121,7 +121,7 @@
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="eb_id" value="" />
-		<button class="btn-primary" id="boxform-btn-accept">Cambiar</button>
+		<button class="button btn-primary" id="boxform-btn-accept">Cambiar</button>
 		<button class="button" id="boxform-btn-cancel">Cancelar</button>
 	</div>
 </div>

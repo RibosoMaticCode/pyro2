@@ -19,7 +19,7 @@
 			</div>
 	</div>
 	<div class="editor-footer">
-		<button class="btn-primary" id="html-raw-btn-accept">Cambiar</button>
+		<button class="button btn-primary" id="html-raw-btn-accept">Cambiar</button>
 		<button class="button" id="html-raw-btn-cancel">Cancelar</button>
 		<!-- nombres de los controles -->
 		<input type="hidden" id="htmlraw-control_id" value="" />

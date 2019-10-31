@@ -5,13 +5,13 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 if(!isset($_GET['email'])){
     $arr = ['result' => false, 'message' => 'Correo no establecido' ];
 	die(json_encode($arr));
 }
-    
+
 if($_GET['email']==""){
     $arr = ['result' => false, 'message' => 'Escriba un correo valido' ];
 	die(json_encode($arr));

@@ -7,7 +7,7 @@ $module_dir = "hotel";
 $key = "hotel_productos";
 
 $newedit_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".newedit.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 
 $columns_title_coltable = [
   'Nombre' => 'nombre',
@@ -23,7 +23,10 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
     <h2><?= $title_section ?></h2>
     <ul class="buttons">
       <li>
-        <a class="btn-primary fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>">Nuevo</a>
+        <a class="button btn-primary fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>">
+          <i class="fa fa-plus-circle"></i>
+          <span class="button-label">Nuevo</span>
+        </a>
       </li>
     </ul>
   </div>

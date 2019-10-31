@@ -1,0 +1,83 @@
+.step{
+  display: none;
+}
+#step1{
+  display: block;
+}
+.message_error{
+  color:red;
+}
+.block_steps {
+    border: 1px solid #e0e0e0;
+    margin: 20px auto;
+    max-width: 500px;
+    padding: 30px;
+    width: 100%;
+    background-color: #f9f9f9;
+}
+
+.btnNext {
+    background: #FF5722!important;
+    color: #fff;
+    padding: 8px 20px!important;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+div#step2 {
+    text-align: center;
+}
+
+div#step2 h1,
+div#step2 h4,
+div#step2 p{
+    padding:10px 0;
+}
+
+.question {
+    text-align: center;
+}
+
+.question h3,
+.question p{
+    padding:10px 0;
+}
+div#step7 p,
+div#step7 h1{
+    padding: 10px 0;
+}
+
+div#step7 {
+    text-align: center;
+}
+
+.question .cols-container {
+    padding: 15px 0;
+    max-width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.question .cols-container span {
+    border: 1px solid #d4d4d4;
+    width: 90%;
+    display: inline-block;
+    margin: 0 auto;
+    padding:6px 0;
+    border-radius:5px;
+    background-color: #f1f1f1;
+    font-family: semibold;
+}
+
+.question input[type="radio"] {
+    display: none;
+}
+input[type="radio"]:checked + label span {
+  background-color: #61b9d2;
+  border: 1px solid #5fa6b9;
+}
+.message_final {
+    padding: 20px;
+    text-align: center;
+}

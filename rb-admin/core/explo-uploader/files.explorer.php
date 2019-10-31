@@ -13,7 +13,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname( dirname( dirname( dirname(__FILE__) ) ) ). '/' );
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $controlShowId = $_GET['controlShowId'];
 $controlHideId = $_GET['controlHideId'];
@@ -55,7 +55,7 @@ $controlHideId = $_GET['controlHideId'];
 
 		$.ajax({
 			method: "GET",
-			url: "<?= G_SERVER ?>/rb-admin/core/explo-uploader/files.explorer.refresh.php?album_id=0"
+			url: "<?= G_SERVER ?>rb-admin/core/explo-uploader/files.explorer.refresh.php?album_id=0"
 		}).done(function( html_response ) {
 		    $('#imgsingallery').html(html_response);
 		});
@@ -94,20 +94,19 @@ $controlHideId = $_GET['controlHideId'];
 	<div class="explorer-body-inner" id="examiner-photos" style="display: none">
 		<div id="mulitplefileuploader"></div> <!-- aqui aparecen el form -->
 		<div id="status"></div>
-		<link href="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
-		<script src="<?= G_SERVER ?>/rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
+		<link href="<?= G_SERVER ?>rb-admin/resource/jquery.file.upload/uploadfile.css" rel="stylesheet">
+		<script src="<?= G_SERVER ?>rb-admin/resource/jquery.file.upload/jquery.uploadfile.js"></script>
 
 		<script type="text/javascript">
 		$(document).ready(function(){
 			var settings = {
-			    url: "<?= G_SERVER ?>/rb-admin/uploader.php",
+			    url: "<?= G_SERVER ?>rb-admin/uploader.php",
 			    dragDrop:true,
 			    fileName: "myfile",
 			    formData: {"albumid":"0" , "user_id" : "<?= G_USERID ?>"},
-			    //urlimgedit: '<?= G_SERVER ?>/rb-admin/index.php?pag=img&opc=edt&album_id=0&id=',
-			    urlimgedit: '<?= G_SERVER ?>/rb-admin/index.php?pag=file_edit&opc=edt&id=',
+			    urlimgedit: '<?= G_SERVER ?>rb-admin/index.php?pag=file_edit&opc=edt&id=',
 			    target: '_blank',
-			    allowedTypes:"jpg,png,gif,doc,docx,xls,xlsx,pdf",
+			    allowedTypes:"<?= rb_get_values_options('files_allowed') ?>",
 			    returnType:"html", //json
 				onSuccess:function(files,data,xhr)
 			    {

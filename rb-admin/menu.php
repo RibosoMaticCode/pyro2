@@ -28,7 +28,6 @@ if(isset($_GET['pag'])){
 }elseif(!isset($seccion)){
 	$seccion = "index";
 }
-
 // Buscar item padre en el menu para pintarlo de color
 $item_parent_selected = rb_action_menu($menu_panel, $seccion );
 ?>
@@ -39,16 +38,16 @@ $item_parent_selected = rb_action_menu($menu_panel, $seccion );
 		<span style="font-size:1.1em;font-weight: bold;padding:5px 0;display: block">
 			<a href="index.php?pag=usu&opc=edt&id=<?= G_USERID ?>&profile"><?= $root['nombres']?> <?= $root['apellidos']?></a>
 		</span>
-		<span style="font-size:.8em;font-weight: bold;padding:5px 0;display: block">
+		<span style="font-size:.8em;padding:5px 0;display: block">
 			Nivel <?= rb_shownivelname(G_USERNIVELID) ?>
 		</span>
 	</li>
 	<?= rb_show_menu( $menu_panel , $seccion, $item_parent_selected ) ?>
 	<li class="Cover_additem">
-		<a class="additem" href="<?= G_SERVER ?>/rb-admin/index.php?pag=opc">Configurar sitio</a>
+		<a class="additem" href="<?= G_SERVER ?>rb-admin/index.php?pag=opc">Configurar sitio</a>
 	</li>
 	<li class="Cover_additem">
-		<a class="additem" href="<?= G_SERVER ?>/rb-admin/modules.php">Modulos</a>
+		<a class="additem" href="<?= G_SERVER ?>rb-admin/modules.php">Modulos</a>
 	</li>
 	<li class="Cover_additem">
 		<a class="additem" href="<?= G_SERVER ?>">Ir al sitio web</a>
@@ -56,7 +55,7 @@ $item_parent_selected = rb_action_menu($menu_panel, $seccion );
 </ul>
 <span class="CoverBtnMenuClose">
 	<a class="btnMenuClose" href="#">
-		<img src="<?= G_SERVER ?>/rb-admin/img/close-menu.png" alt="close" />
+		<img src="<?= G_SERVER ?>rb-admin/img/close-menu.png" alt="close" />
 	</a>
 </span>
 </div>

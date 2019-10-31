@@ -36,7 +36,7 @@
 			var box_id = $("#box_itemid").val();
 			$.ajax({
 		  	method: "POST",
-		  	url: "<?= G_SERVER ?>/rb-admin/core/pages3/save.box.php",
+		  	url: "<?= G_SERVER ?>rb-admin/core/pages3/save.box.php",
 		  	data: $( "#frmbox" ).serialize()
 			}).done(function( msg ) {
 				console.log(msg.id);

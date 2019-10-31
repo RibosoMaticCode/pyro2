@@ -97,7 +97,7 @@
               <?php endif ?>
 						</form>
         <p class="clear" style="text-align:right">
-            <a href="<?= G_SERVER ?>/products/" class="back-catalogue">Regresar al catálogo</a>
+            <a href="<?= G_SERVER ?>products/" class="back-catalogue">Regresar al catálogo</a>
         </p>
     </div>
   </div>

@@ -1,13 +1,9 @@
 /* VALORES POR DEFECTO */
-@font-face{
-	font-family: regular;
-	src: url('../../../rb-admin/fonts/Roboto-Light.ttf');
-}
 *{
 	padding:0;
 	margin:0;
 	box-sizing:border-box;
-	font-family:regular;
+	font-family:Poppins;
 }
 body{
 	font-size:.9em;
@@ -16,7 +12,7 @@ body{
 .frmlogin{
 	border-top:5px solid #4FA9E0;
 	width:100%;
-	max-width:340px;
+	max-width:380px;
 	margin:10px auto;
 	padding:20px;
 	box-shadow:-1px -1px 10px #5a5a5a;
@@ -24,11 +20,11 @@ body{
 }
 .frminstall{
 	max-width: 520px!important;
-	position: absolute;
+	/*position: absolute;*/
 	width: 100%;
-	top: 50%;
+	/*top: 50%;
 	left: 50%;
-	transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);*/
 }
 #msj-final{
 	z-index:2;
@@ -52,7 +48,7 @@ body{
 	width:100%;
 	padding:5px 10px;
 	border:1px solid #efefef;
-	font-size:1.1em;
+	/*font-size:1.1em;*/
 	margin:10px 0;
 	background-color: #fbfbfb;
 }

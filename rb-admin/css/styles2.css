@@ -77,7 +77,7 @@
 }
 /* CONTENIDO CENTRAL */
 .items{
-	background-color:#4B5260;
+	background-color:#3e4450;
 	width:160px;
 	height:calc(100vh - 80px);
 	position: fixed;
@@ -152,8 +152,10 @@
   color: #999;
   text-align: center;
   background-color: #fff;
-  font-family: light;
   font-size: .75em;
+}
+#footer p{
+	padding:5px 0;
 }
 
 /* POST - OPCIONES */
@@ -161,7 +163,6 @@
 	padding: 20px 30px;
 	width: 100%;
 	max-width: 650px;
-	min-height: 400px;
 }
 
 /* EXPLORADOR DE ARCHIVOS */
@@ -182,7 +183,6 @@
 	border-bottom: 1px solid #e8e8e8;
 	background-color: #fff;
 	position:relative;
-	font-family:regular;
 	padding:3px 15px;
 }
 .explorer-header h3{
@@ -264,7 +264,6 @@
   background-color: #fff;
 	padding: 4px 0;
 	white-space: nowrap;
-	font-family:regular;
 	text-overflow: ellipsis;
 }
 .explorer-body ul.gallery li img.thumb{
@@ -524,6 +523,9 @@ ul._box-options-list li a img {
 .box-edit-html img{
   max-width: 100%;
   height: auto;
+}
+.box-edit-html iframe {
+  max-width: 100%;
 }
 .box-edit-html:hover + .box-edit-tool,
 .box-edit-tool:hover{

@@ -8,14 +8,14 @@ require_once ABSPATH."rb-script/modules/plm/funcs.php";
     <h2>Productos</h2>
     <ul class="buttons">
       <li>
-        <a class="btn-primary" href="<?= G_SERVER ?>/rb-admin/module.php?pag=plm_products&product_id=0">Nuevo</a>
+        <a class="btn-primary" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products&product_id=0">Nuevo</a>
       </li>
       <li>
         <?php
         if(G_ENL_AMIG):
-          $product_catalogue_link = G_SERVER."/products/";
+          $product_catalogue_link = G_SERVER."products/";
         else:
-          $product_catalogue_link = G_SERVER."/?products";
+          $product_catalogue_link = G_SERVER."?products";
         endif;
         ?>
         <a target="_blank" href="<?= $product_catalogue_link ?>">Vista frontend</a>
@@ -54,7 +54,7 @@ require_once ABSPATH."rb-script/modules/plm/funcs.php";
   </div>
 </section>
 <?php
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=plm_products';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=plm_products';
 ?>
 <script>
 // Eliminar item
@@ -65,7 +65,7 @@ $('.del').on("click", function(event){
     var id = $(this).attr('data-item');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/plm/product.del.php?id="+id
+      url: "<?= G_SERVER ?>rb-script/modules/plm/product.del.php?id="+id
     })
     .done(function( data ) {
       if(data.resultado){

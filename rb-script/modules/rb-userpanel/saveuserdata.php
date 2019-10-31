@@ -4,7 +4,8 @@ header('Content-type: application/json; charset=utf-8');
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
-require_once(ABSPATH.'rb-script/class/rb-database.class.php');
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 if(isset($_POST)){
   $user_id = $_POST['userid'];
@@ -58,7 +59,7 @@ if(isset($_POST)){
 		'correo' => $mail
 	];
 
-	$r = $objDataBase->Update('usuarios', $valores, ["id" => $user_id]);
+	$r = $objDataBase->Update(G_PREFIX."users", $valores, ["id" => $user_id]);
 	if($r['result']){
 		$arr = ['result' => true, 'message' => 'Tus datos fueron actualizados' ];
 	}else{

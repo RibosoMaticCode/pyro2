@@ -10,7 +10,7 @@
 				<label>
 					<span>Galeria a mostrar:</span>
 					<?php
-					$q = $objDataBase->Ejecutar("SELECT * FROM albums ORDER BY id DESC");
+					$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries ORDER BY id DESC");
 					?>
 					<select id="slide_gallery" name="slide_gallery">
 				    <option value="0">Seleccionar</option>
@@ -75,7 +75,7 @@
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="slide_id" value="" />
-		<button class="btn-primary" id="slide_form-btn-accept">Cambiar</button>
+		<button class="button btn-primary" id="slide_form-btn-accept">Cambiar</button>
 		<button class="button" id="slide_form-btn-cancel">Cancelar</button>
 	</div>
 </div>

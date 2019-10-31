@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 // Restriccion del nivel de usuario actual
@@ -95,7 +95,7 @@ if($r['result']){
 						$mail_no_reply = "noreply@".G_HOSTNAME;
 						$recipient = $admin_data['correo'];
 						$subject = "Mensaje pendiente de aprobación";
-						$email_content = "Tienes un mensaje en la web de ".G_TITULO.". Accede a tu cuenta para revisarlo: <a href='".G_SERVER."/login.php'>Acceder a mi cuenta</a>";
+						$email_content = "Tienes un mensaje en la web de ".G_TITULO.". Accede a tu cuenta para revisarlo: <a href='".G_SERVER."login.php'>Acceder a mi cuenta</a>";
 						// Build the email headers. // El que envia es el sender no el usuario
 						$email_headers = "From: $from_name <$mail_no_reply> \r\n";
 						//$email_headers .= "Cc: $cc \r\n";
@@ -118,11 +118,11 @@ if($r['result']){
 			'usuario_id' => $user_id,
 			'retenido' => $retenido
 		];
-		$objDataBase->Insert('mensajes_usuarios', $valores);
+		$objDataBase->Insert(G_PREFIX.'messages_users', $valores);
   }
 
   // REDIRECCIONAR
-  $enlace=G_SERVER.'/rb-admin/index.php?pag=men&opc=send';
+  $enlace=G_SERVER.'rb-admin/index.php?pag=men&opc=send';
   header('Location: '.$enlace);
 }else{
   echo "Problemas";

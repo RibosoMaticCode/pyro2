@@ -11,8 +11,8 @@ PageConfig: popup_config
 
 // Valores iniciales
 $rb_modure_dir = "popup";
-$rb_module_url = G_SERVER."/rb-script/modules/$rb_modure_dir/";
-$rb_module_url_img = G_SERVER."/rb-script/modules/$rb_modure_dir/crm.png";
+$rb_module_url = G_SERVER."rb-script/modules/$rb_modure_dir/";
+$rb_module_url_img = G_SERVER."rb-script/modules/$rb_modure_dir/crm.png";
 
 // ------ POPUP FLOTANTES -------- //
 function popup_show(){

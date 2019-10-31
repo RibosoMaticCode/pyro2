@@ -9,7 +9,8 @@ $nivel_id = $_GET['nivel_id'];
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
-require_once(ABSPATH.'rb-script/funciones.php');
+require_once(ABSPATH.'global.php');
+require_once(ABSPATH.'rb-script/funcs.php');
 require_once(ABSPATH."rb-script/class/rb-database.class.php");
 
 // Consultamos el menu gestor en json desde la base de datos
@@ -43,7 +44,7 @@ $valores = [
 ];
 
 //Guardando nueva estructura de menu, en los permisos del nivel de usuario
-$r = $objDataBase->Update('usuarios_niveles', $valores, ["id" => $nivel_id]);
+$r = $objDataBase->Update(G_PREFIX."users_levels", $valores, ["id" => $nivel_id]);
 if($r['result']){
   $arr = ['resultado' => true, 'contenido' => 'Estructura del menu actualizada' ];
 }else{

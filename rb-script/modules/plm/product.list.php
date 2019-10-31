@@ -13,13 +13,13 @@ while ($row = $qlist->fetch_assoc()):
     <td><?= rb_link_gallery($row['galeria_id']) ?></td>
 		<td class="row-actions">
       <?php
-      if(G_ENL_AMIG) $product_url = G_SERVER."/products/".$row['nombre_key']."/";
-			else $product_url = G_SERVER."/?products=".$row['id'];
+      if(G_ENL_AMIG) $product_url = G_SERVER."products/".$row['nombre_key']."/";
+			else $product_url = G_SERVER."?products=".$row['id'];
       ?>
       <a title="Previsualizar" class="edit" href="<?= $product_url ?>" target="_blank">
         <i class="fa fa-external-link-alt"></i>
       </a>
-      <a title="Editar" class="edit" data-item="<?= $row['id'] ?>" href="<?= G_SERVER ?>/rb-admin/module.php?pag=plm_products&product_id=<?= $row['id'] ?>">
+      <a title="Editar" class="edit" data-item="<?= $row['id'] ?>" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products&product_id=<?= $row['id'] ?>">
         <i class="fa fa-edit"></i>
       </a>
       <a title="Click para cambiar" class="change_view" href="#" data-item="<?= $row['id'] ?>" data-value="<?php if($row['mostrar']==1) echo "0"; else echo "1" ?>">
@@ -45,7 +45,7 @@ $(document).ready(function() {
     var value = $(this).attr('data-value');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/plm/product.change.php?id="+id+"&value="+value
+      url: "<?= G_SERVER ?>rb-script/modules/plm/product.change.php?id="+id+"&value="+value
     })
     .done(function( data ) {
       if(data.resultado){

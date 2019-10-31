@@ -1,7 +1,7 @@
 <?php rb_header(['header-allpages.php'], false) ?>
 <div class="wrap-content">
 	<div class="inner-content inner-cart cover-prepayment">
-    <h3>Informacion de contacto <span style="font-size:.8em">[<a href="<?= G_SERVER ?>/?pa=panel">Editar</a>]</span></h3>
+    <h3>Informacion de contacto <span style="font-size:.8em">[<a href="<?= G_SERVER ?>?pa=panel">Editar</a>]</span></h3>
 		<div class="user-info">
 			<div class="cols-container">
 				<div class="cols-6-md">
@@ -23,7 +23,7 @@
 				</div>
 			</div>
 		</div>
-		<h3>Direccion de envio <span style="font-size:.8em">[<a href="<?= G_SERVER ?>/?pa=panel">Editar</a>]</span></h3>
+		<h3>Direccion de envio <span style="font-size:.8em">[<a href="<?= G_SERVER ?>?pa=panel">Editar</a>]</span></h3>
 		<div class="user-info">
 			<div class="cols-container">
 				<div class="cols-6-md">
@@ -103,7 +103,7 @@
 					      event.preventDefault();
 					  		$.ajax({
 					  			method: "get",
-					  			url: "<?= G_SERVER ?>/rb-script/modules/plm/payment.success.php"
+					  			url: "<?= G_SERVER ?>rb-script/modules/plm/payment.success.php"
 					  		})
 					  		.done(function( data ) {
 					  			if(data.resultado){
@@ -167,7 +167,7 @@
 					// Send data ajax
 					$.ajax({
 		  			method: "get",
-		  			url: "<?= G_SERVER ?>/rb-script/modules/plm/create.charge.php?token="+token+"&email="+email+"&amount="+amount
+		  			url: "<?= G_SERVER ?>rb-script/modules/plm/create.charge.php?token="+token+"&email="+email+"&amount="+amount
 		  		})
 		  		.done(function( data ) {
 							console.log(data);
@@ -182,7 +182,7 @@
 									// Crear pedido y direccionar al cliente
 									$.ajax({
 						  			method: "get",
-						  			url: "<?= G_SERVER ?>/rb-script/modules/plm/payment.success.php?charge_id="+charge_id
+						  			url: "<?= G_SERVER ?>rb-script/modules/plm/payment.success.php?charge_id="+charge_id
 						  		})
 						  		.done(function( data ) {
 						  			if(data.resultado){
@@ -215,7 +215,7 @@
 			$(document).on('click', '.close_reload', function (event){
 			//$('.close_reload').click(function(event){
 				setTimeout(function(){
-					window.location.href = '<?= G_SERVER ?>/pre-payment/';
+					window.location.href = '<?= G_SERVER ?>pre-payment/';
 				}, 1000);
 			});
 		};

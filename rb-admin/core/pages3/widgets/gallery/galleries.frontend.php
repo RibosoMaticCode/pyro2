@@ -1,4 +1,4 @@
-<img style="display:none" src='<?= G_SERVER ?>/rb-script/modules/pages.view3/spinner.gif' alt="spinner" />
+<img style="display:none" src='<?= G_SERVER ?>rb-script/modules/pages.view3/spinner.gif' alt="spinner" />
 <script>
 $(document).ready(function() {
   $('.rb-cover-galleries').on('click', '.back_gallery',function() {
@@ -12,11 +12,11 @@ $(document).ready(function() {
 
     $.ajax({
         method: "GET",
-        url: "<?= G_SERVER ?>/rb-script/modules/pages.view3/show.gallery.ajax.php?gallery_id="+gallery_id,
+        url: "<?= G_SERVER ?>rb-script/modules/pages.view3/show.gallery.ajax.php?gallery_id="+gallery_id+"&redirect=<?= $_SERVER['REQUEST_URI'] ?>",
         beforeSend: function() {
           $('.rb-cover-galleries').hide();
           $('.rb-gallery-photos').show();
-          $('.rb-gallery-photos').html("<img src='<?= G_SERVER ?>/rb-script/modules/pages.view3/spinner.gif' />");
+          $('.rb-gallery-photos').html("<img src='<?= G_SERVER ?>rb-script/modules/pages.view3/spinner.gif' />");
         },
     }).done(function( data ) {
       $('.rb-gallery-photos').html(data);
@@ -42,7 +42,7 @@ foreach ($Galleries as $Gallery) {
   }
   echo '<div class="rb-gallery" style="width:'.$porcent_width.'%">'; // open rb-gallery
     if($link==0)
-    echo '<a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'/?gallery='.$Gallery['id'].'">';
+    echo '<a data-galleryid="'.$Gallery['id'].'" href="'.G_SERVER.'?gallery='.$Gallery['id'].'">';
 
     if($link==1)
     echo '<a data-galleryid="'.$Gallery['id'].'" href="#" class="gallery_show">';

@@ -58,11 +58,11 @@ function show_elastic( $params ){
             $carrusel_html.='<li><a href="#">Slide 1</a><img src="'.$photo['url_min'].'" class="slideshowthumb" alt="thumb01"/></li>';
         }
     $carrusel_html .="</ul></div><div class='minipause'></div>\n";
-    
+
 	return $carrusel_html;
 }
 
-$r = $objDataBase->Ejecutar('SELECT id FROM albums');
+$r = $objDataBase->Ejecutar('SELECT id FROM '.G_PREFIX.'galleries');
 while($gallery = $r->fetch_assoc()){
 	add_shortcode('elastic', 'show_elastic', ['id' => $gallery['id'] ]);
 }

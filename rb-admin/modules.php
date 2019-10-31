@@ -1,7 +1,11 @@
 <?php
-require_once 'hook.php';
-require_once 'admin.php';
-include 'islogged.php';
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
+
+require_once ABSPATH.'global.php';
+require_once ABSPATH.'rb-script/hook.php';
+require_once ABSPATH.'rb-admin/admin.php';
+include_once ABSPATH.'rb-admin/islogged.php';
 
 // Carga formato js de la base de datos
 global $objOpcion;
@@ -11,7 +15,7 @@ $modules_prev = rb_get_values_options('modules_load');
 $array_modules = json_decode($modules_prev, true);
 
 // Incluir los modulos de la base de datos
-require_once 'modules.list.php';
+require_once ABSPATH.'rb-script/modules.list.php';
 
 $rb_title_module = "Listado de modulos";
 $rb_title = $rb_title_module." | ".G_TITULO;
@@ -44,7 +48,7 @@ $seccion = 'modules-list'; // pintar boton del menu
 						<table class="tables">
 							<thead>
 								<tr>
-									<th style="width:30px"><input type="checkbox" value="all" id="select_all" /></th>
+									<!--<th style="width:30px"><input type="checkbox" value="all" id="select_all" /></th>-->
 									<th>Módulo</th>
 									<th>Descripcion</th>
 								</tr>
@@ -75,7 +79,6 @@ $seccion = 'modules-list'; // pintar boton del menu
 
 								// Carpeta a explorar
 								$carpeta = $_SERVER['DOCUMENT_ROOT'].G_DIRECTORY."/rb-script/modules/";
-								//echo $carpeta;
 
 								// Leer directorio especifico en cascada (recursividad)
 								function read_directory($carpeta,$nivel){
@@ -84,14 +87,12 @@ $seccion = 'modules-list'; // pintar boton del menu
 											if($archivo != '.' && $archivo != '..' && $archivo != '.htaccess'){
 												// Si es directorio, lee interior de carpeta
 												if(is_dir($carpeta.$archivo)){
-													//echo str_repeat('-',$nivel).$archivo."<br />";
 													read_directory($carpeta.$archivo."/",$nivel+1);
 													// Si es archivo, asegurarse que sea de extension .php
 												}else{
 													// Solo leer archivos con extension PHP
 													$ext = substr($archivo, strrpos($archivo, '.') + 1);
 													if(in_array($ext, array("php")) && $archivo=="index.php"){ // 10/01/19 -> solo buscara en archivos index, la informacion de cada modulo
-														//echo str_repeat('-',$nivel).$archivo."<br />";
 
 														// Estructura que debe tener las cabeceras de datos de los modulos/plugins/plantillas
 														$file_headers = array(
@@ -109,7 +110,6 @@ $seccion = 'modules-list'; // pintar boton del menu
 																	'PluginURI' => 'Plugin URI',
 																	'PageConfig' => 'PageConfig'
 														);
-														//echo $carpeta.$archivo."<br />";
 
 														$data = get_file_data( $carpeta.$archivo, $file_headers);
 														// Si hay informacion y esta capturara en el array, se mostrara
@@ -123,7 +123,7 @@ $seccion = 'modules-list'; // pintar boton del menu
 															}
 															?>
 															<tr>
-																<td <?= $style ?>></td>
+																<!--<td <?= $style ?>></td>-->
 																<td <?= $style ?>><strong><?= $data['Name'] ?></strong>
 																	<div class="options">
 																		<?php if($action==0){ ?>
@@ -132,7 +132,7 @@ $seccion = 'modules-list'; // pintar boton del menu
 																			<span><a href="modules.list.save.php?action=desactive&name=<?= $data['Name'] ?>&path=<?= $carpeta.$archivo ?>">Desactivar</a></span>
 																			<?php if(isset($data['PageConfig'])){
 																				?>
-																				<span><a href="<?= G_SERVER ?>/rb-admin/module.php?pag=<?= $data['PageConfig'] ?>">Configurar</a></span>
+																				<span><a href="<?= G_SERVER ?>rb-admin/module.php?pag=<?= $data['PageConfig'] ?>">Configurar</a></span>
 																				<?php
 																			}
 																			?>
@@ -149,7 +149,7 @@ $seccion = 'modules-list'; // pintar boton del menu
 															<?php
 														endif;
 													}
-								                }
+								        }
 											}
 										}
 										closedir($dir);

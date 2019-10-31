@@ -7,13 +7,11 @@ require_once(ABSPATH."rb-script/class/rb-database.class.php");
 if(isset($_GET['opc'])){
   // ENVIADOS
   if($_GET['opc'] == "send"){
-    $result = $objDataBase->Ejecutar("SELECT id, asunto, fecha_envio, inactivo FROM mensajes WHERE remitente_id = ".G_USERID." AND inactivo = 0 ORDER BY fecha_envio DESC LIMIT 10");
+    $result = $objDataBase->Ejecutar("SELECT id, asunto, fecha_envio, inactivo FROM ".G_PREFIX."messages WHERE remitente_id = ".G_USERID." AND inactivo = 0 ORDER BY fecha_envio DESC LIMIT 10");
   }
 }else{
   // RECIBIDOS
-	//$retenido_string_col = "";
-	//if(G_USERTYPE=="admin") $retenido_string_col = " AND mu.retenido=0";
-	$q = "SELECT m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo, mu.retenido FROM mensajes m, mensajes_usuarios mu
+	$q = "SELECT m.id, m.remitente_id, m.asunto, mu.leido, m.fecha_envio, mu.usuario_id, mu.inactivo, mu.retenido FROM ".G_PREFIX."messages m, ".G_PREFIX."messages_users mu
 		WHERE m.id = mu.mensaje_id AND mu.usuario_id = ".G_USERID." AND mu.inactivo=0 AND mu.retenido=0 ORDER BY fecha_envio DESC";
 	$result = $objDataBase->Ejecutar( $q );
 
@@ -39,12 +37,6 @@ while ($row = $result->fetch_assoc()){
       <input id="message-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" data-mode="<?= $mod ?>" data-uid="<?= G_USERID ?>" />
     </td>
 		<td>
-			<?php
-			/*$aprobado = "";
-			if(isset($row['retenido']) && $row['retenido']==0 && $row['remitente_id']==0){
-				$aprobado = " [Aprobado]";
-			}*/
-			?>
 			<a href="?pag=men&opc=view&mod=<?= $mod ?>&id=<?= $row['id'] ?>"><?= $row['asunto'] ?></a>
 		</td>
 		<?php
@@ -77,15 +69,13 @@ while ($row = $result->fetch_assoc()){
 			<?php
 	  }
 		?>
-	  <td><?= $row['fecha_envio'] ?></td>
-	  <td width='40px;'>
-			<span>
-				<a href="#" style="color:red" title="Eliminar" class="del-item" data-id="<?= $row['id'] ?>" data-mode="<?= $mod ?>" data-uid="<?= G_USERID ?>">
-					<i class="fa fa-times"></i>
-				</a>
-			</span>
+	  <td><?= rb_sqldate_to($row['fecha_envio'], 'd')?> de <?= rb_mes_nombre(rb_sqldate_to($row['fecha_envio'], 'm'))?>, <?= rb_sqldate_to($row['fecha_envio'], 'Y')?></td>
+	  <td class="row-actions">
+			<a href="#" title="Eliminar" class="del del-item" data-id="<?= $row['id'] ?>" data-mode="<?= $mod ?>" data-uid="<?= G_USERID ?>">
+				<i class="fa fa-times"></i>
+			</a>
 	  </td>
-	<tr>
+	</tr>
 <?php
 }
 ?>

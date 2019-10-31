@@ -22,7 +22,7 @@ if($sitekey==""){
             Clave secreta
             <input type="text" name="secretkey" value="<?= $secretkey ?>" required />
           </label>
-          <button type="submit">Guardar</button>
+          <button class="button btn-primary" type="submit">Guardar</button>
         </form>
       </div>
     </section>

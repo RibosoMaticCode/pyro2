@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     $.ajax({
       method: "post",
-      url: "<?= G_SERVER ?>/rb-script/modules/suscripciones/save.suscriptor.php",
+      url: "<?= G_SERVER ?>rb-script/modules/suscripciones/save.suscriptor.php",
       data: $( this ).serialize()
     })
     .done(function( data ) {

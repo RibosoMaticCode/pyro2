@@ -5,10 +5,16 @@ include_once("tinymce/tinymce.config.php");
 <form id="edit-form" name="edit-form" method="post" action="core/messages/message-save.php">
   <div id="toolbar">
     <div class="inside_toolbar">
-      <span class="post-submit">
-        <input class="submit" name="guardar" type="submit" value="Enviar" />
-        <a href="<?= G_SERVER ?>/rb-admin/?pag=men"><input title="Volver al listado" class="button" name="cancelar" type="button" value="Cancelar" /></a>
-      </span>
+      <div class="navigation">
+        <a href="<?= G_SERVER ?>rb-admin/?pag=men">Mensajeria</a> <i class="fas fa-angle-right"></i>
+        <?php if(isset($row)): ?>
+          <span><?= $row['nombre'] ?></span>
+        <?php else: ?>
+          <span>Nuevo mensaje</span>
+        <?php endif ?>
+      </div>
+      <input class="btn-primary" name="guardar" type="submit" value="Enviar" />
+      <a class="button" href="<?= G_SERVER ?>rb-admin/?pag=men">Cancelar</a>
     </div>
   </div>
   <div class="content-edit">
@@ -34,7 +40,7 @@ include_once("tinymce/tinymce.config.php");
           <label title="Webmaster" for="webmaster">Destinatarios:</label>
             <div id="catlist">
               <?php
-              $q_user = $objDataBase->Ejecutar("SELECT tipo, id, nickname, nombres, apellidos FROM usuarios WHERE id<>".G_USERID);
+              $q_user = $objDataBase->Ejecutar("SELECT tipo, id, nickname, nombres, apellidos FROM ".G_PREFIX."users WHERE id<>".G_USERID);
               while($r_user = $q_user->fetch_assoc()){
                 ?>
                 <label class="label_checkbox">

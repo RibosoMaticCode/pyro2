@@ -5,7 +5,7 @@
 require_once ABSPATH."global.php";
 require_once ABSPATH.'rb-script/class/rb-database.class.php';*/
 require_once "funcs.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=plm_products';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=plm_products';
 include_once ABSPATH.'rb-admin/tinymce/tinymce.config.php';
 $objDataBase = new Database;
 
@@ -25,7 +25,7 @@ $categories = json_decode($option['plm_value'], true);
   <div id="toolbar">
     <div class="inside_toolbar">
       <div class="navigation">
-        <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=plm_products">Productos</a> <i class="fas fa-angle-right"></i>
+        <a href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products">Productos</a> <i class="fas fa-angle-right"></i>
         <?php if(isset($row)): ?>
           <?= rb_fragment_letters($row['nombre'], 40) ?>
         <?php else: ?>
@@ -33,7 +33,7 @@ $categories = json_decode($option['plm_value'], true);
         <?php endif ?>
       </div>
     	<button type="submit" form="frmproduct">Guardar</button>
-    	<a class="button" href="<?= G_SERVER ?>/rb-admin/module.php?pag=plm_products">Volver</a>
+    	<a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products">Volver</a>
     </div>
   </div>
   <form id="frmproduct" class="form">
@@ -148,7 +148,7 @@ $categories = json_decode($option['plm_value'], true);
                       Visible
                     </div>
                     <div class="cols-2-md">
-                      <a title="Crear / Ver galerias" target="_blank" href="<?= G_SERVER ?>/rb-admin/index.php?pag=explorer">Imagen ID</a>
+                      <a title="Crear / Ver galerias" target="_blank" href="<?= G_SERVER ?>rb-admin/index.php?pag=explorer">Imagen ID</a>
                     </div>
                   </div>
                   <div id="wrap_variants">
@@ -314,7 +314,7 @@ $categories = json_decode($option['plm_value'], true);
       event.preventDefault();
       $.ajax({
   			method: "get",
-  			url: "<?= G_SERVER ?>/rb-script/modules/plm/newoption.html"
+  			url: "<?= G_SERVER ?>rb-script/modules/plm/newoption.html"
   		})
   		.done(function( data ) {
   			$('.wrap_options').append(data);
@@ -410,7 +410,7 @@ $categories = json_decode($option['plm_value'], true);
       // Enviamos al generador de combos
       $.ajax({
         method: "get",
-        url: "<?= G_SERVER ?>/rb-script/modules/plm/variants.php?array="+JSON.stringify(arrays)+"&array_prev="+JSON.stringify(variants),
+        url: "<?= G_SERVER ?>rb-script/modules/plm/variants.php?array="+JSON.stringify(arrays)+"&array_prev="+JSON.stringify(variants),
       })
       .done(function( data ) {
         // resultado
@@ -482,7 +482,7 @@ $categories = json_decode($option['plm_value'], true);
       tinyMCE.triggerSave(); //save first tinymce en textarea
       $.ajax({
         method: "post",
-        url: "<?= G_SERVER ?>/rb-script/modules/plm/product.save.php",
+        url: "<?= G_SERVER ?>rb-script/modules/plm/product.save.php",
         data: $( this ).serialize()
       })
       .done(function( data ) {

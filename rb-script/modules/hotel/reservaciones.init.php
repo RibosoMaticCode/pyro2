@@ -9,7 +9,7 @@ $module_dir = "hotel";
 $key = "hotel_reservaciones";
 
 $newedit_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".newedit.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 
 // Fecha a mostrar
 $time_now = date(' H:i:s');
@@ -85,7 +85,7 @@ $qhd = $objDataBase->Ejecutar( $q );
           if($qhdt->num_rows == 0){
       			?>
       				<li value="<?= $habitacion['id'] ?>">
-                <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
+                <a href="<?= G_SERVER ?>rb-admin/module.php?pag=hotel_reservaciones&res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
                   <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $habitacion['numero_habitacion'] ?>
                   <br />
                   <span>Disponible desde: <?= get_option('hora_llegada') ?> horas</span>
@@ -99,7 +99,7 @@ $qhd = $objDataBase->Ejecutar( $q );
   			while($habitacion = $qhd->fetch_assoc()):
   			?>
   				<li value="<?= $habitacion['id'] ?>">
-            <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
+            <a href="<?= G_SERVER ?>rb-admin/module.php?pag=hotel_reservaciones&res_id=0&hab=<?= $habitacion['id'] ?>&date=<?= $fecha ?>">
               <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $habitacion['numero_habitacion'] ?>
             </a>
           </li>
@@ -120,7 +120,7 @@ $qhd = $objDataBase->Ejecutar( $q );
   			while($reservacion = $qho->fetch_assoc()):
   			?>
   				<li value="<?= $reservacion['habitacion_id'] ?>">
-            <a href="<?= G_SERVER ?>/rb-admin/module.php?pag=hotel_reservaciones&res_id=<?= $reservacion['id'] ?>&hab=<?= $reservacion['habitacion_id'] ?>&date=<?= $fecha ?>" class="<?php if($reservacion['estado']==1) echo "reservado"; else echo "ocupado"?>" href="<?= $newedit_path ?>?res_id=<?= $reservacion['id'] ?>&date=<?= $fecha ?>">
+            <a href="<?= G_SERVER ?>rb-admin/module.php?pag=hotel_reservaciones&res_id=<?= $reservacion['id'] ?>&hab=<?= $reservacion['habitacion_id'] ?>&date=<?= $fecha ?>" class="<?php if($reservacion['estado']==1) echo "reservado"; else echo "ocupado"?>" href="<?= $newedit_path ?>?res_id=<?= $reservacion['id'] ?>&date=<?= $fecha ?>">
               <img src="<?= G_DIR_MODULES_URL.$module_dir."/room.png" ?>" alt="room" /> <?= $reservacion['numero_habitacion'] ?>
               <br/>
             <span>Llegada : <?= rb_sqldate_to($reservacion['fecha_llegada'], 'd-m-Y H:i')?></span><br />

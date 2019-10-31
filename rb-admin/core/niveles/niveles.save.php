@@ -11,25 +11,30 @@ $des = $_POST['descripcion'];
 $niv = $_POST['nivel_enlace'];
 $subniv = $_POST['subnivel_enlace'];
 
-// tipo de accion
+$valores = [
+	'nombre' => $nom,
+	'descripcion' => $des,
+	'nivel_enlace' => $niv,
+	'subnivel_enlace' => $subniv
+];
+
 if($mode=="new"){
-	$q = "INSERT INTO usuarios_niveles (nombre, descripcion, nivel_enlace, subnivel_enlace) VALUES('$nom', '$des', '$niv', '$subniv')";
-	$result = $objDataBase->Insertar($q);
-	if($result){
+	$result = $objDataBase->Insert(G_PREFIX.'users_levels',$valores);
+	if($result['result']){
 		$ultimo_id=$result['insert_id'];
-		$enlace=G_SERVER.'/rb-admin/index.php?pag=nivel&opc=edt&id='.$ultimo_id."&m=ok";
+		$enlace=G_SERVER.'rb-admin/index.php?pag=nivel&opc=edt&id='.$ultimo_id."&m=ok";
 		header('Location: '.$enlace);
 	}else{
-		echo "[!] Problemas";
+		echo $result['error'];
 	}
 }elseif($mode=="update"){
 	$id=$_POST['id'];
-	$q = "UPDATE usuarios_niveles SET nombre = '$nom', descripcion = '$des', nivel_enlace = '$niv', subnivel_enlace = '$subniv' WHERE id= $id";
-	if($objDataBase->Ejecutar($q)){
-		$enlace=G_SERVER.'/rb-admin/index.php?pag=nivel&opc=edt&id='.$id."&m=ok";
+	$result = $objDataBase->Update(G_PREFIX.'users_levels',$valores,['id' => $id]);
+	if($result['result']){
+		$enlace=G_SERVER.'rb-admin/index.php?pag=nivel&opc=edt&id='.$id."&m=ok";
 		header('Location: '.$enlace);
 	}else{
-		echo "[!] Problemas";
+		echo $result['error'];
 	}
 }
 ?>

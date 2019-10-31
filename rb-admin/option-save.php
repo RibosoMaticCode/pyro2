@@ -3,7 +3,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
 
 require_once ABSPATH."global.php";
-require_once ABSPATH."rb-script/funciones.php";
+require_once ABSPATH."rb-script/funcs.php";
 
 /* usuarios que sera notificado */
 $user_superadmin_string = "";
@@ -99,6 +99,8 @@ rb_set_values_options('map-y', $_POST['map-y']);
 rb_set_values_options('map-zoom', $_POST['map-zoom']);
 rb_set_values_options('map-desc', addslashes($_POST['map-desc']));
 rb_set_values_options('files_allowed', $_POST['files_allowed']);
+rb_set_values_options('gallery_groups', $_POST['gallery_groups']);
+rb_set_values_options('water_mark_image', $_POST['water_mark_image_id']);
 // redes sociales
 rb_set_values_options('fb', $_POST['fb']);
 rb_set_values_options('tw', $_POST['tw']);
@@ -109,8 +111,8 @@ rb_set_values_options('youtube', $_POST['youtube']);
 rb_set_values_options('pin', $_POST['pin']);
 rb_set_values_options('whatsapp', $_POST['whatsapp']);
 // bases url
-rb_set_values_options('base_publication', $_POST['base_pub']);
-rb_set_values_options('base_category', $_POST['base_cat']);
+/*rb_set_values_options('base_publication', $_POST['base_pub']);
+rb_set_values_options('base_category', $_POST['base_cat']);*/
 rb_set_values_options('base_search', $_POST['base_bus']);
 rb_set_values_options('base_user', $_POST['base_usu']);
 rb_set_values_options('base_page', $_POST['base_pag']);
@@ -134,6 +136,6 @@ rb_set_values_options('repit_pass_register', $_POST['repit_pass_register']);
 rb_set_values_options('more_fields_register', $_POST['more_fields_register']);
 rb_set_values_options('after_login_url', trim($_POST['after_login_url']));
 
-$urlreload=G_SERVER."/rb-admin/index.php?pag=opc&m=ok";
+$urlreload=G_SERVER."rb-admin/index.php?pag=opc&m=ok";
 header('Location: '.$urlreload);
 ?>

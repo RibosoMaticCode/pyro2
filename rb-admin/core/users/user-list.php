@@ -1,5 +1,4 @@
 <?php
-//require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
 $regMostrar = $_COOKIE['user_show_items'];
 
 $colOrder = "id"; // column name table
@@ -7,24 +6,9 @@ $Ord = "DESC"; // A-Z
 
 $key_web = rb_get_values_options('key_web'); // podria ser key de la sesion de usuario
 
-if(isset($_GET['page']) && ($_GET['page']>0)){
-  $RegistrosAEmpezar=($_GET['page']-1)*$regMostrar;
-}else{
-  $RegistrosAEmpezar=0;
-}
-
-function show_nivel($nivel_id){
-  global $objDataBase;
-  $q = $objDataBase->Ejecutar("SELECT nombre FROM usuarios_niveles WHERE id=$nivel_id");
-  $r = $q->fetch_assoc();
-  if( $q->num_rows > 0 )
-    return $r['nombre'];
-  else
-    return "Ninguno";
-}
-
-$result = $objDataBase->Ejecutar("SELECT * FROM usuarios ORDER BY $colOrder $Ord LIMIT $RegistrosAEmpezar, $regMostrar");
+$result = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users ORDER BY $colOrder $Ord");
 while ( $row = $result->fetch_assoc() ):
+  $nivel = rb_shownivelname($row['tipo']);
   ?>
   <tr>
     <td>
@@ -33,22 +17,22 @@ while ( $row = $result->fetch_assoc() ):
     <td><?= $row['nickname'] ?></td>
     <td>
       <?= $row['nombres'] ?> <?= $row['apellidos'] ?>
-      <div class="options">
-        <span><a title="Editar" href="<?= G_SERVER ?>/rb-admin/index.php?pag=usu&amp;opc=edt&amp;id=<?= $row['id'] ?>">Editar</a></span>
-        <span><a style="color:red" class="fancyboxForm fancybox.ajax"
-          data-id="" href="<?= G_SERVER ?>/rb-admin/core/users/user.del.auth.php?user_key=<?= $row['user_key'] ?>&user_id=<?= rb_encrypt_decrypt("encrypt", $row['id'], $row['user_key'], $key_web) ?>"
-          title="Eliminar la cuenta">Eliminar</a></span></td>
-      </div>
+
     </td>
     <td><?= $row['correo'] ?></td>
-    <td><?= show_nivel($row['tipo']) ?></td>
-    <td><?= $row['fecharegistro'] ?></td>
-    <td><?= $row['ultimoacceso'] ?></td>
+    <td><?= $nivel ?></td>
+    <td><?= rb_sqldate_to($row['fecharegistro'], 'd')?> de <?= rb_mes_nombre(rb_sqldate_to($row['fecharegistro'], 'm'))?>, <?= rb_sqldate_to($row['fecharegistro'], 'Y')?></td>
+    <td><?= rb_sqldate_to($row['ultimoacceso'], 'd')?> de <?= rb_mes_nombre(rb_sqldate_to($row['ultimoacceso'], 'm'))?>, <?= rb_sqldate_to($row['ultimoacceso'], 'Y')?></td>
     <td>
       <?php
-      if($row['activo']==0) echo '<a href="'.G_SERVER.'/rb-admin/core/users/user-active.php?id='.$row['id'].'">¿Activar?</a>';
+      if($row['activo']==0) echo '<a href="'.G_SERVER.'rb-admin/core/users/user-active.php?id='.$row['id'].'">¿Activar?</a>';
       else echo "Activo";
       ?>
+    </td>
+    <td class="row-actions">
+      <a title="Editar" class="edit" href="<?= G_SERVER ?>rb-admin/index.php?pag=usu&opc=edt&id=<?= $row['id'] ?>"><i class="fa fa-edit"></i></a>
+      <a style="color:red" class="del fancyboxForm fancybox.ajax" href="<?= G_SERVER ?>rb-admin/core/users/user.del.auth.php?user_key=<?= $row['user_key'] ?>&user_id=<?= rb_encrypt_decrypt("encrypt", $row['id'], $row['user_key'], $key_web) ?>"
+        title="Eliminar la cuenta"><i class="fa fa-times"></i></a>
     </td>
   </tr>
 <?php

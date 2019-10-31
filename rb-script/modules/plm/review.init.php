@@ -8,7 +8,7 @@ $module_dir = "plm";
 $key = "plm_comments";
 
 $newedit_path = G_DIR_MODULES_URL.$module_dir."/".$file_prefix.".newedit.php";
-$urlreload=G_SERVER.'/rb-admin/module.php?pag='.$key;
+$urlreload=G_SERVER.'rb-admin/module.php?pag='.$key;
 
 /* start */
 $objDataBase = new DataBase;

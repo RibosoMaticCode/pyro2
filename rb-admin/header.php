@@ -10,33 +10,34 @@ include 'islogged.php';
 	<meta content="True" name="HandheldFriendly">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	<title><?= $rb_title ?></title>
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/styles2.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/cols.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/form.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/table.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/responsive.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/menu.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/css/fonts.css" />
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/styles2.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/cols.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/form.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/table.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/responsive.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/menu.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/css/fonts.css" />
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/resource/nestable/nestable.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/pages3/pages3.css" />
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/core/forms/forms.edit.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/resource/nestable/nestable.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/core/pages3/pages3.css" />
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/core/forms/forms.edit.css" />
 	<!-- modulos css -->
 	<?= do_action('panel_header_css') ?>
-	<script src="<?= G_SERVER ?>/rb-admin/js/jquery-1.11.2.min.js"></script>
-	<script src="<?= G_SERVER ?>/rb-admin/js/func.js"></script>
-	<!--<script src="<?= G_SERVER ?>/rb-admin/js/jquery.easing.1.3.js"></script>-->
+	<script src="<?= G_SERVER ?>rb-admin/js/jquery-1.11.2.min.js"></script>
+	<script src="<?= G_SERVER ?>rb-admin/js/func.js"></script>
+	<!--<script src="<?= G_SERVER ?>rb-admin/js/jquery.easing.1.3.js"></script>-->
 	<!-- modulos js -->
 	<?= do_action('panel_header_js') ?>
 	<!-- Add fancyBox -->
-	<link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-	<script src="<?= G_SERVER ?>/rb-admin/resource/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
-	<script src="<?= G_SERVER ?>/rb-admin/resource/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+	<link rel="stylesheet" href="<?= G_SERVER ?>rb-admin/resource/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+	<script src="<?= G_SERVER ?>rb-admin/resource/fancybox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+	<script src="<?= G_SERVER ?>rb-admin/resource/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 	<!-- jquery ui -->
-	<link rel="stylesheet" href="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.css">
+	<link rel="stylesheet" href="<?= G_SERVER ?>rb-admin/resource/ui/jquery-ui.css">
 	<!-- Funciones nuevas -->
-	<script src="<?= G_SERVER ?>/rb-admin/core/explo-uploader/file.explorer.js"></script>
+	<script src="<?= G_SERVER ?>rb-admin/core/explo-uploader/file.explorer.js"></script>
 	<script>
 		$(document).ready(function() {
 			// FancyBox simple
@@ -128,11 +129,11 @@ include 'islogged.php';
 		});
 
 		// Notificador principal
-		var notify = function($text){
+		var notify = function(text, time = 2000){
 			$("#message").show();
-			$("#message").html('<h3>'+$text+'</h3>');
+			$("#message").html('<h3>'+text+'</h3>');
 			$("#message").animate({ "top": "+=50px", "opacity" : 1 }, "slow" );
-			$("#message").delay(2000).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
+			$("#message").delay(time).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
 		}
 
 		var validateInputText = function(thisObj, msj){
@@ -157,8 +158,8 @@ include 'islogged.php';
 		}
 	</script>
 	<!-- tablas con datos -->
-	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>/rb-admin/resource/datatables/datatables.min.css"/>
-	<script type="text/javascript" src="<?= G_SERVER ?>/rb-admin/resource/datatables/datatables.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?= G_SERVER ?>rb-admin/resource/datatables/datatables.min.css"/>
+	<script type="text/javascript" src="<?= G_SERVER ?>rb-admin/resource/datatables/datatables.min.js"></script>
 </head>
 <body>
 <?php
@@ -171,13 +172,13 @@ function msgOk($text){
 }
 if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 ?>
-<img id="img_loading" src="<?= G_SERVER ?>/rb-script/images/loading.gif" alt="loading" style="display:none" />
+<img id="img_loading" src="<?= G_SERVER ?>rb-script/images/loading.gif" alt="loading" style="display:none" />
 <div id="message"></div>
 <div class="bg-opacity"></div>
 <div class="explorer"></div>
 <header id="wrap-menu">
     <div class="logo">
-    	<h1 class="title-web"><a href="index.php" title="Página Inicial"><?= $titulo ?></a></h1>
+    	<h1 class="title-web"><a href="<?= G_SERVER ?>rb-admin/" title="Página Inicial"><?= $titulo ?></a></h1>
     	<a class="btnMenuOpen" href="#"><img src="img/icon_menu.png" height="24" width="24" alt="Menu"></a>
     </div>
     <div class="bar">
@@ -187,7 +188,7 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
     	</form>
 			<div class="menu2">
 				<?php if(G_ESTILO!="0"): ?>
-	    	<a title="Ver Sitio Web" class="btn-primary btn-goto-web" target="_blank" href="<?= G_SERVER ?>">
+	    	<a title="Ver Sitio Web" class="btn-goto-web" target="_blank" href="<?= G_SERVER ?>">
 					<img src="img/website-icon.png" alt="Ver Sitio Web">
 				</a>
 				<?php endif ?>
@@ -201,7 +202,7 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 	    		<img src="img/options-icon.png" alt="Configuración general">
 	    	</a>
 	    	<?php endif ?>
-	    	<a id="out" title="Cerrar sesion" href="<?= G_SERVER ?>/login.php?out">
+	    	<a id="out" title="Cerrar sesion" href="<?= G_SERVER ?>login.php?out">
 	    		<img src="img/out-icon.png" alt="Cerrar">
 	    	</a>
 			</div>

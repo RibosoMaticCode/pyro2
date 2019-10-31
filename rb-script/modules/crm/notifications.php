@@ -20,7 +20,7 @@ include_once ABSPATH.'rb-admin/tinymce/tinymce.config.php';
             $('#table').DataTable({
               "language": {
                 "url": "resource/datatables/Spanish.json"
-              } 
+              }
             });
           } );
         </script>
@@ -43,7 +43,7 @@ include_once ABSPATH.'rb-admin/tinymce/tinymce.config.php';
     </div>
   </section>
 <?php
-$urlreload=G_SERVER.'/rb-admin/module.php?pag=notifications';
+$urlreload=G_SERVER.'rb-admin/module.php?pag=notifications';
 ?>
 <script>
 // Eliminar item
@@ -54,7 +54,7 @@ $('.del').on("click", function(event){
     var id = $(this).attr('data-item');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/crm/del.notification.php?id="+id
+      url: "<?= G_SERVER ?>rb-script/modules/crm/del.notification.php?id="+id
     })
     .done(function( data ) {
       if(data.resultado){
@@ -75,7 +75,7 @@ $(document).ready(function() {
     var id = $(this).attr('data-item');
     $.ajax({
       type: "GET",
-      url: "<?= G_SERVER ?>/rb-script/modules/crm/notification.send.php?id="+id
+      url: "<?= G_SERVER ?>rb-script/modules/crm/notification.send.php?id="+id
     })
     .done(function( data ) {
       if(data.result){

@@ -299,7 +299,6 @@ function rb_get_img_profile($user_id){
 	$q = $objDataBase->Ejecutar("SELECT photo_id FROM ".G_PREFIX."users WHERE id=".$user_id);
 	$Usuario = $q->fetch_assoc();
 	$Photo = rb_get_photo_from_id($Usuario['photo_id']);
-  print_r($Photo);
 	if($Photo['src']==""):
 		return G_SERVER."rb-admin/img/user-default.png";
 	else:

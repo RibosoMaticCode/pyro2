@@ -1,10 +1,10 @@
-<span class="info">Archivos permitidos: <?= rb_get_values_options('files_allowed') ?>. Tamaño máximo: <?php echo ini_get("upload_max_filesize"); ?></span>
 <?php
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once(ABSPATH.'global.php');
 ?>
+<span class="info">Archivos permitidos: <?= rb_get_values_options('files_allowed') ?>. Tamaño máximo: <?php echo ini_get("upload_max_filesize"); ?></span>
 <div id="mulitplefileuploader"></div>
 <div id="status"></div>
 <!-- Load multiples imagenes -->

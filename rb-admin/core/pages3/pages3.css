@@ -1,62 +1,87 @@
 /* editor web version 3 */
+#boxes .boxdelete{
+	position:absolute;
+  top: 6px;
+  right: 5px;
+	font-size:0.9em;
+	text-decoration: none;
+}
 /* boxex - cajas */
-#boxes > li{
+#boxes .box:hover{
+}
+#boxes .box{
   background-color: #f3f3f3;
   border:1px solid #f3f3f3;
 }
 #boxes li .box-header{
   background-color: initial;
-  padding: 6px 10px 0 10px;
+  padding: 6px 5px 0 5px;
 }
 #boxes li .box-header a{
-  font-size: .8em;
+  font-size: .75em;
   margin: 0 3px;
   color:#607D8B;
 }
 /* cols - columnas */
+#boxes .col:hover{
+}
 #boxes .cols{
   display: flex;
-  padding: 5px 0 5px 5px;
+  padding: 0 0 5px 5px;
 }
 #boxes .col{
   background-color: #e2e2e2;
+  border:1px solid #e2e2e2;
   margin:0 5px 0 0;
   width: 100%;
 }
 #boxes .col-header{
-	padding:8px 10px;
+	padding:6px 5px 0 5px;
 	position:relative;
 }
 #boxes .col-header a{
-  font-size: .8em;
+  font-size: .75em;
   margin: 0 3px;
   color:#607D8B;
 }
-#boxes .col-header .boxdelete{
+/*#boxes .col-header .boxdelete{
 	position:absolute;
   top: 6px;
   right: 12px;
 	font-size:0.9em;
 	text-decoration: none;
-}
+}*/
 #boxes .col-body {
-    padding: 0 8px 6px;
+    padding: 0 5px 5px 5px;
 }
 /* widgets */
+#boxes .widgets{
+	min-height: 80px;
+	border: 1px #c3c3c3 dotted;
+}
+#boxes .widget:hover{
+}
 #boxes .widget{
   background-color: #d6d6d6;
-  margin: 0 0 10px 0;
+  border:1px solid #d6d6d6;
+}
+#boxes .widgets li:last-child {
+    margin-bottom: 0;
 }
 #boxes .widget-header {
-    padding: 4px 8px;
+    padding: 6px 5px 0 5px;
     position:  relative;
 }
 #boxes .widget-header a{
-  font-size: .8em;
+  font-size: .75em;
   margin: 0 3px;
   color: #607D8B;
 }
+#boxes .widgets li {
+    margin-bottom: 4px;
+}
 /* widget save link */
+
 .widgets li.saved,
 #boxes li.saved{
   border-color: #90A4AE;
@@ -69,4 +94,16 @@ span.col-save-title {
     color: #263238;
     padding: 2px 3px;
     font-style: oblique;
+}
+
+/* cabecera */
+.box-header strong,
+.col-header strong,
+.widget-header strong{
+  font-size: .8em;
+}
+
+.placeholder{
+	width: 100%;
+	background-color:#ffeeba;
 }

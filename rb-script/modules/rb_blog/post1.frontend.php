@@ -27,7 +27,7 @@ if($typ==0 || $typ==1){
   <div class="post-<?= $typ ?>">
   <?php
   if($category_id==0) $category_id="*";
-  $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
+  $Posts = rb_get_post_by_category($category_id, $num_posts, 0, "fecha_creacion", $ord);
   $i=1;
   $j=1;
   foreach ($Posts as $PostRelated) {
@@ -75,7 +75,7 @@ if($typ==2 || $typ==3){
   <div class="post-<?= $typ ?>">
   <?php
   $i=1;
-  $Posts = rb_get_post_by_category($category_id, false, true, $num_posts, 0, "fecha_creacion", $ord);
+  $Posts = rb_get_post_by_category($category_id, $num_posts, 0, "fecha_creacion", $ord);
   foreach ($Posts as $PostRelated) {
     if($i==1){
       ?>

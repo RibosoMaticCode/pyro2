@@ -9,17 +9,49 @@
 			<div class="cols-6-md spacing-right">
 				<label>
 					<span>Galeria a mostrar:</span>
+					<a href="#">Nuevo galeria</a>
+					<div class="new_gallery">
+						<input type="text" id="new_gallery_name" name="new_gallery_name" placeholder="Nombre galeria" required />
+						<button id="btn_new_gallery" class="button btn-primary button-sm">Guardar</button><button class="button button-sm">Cancelar</button>
+					</div>
+					<script>
+						$("#btn_new_gallery").on("click", function (event) {
+							var new_gallery_name = $('#new_gallery_name').val();
+							var postData = {
+								'table': 'py_galleries',
+								'dataToSave': {
+									'nombre': new_gallery_name
+								}
+							}
+
+							$.ajax({
+				  			method: "post",
+				  			url: "<?= G_SERVER ?>rb-admin/core/galleries/save.galleries.data.php",
+								data: {dataToSend: postData}
+				  		})
+				  		.done(function( response ) {
+				  			if(response.result){
+									$.fancybox.close();
+				  				notify(response.message);
+									updateListGalleries({id: response.new_id, nombre: new_gallery_name});
+				  	  	}else{
+				  				notify(response.message);
+				  	  	}
+				  		});
+						});
+
+						function updateListGalleries(datos){
+							$('#slide_gallery').prepend( new Option(datos.nombre, datos.id) );
+							$('option:selected', '#slide_gallery').removeAttr('selected');
+							$('#slide_gallery').find('option[value="'+datos.id+'"]').attr("selected",true);
+						}
+					</script>
 					<?php
 					$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries ORDER BY id DESC");
 					?>
 					<select id="slide_gallery" name="slide_gallery">
 				    <option value="0">Seleccionar</option>
 				    <?php
-				    /*while($r = $q->fetch_assoc()):
-				    ?>
-				    <option value="<?= $r['id'] ?>"><?= $r['nombre'] ?> (<?= $r['imagenes'] ?>)</option>
-				    <?php
-					endwhile;*/
 						$galleries = rb_list_galleries();
 						foreach($galleries as $gallery){
 							?>
@@ -28,6 +60,37 @@
 						}
 				    ?>
 				  </select>
+					<script>
+					$("#slide_gallery").on("change", function (event) {
+						var gallery_id = $(this).val();
+						var postData = {
+							'table': 'py_files',
+							'colsToShow': 'id, title, src',
+							'condition':{
+								'album_id': gallery_id
+							}
+						}
+						$.ajax({
+							method: "post",
+							url: "<?= G_SERVER ?>rb-script/list.data.php",
+							data: {dataToSend: postData}
+						})
+						.done(function( dataResult ) {
+							console.log(dataResult);
+							var imagenes="";
+							$.each(dataResult, function(i, item) {
+							  imagenes += '<li>'+
+									'<a class="fancybox" href="../rb-media/gallery/'+item.src+'">'+
+										'<img src="../rb-media/gallery/tn/'+item.src+'" id="'+item.id+'" />'+
+									'</a>'+
+									'<a href="#">Editar</a><a href="#">Retirar</a>'+
+									'</li>';
+							});
+							$('.gallery_list_horizontal ul').empty();
+							$('.gallery_list_horizontal ul').append(imagenes);
+						});
+					});
+					</script>
 				</label>
 			</div>
 			<div class="cols-6-md spacing-left">
@@ -36,6 +99,10 @@
 					<input type="text" name="slide_class" id="slide_class" />
 				</label>
 			</div>
+		</div>
+		<div class="gallery_list_horizontal">
+			<ul>
+			</ul>
 		</div>
 		<div class="cols-container">
 			<div class="cols-6-md spacing-right">

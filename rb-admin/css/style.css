@@ -202,7 +202,7 @@ section.seccion {
 }
 .seccion .seccion-body li{
 	list-style-type:none;
-	margin:4px 0;
+	/*margin:4px 0;*/
 }
 .seccion-body .gallery-items li{
 	width:15.66%;
@@ -454,7 +454,7 @@ a.page-resalt {
 	height:100vh;
 	position:fixed;
 	display:none;
-	z-index:9996;
+	z-index:8000;
 }
 
 .cover-input-dialog{

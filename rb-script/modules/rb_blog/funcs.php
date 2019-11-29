@@ -273,7 +273,7 @@ function rb_get_post_by_category($category_id="*", $num_posts=10, $regstart=0, $
 	$rm_url = G_SERVER;
 	$user_no_admin = "";
 	if($category_id=="") return false;
-	$limit = " LIMIT ".$regstart.", ".$num_posts." ";
+	$limit = " LIMIT ".$regstart.", ".$num_posts;
 	$datetime_fields = "DATE_FORMAT(a.fecha_creacion, '%Y-%m-%d') as fecha_corta,
 	DATE_FORMAT(a.fecha_creacion, '%d') as fecha_dia, DATE_FORMAT(a.fecha_creacion, '%M') as fecha_mes_l, DATE_FORMAT(a.fecha_creacion, '%m') as fecha_mes,
 	DATE_FORMAT(a.fecha_creacion, '%Y') as fecha_anio";

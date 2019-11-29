@@ -34,7 +34,7 @@ $item_parent_selected = rb_action_menu($menu_panel, $seccion );
 <div id="bar_style" class="items">
 <ul id="menu">
 	<li class="item-user">
-		<div class="cover-prof-img" style="background:url('<?= rb_get_img_profile( G_USERID ) ?>'); background-position:center; background-size: cover;"></div>
+		<div class="cover-prof-img" style="background-image:url('<?= rb_get_img_profile( G_USERID ) ?>'); background-position:center; background-size: cover;"></div>
 		<span style="font-size:1.1em;font-weight: bold;padding:5px 0;display: block">
 			<a href="index.php?pag=usu&opc=edt&id=<?= G_USERID ?>&profile"><?= $root['nombres']?> <?= $root['apellidos']?></a>
 		</span>

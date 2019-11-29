@@ -28,8 +28,8 @@ if( isset($_GET['id']) ){
     <input type="tel" name="telefono" required value="<?php if(isset($row)) echo $row['telefono'] ?>" />
   </label>
   <label>
-    Correo *
-    <input type="email" name="correo" required value="<?php if(isset($row)) echo $row['correo'] ?>" />
+    Correo
+    <input type="email" name="correo" value="<?php if(isset($row)) echo $row['correo'] ?>" />
   </label>
   <label>
     Direccion

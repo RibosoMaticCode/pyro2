@@ -264,7 +264,7 @@ if(isset($_GET['pa'])){
 		define('rm_title', rm_longtitle);
 		define('rm_title_page', $Page['titulo']);
 		define('rm_page_image', rb_photo_login(G_LOGO));
-		define('rm_metadescription', ''); //rb_fragment_text($Page['contenido'],30, false)
+		define('rm_metadescription', rb_get_values_options('meta_description'));
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 	  define('rm_metakeywords', $Page['tags']);
 

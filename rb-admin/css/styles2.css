@@ -88,7 +88,6 @@
 #contenedor{
 	float:right;
 	width:calc(100% - 160px);
-	/*padding:2rem 1.5rem;*/
 	font-size:.9em;
 	margin-top:52px;
 	margin-bottom: 100px;
@@ -159,11 +158,11 @@
 }
 
 /* POST - OPCIONES */
-#frm-posts-options{
+/*#frm-posts-options{
 	padding: 20px 30px;
 	width: 100%;
 	max-width: 650px;
-}
+}*/
 
 /* EXPLORADOR DE ARCHIVOS */
 .explorer{
@@ -351,8 +350,10 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	display: none;
-	z-index: 9998;
+	z-index: 8001;
 	background-color: #fff;
+	max-height: 100vh;
+	overflow: auto;
 }
 .editor-header{
 	background-color: #03A9F4;
@@ -461,17 +462,17 @@ ul._box-options-list li a img {
 	font-size:0.9em;
 	text-decoration: none;
 }
-.box-header .boxdelete{
+/*.box-header .boxdelete{
 	position:absolute;
   top: 6px;
   right: 12px;
 	font-size:0.9em;
 	text-decoration: none;
-}
-.box-body{
+}*/
+/*.box-body{
 	padding:6px 3px;
 }
-
+*/
 .box-body label{
 	padding:4px 0;
 	display:block;
@@ -609,7 +610,17 @@ ul.box-options-list{
   left: 0;
 }
 
-
+/* WIDGETS: GALERIA */
+.gallery_list_horizontal{
+	border:1px solid red;
+	overflow: auto;
+}
+.gallery_list_horizontal img{
+	max-width: 80px;
+}
+.gallery_list_horizontal ul li{
+	display:inline-block;
+}
 /* TABS */
 .tabs-buttons {
 	overflow: auto;
@@ -620,7 +631,7 @@ ul.box-options-list{
 }
 .tabs-buttons label{
 	display:inline-block!important;
-	padding: 10px 20px!important;
+	padding: 6px 10px!important;
 }
 .tabs-buttons label:hover {
   color: #789;
@@ -637,6 +648,8 @@ ul.box-options-list{
 }
 .tabs-sections section {
   display: none;
-  padding: 20px 15px;
   border-top: 1px solid #abc;
+}
+.tabs-sections .tab_padding{
+	padding:20px 15px;
 }

@@ -10,22 +10,30 @@ var uniqueId = function() {
 };
 
 $(document).ready(function() {
+  /*$( ".cols-html" ).sortable({
+      placeholder: "placeholder",
+      handle: ".col-head"
+  });*/
+
   // Arrastrar y soltar para bloques
   $( "#boxes" ).sortable({
     placeholder: "placeholder",
     handle: ".box-header"
   });
+  $( "#sortable" ).disableSelection();
 
   // Arrastrar y soltar para columnas
   $( ".cols" ).sortable({
       placeholder: "placeholder",
-      handle: ".col-header"
+      handle: ".col-header",
+      connectWith: ".cols"
   });
 
   // Arrastrar y soltar para widgets
   $( ".widgets" ).sortable({
       placeholder: "placeholder",
-      handle: ".widget-header"
+      handle: ".widget-header",
+      connectWith: ".widgets"
   });
 
   // ***** AÑADIR BLOQUE, CAJAS ********

@@ -213,9 +213,9 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <div class="form">
           <label>
             Estado publicación:
-            <select class="estado">
-              <option value="D" <?php if(isset($row) & $row['activo']=="D") echo "selected" ?>>Borrador</option>
-              <option value="A" <?php if(isset($row) & $row['activo']=="A") echo "selected" ?>>Publicado</option>
+            <select name="estado">
+              <option value="D" <?php if(isset($row) && $row['activo']=="D") echo "selected" ?>>Borrador</option>
+              <option value="A" <?php if(isset($row) && $row['activo']=="A") echo "selected" ?>>Publicado</option>
             </select>
           </label>
         </div>
@@ -535,6 +535,5 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
   <input name="mode" value="<?php echo $mode ?>" type="hidden" />
   <input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
   <input name="userid" value="<?php echo G_USERID ?>" type="hidden" />
-  <input name="srcimg" value="<?php if(isset($row)) echo $row['img_portada'] ?>" type="hidden" />
 </form>
 </div>

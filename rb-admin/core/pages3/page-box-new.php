@@ -1,11 +1,3 @@
-<script>
-$(document).ready(function() {
-  $( ".cols-html" ).sortable({
-      placeholder: "placeholder",
-      handle: ".col-head"
-  });
-});
-</script>
 <?php
 if(!isset($_GET['temp_id'])) $temp_id = 1;
 else $temp_id = $_GET['temp_id'];
@@ -13,13 +5,13 @@ else $temp_id = $_GET['temp_id'];
 <li id="box<?= $temp_id ?>" class="box" data-id="box<?= $temp_id ?>" data-type="box" data-extclass="" data-extvalues="{}" data-inclass="" data-invalues="{}" data-saved-id="">
   <div class="box-header">
     <strong>Bloque</strong>
-    <a href="#" class="showEditBox">
-      <i class="fa fa-pencil" aria-hidden="true"></i> Personalizar
+    <a href="#" class="showEditBox" title="Personalizar">
+      <i class="fa fa-cog" aria-hidden="true"></i>
     </a>
-    <a href="#" class="addNewCol">
+    <a href="#" class="addNewCol" title="Añadir Columna">
       <i class="fa fa-columns fa-lg" aria-hidden="true"></i> Añadir columna
     </a>
-    <a href="#" class="SaveBox">
+    <a href="#" class="SaveBox" title="Guarda bloque">
       <i class="fa fa-save fa-lg" aria-hidden="true"></i> Guardar
     </a>
     <span class="box-save-title"></span>

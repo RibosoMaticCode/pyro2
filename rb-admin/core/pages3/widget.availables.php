@@ -20,10 +20,10 @@ require_once ABSPATH.'rb-script/modules.list.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/editor/w.editor.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/slide/w.slide.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/gallery/w.gallery.init.php';
-//include_once ABSPATH.'rb-admin/core/pages3/widgets/pubs/w.pubs.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/code/w.code.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/youtube/w.youtube.init.php';
 include_once ABSPATH.'rb-admin/core/pages3/widgets/sidebar/w.sidebar.init.php';
+include_once ABSPATH.'rb-admin/core/pages3/widgets/image/w.image.init.php';
 
 //print_r($widgets);
 ?>

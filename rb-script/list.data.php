@@ -16,10 +16,12 @@ if(!G_ACCESOUSUARIO){
 	$arr = array('result' => false, 'message' => 'No puede completarse esta accion, por que usuario no inicio sesion' );
   die(json_encode($arr));
 }
+print_r($_POST['dataToSend']);
 
 $dataJson = $_POST['dataToSend'];
 $tableName = $dataJson['table'];
 $colsToShow = $dataJson['colsToShow'];
+echo $dataJson['condition'];
 
 $string_condition = "";
 if( isset($dataJson['condition']) ){
@@ -31,17 +33,21 @@ if( isset($dataJson['condition']) ){
 	}
 
 }
-//check: echo "SELECT $colsToShow FROM $tableName $string_condition";
+//check:
+echo "SELECT $colsToShow FROM $tableName $string_condition";
 $q = $objDataBase->Ejecutar("SELECT $colsToShow FROM $tableName $string_condition");
 $rows = $q->fetch_all(MYSQLI_ASSOC);
 
 die(json_encode($rows));
 
-/* modo de uso
+/* MODO DE USO
 function updateListGalleries(){
 	var postData = {
 		'table': 'py_galleries',
-		'colsToShow': 'id, nombre'
+		'colsToShow': 'id, nombre',
+		'condition' : {
+			'id' : $id
+		}
 	}
 	$.ajax({
 		method: "post",
@@ -49,7 +55,7 @@ function updateListGalleries(){
 		data: {dataToSend: postData}
 	})
 	.done(function( response ) {
-		console.log(response.rowsReturns);
+		console.log(response);
 	});
 }
 */

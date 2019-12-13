@@ -341,28 +341,34 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 $(document).ready(function() {
 	// Mostrar el config filesupload
 	$('#showFilesUpload').click(function(event) {
+		event.preventDefault()
 		$('.bg-opacity, #filesupload-config').show();
 	});
 	// Cerrar el config data
 	$('#filesupload-config-btn-cancel').click(function(event) {
+		event.preventDefault()
 		$('.bg-opacity, #filesupload-config').hide();
 	});
 
 	// Mostrar el config data
 	$('#link-data-config').click(function(event) {
+		event.preventDefault()
 		$('.bg-opacity, #data-config').show();
 	});
 	// Cerrar el config data
 	$('#data-config-btn-cancel').click(function(event) {
+		event.preventDefault()
 		$('.bg-opacity, #data-config').hide();
 	});
 
 	// Mostrar el config page
 	$('#showConfigPage').click(function(event) {
+		event.preventDefault()
 		$('.bg-opacity, #page-config').show();
 	});
 	// Cerrar el config page
 	$('#page-config-btn-cancel').click(function(event) {
+		event.preventDefault()
 		$('.bg-opacity, #page-config').hide();
 	});
 });

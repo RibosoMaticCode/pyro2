@@ -271,6 +271,8 @@ $(document).ready(function() {
   // Mostrar Editor de Bloque
   $("#boxes").on("click", ".showEditBox", function (event) {
     var box_id = $(this).closest(".box").attr('data-id');
+    $('#boxext_bgcolor').css('background-color','#ffffff'); // por defecto
+    $('#boxin_bgcolor').css('background-color','#ffffff'); // por defecto
 
     //Bloque externos valores
     var boxext_class = $(this).closest(".box").attr('data-extclass');
@@ -279,6 +281,7 @@ $(document).ready(function() {
 
     var boxext_parallax = boxext_jsonvals.extparallax;
     var boxext_bgimage = boxext_jsonvals.bgimage;
+    var boxext_bgimage_src = boxext_jsonvals.bgimage_src;
     var boxext_bgcolor = boxext_jsonvals.bgcolor;
     var boxext_paddingtop = boxext_jsonvals.paddingtop;
     var boxext_paddingright = boxext_jsonvals.paddingright;
@@ -294,6 +297,7 @@ $(document).ready(function() {
     var boxin_height = boxin_jsonvals.height;
     var boxin_width = boxin_jsonvals.width;
     var boxin_bgimage = boxin_jsonvals.bgimage;
+    var boxin_bgimage_src = boxin_jsonvals.bgimage_src;
     var boxin_bgcolor = boxin_jsonvals.bgcolor;
     var boxin_paddingtop = boxin_jsonvals.paddingtop;
     var boxin_paddingright = boxin_jsonvals.paddingright;
@@ -303,16 +307,23 @@ $(document).ready(function() {
     $('#eb_id').val(box_id);
     $('#boxin_height').val(boxin_height);
     $('#boxin_width').val(boxin_width);
-    $('#boxin_bgimage').val(boxin_bgimage);
+    //$('#boxin_bgimage').val(boxin_bgimage);
+    $('input[name=boxin_bgimage_id]').val(boxin_bgimage);
+    $('input[name=boxin_bgimage]').val(boxin_bgimage_src);
     $('#boxin_bgcolor').val(boxin_bgcolor);
+    $('#boxin_bgcolor').css('background-color','#'+boxin_bgcolor);
     $('#boxin_paddingtop').val(boxin_paddingtop);
     $('#boxin_paddingright').val(boxin_paddingright);
     $('#boxin_paddingbottom').val(boxin_paddingbottom);
     $('#boxin_paddingleft').val(boxin_paddingleft);
     $('#boxin_class').val(boxin_class);
 
-    $('#boxext_bgimage').val(boxext_bgimage);
+    console.log(boxext_jsonvals);
+    //$('#boxext_bgimage').val(boxext_bgimage);
+    $('input[name=boxext_bgimage_id]').val(boxext_bgimage);
+    $('input[name=boxext_bgimage]').val(boxext_bgimage_src);
     $('#boxext_bgcolor').val(boxext_bgcolor);
+    $('#boxext_bgcolor').css('background-color','#'+boxext_bgcolor);
     $('#boxext_paddingtop').val(boxext_paddingtop);
     $('#boxext_paddingright').val(boxext_paddingright);
     $('#boxext_paddingbottom').val(boxext_paddingbottom);
@@ -328,6 +339,25 @@ $(document).ready(function() {
     $("#editor-box").show();
     event.preventDefault();
   });
+
+  // Consultar foto por id
+  function showPhotoInfo(photoId){
+    var postData = {
+      table: 'py_files',
+      colsToShow: 'src',
+      condition:{
+        id: photoId
+      }
+    }
+    $.ajax({
+      method: "post",
+      url: "../rb-script/list.data.php",
+      data: {dataToSend: JSON.stringify(postData)}
+    })
+    .done(function( dataResult ) {
+      console.log(dataResult);
+    });
+  }
 
   // Remover columnas y widgets
   $("#boxes").on("click", ".close-column", function (event) {

@@ -1408,7 +1408,9 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   $ext_class = isset($box['boxext_class']) && $box['boxext_class']!="" ? $box['boxext_class'] : "";
   $ext_parallax = isset($box['boxext_values']['extparallax']) && $box['boxext_values']['extparallax']!="" ? $box['boxext_values']['extparallax'] : "";
   $style_extbgcolor = isset($box['boxext_values']['bgcolor']) && $box['boxext_values']['bgcolor']!="" ? "background-color:".$box['boxext_values']['bgcolor'].";" : "";
-  $style_extbgimage = isset($box['boxext_values']['bgimage']) && $box['boxext_values']['bgimage']!="" ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxext_values']['bgimage']).");background-position:center;background-size:cover;" : "";
+  $file = rb_get_photo_details_from_id($box['boxext_values']['bgimage']);
+  //$file['file_url'];
+  $style_extbgimage = isset($box['boxext_values']['bgimage']) && $box['boxext_values']['bgimage']!="" ? "background-image:url(".$file['file_url'].");background-position:center;background-size:cover;" : "";
   $style_extpaddingtop = isset($box['boxext_values']['paddingtop']) && $box['boxext_values']['paddingtop']!="" ? "padding-top:".$box['boxext_values']['paddingtop'].";" : "";
   $style_extpaddingright = isset($box['boxext_values']['paddingright']) && $box['boxext_values']['paddingright']!="" ? "padding-right:".$box['boxext_values']['paddingright'].";" : "";
   $style_extpaddingbottom = isset($box['boxext_values']['paddingbottom']) && $box['boxext_values']['paddingbottom']!="" ? "padding-bottom:".$box['boxext_values']['paddingbottom'].";" : "";

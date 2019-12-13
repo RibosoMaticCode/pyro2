@@ -7,8 +7,8 @@
 	<div class="editor-body form">
 		<div class="cols-container">
 			<div class="cols-6-md spacing-right">
-				<label>
-					<span>Galeria a mostrar:</span>
+				<!--<label>
+
 					<a href="#">Nuevo galeria</a>
 					<div class="new_gallery">
 						<input type="text" id="new_gallery_name" name="new_gallery_name" placeholder="Nombre galeria" required />
@@ -46,6 +46,9 @@
 							$('#slide_gallery').find('option[value="'+datos.id+'"]').attr("selected",true);
 						}
 					</script>
+				</label>-->
+				<label>
+					<span>Galeria a mostrar:</span> <a target="_blank" href="<?= G_SERVER ?>rb-admin/index.php?pag=gal&opc=nvo">Nuevo</a>
 					<?php
 					$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries ORDER BY id DESC");
 					?>
@@ -60,9 +63,43 @@
 						}
 				    ?>
 				  </select>
+					<a class="updateListGalleries" href="#">Actualizar listado</a>
 					<script>
+					// CLick en Actualizar Listado, llama funcion correspondiente
+					$(".updateListGalleries").on("click", function (event) {
+						event.preventDefault()
+						updateListGalleries();
+
+					});
+					// Carga listado actualizado de galerias
+					function updateListGalleries(datos){
+						var postData = {
+							'table': 'py_galleries',
+							'colsToShow': 'id, nombre'
+						}
+						$.ajax({
+							method: "post",
+							url: "<?= G_SERVER ?>rb-script/list.data.php",
+							data: {dataToSend: postData}
+						})
+						.done(function( dataResult ) {
+							console.log(dataResult);
+							$('#slide_gallery').empty();
+							$('#slide_gallery').append('<option value="0">Seleccionar</option>');
+							$.each(dataResult,function(key, value){
+							    $('#slide_gallery').append('<option value=' + value.id + '>' + value.nombre + '</option>');
+							});
+							$("#slide_gallery").change();
+						});
+					}
+
+					// Cuando cambio elementos de la lista de galerias, muestra las imagenes de dicha galeria
 					$("#slide_gallery").on("change", function (event) {
 						var gallery_id = $(this).val();
+						if(gallery_id==0) {
+							$('.gallery_list_horizontal ul').empty();
+							return false;
+						}
 						var postData = {
 							'table': 'py_files',
 							'colsToShow': 'id, title, src',
@@ -83,7 +120,6 @@
 									'<a class="fancybox" href="../rb-media/gallery/'+item.src+'">'+
 										'<img src="../rb-media/gallery/tn/'+item.src+'" id="'+item.id+'" />'+
 									'</a>'+
-									'<a href="#">Editar</a><a href="#">Retirar</a>'+
 									'</li>';
 							});
 							$('.gallery_list_horizontal ul').empty();
@@ -117,7 +153,7 @@
 			<div class="cols-6-md spacing-left">
 				<label>
 					<span>Cantidad por fila</span>
-					<span class="info">(funciona con tipo "solo galeria", por defecto 4)</span>
+					<span class="info">Aplica a tipo "solo galeria". Por defecto 4</span>
 					<input type="text" name="slide_quantity" id="slide_quantity" />
 				</label>
 			</div>
@@ -158,6 +194,7 @@ $(document).ready(function() {
     $('#slide_id').val(slide_id); // Asignar ID UNICO del bloque a input oculto en el editor-configurador
     console.log(pva.gallery_id);
     $('#slide_gallery').val(pva.gallery_id);
+		$("#slide_gallery").change();
 		$('#slide_type').val(pva.type);
 		$('#slide_quantity').val(pva.quantity);
 		$('#slide_limit').val(pva.limit);

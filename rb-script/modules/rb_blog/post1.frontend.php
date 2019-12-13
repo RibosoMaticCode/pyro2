@@ -22,6 +22,7 @@ if($tit!=""){
   <h2><?= $tit ?></h2>
   <?php
 }
+// Horizontal y vertical
 if($typ==0 || $typ==1){
   ?>
   <div class="post-<?= $typ ?>">
@@ -42,7 +43,7 @@ if($typ==0 || $typ==1){
         <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
         <!--<span class="post-category"></span>-->
         <div class="post-desc">
-        <h2><a href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
+        <h2><a title="<?= $PostRelated['titulo'] ?>" href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
         <?php if($desc==1): ?>
           <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
         <?php endif ?>
@@ -70,11 +71,14 @@ if($typ==0 || $typ==1){
   </div>
   <?php
 }
+
+// Destacado  derecha e izquierda
 if($typ==2 || $typ==3){
   ?>
-  <div class="post-<?= $typ ?>">
+  <div class="clear post-<?= $typ ?>">
   <?php
   $i=1;
+  if($category_id==0) $category_id="*";
   $Posts = rb_get_post_by_category($category_id, $num_posts, 0, "fecha_creacion", $ord);
   foreach ($Posts as $PostRelated) {
     if($i==1){

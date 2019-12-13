@@ -29,7 +29,7 @@
           dragDrop:true,
           fileName: "myfile",
           formData: {"albumid":"0", "user_id" : "<?= G_USERID ?>"},
-          urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
+          //urlimgedit: '<?= G_SERVER."/rb-admin/index.php?pag=file_edit&opc=edt&id=" ?>',
           allowedTypes:"<?= rb_get_values_options('files_allowed') ?>",
           returnType:"json", //html
           showStatusAfterSuccess: false,

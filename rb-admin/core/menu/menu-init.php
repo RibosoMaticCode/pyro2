@@ -80,6 +80,7 @@ $(document).ready(function() {
       <h2>Menus</h2>
       <ul class="buttons">
         <li><a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/?pag=menus&opc=nvo"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
+        <li><a class="fancyboxForm fancybox.ajax button btn-primary" href="<?= G_SERVER ?>rb-admin/core/menu/menu-edit.php?id=0"><i class="fa fa-plus-circle"></i> <span class="button-label">Nuevo</span></a></li>
       </ul>
     </div>
     <div class="seccion-body">

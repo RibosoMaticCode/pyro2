@@ -31,7 +31,7 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
       </div>
 			<div class="cols-container">
         <div class="cols-6-md">
-          Activar cargo con tarjeta (culqi.com) 1:Activo 0:Desactivado
+          Activar cargo con tarjeta <span class="info">1:Culqi, 2:MercdoPago, 0:Desactivado</span>
         </div>
         <div class="cols-6-md">
           <input type="text" name="options[plm_charge]" value='<?= get_option('plm_charge') ?>' />
@@ -69,6 +69,22 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
           <input type="text" name="options[frontview_product]" value='<?= get_option('frontview_product') ?>' />
         </div>
       </div>
+			<div class="cols-container">
+        <div class="cols-6-md">
+          Pagina proceso satisfactorio
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[page_success]" value='<?= get_option('page_success') ?>' />
+        </div>
+      </div>
+			<div class="cols-container">
+        <div class="cols-6-md">
+          Pagina proceso error
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[page_error]" value='<?= get_option('page_error') ?>' />
+        </div>
+      </div>
       <button class="button btn-primary" type="submit">Guardar configuracion</button>
     </form>
     <script>
@@ -84,6 +100,9 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
     		.done(function( data ) {
     			if(data.resultado){
     				notify(data.contenido);
+  					/*setTimeout(function(){
+  	          window.location.href = '<?= $urlreload ?>';
+  	        }, 1000);*/
     	  	}else{
     				notify(data.contenido);
     	  	}

@@ -53,12 +53,12 @@ $controlHideId = $_GET['controlHideId'];
 		$("#btnShowUploader").removeClass('selected');
 		$(this).addClass('selected');
 
-		$.ajax({
+		/*$.ajax({
 			method: "GET",
 			url: "<?= G_SERVER ?>rb-admin/core/explo-uploader/files.explorer.refresh.php?album_id=0"
 		}).done(function( html_response ) {
 		    $('#imgsingallery').html(html_response);
-		});
+		});*/
 	});
 
 	// Filter files
@@ -100,29 +100,25 @@ $controlHideId = $_GET['controlHideId'];
 		<script type="text/javascript">
 		$(document).ready(function(){
 			var settings = {
-			    url: "<?= G_SERVER ?>rb-admin/uploader.php",
-			    dragDrop:true,
-			    fileName: "myfile",
-			    formData: {"albumid":"0" , "user_id" : "<?= G_USERID ?>"},
-			    urlimgedit: '<?= G_SERVER ?>rb-admin/index.php?pag=file_edit&opc=edt&id=',
-			    target: '_blank',
-			    allowedTypes:"<?= rb_get_values_options('files_allowed') ?>",
-			    returnType:"html", //json
-				onSuccess:function(files,data,xhr)
-			    {
-			       //$("#status").append("Subido con exito");
-			    },
-			    //showDelete:true,
-			  deleteCallback: function(data,pd)
-				{
-			    for(var i=0;i<data.length;i++)
-			    {
-			        $.post("delete.php",{op:"delete",name:data[i]},
-			        function(resp, textStatus, jqXHR)
-			        {
-			            $("#status").append("<div>Archivo borrado</div>");
-			        });
-			     }
+				url: "<?= G_SERVER ?>rb-admin/uploader.php",
+			  dragDrop:true,
+			  fileName: "myfile",
+			  formData: {"albumid":"0" , "user_id" : "<?= G_USERID ?>"},
+				allowedTypes:"<?= rb_get_values_options('files_allowed') ?>",
+			  returnType:"json", //json
+				showStatusAfterSuccess: false,
+				onSuccess:function(files,data,xhr){
+					msg = '<li><a class="explorer-file" title="ID: '+data.last_id+'" datafld="'+data.filename+'" datasrc="'+data.last_id+'" href="#"><img class="thumb" width="100" src="../rb-media/gallery/tn/'+data.filename+'"><span>'+data.filename+'</span></a></li>';
+					$('.gallery').prepend( msg );
+			  },
+			  //showDelete:true,
+			  deleteCallback: function(data,pd){
+			    for(var i=0;i<data.length;i++){
+						$.post("delete.php",{op:"delete",name:data[i]},
+						function(resp, textStatus, jqXHR){
+							$("#status").append("<div>Archivo borrado</div>");
+			      });
+			    }
 			    pd.statusbar.hide(); //You choice to hide/not.
 				}
 			}

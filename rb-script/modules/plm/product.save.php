@@ -6,7 +6,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $id = $_POST['id'];
 $nombre_key = rb_cambiar_nombre(utf8_encode(trim($_POST['nombre'])));

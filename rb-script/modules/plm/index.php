@@ -1,11 +1,11 @@
 <?php
 /*
-Module Name: Gestionador de productos de venta
-Plugin URI: http://emocion.pe
-Description: Crear y muestra detalles de productos o articulos para venta
+Module Name: eShoper - Tienda online
+Plugin URI: https://www.ribosomatic.com
+Description: Herramienta que te ayude a crear el catálogo de productos o servicios para ventas online
 Author: Jesus Liñan
 Version: 1.1
-Author URI: http://ribosomatic.com
+Author URI: https://www.ribosomatic.com
 */
 
 // Valores iniciales
@@ -272,10 +272,9 @@ function plm_products_call_url(){
 
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
-			case 1:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view1.php';
+			case $view_style:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view'.$view_style.'.php';
 				break;
-
 			default:
 				$file = ABSPATH.'rb-script/modules/plm/product.front.view.php';
 				break;
@@ -335,7 +334,18 @@ function plm_products_call_url(){
 
 		$type = "cat";
 		$term = $category;
-		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		/*$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		require_once( $file );*/
+		$view_style = get_option('frontview_product');
+		switch ($view_style) {
+			case $view_style:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list'.$view_style.'.php';
+				break;
+			default:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+				break;
+		}
+
 		require_once( $file );
 
 		die();
@@ -390,7 +400,18 @@ function plm_products_call_url(){
 
 		$type = "search";
 		$term = $search;
-		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		/*$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		require_once( $file );*/
+		$view_style = get_option('frontview_product');
+		switch ($view_style) {
+			case $view_style:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list'.$view_style.'.php';
+				break;
+			default:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+				break;
+		}
+
 		require_once( $file );
 
 		die();
@@ -512,7 +533,7 @@ function plm_products_call_url(){
 			$products[$i]['image_url'] = $photo['file_url'];
 
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
-			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
+			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
 
 			$totsum += $tot;
 			$i++;
@@ -575,7 +596,18 @@ function plm_products_call_url(){
 
 		$type = "all";
 		$term = "";
-		$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		/*$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		require_once( $file );*/
+		$view_style = get_option('frontview_product');
+		switch ($view_style) {
+			case $view_style:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list'.$view_style.'.php';
+				break;
+			default:
+				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+				break;
+		}
+
 		require_once( $file );
 
 		die();
@@ -589,8 +621,8 @@ function plm_front_css(){
 	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/product.front.css'>\n";
 	$view_style = get_option('frontview_product');
 	switch ($view_style) {
-		case 1:
-			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/plm_style1.css'>\n";
+		case $view_style:
+			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/plm_style".$view_style.".css'>\n";
 			break;
 	}
 	return $css;

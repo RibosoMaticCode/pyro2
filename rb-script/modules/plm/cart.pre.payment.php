@@ -94,7 +94,7 @@
 				<div class="plm_warning">Debe completar la siguiete informacion para continuar con su compra: direccion, ciudad, pais y codigo postal (opcional)</div>
 				<?php
 			}else{
-				if(get_option('plm_charge')=="0"){
+				if(get_option('plm_charge')=="0"){ // Realizar el pedido por correo sin ningun cargo
 					?>
 					<script>
 						$(document).ready(function() {
@@ -119,9 +119,104 @@
 					</script>
 					<a class="btn-cart-next" href="#">Realizar el pedido de <?= G_COIN ?> <?= number_format(round($totsum, 2), 2) ?></a>
 					<?php
-				}else{
+				}elseif(get_option('plm_charge')=="1"){ // Culqui
 					?>
 					<button class="btn-cart-next" id="buyButton">Realizar el pago de <?= G_COIN ?> <?= number_format(round($totsum, 2), 2) ?></button>
+					<script src="https://checkout.culqi.com/js/v3"></script>
+					<script>
+					    // Configura tu llave pública
+					    Culqi.publicKey = '<?= get_option('key_public') ?>';
+					    // Configura tu Culqi Checkout
+					    Culqi.settings({
+					        title: '<?= G_TITULO ?>',
+					        currency: 'PEN',
+					        description: 'Todas las transacciones son seguras y encriptadas.',
+					        amount: <?= number_format( round($totsum, 2), 2, '', '') ?>
+					    });
+					    // Usa la funcion Culqi.open() en el evento que desees
+					    $('#buyButton').on('click', function(e) {
+					        // Abre el formulario con las opciones de Culqi.settings
+					        Culqi.open();
+					        e.preventDefault();
+					    });
+
+							function culqi() {
+							  if (Culqi.token) { // ¡Objeto Token creado exitosamente!
+							      var token = Culqi.token.id;
+										var email = '<?= $user['correo']?>';
+										var amount = '<?= number_format( round($totsum, 2), 2, '', '') ?>';
+							      //alert('Se ha creado un token:' + token);
+
+										//Pantalla oscura y poner espere por favor
+										$('.bg, .block_wait').show();
+										$('.block_wait_message').html("Espera por favor...");
+										// Send data ajax
+										$.ajax({
+							  			method: "get",
+							  			url: "<?= G_SERVER ?>rb-script/modules/plm/create.charge.php?token="+token+"&email="+email+"&amount="+amount
+							  		})
+							  		.done(function( data ) {
+												console.log(data);
+												//return false;
+
+												// Si se exitosa
+												if(data.object=="charge"){
+													if(data.outcome.type=="venta_exitosa"){
+														$('.block_wait_img').hide();
+														$('.block_wait_message').html("Proceso exitoso.");
+														var charge_id = data.id;
+														// Crear pedido y direccionar al cliente
+														$.ajax({
+											  			method: "get",
+											  			url: "<?= G_SERVER ?>rb-script/modules/plm/payment.success.php?charge_id="+charge_id
+											  		})
+											  		.done(function( data ) {
+											  			if(data.resultado){
+																setTimeout(function(){
+												          window.location.href = '<?= $panel_user ?>';
+												        }, 1000);
+											  	  	}else{
+											  				console.log(data.contenido);
+											  	  	}
+											  		});
+													}else{
+														console.log(data);
+														alert("Hubo error en el proceso. Recargue la página e intente nuevamente.");
+													}
+												}
+												// Si da error
+												if(data.object=="error"){
+													$('.block_wait_img').hide();
+													$('.block_wait_message').html(data.merchant_message+"<br /><a class='close_reload' href='#'>Intentar nuevamente</a>");
+												}
+							  		});
+
+							  } else { // ¡Hubo algún problema!
+							      // Mostramos JSON de objeto error en consola
+							      console.log(Culqi.error);
+							      alert(Culqi.error.user_message);
+							  }
+
+								// Cerrar y recargar en caso de error
+								$(document).on('click', '.close_reload', function (event){
+								//$('.close_reload').click(function(event){
+									setTimeout(function(){
+										window.location.href = '<?= G_SERVER ?>pre-payment/';
+									}, 1000);
+								});
+							};
+					</script>
+					<?php
+				}elseif(get_option('plm_charge')=="2"){ // MercadoPago
+					?>
+					<form action="<?= G_SERVER ?>rb-script/modules/plm/procesar.mp.php" method="POST">
+						<input type="hidden" name="monto" value="<?= round($totsum, 2) ?>" />
+			      <script
+			        src="https://www.mercadopago.com.pe/integrations/v1/web-tokenize-checkout.js"
+			        data-public-key="<?= get_option('key_public') ?>"
+			        data-transaction-amount="<?= round($totsum, 2) ?>">
+			      </script>
+			    </form>
 					<?php
 				}
 				?>
@@ -136,88 +231,4 @@
 		</div>
   </div>
 </div>
-<script src="https://checkout.culqi.com/js/v3"></script>
-<script>
-    // Configura tu llave pública
-    Culqi.publicKey = '<?= get_option('key_public') ?>';
-    // Configura tu Culqi Checkout
-    Culqi.settings({
-        title: '<?= G_TITULO ?>',
-        currency: 'PEN',
-        description: 'Todas las transacciones son seguras y encriptadas.',
-        amount: <?= number_format( round($totsum, 2), 2, '', '') ?>
-    });
-    // Usa la funcion Culqi.open() en el evento que desees
-    $('#buyButton').on('click', function(e) {
-        // Abre el formulario con las opciones de Culqi.settings
-        Culqi.open();
-        e.preventDefault();
-    });
-
-		function culqi() {
-		  if (Culqi.token) { // ¡Objeto Token creado exitosamente!
-		      var token = Culqi.token.id;
-					var email = '<?= $user['correo']?>';
-					var amount = '<?= number_format( round($totsum, 2), 2, '', '') ?>';
-		      //alert('Se ha creado un token:' + token);
-
-					//Pantalla oscura y poner espere por favor
-					$('.bg, .block_wait').show();
-					$('.block_wait_message').html("Espera por favor...");
-					// Send data ajax
-					$.ajax({
-		  			method: "get",
-		  			url: "<?= G_SERVER ?>rb-script/modules/plm/create.charge.php?token="+token+"&email="+email+"&amount="+amount
-		  		})
-		  		.done(function( data ) {
-							console.log(data);
-							//return false;
-
-							// Si se exitosa
-							if(data.object=="charge"){
-								if(data.outcome.type=="venta_exitosa"){
-									$('.block_wait_img').hide();
-									$('.block_wait_message').html("Proceso exitoso.");
-									var charge_id = data.id;
-									// Crear pedido y direccionar al cliente
-									$.ajax({
-						  			method: "get",
-						  			url: "<?= G_SERVER ?>rb-script/modules/plm/payment.success.php?charge_id="+charge_id
-						  		})
-						  		.done(function( data ) {
-						  			if(data.resultado){
-											setTimeout(function(){
-							          window.location.href = '<?= $panel_user ?>';
-							        }, 1000);
-						  	  	}else{
-						  				console.log(data.contenido);
-						  	  	}
-						  		});
-								}else{
-									console.log(data);
-									alert("Hubo error en el proceso. Recargue la página e intente nuevamente.");
-								}
-							}
-							// Si da error
-							if(data.object=="error"){
-								$('.block_wait_img').hide();
-								$('.block_wait_message').html(data.merchant_message+"<br /><a class='close_reload' href='#'>Intentar nuevamente</a>");
-							}
-		  		});
-
-		  } else { // ¡Hubo algún problema!
-		      // Mostramos JSON de objeto error en consola
-		      console.log(Culqi.error);
-		      alert(Culqi.error.user_message);
-		  }
-
-			// Cerrar y recargar en caso de error
-			$(document).on('click', '.close_reload', function (event){
-			//$('.close_reload').click(function(event){
-				setTimeout(function(){
-					window.location.href = '<?= G_SERVER ?>pre-payment/';
-				}, 1000);
-			});
-		};
-</script>
 <?php rb_footer(['footer-allpages.php'], false) ?>

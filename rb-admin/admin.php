@@ -4,8 +4,12 @@ require_once '../global.php';
 include_once 'islogged.php';
 
 // redirect
-//$url_to_redirect = G_SERVER.$_SERVER['REQUEST_URI'];
-$url_to_redirect = "http://".G_HOSTNAME.$_SERVER['REQUEST_URI']; // Sin website funciona con HTTPS, podria haber problemas.
+if(is_https()){
+	$protocol = "https://";
+}else{
+	$protocol = "http://";
+}
+$url_to_redirect = $protocol.G_HOSTNAME.$_SERVER['REQUEST_URI']; // Si website funciona con HTTPS, podria haber problemas.
 $menu_panel = array();
 require_once ABSPATH."rb-script/funcs.php";
 require_once ABSPATH."rb-script/class/rb-users.class.php";
@@ -49,12 +53,12 @@ else $array_help_close = array();
 
 // USUARIO LOGUEADO CON EXITO
 if(G_ACCESOUSUARIO==0){
-	header('Location: '.G_SERVER.'/login.php?redirect='.urlencode($url_to_redirect));
+	header('Location: '.G_SERVER.'login.php?redirect='.urlencode($url_to_redirect));
 }else{
 	if(isset($_SESSION['type'])){
 		if($_SESSION['type']=="user-front"){
 			//die("Usted no cuenta con acceso a esta seccion. <a href='".G_SERVER."'>Sacame de aqui</a>");
-			header('Location: '.G_SERVER.'/404.php');
+			header('Location: '.G_SERVER.'404.php');
 		}
 	}
 	$userType = $_SESSION['type'];

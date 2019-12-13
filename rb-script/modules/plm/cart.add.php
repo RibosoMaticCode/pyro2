@@ -5,7 +5,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$id = $_POST['product_id'];

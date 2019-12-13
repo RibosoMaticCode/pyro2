@@ -10,7 +10,7 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
 <section class="seccion">
   <div class="seccion-header plm_backend_text">
 		<img class="plm_logo" src="<?= G_SERVER ?>rb-script/modules/plm/product.png" alt="info" />
-    <h2>PLM - Gestionador de productos</h2>
+    <h2>eShop - Tienda online</h2>
     <span class="info">Desarrollado por Jesus Liñán para Pyro. <strong>Version <?= get_option('version')?></strong></span>
   </div>
   <div class="seccion-body plm_backend_text">
@@ -23,10 +23,10 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
 			<li>Pagina con detalles de cada producto registrado.</li>
 			<li>Permite añadir producto a carrito de compra.</li>
 			<li>Permite generar una orden del pedido.</li>
-			<li>Permite el pago con tarjeta (configurado para culqi.com)</li>
+			<li>Permite el pago con tarjeta (Culqui o MercadoPago)</li>
 			<li>Añade opcion al panel del usuario final, para ver sus pedido realizados.</li>
 			<li>Permite al usuario final escribir su reseña. Y usuario admin moderarlas.</li>
-			<li>Añade un widget para mostrar bloques de productos de diferentes diseños.</li>
+			<li>Añade un widget para mostrar bloques de productos de diferentes diseños en las páginas</li>
 			<li>Entre otras funciones.</li>
 		</ul>
   </div>

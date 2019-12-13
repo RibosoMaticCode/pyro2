@@ -5,6 +5,7 @@
       <article>
         <div class="info">
           <span class="date"><?= $Post['fec_dia']  ?> de <?= $Post['fec_mes_l']  ?>, <?= $Post['fec_anio']  ?></span>
+          <a class="back" href="javascript:history.back()" class="back_gallery">Volver</a>
         </div>
         <h2><a href="<?= $Post['url'] ?>"><?= $Post['titulo']  ?></a></h2>
         <div class="post-image" style="background-image:url('<?= $Post['url_img_pri_max']  ?>')"></div>

@@ -1,5 +1,5 @@
 <?php
-header('Content-type: application/json; charset=utf-8');
+//header('Content-type: application/json; charset=utf-8');
 
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
@@ -7,6 +7,7 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once ABSPATH.'rb-script/funcs.php';
+require_once 'funcs.php';
 
 // Se encargara de enviar informacion tanto a cliente como al administrador del pago
 // PREPARANDO EL HTML PARA ENVIAR POR CORREO AL USUARIO
@@ -79,11 +80,11 @@ $html_content .= '
   </tfoot>
 </table>';
 
-if(isset($_GET['charge_id'])){
+/*if(isset($_GET['charge_id'])){
 	$charge_id = $_GET['charge_id'];
 }else{
 	$charge_id = "000000";
-}
+}*/
 //Crear una orden del pedido
 $valores = [
   'fecha_registro' => date('Y-m-d G:i:s'),
@@ -140,10 +141,17 @@ if($r['result']){
 
 	mail($recipient, $subject, $email_content, $email_headers);
 
-  $arr = ['resultado' => true, 'contenido' => 'Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.' ];
-  unset($_SESSION['carrito']);
+	unset($_SESSION['carrito']);
+  //$arr = ['resultado' => true, 'contenido' => 'Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.' ];
+	//echo "Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.";
+	//echo 'Información del Pedido puedes verla en la sección <a href="'.G_SERVER.'/?pa=panel&section=pedidos">Mis Pedidos</a>';
+
+	// Direccion a pagina de proceso satisfactorio
+	header("Location: ".get_option('page_success') );
 }else{
-  $arr = ['resultado' => false, 'contenido' => $r['error']];
+	// Direccion a pagina de proceso erroneo
+	header("Location: ".get_option('page_success') );
+  //$arr = ['resultado' => false, 'contenido' => $r['error']];
 }
-die(json_encode($arr));
+//die(json_encode($arr));
 ?>

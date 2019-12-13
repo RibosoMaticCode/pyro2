@@ -16,27 +16,27 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         <div class="cols-container">
           <h3 class="subtitle">Datos del sitio web</h3>
           <div class="cols-6-md col-padding">
-            <label title="Nombre del sitio" for="nombresitio">Nombre del Sitio Web:
+            <label title="Nombre del sitio" for="nombresitio">Título del sitio web
               <input  name="nombresitio" type="text" value="<?= rb_get_values_options('nombresitio') ?>" required />
             </label>
-            <label title="Descripcion del sitio" for="descripcion">Descripcion Sitio Web:
+            <label title="Descripcion del sitio" for="descripcion">Subtitulo del sitio web:
               <input  name="descripcion" type="text" value="<?= rb_get_values_options('descripcion') ?>" />
             </label>
-            <label title="Direccion URL" for="direccionurl">Direccion URL (incluir http://):
+            <label title="Direccion URL" for="direccionurl">Direccion URL <span class="info">Debe incluir https:// o http://</span>
               <input  name="direccionurl" type="text" value="<?= rb_get_values_options('direccion_url') ?>" required />
             </label>
-            <label>Directorio URL:
+            <label>Directorio alojado<span class="info">Si el sitio web esta en un directorio se mostrará cual aqui</span>
               <input name="directoriourl" type="text" value="<?= rb_get_values_options('directorio_url') ?>" readonly />
             </label>
           </div>
           <div class="cols-6-md col-padding">
-            <label title="Keywords" for="keywords">Meta Keywords (para Buscadores):
+            <label title="Keywords" for="keywords">Palabras relacionadas
               <input  name="keywords" type="text" value="<?= rb_get_values_options('meta_keywords') ?>" />
             </label>
-            <label title="Description" for="description">Meta Description (para Buscadores):
-              <input  name="description" type="text" value="<?= rb_get_values_options('meta_description') ?>" />
+            <label title="Description" for="description">Descripción del sitio web
+              <textarea name="description"><?= rb_get_values_options('meta_description') ?></textarea>
             </label>
-            <label title="Author" for="author">Meta Author (para Buscadores):
+            <label title="Author" for="author">Autor del sitio web
               <input  name="author" type="text" value="<?= rb_get_values_options('meta_author') ?>" />
             </label>
           </div>
@@ -45,7 +45,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         <div class="cols-container">
           <h3 class="subtitle">Apariencia</h3>
           <div class="cols-6-md col-padding">
-            <label>Favicon:
+            <label>Favicon
               <script>
               $(document).ready(function() {
                 $(".explorer-file").filexplorer({
@@ -55,7 +55,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </script>
               <input name="favicon" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('favicon') ); echo $photos['src']; ?>" />
             </label>
-            <label>Logo:
+            <label>Logo <span class="info">Logotipo para la pagina de inicio de sesión</span>
               <script>
               $(document).ready(function() {
                 $(".explorer-file").filexplorer({
@@ -65,7 +65,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </script>
               <input name="logo" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('logo') ); echo $photos['src']; ?>" />
             </label>
-            <label>Imagen de fondo login:
+            <label>Imagen de fondo <span class="info">Imagen de fondo para la pagina de inicio de sesión</span>
               <script>
               $(document).ready(function() {
                 $(".explorer-bgimage").filexplorer({
@@ -75,7 +75,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </script>
               <input name="bgimage" type="text" class="explorer-bgimage" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('background-image') ); echo $photos['src']; ?>" />
             </label>
-            <label title="Tema" for="tema">Plantilla del Sitio Web:
+            <label title="Tema" for="tema">Plantilla del sitio web
               <span class="info">Las plantillas temas se guardan en la carpeta raiz <code>rb-themes</code></span>
               <select  name="tema">
                 <option value="0">Ninguno</option>
@@ -84,7 +84,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </label>
           </div>
           <div class="cols-6-md col-padding">
-            <label title="Pagina Index" for="index">¿Con qué página inicia el sitio web?
+            <label title="Pagina Index" for="index">Página principal del sitio web
               <a class="btn-secundary" href="<?= G_SERVER ?>rb-admin/?pag=pages">Nueva página</a>
               <span class="info">Puede elegir una en particular ó dejar por defecto según el tema instalado</span>
               <select  name="inicial">
@@ -99,7 +99,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </select>
             </label>
 
-            <label>Bloque de cabecera personalizado
+            <label>Bloque de cabecera <span class="info">Puedes usar un bloque de cabecera personalizado, por defecto muestra el de la plantilla</span>
             <!--<input type="text" name="block_header_id" value="<?= rb_get_values_options('block_header_ids') ?>" />-->
             <?php
   					$qh = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=1 ORDER BY titulo");
@@ -112,7 +112,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </select>
             </label>
 
-            <label>Bloque de pie de pagina personalizado
+            <label>Bloque de pie de pagina <span class="info">Puedes usar un bloque de pie de pagina personalizado, por defecto muestra el de la plantilla</span>
             <!--<input type="text" name="block_footer_id" value="<?= rb_get_values_options('block_footer_ids') ?>" />-->
             <?php
   					$qf = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."pages WHERE type=2 ORDER BY titulo");
@@ -125,7 +125,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             </select>
             </label>
 
-            <label>Barra lateral de blog
+            <label>Barra lateral en blog <span class="info">Puedes usar un bloque personalizado para la barra lateral, por defecto muestra el de la plantilla</span>
               <select name="sidebar_id">
                 <option value="0">Por defecto</option>
                 <?php
@@ -137,7 +137,7 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               </select>
             </label>
 
-            <span class="info">Configuracion de visualizacion de la barra lateral.</span>
+            <span class="info">Configuracion de visualizacion de la barra lateral</span>
             <label class="lbl-listoptions">
               <input name="sidebar" type="radio" value="0" <?php if(rb_get_values_options('sidebar')=='0') echo "checked=\"checked\""?> />
               Ocultar
@@ -162,16 +162,16 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
         <div class="cols-container">
           <h3 class="subtitle">Manejo de correos</h3>
           <div class="cols-6-md col-padding">
-            <label title="Corre(os) que reciben los formularios de contacto" for="style">Correo receptor:
-              <span class="info">El correo que recibe los formularios de contacto. Puede especificar varios, separelo por coma.</span>
+            <label title="Corre(os) que reciben los formularios de contacto" for="style">Correo receptor
+              <span class="info">El correo principal que recibe los datos de los formularios. Puede especificar varios separados por coma.</span>
               <input  name="mails" type="text" value="<?= rb_get_values_options('mail_destination') ?>" />
             </label>
-            <label>Nombre de quien emite correo:
-              <span class="info">El nombre de quien envia alguna respuesta al usuario final, visitante, etc.</span>
+            <label>Nombre de quien emite el correo
+              <span class="info">El nombre de quien envia alguna mensaje al usuario</span>
               <input  name="namesender" type="text" value="<?= rb_get_values_options('name_sender') ?>" />
             </label>
             <label title="Correo que envia información de registro" for="style">Correo emisor:
-              <span class="info">El correo que envia alguna respuesta al usuario final, visitante, etc.</span>
+              <span class="info">El correo que envia alguna mensaje al usuario. Por defecto se usa el tipo no-reply@midominio.com.</span>
               <input  name="mailsender" type="text" value="<?= rb_get_values_options('mail_sender') ?>" />
             </label>
           </div>

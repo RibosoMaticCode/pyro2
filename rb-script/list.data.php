@@ -32,12 +32,11 @@ if( isset($dataJson['condition']) ){
 
 }
 //check: echo "SELECT $colsToShow FROM $tableName $string_condition";
-
 $q = $objDataBase->Ejecutar("SELECT $colsToShow FROM $tableName $string_condition");
 $rows = $q->fetch_all(MYSQLI_ASSOC);
 
-//die('{"rowsReturns":'.json_encode($rows).'}');
 die(json_encode($rows));
+
 /* modo de uso
 function updateListGalleries(){
 	var postData = {

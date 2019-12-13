@@ -285,3 +285,11 @@ function rb_blog_call_url(){
 	}
 }
 add_function('call_modules_url','rb_blog_call_url');
+
+// Frontend CSS
+function blog_css(){
+  global $rb_modure_dir;
+	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL.$rb_modure_dir."/blog.css'>\n";
+	return $css;
+}
+add_function('theme_header','blog_css');

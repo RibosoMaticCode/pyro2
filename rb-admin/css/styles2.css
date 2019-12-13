@@ -168,15 +168,18 @@
 .explorer{
 	z-index:9998;
 	display:none;
-	max-width:860px;
+	max-width: 100vw;
 	min-width: 400px;
 	left:50%;
 	top:50%;
 	transform:translate(-50%, -50%);
 	border: 0;
-  position: fixed;
-  background-color: #FBFBFB;
-  box-shadow: 0 0 8px #000;
+	position: fixed;
+	background-color: #FBFBFB;
+	box-shadow: 0 0 8px #000;
+	max-height: 100vh;
+	/* border: 2px solid red; */
+	overflow: auto;
 }
 .explorer-header{
 	border-bottom: 1px solid #e8e8e8;
@@ -186,6 +189,7 @@
 }
 .explorer-header h3{
 	color:#000;
+	font-size: .9em;
 }
 .explorer-header #close{
 	position:absolute;
@@ -195,8 +199,9 @@
 .explorer-body{
 	overflow:hidden;
 	position:relative;
-	min-height:450px;
-	min-width: 600px;
+	/* min-height:450px; */
+	width: 100%;
+	min-width: 555px;
 }
 .explorer-body .file_msj {
 	position: absolute;
@@ -291,11 +296,10 @@
 	background-color: #F9F9F9;
 }
 .explorer-body .preview{
-	max-width: 400px;
-	top:50%;
-	left:50%;
-	transform: translate(-50% , -50%);
-	position: absolute;
+	margin: 20px auto;
+	display: block;
+	max-width: 80vh;
+	padding: 10px;
 }
 .explorer-body .search-bar{
 	border: none;
@@ -323,7 +327,7 @@
 .explorer-body .gallery-list{
 	padding:5px 5px 5px 10px;
 	max-height: 500px;
-  overflow: auto;
+	overflow: auto;
 }
 
 /* VARIOS - VALIDADOR DE CAMPOS VACIOS */
@@ -612,11 +616,14 @@ ul.box-options-list{
 
 /* WIDGETS: GALERIA */
 .gallery_list_horizontal{
-	border:1px solid red;
+	border:1px solid #c1c1c1;
 	overflow: auto;
+	white-space: nowrap;
+	min-height: 86px;
 }
 .gallery_list_horizontal img{
 	max-width: 80px;
+	margin:4px;
 }
 .gallery_list_horizontal ul li{
 	display:inline-block;

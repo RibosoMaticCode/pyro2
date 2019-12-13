@@ -19,7 +19,7 @@ if(isset($data_saved_id)){
 <li id="<?= $widget_id ?>" class="widget <?= $class_save?>" data-id="<?= $widget_id ?>" data-type="slide" data-class="<?php if(isset($widget)) echo $widget['widget_class'] ?>"
 	data-values='<?php if(isset($widget))echo json_encode($widget['widget_values']); else echo "{}" ?>' data-saved-id="<?= $data_saved_id ?>">
 	<div class="widget-header">
-		<strong>Slide</strong>
+		<strong>Galería</strong>
 		<?= $option_saved ?>
 		<a class="close-column" href="#" title="Eliminar">
 			<i class="fa fa-trash fa-lg" aria-hidden="true"></i>

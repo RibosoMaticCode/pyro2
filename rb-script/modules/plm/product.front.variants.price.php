@@ -6,7 +6,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $combo = $_GET['combo'];
 $product_id = $_GET['product_id'];

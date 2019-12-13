@@ -32,7 +32,7 @@ $categories = json_decode($option['plm_value'], true);
           <span>Nuevo producto</span>
         <?php endif ?>
       </div>
-    	<button type="submit" form="frmproduct">Guardar</button>
+    	<button class="button btn-primary" type="submit" form="frmproduct">Guardar</button>
     	<a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products">Volver</a>
     </div>
   </div>

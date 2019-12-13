@@ -7,7 +7,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 // Armando mensaje :
 $email_content = "Datos del comprado:<br /><br />";

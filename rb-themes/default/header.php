@@ -60,15 +60,6 @@
 						imagePath: 'img/'
 					});
 				}
-				// Menu
-				/*$('.BtnOpenMenu').click(function(event){
-					event.preventDefault();
-					$('.bg, .menu').show();
-				});
-				$('.BtnCloseMenu').click(function(event){
-					event.preventDefault();
-					$('.bg, .menu').hide();
-				});*/
 
 				// Scroll with effect - Set 'a' tag with class 'scrollLink'
 				$( "a.scrollLink" ).click(function( event ) {

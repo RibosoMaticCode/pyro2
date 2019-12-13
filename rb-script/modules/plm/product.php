@@ -8,7 +8,7 @@ require_once ABSPATH."rb-script/modules/plm/funcs.php";
     <h2>Productos</h2>
     <ul class="buttons">
       <li>
-        <a class="btn-primary" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products&product_id=0">Nuevo</a>
+        <a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products&product_id=0">Nuevo</a>
       </li>
       <li>
         <?php
@@ -18,7 +18,7 @@ require_once ABSPATH."rb-script/modules/plm/funcs.php";
           $product_catalogue_link = G_SERVER."?products";
         endif;
         ?>
-        <a target="_blank" href="<?= $product_catalogue_link ?>">Vista frontend</a>
+        <a class="button" target="_blank" href="<?= $product_catalogue_link ?>">Vista frontend</a>
       </li>
     </ul>
   </div>

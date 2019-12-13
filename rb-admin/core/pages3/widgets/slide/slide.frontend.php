@@ -9,7 +9,7 @@ $fotos = rb_get_images_from_gallery($gallery_id, $limit);
 foreach ($fotos as $foto) {
   if($typegallery==2){ // slide
     ?>
-    <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>">
+    <div data-src="<?= $foto['url_max'] ?>" data-thumb="<?= $foto['url_min'] ?>" <?php if($widget['widget_values']['activelink']==1): ?> data-link="<?= $foto['goto_url'] ?>" <?php endif ?>>
       <?php if($widget['widget_values']['show_title']==1): ?>
         <div class="camera_caption"><?= $foto['title'] ?></div>
       <?php endif ?>
@@ -19,10 +19,10 @@ foreach ($fotos as $foto) {
   if($typegallery==1){ // simple galeria
     if($quantity>0){
       $width = 100/$quantity;
-      $style = 'style="width:'.$width.'%"';
     }else{
-      $style = "";
+      $width = 100/4; // default
     }
+    $style = 'style="width:'.$width.'%"';
     ?>
     <div class="rb-cover-img" <?= $style ?>>
       <?php if($widget['widget_values']['activelink']==1): ?>

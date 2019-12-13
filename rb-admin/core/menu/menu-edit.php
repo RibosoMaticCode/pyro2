@@ -1,45 +1,56 @@
 <?php
-//require_once(ABSPATH."rb-script/class/rb-menus.class.php");
-$mode;
-if(isset($_GET["id"])){
-  // if define realice the query
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once ABSPATH.'global.php';
+
+if(isset($_GET["id"]) && $_GET["id"] > 0){
   $id=$_GET["id"];
   $cons = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."menus WHERE id=".$id);
   $row= $cons->fetch_assoc();
-  $mode = "update";
 }else{
-  $mode = "new";
+  $id=0;
 }
 ?>
-<div class="inside_contenedor_frm">
-<form id="categorie-form"class="form" name="categorie-form" method="post" action="core/menu/menu-save.php">
-  <div id="toolbar">
-    <div class="inside_toolbar">
-      <div class="navigation">
-        <a href="<?= G_SERVER ?>rb-admin/?pag=menus">Menus</a> <i class="fas fa-angle-right"></i>
-        <?php if(isset($row)): ?>
-          <span><?= $row['nombre'] ?></span>
-        <?php else: ?>
-          <span>Nuevo menú</span>
-        <?php endif ?>
-      </div>
-      <input class="btn-primary" name="guardar" type="submit" value="Guardar" />
-      <?php if(isset($row)): ?>
-        <a class="button btn-primary" href="<?= G_SERVER ?>rb-admin/index.php?pag=menu&id=<?= $row['id'] ?>">Añadir items</a>
-      <?php endif ?>
-      <a class="button" href="<?= G_SERVER ?>rb-admin/?pag=menus">Cancelar</a>
+<form id="frmNewEditMenu" class="form" name="categorie-form" method="post" action="core/menu/menu-save.php">
+  <input name="id" value="<?php if(isset($row)) echo $row['id'] ?>" type="hidden" />
+  <label title="Nombre del Menu" for="nombre">Nombre del Menu:
+    <input required  name="nombre" type="text" value="<?php if(isset($row))echo $row['nombre'] ?>" />
+  </label>
+  <div class="cols-container">
+    <div class="cols-6-md cols-content-left">
+      <button type="submit" class="button btn-primary">Guardar</button>
+    </div>
+    <div class="cols-6-md cols-content-right">
+      <button type="button" class="button CancelFancyBox">Cancelar</button>
     </div>
   </div>
-    <section class="seccion">
-      <div class="seccion-body">
-        <label title="Nombre del Menu" for="nombre">Nombre del Menu:
-          <input required  name="nombre" type="text" value="<?php if(isset($row))echo $row['nombre'] ?>" />
-        </label>
-      </div>
-    </section>
-
-  <input name="mode" value="<?php echo $mode; ?>" type="hidden" />
-  <input name="section" value="menus" type="hidden" />
-  <input name="id" value="<?php if(isset($row)) echo $row['id']; ?>" type="hidden" />
 </form>
-</div>
+<script>
+// Boton Guardar
+$(document).on("submit","#frmNewEditMenu",function(event){
+  event.preventDefault();
+  //tinyMCE.triggerSave(); //save first tinymce en textarea
+  $.ajax({
+    method: "post",
+    url: "<?= G_SERVER ?>rb-admin/core/menu/menu-save.php",
+    data: $( this ).serialize()
+  })
+  .done(function( data ) {
+    if(data.resultado){
+      $.fancybox.close();
+      notify(data.contenido);
+      setTimeout(function(){
+        window.location.href = '<?= G_SERVER ?>rb-admin/index.php?pag=menus';
+      }, 1000);
+    }else{
+      notify(data.contenido);
+    }
+  });
+});
+
+// Boton Cancelar
+$(document).on("click",".CancelFancyBox",function(event){
+  $.fancybox.close();
+});
+</script>

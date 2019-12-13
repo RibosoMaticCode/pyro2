@@ -17,11 +17,11 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM $table_name ORDER BY id DESC");
 <section class="seccion">
   <div class="seccion-header">
     <h2><?= $title_section ?></h2>
-    <ul class="buttons">
+    <!--<ul class="buttons">
       <li>
         <a class="btn-primary fancyboxForm fancybox.ajax" href="<?= $newedit_path ?>">Nuevo</a>
       </li>
-    </ul>
+    </ul>-->
   </div>
   <div class="seccion-body">
     <script>

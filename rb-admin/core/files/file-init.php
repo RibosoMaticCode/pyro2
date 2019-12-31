@@ -34,7 +34,7 @@
           returnType:"json", //html
           showStatusAfterSuccess: false,
           onSuccess:function(files,data,xhr){
-            console.log(data);
+            //console.log(data);
             $.ajax({
                 method: "GET",
                 url: "core/files/file-item.php?id="+data.last_id
@@ -118,7 +118,7 @@ $(document).ready(function() {
 		}
 	});
   // DELETE ITEM
-  $('.del-item').click(function( event ){
+  $('#grid').on('click', '.del-item', function( event ){
     event.preventDefault();
 
     var item_id = $(this).attr('data-id');
@@ -131,7 +131,7 @@ $(document).ready(function() {
   			cache: false,
   			type: "GET",
   			success: function(data){
-          console.log(data);
+          //console.log(data);
           if(data.result){
             notify('El dato fue eliminado correctamente.');
             item_li.fadeOut();

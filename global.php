@@ -25,8 +25,7 @@ if($q->num_rows==0){
 	// Obtener el directorio donde estara instalado el cms
 	// Reemplazamos el ultimo elemento con un dato campo vacio para obtener este valor
 	$directory = str_replace('/'.$last_part_url, '', $_SERVER['SCRIPT_NAME']);
-
-	header('Location: ..'.$directory.'/rb-install/index.php');
+	header('Location: '.$directory.'/rb-install/index.php');
 }
 
 // Inicia arrays para contener los bb_codes y su correspondiente en html

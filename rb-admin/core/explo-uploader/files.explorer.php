@@ -22,7 +22,7 @@ $controlHideId = $_GET['controlHideId'];
 	$( "#close" ).click(function( event ) {
 		event.preventDefault();
 		$('#img_loading').hide();
-		$(".bg-opacity").hide();
+		$(".bg_files").hide();
 		$(".explorer").hide();
    	$(".explorer").empty();
 	});

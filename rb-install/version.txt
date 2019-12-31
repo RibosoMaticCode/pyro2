@@ -1,6 +1,9 @@
-Instalador Blackpyro
+Instalador Pyro
 ====================
-version 0.0.3
+version 0.0.5
+- Crea las tablas en el proceso de instalación
+
+version 0.0.4
 18/05/17
 - Generara nuevos valores para la tabla opciones, y añade valores por defecto a usuarios_niveles
 

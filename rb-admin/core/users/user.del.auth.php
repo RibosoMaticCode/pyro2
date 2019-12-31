@@ -30,10 +30,10 @@ if(isset($_GET['users'])){
   </label>
   <div class="cols-container">
     <div class="cols-6-md cols-content-left">
-      <button type="submit" style="background-color:red">Eliminar</button>
+      <button class="button btn-delete" type="submit">Eliminar</button>
     </div>
     <div class="cols-6-md cols-content-right">
-      <button type="button" class="CancelFancyBox">Cancelar</button>
+      <button class="button" type="button" class="CancelFancyBox">Cancelar</button>
     </div>
   </div>
 </form>

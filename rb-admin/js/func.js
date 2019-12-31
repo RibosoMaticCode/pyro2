@@ -69,3 +69,12 @@ $(document).ready(function() {
     }
   });
 });
+
+// Notificador principal
+var notify = function(text, time = 2000){
+  console.log('hi!');
+  $("#message").show();
+  $("#message").html('<h3>'+text+'</h3>');
+  $("#message").animate({ "top": "+=50px", "opacity" : 1 }, "slow" );
+  $("#message").delay(time).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
+}

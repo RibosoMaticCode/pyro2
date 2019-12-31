@@ -442,7 +442,7 @@ a.page-resalt {
 /* Load image */
 #img_loading {
     position: fixed;
-    z-index:9997;
+    z-index:9998;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

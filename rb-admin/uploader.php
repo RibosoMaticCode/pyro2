@@ -8,8 +8,14 @@ require_once ABSPATH."rb-script/funcs.php";
 require_once ABSPATH."rb-script/class/rb-database.class.php";
 
 if(G_ACCESOUSUARIO>0){
-	$album_id = $_POST['albumid'];
-	$user_id = $_POST['user_id'];
+	$album_id = isset($_POST['albumid']) ? $_POST['albumid'] : -1;
+	$user_id = isset($_POST['user_id']) ? $_POST['user_id'] : -1;
+	if($album_id == -1){
+		$arr = ['resultado' => false, 'contenido' => 'Valores no reconocidos'];
+	}
+	if($user_id == -1){
+		$arr = ['resultado' => false, 'contenido' => 'Valores no reconocidos'];
+	}
 	$dir_gallery =  ABSPATH."rb-media/gallery/";
 	$dir_gallery_thumbs = ABSPATH."rb-media/gallery/tn/";
 	$watermark = rb_get_values_options('water_mark_image');

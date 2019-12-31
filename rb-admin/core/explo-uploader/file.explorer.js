@@ -85,7 +85,7 @@
                 name_control_hidden = name_control+'_id[]'; // añadirlos al final del _id
               }
 
-            	console.log(name_control+':'+name_control_hidden);
+            	//console.log(name_control+':'+name_control_hidden);
 
             	// Estableciendo ID al control visible de acuerdo al nombre
             	$(this).attr( "id" , id_control );
@@ -130,8 +130,9 @@
           // Funcion para mostrar la ventana explorador de imagenes
 			    showNextImage = function(event){
 			    	event.preventDefault();
+            $('body').append('<div class="bg_files" style="z-index:9997;background-color:#000;opacity:.8;width:100%;height:100vh;position:fixed;"></div>');
             $('#img_loading').show();
-            $(".bg-opacity").show();
+            //$(".bg-opacity").show();
 			    	var controlHideId = id_control+"_id"; // id del control oculto que contendra el ID real de la foto
 					  var controlShowId = id_control; // id del Control visible que contendra el Nombre de la foto (archivo)
 			    	$.post( "../rb-admin/core/explo-uploader/files.explorer.php?controlShowId="+controlShowId+"&controlHideId="+controlHideId , function( data ) {
@@ -147,10 +148,11 @@
 			    	event.preventDefault();
 			    	var controlShowId = id_control;
 			    	var photo = $( '#'+controlShowId+"_id" ).val();
-            console.log(photo);
+            //console.log(photo);
   					if(photo > 0){
               $('#img_loading').show();
-              $(".bg-opacity").show();
+              $('body').append('<div class="bg_files" style="z-index:9997;background-color:#000;opacity:.8;width:100%;height:100vh;position:fixed;"></div>');
+              //$(".bg-opacity").show();
               $.post( "../rb-admin/core/explo-uploader/files.explorer.view.php?file_id="+photo , function( data ) {
     					 	$('.explorer').html(data);
     						$(".explorer").fadeIn(500);

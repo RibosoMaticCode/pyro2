@@ -1,3 +1,12 @@
+<?php
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once ABSPATH.'global.php';
+
+if(G_ACCESOUSUARIO==0) die("No tiene permisos");
+if(!isset($_GET['opc'])) die("Error: acceso denegado");
+?>
 <div class="inside_contenedor_frm">
 <?php
 $mode;

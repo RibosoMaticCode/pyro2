@@ -11,8 +11,8 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once(ABSPATH."global.php");
-require_once(ABSPATH."rb-script/funciones.php");
-require_once(ABSPATH."rb-script/class/rb-usuarios.class.php");
+require_once(ABSPATH."rb-script/funcs.php");
+require_once(ABSPATH."rb-script/class/rb-users.class.php");
 
 // Array de respuesta
 $rspta = array();
@@ -63,7 +63,7 @@ if(isset($_POST)){
 
 	// VALIDAR CORREO EXISTENTE DEL USUARIO
 	if($objUsuario->existe('correo',$mail)>0):
-		$qq = $objDataBase->Ejecutar("select access from usuarios where correo='".$mail."'");
+		$qq = $objDataBase->Ejecutar("select access from ".G_PREFIX."users where correo='".$mail."'");
 		$rr = $qq->fetch_assoc();
 		if($rr['access']=='fb'):
 			$msg_error = "El correo electronico esta registrado con tu cuenta de Facebook, logueate con esa cuenta";
@@ -90,8 +90,9 @@ if(isset($_POST)){
 		endif;
 	endif;
 
-	// VALIDANDO LOGINTUD DE LA CONTRASEÑA
-	//http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
+	// VALIDANDO CONTRASEÑA
+
+	// Contraseña segura //http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
 	$pass_security = rb_get_values_options('pass_security');
 	if($pass_security == 1):
 		if ( !rb_valid_pass($cn1) ){
@@ -109,6 +110,35 @@ if(isset($_POST)){
 
 		if ( !rb_valid_pass($cn2) ){
 			$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
+			if($response=="ajax"):
+				$rspta = Array(
+					"codigo" => "1",
+					"mensaje" => $msg_error
+				);
+				die( json_encode ($rspta) );
+			else:
+				die($msg_error);
+			endif;
+		}
+	endif;
+
+	// Contraseña No segura
+	if($pass_security == 0):
+		if ( strlen($cn1) < 3 ){
+			$msg_error = "La contraseña debe tener al menos 3 caracteres";
+			if($response=="ajax"):
+				$rspta = Array(
+					"codigo" => "1",
+					"mensaje" => $msg_error
+				);
+				die( json_encode ($rspta) );
+			else:
+				die($msg_error);
+			endif;
+		}
+
+		if ( strlen($cn2) < 3  ){
+			$msg_error = "La contraseña debe tener al menos 3 caracteres";
 			if($response=="ajax"):
 				$rspta = Array(
 					"codigo" => "1",
@@ -155,7 +185,7 @@ if(isset($_POST)){
 	// SI TODAS LAS VALIDACIONES PASA CON EXITO, GENERAR NICKNAME EN BASE A SU CORREO.
 	$array_mail = explode("@", $mail);
 	$user = $array_mail[0];
-	$q = $objDataBase->Ejecutar("SELECT nickname FROM usuarios WHERE nickname LIKE '%$user%'");
+	$q = $objDataBase->Ejecutar("SELECT nickname FROM ".G_PREFIX."users WHERE nickname LIKE '%$user%'");
 	$nums = $q->num_rows;
 	if($nums>0):
 		$user = $user."_".$nums;
@@ -188,7 +218,7 @@ if(isset($_POST)){
 	$superadmins = json_decode(rb_get_values_options('user_superadmin'), true);
 	$array_admins = explode(",", $superadmins['admin']);
 
-	$r = $objDataBase->Insert('usuarios', $valores);
+	$r = $objDataBase->Insert(G_PREFIX.'users', $valores);
 	if($r['result']){
 		// crear coockie para bloquear registro seguido
 		setcookie("_register", "no-register", time()+ 120, "/"); // despues de 2 mins otro registro
@@ -196,7 +226,7 @@ if(isset($_POST)){
 
 		// Añadir resto de campos
 		foreach ($array_fields_value as $key => $value) {
-			$objDataBase->EditarPorCampo('usuarios', $key, $value, $last_id);
+			$objDataBase->EditarPorCampo(G_PREFIX.'users', $key, $value, $last_id);
 		}
 
 		// ENVIANDO EMAIL A ADMINISTRADORES - AVISO DE NUEVO USUARIO
@@ -220,7 +250,7 @@ if(isset($_POST)){
 				$email_content .= "Mensaje: La activación del usuario, esta configurado para que lo haga el mismo usuario. Solo si el usuario tuviera problemas en activar, usted puede activarlo desde el panel administrativo <br />";
 			elseif(G_USERACTIVE==0):
 				$email_content .= "Mensaje: Usuario nuevo registrado! La activación del usuario esta desactivada. Verifique que no se trate de spam o correo malicioso. <br />";
-				$objDataBase->EditarPorCampo_Int('usuarios', 'activo', 1, $last_id);
+				$objDataBase->EditarPorCampo_Int(G_PREFIX.'users', 'activo', 1, $last_id);
 			endif;
 			$email_content .= "<br />Este correo se ha enviado automaticamente por el gestor de contenidos. No responda.";
 

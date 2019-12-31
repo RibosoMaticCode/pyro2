@@ -227,7 +227,7 @@ $(document).ready(function() {
               }
             }).done(function( msg ) {
               $('#img_loading').hide();
-              console.log(msg)
+              //console.log(msg)
             });
           }else{
             // No se guarda widget
@@ -292,7 +292,7 @@ $(document).ready(function() {
     var boxin_class = $(this).closest(".box").attr('data-inclass');
     var boxin_values_string = $(this).closest(".box").attr('data-invalues');
     var boxin_jsonvals = JSON.parse(boxin_values_string); //Pasando a json
-    console.log(boxin_jsonvals);
+    //console.log(boxin_jsonvals);
 
     var boxin_height = boxin_jsonvals.height;
     var boxin_width = boxin_jsonvals.width;
@@ -318,7 +318,7 @@ $(document).ready(function() {
     $('#boxin_paddingleft').val(boxin_paddingleft);
     $('#boxin_class').val(boxin_class);
 
-    console.log(boxext_jsonvals);
+    //console.log(boxext_jsonvals);
     //$('#boxext_bgimage').val(boxext_bgimage);
     $('input[name=boxext_bgimage_id]').val(boxext_bgimage);
     $('input[name=boxext_bgimage]').val(boxext_bgimage_src);
@@ -339,25 +339,6 @@ $(document).ready(function() {
     $("#editor-box").show();
     event.preventDefault();
   });
-
-  // Consultar foto por id
-  function showPhotoInfo(photoId){
-    var postData = {
-      table: 'py_files',
-      colsToShow: 'src',
-      condition:{
-        id: photoId
-      }
-    }
-    $.ajax({
-      method: "post",
-      url: "../rb-script/list.data.php",
-      data: {dataToSend: JSON.stringify(postData)}
-    })
-    .done(function( dataResult ) {
-      console.log(dataResult);
-    });
-  }
 
   // Remover columnas y widgets
   $("#boxes").on("click", ".close-column", function (event) {
@@ -468,7 +449,7 @@ $(document).ready(function() {
       		  	url: "core/pages3/save.block.php",
       		  	data: 'block_id='+widget_save_id+'&block_content='+blo_json+'&block_name=none'
       			}).done(function( msg ) {
-              console.log(msg)
+              //console.log(msg)
       			});
           }else{
             widgets_string_content += widgets_coma + '{"widget_save_id" : "0", "widget_id" : "'+widget_id+'","widget_content" : "'+htmlt_content_widget+'","widget_type":"'+ widget_type + '", "widget_class" : "'+ widget_class +'","widget_values": '+widget_values+'}';
@@ -508,7 +489,7 @@ $(document).ready(function() {
           data: 'block_id='+box_save_id+'&block_content='+this_columns_string+'&block_name=none',
 
         }).done(function( msg ) {
-          console.log(msg)
+          //console.log(msg)
         });
 
         all_columns_string += boxes_coma + '{ "box_save_id" : "'+ box_save_id +'" }';
@@ -518,7 +499,7 @@ $(document).ready(function() {
       boxes_coma = ",";
     });
     final_string_content += boxesmain_string_start + all_columns_string + boxesmain_string_end;
-    console.log(final_string_content); // no es necesario pasar a json en js antes JSON.stringify
+    //console.log(final_string_content); // no es necesario pasar a json en js antes JSON.stringify
 
     sheader = $( "input[name$='sheader']:checked" ).val();
     h_cust_id = $( "select[name$='sheader_custom_id']" ).val();
@@ -526,8 +507,8 @@ $(document).ready(function() {
     f_cust_id = $( "select[name$='sfooter_custom_id']" ).val();
     type = $( "input[name$='type']:checked" ).val();
 
-    console.log(sheader+":"+h_cust_id);
-    console.log(sfooter+":"+f_cust_id);
+    //console.log(sheader+":"+h_cust_id);
+    //console.log(sfooter+":"+f_cust_id);
 
     $.ajax({
       url: "core/pages3/page.save.php",

@@ -128,14 +128,6 @@ include 'islogged.php';
 			});
 		});
 
-		// Notificador principal
-		var notify = function(text, time = 2000){
-			$("#message").show();
-			$("#message").html('<h3>'+text+'</h3>');
-			$("#message").animate({ "top": "+=50px", "opacity" : 1 }, "slow" );
-			$("#message").delay(time).animate({ "top": "-=50px", "opacity" : 0 }, "slow" );
-		}
-
 		var validateInputText = function(thisObj, msj){
 			if( (thisObj.val()).trim() == ""){
 				thisObj.addClass('input_red');

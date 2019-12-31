@@ -1,4 +1,22 @@
 <?php
+// Copia el directorio de la plantilla por defecto: default
+// A una posicion para que el usuario pueda modificarlo
+function rb_recurse_copy($src,$dst) {
+    $dir = opendir($src);
+    @mkdir($dst);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            if ( is_dir($src . '/' . $file) ) {
+                rb_recurse_copy($src . '/' . $file,$dst . '/' . $file);
+            }
+            else {
+                copy($src . '/' . $file,$dst . '/' . $file);
+            }
+        }
+    }
+    closedir($dir);
+}
+
 // Marca de agua estandar
 // https://www.php.net/manual/es/image.examples-watermark.php
 function addImageWatermark($SourceFile, $WaterMark, $DestinationFile=NULL) {
@@ -316,18 +334,25 @@ function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
 
 /* OBTIENE DATOS FILES FROM ID*/
 function rb_get_photo_details_from_id($photo_id){
+  $DetailsPhoto = array();
+  if($photo_id==0){
+    $DetailsPhoto['file_name'] = "";
+    $DetailsPhoto['file_url'] = "";
+    $DetailsPhoto['thumb_url'] = "";
+    return $DetailsPhoto;
+  }
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
 	$Photo = $q->fetch_assoc();
-  $DetailsPhoto = array();
+
   $DetailsPhoto['file_name'] = $Photo['src'];
-  if($Photo['src']==""):
+  /*if($Photo['src']==""):
     $DetailsPhoto['file_url'] = G_SERVER."rb-script/images/gallery-default.jpg";
     $DetailsPhoto['thumb_url'] = G_SERVER."rb-script/images/gallery-default.jpg";
-  else:
-    $DetailsPhoto['file_url'] = G_SERVER."rb-media/gallery/".$Photo['src'];
-    $DetailsPhoto['thumb_url'] = G_SERVER."rb-media/gallery/tn/".$Photo['src'];
-  endif;
+  else:*/
+  $DetailsPhoto['file_url'] = G_SERVER."rb-media/gallery/".$Photo['src'];
+  $DetailsPhoto['thumb_url'] = G_SERVER."rb-media/gallery/tn/".$Photo['src'];
+  //endif;
 	return $DetailsPhoto;
 }
 
@@ -1408,7 +1433,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   $ext_class = isset($box['boxext_class']) && $box['boxext_class']!="" ? $box['boxext_class'] : "";
   $ext_parallax = isset($box['boxext_values']['extparallax']) && $box['boxext_values']['extparallax']!="" ? $box['boxext_values']['extparallax'] : "";
   $style_extbgcolor = isset($box['boxext_values']['bgcolor']) && $box['boxext_values']['bgcolor']!="" ? "background-color:".$box['boxext_values']['bgcolor'].";" : "";
-  $file = rb_get_photo_details_from_id($box['boxext_values']['bgimage']);
+  if(isset($box['boxext_values']['bgimage'])) $file = rb_get_photo_details_from_id($box['boxext_values']['bgimage']);
   //$file['file_url'];
   $style_extbgimage = isset($box['boxext_values']['bgimage']) && $box['boxext_values']['bgimage']!="" ? "background-image:url(".$file['file_url'].");background-position:center;background-size:cover;" : "";
   $style_extpaddingtop = isset($box['boxext_values']['paddingtop']) && $box['boxext_values']['paddingtop']!="" ? "padding-top:".$box['boxext_values']['paddingtop'].";" : "";
@@ -1419,7 +1444,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   //Parallax
   if($ext_parallax==1){
     $ext_class .= " parallax-window";
-    $addons = ' data-parallax="scroll" data-image-src="'.rb_BBCodeToGlobalVariable($box['boxext_values']['bgimage']).'" ';
+    $addons = ' data-parallax="scroll" data-image-src="'.$file['file_url'].'" ';
     $styles_ext = $style_extbgcolor.$style_extpaddingtop.$style_extpaddingright.$style_extpaddingbottom.$style_extpaddingleft;
   //Estilos
   }elseif($ext_parallax==0){
@@ -1443,7 +1468,8 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   }
   $in_class = isset($box['boxin_class']) && $box['boxin_class']!="" ? $box['boxin_class'] : "";
   $style_inbgcolor = isset($box['boxin_values']['bgcolor']) && $box['boxin_values']['bgcolor']!="" ? "background-color:".$box['boxin_values']['bgcolor'].";" : "";
-  $style_inbgimage = isset($box['boxin_values']['bgimage']) && $box['boxin_values']['bgimage']!="" ? "background-image:url(".rb_BBCodeToGlobalVariable($box['boxin_values']['bgimage']).");background-position:center;background-size:cover;" : "";
+  if(isset($box['boxin_values']['bgimage']))  $file = rb_get_photo_details_from_id($box['boxin_values']['bgimage']);
+  $style_inbgimage = isset($box['boxin_values']['bgimage']) && $box['boxin_values']['bgimage']!="" ? "background-image:url(".$file['file_url'].");background-position:center;background-size:cover;" : "";
   $style_inheight = isset($box['boxin_values']['height']) && $box['boxin_values']['height']!="" ? "height:".$box['boxin_values']['height'].";" : "";
   $style_inpaddingtop = isset($box['boxin_values']['paddingtop']) && $box['boxin_values']['paddingtop']!="" ? "padding-top:".$box['boxin_values']['paddingtop'].";" : "";
   $style_inpaddingright = isset($box['boxin_values']['paddingright']) && $box['boxin_values']['paddingright']!="" ? "padding-right:".$box['boxin_values']['paddingright'].";" : "";
@@ -1631,7 +1657,7 @@ function rb_disabled_cache(){
 /* Pass valid */
 function rb_valid_pass($pass){
   //http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
-  if (preg_match('/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/', $pass)){
+  if (preg_match('/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/', $pass)){
     return true; // Valido
   }else{
     return false;

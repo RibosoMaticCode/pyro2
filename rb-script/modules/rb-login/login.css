@@ -95,6 +95,13 @@ body{
 	margin-left:20px;
 	padding:2px 0;
 }
+.imgLoading{
+	position: fixed;
+	left:50%;
+	top:50%;
+	transform:translate(-50%, -50%);
+	z-index: 2;
+}
 code{
 	background-color: #fff;
 	padding:0 3px;
@@ -215,7 +222,7 @@ button[disabled]{
 	background-color: #000;
 	opacity: .7;
 	z-index: 1;
-	position: absolute;
+	position: fixed;
 	display: none;
 	top:0;
 }

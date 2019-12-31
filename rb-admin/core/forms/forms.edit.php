@@ -1,5 +1,13 @@
 <?php
-include_once("../rb-admin/tinymce/tinymce.config.php");
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
+
+require_once ABSPATH.'global.php';
+
+if(G_ACCESOUSUARIO==0) die("No tiene permisos");
+if(!isset($_GET['opc'])) die("Error: acceso denegado");
+
+include_once ABSPATH.'rb-admin/tinymce/tinymce.config.php';
 $mode;
 if(isset($_GET["id"])){
 	$id=$_GET["id"];

@@ -1,11 +1,15 @@
 <?php
+header('Content-type: application/json; charset=utf-8');
 /*
 * Instalador: Establece valores iniciales em la tabla Opciones
 * Ultima actualizacion : 24-01-17
 */
 //require_once("../global.php");
-require_once("../rb-script/funcs.php");
-require_once("../rb-script/class/rb-database.class.php");
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(dirname(__FILE__)) . '/');
+
+require_once ABSPATH.'rb-script/funcs.php';
+require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
 define('G_PREFIX', 'py_');
 $key_web = randomPassword(12,1,"lower_case,upper_case,numbers,special_symbols");
@@ -39,7 +43,7 @@ function create_htaccess($dir){
 	# Para evitar errores con vinculos de facebook
 	# RewriteCond %{QUERY_STRING} \"fbclid=\" [NC]
 	# RewriteRule (.*) $dir/$1? [R=301,L]
-	
+
 	RewriteRule ^index\.php$ - [L]
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
@@ -156,20 +160,84 @@ $opciones_valores = array(
 );
 
 if(isset($_POST)):
+	// Validaciones
 	$sitio_titulo = $_POST['sitio_titulo'];
+	if($sitio_titulo==""){
+		$response = ['result' => false, 'message' => 'Especifique un titulo a su sitio web'];
+		die(json_encode($response));
+	}
 	$sitio_url = $_POST['sitio_url'];
+	if($sitio_url==""){
+		$response = ['result' => false, 'message' => 'La url no su sitio web no debe quedar en blanco'];
+		die(json_encode($response));
+	}
 	$usuario_correo = $_POST['usuario_correo'];
+	if(!filter_var($usuario_correo, FILTER_VALIDATE_EMAIL)){
+		$response = ['result' => false, 'message' => 'Ingrese un correo válido'];
+		die(json_encode($response));
+	}
 	$usuario_pass = $_POST['usuario_pass'];
+	if ( !rb_valid_pass($usuario_pass) ){
+		$response = ['result' => false, 'message' => 'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.'];
+		die(json_encode($response));
+	}
 	$usuario_pass1 = $_POST['usuario_pass1'];
+	if ( !rb_valid_pass($usuario_pass1) ){
+		$response = ['result' => false, 'message' => 'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.'];
+		die(json_encode($response));
+	}
+	if($usuario_pass != $usuario_pass1){
+		$response = ['result' => false, 'message' => 'Las contraseñas no coinciden'];
+		die(json_encode($response));
+	}
 
-	if($usuario_pass != $usuario_pass1) die("Contraseñas no coinciden");
+	/*$objDataBase = new DataBase;
+	// Creamos la estructura de la base de datos
+	$query_db = file_get_contents("_sql/pyro3.sql");
+	$conexion = $objDataBase->conexion();
+	$stmt = $conexion->prepare($query_db);
+	if( $stmt->execute() ):
+		$response = ['result' => false, 'message' => 'Error al ejecutar script de base de datos'];
+		die(json_encode($response));
+	endif;*/
 
-	/* USUARIO INICIAL */
-	$response = $objDataBase->Insertar("INSERT INTO ".G_PREFIX."users (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
+	function createDB($filename){
+		// https://dev.to/erhankilic/how-to-import-sql-file-with-php--1jbc
+		global $objDataBase;
+		// Temporary variable, used to store current query
+		$conexion = $objDataBase->Conexion();
+		$templine = '';
+		// Read in entire file
+		$lines = file($filename);
+		// Loop through each line
+		foreach ($lines as $line) {
+		// Skip it if it's a comment
+		    if (substr($line, 0, 2) == '--' || $line == '')
+		        continue;
+
+		// Add this line to the current segment
+		    $templine .= $line;
+		// If it has a semicolon at the end, it's the end of the query
+		    if (substr(trim($line), -1, 1) == ';') {
+		        // Perform the query
+		        $objDataBase->Ejecutar($templine) or print('Error performing query ' . $templine . ': ' .  $conexion->connect_errno.$conexion->error . '<br /><br />');
+						/*if(!$objDataBase->Ejecutar($templine)){
+							return "error:".$conexion->error;
+						}*/
+						// or print('Error performing query \'<strong>' . $templine . '\': ' . $con->error() . '<br /><br />');
+		        // Reset temp variable to empty
+		        $templine = '';
+		    }
+		}
+		return true;
+	}
+	createDB("_sql/pyro3.sql");
+	/* Creamos al usuario admin */
+	$query_user = $objDataBase->Insertar("INSERT INTO ".G_PREFIX."users (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
 		VALUES ('admin', '".md5($usuario_pass)."', 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");
 
-	if($response['result']==true):
-		$usuario_id = $response['insert_id'];
+	if($query_user['result']==true):
+		$usuario_id = $query_user['insert_id'];
 
 		// ACTIVANDO USUARIO
 		$objDataBase->EditarPorCampo(G_PREFIX."users",'activo',1,$usuario_id);
@@ -191,9 +259,17 @@ if(isset($_POST)):
 		$objDataBase->Ejecutar("INSERT INTO ".G_PREFIX."users_levels (id, nombre, nivel_enlace, descripcion) VALUE (3, 'Usuario Final', 'user-front', 'Usuario final, no tiene acceso a gestionar el sitio web')");
 
 		create_htaccess($directory);
-		header('Location: '.$sitio_url."/login.php");
+
+		// Crear directorio para la plantilla y asignarlo por defecto
+		rb_recurse_copy(ABSPATH.'rb-themes/default', ABSPATH.'rb-themes/'.rb_cambiar_nombre($sitio_titulo));
+		rb_set_values_options( "tema", rb_cambiar_nombre($sitio_titulo));
+
+		$response = ['result' => true, 'message' => 'Instalación completa. Sera redireccionado...', 'details' => 'Procesos sin errores'];
+		die(json_encode($response));
 	else:
-		die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico. ".$response['error']);
+		//die("Problemas a registrar los datos. Si problema persiste consulte el soporte técnico. ".$query_user['error']);
+		$response = ['result' => false, 'message' => 'Error al ejecutar script de base de datos', 'details' => $query_user['error']];
+		die(json_encode($response));
 	endif;
 endif;
 ?>

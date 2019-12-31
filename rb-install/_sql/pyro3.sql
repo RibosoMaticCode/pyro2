@@ -73,7 +73,7 @@ CREATE TABLE `blog_fields` (
 
 CREATE TABLE `blog_posts` (
   `id` int(7) NOT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `fecha_creacion` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `titulo` varchar(200) NOT NULL DEFAULT '',
   `titulo_enlace` varchar(200) NOT NULL DEFAULT '',
   `autor_id` int(7) NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE `blog_posts` (
   `actcom` char(1) DEFAULT 'A',
   `portada` tinyint(1) NOT NULL DEFAULT '0',
   `actividad` tinyint(1) NOT NULL DEFAULT '0',
-  `fecha_actividad` date NOT NULL DEFAULT '0000-00-00',
+  `fecha_actividad` date NOT NULL DEFAULT '1000-01-01',
   `acceso` varchar(10) NOT NULL,
   `niveles` varchar(250) NOT NULL,
   `img_back` smallint(5) NOT NULL DEFAULT '0',
@@ -269,7 +269,7 @@ CREATE TABLE `py_messages_users` (
 
 CREATE TABLE `py_pages` (
   `id` int(7) NOT NULL,
-  `fecha_creacion` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `fecha_creacion` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
   `titulo` varchar(200) NOT NULL DEFAULT '',
   `titulo_enlace` varchar(200) NOT NULL DEFAULT '',
   `autor_id` int(7) NOT NULL,
@@ -594,7 +594,3 @@ ALTER TABLE `py_users_groups`
 ALTER TABLE `py_users_levels`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

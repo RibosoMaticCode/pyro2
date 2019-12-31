@@ -70,17 +70,33 @@ if($mode=="new"){
 	endif;
 
 	// Validar seguridad de las contraseñas
-	if ( !rb_valid_pass($pwd) ):
-		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
-		$arr = ['resultado' => 5, 'contenido' => $msg_error ];
-		die(json_encode($arr));
-	endif;
+	if(rb_get_values_options('pass_security')==1){ // Contraseñas seguras
+		if ( !rb_valid_pass($pwd) ):
+			$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.";
+			$arr = ['resultado' => 5, 'contenido' => $msg_error ];
+			die(json_encode($arr));
+		endif;
 
-	if ( !rb_valid_pass($pwd1) ):
-		$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.";
-		$arr = ['resultado' => 5, 'contenido' => $msg_error ];
-		die(json_encode($arr));
-	endif;
+		if ( !rb_valid_pass($pwd1) ):
+			$msg_error = "La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.";
+			$arr = ['resultado' => 5, 'contenido' => $msg_error ];
+			die(json_encode($arr));
+		endif;
+	}
+
+	if(rb_get_values_options('pass_security')==0){ // Contraseñas No seguras
+		if ( strlen($pwd) < 3 ):
+			$msg_error = "La contraseña debe tener al menos una longitud de 3 caracteres.";
+			$arr = ['resultado' => 5, 'contenido' => $msg_error ];
+			die(json_encode($arr));
+		endif;
+
+		if ( strlen($pwd1) < 3 ):
+			$msg_error = "La contraseña debe tener al menos una longitud de 3 caracteres.";
+			$arr = ['resultado' => 5, 'contenido' => $msg_error ];
+			die(json_encode($arr));
+		endif;
+	}
 
   // INSERTAR USUARIO NUEVO
 	$now = date('Y-m-d G:i:s');

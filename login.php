@@ -288,7 +288,7 @@ if(isset($_POST['newpass'])){
 	$id = $UsuarioItem['id'];
 
 	// cambiamos el password
-	$objDataBase->EditarPorCampo("usuarios","password", md5(trim($pwd)),$id);
+	$objDataBase->EditarPorCampo(G_PREFIX."users","password", md5(trim($pwd)),$id);
 
 	// quitamos recovery mode
 	$objDataBase->Ejecutar("UPDATE ".G_PREFIX."users SET recovery=0 WHERE correo = '".$mail."'");

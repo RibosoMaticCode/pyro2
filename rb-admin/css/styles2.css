@@ -157,28 +157,18 @@
 	padding:5px 0;
 }
 
-/* POST - OPCIONES */
-/*#frm-posts-options{
-	padding: 20px 30px;
-	width: 100%;
-	max-width: 650px;
-}*/
-
 /* EXPLORADOR DE ARCHIVOS */
 .explorer{
-	z-index:9998;
-	display:none;
-	max-width: 100vw;
-	min-width: 400px;
-	left:50%;
-	top:50%;
-	transform:translate(-50%, -50%);
-	border: 0;
 	position: fixed;
-	background-color: #FBFBFB;
-	box-shadow: 0 0 8px #000;
+	width: 100%;
+	max-width: 720px;
+	top:50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: none;
+	z-index: 9998;
+	background-color: #fff;
 	max-height: 100vh;
-	/* border: 2px solid red; */
 	overflow: auto;
 }
 .explorer-header{
@@ -199,9 +189,9 @@
 .explorer-body{
 	overflow:hidden;
 	position:relative;
-	/* min-height:450px; */
 	width: 100%;
 	min-width: 555px;
+	padding: 15px;
 }
 .explorer-body .file_msj {
 	position: absolute;
@@ -466,17 +456,6 @@ ul._box-options-list li a img {
 	font-size:0.9em;
 	text-decoration: none;
 }
-/*.box-header .boxdelete{
-	position:absolute;
-  top: 6px;
-  right: 12px;
-	font-size:0.9em;
-	text-decoration: none;
-}*/
-/*.box-body{
-	padding:6px 3px;
-}
-*/
 .box-body label{
 	padding:4px 0;
 	display:block;

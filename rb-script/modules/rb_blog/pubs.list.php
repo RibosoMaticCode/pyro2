@@ -31,6 +31,7 @@ while ($row = $consulta->fetch_assoc()):
       ?>
     </td>
     <td class="col_vistas"><?= $row['lecturas'] ?></td>
+    <td class="col_vistas"><?php if($row['activo']=="A") echo "Publicado"; else echo "Borrador"; ?></td>
     <td class="col_fecha"><?= rb_sqldate_to($row['fecha_creacion'], 'd')?> de <?= rb_mes_nombre(rb_sqldate_to($row['fecha_creacion'], 'm'))?>, <?= rb_sqldate_to($row['fecha_creacion'], 'Y')?></td> <!-- actualizar funcion -->
     <td class="row-actions">
       <a title="Duplicar" class="edit" href="<?= G_SERVER ?>rb-script/modules/rb_blog/pubs.duplicate.php?id=<?= $row['id'] ?>">

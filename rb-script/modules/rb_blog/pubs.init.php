@@ -108,6 +108,7 @@ $(document).ready(function() {
               <th>Autor</th>
               <th>Categoría</th>
               <th>Vistas</th>
+              <th>Estado</th>
               <th>Fecha</th>
               <th>Acciones</th>
             </tr>

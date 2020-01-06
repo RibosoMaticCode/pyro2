@@ -11,7 +11,7 @@
         <?php if($Post['url_img_pri_max']!=""): ?>
         <div class="post-image" style="background-image:url('<?= $Post['url_img_pri_max']  ?>')"></div>
         <?php endif ?>
-        <?= $Post['contenido'] ?>
+        <?= rb_shortcode(rb_BBCodeToGlobalVariable($Post['contenido'])) ?>
       </article>
     </div>
     <?php rb_sidebar() ?>

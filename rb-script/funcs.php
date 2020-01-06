@@ -1432,7 +1432,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
   //Bloque externo
   $ext_class = isset($box['boxext_class']) && $box['boxext_class']!="" ? $box['boxext_class'] : "";
   $ext_parallax = isset($box['boxext_values']['extparallax']) && $box['boxext_values']['extparallax']!="" ? $box['boxext_values']['extparallax'] : "";
-  $style_extbgcolor = isset($box['boxext_values']['bgcolor']) && $box['boxext_values']['bgcolor']!="" ? "background-color:".$box['boxext_values']['bgcolor'].";" : "";
+  $style_extbgcolor = isset($box['boxext_values']['bgcolor']) && $box['boxext_values']['bgcolor']!="" ? "background-color:#".$box['boxext_values']['bgcolor'].";" : "";
   if(isset($box['boxext_values']['bgimage'])) $file = rb_get_photo_details_from_id($box['boxext_values']['bgimage']);
   //$file['file_url'];
   $style_extbgimage = isset($box['boxext_values']['bgimage']) && $box['boxext_values']['bgimage']!="" ? "background-image:url(".$file['file_url'].");background-position:center;background-size:cover;" : "";
@@ -1467,7 +1467,7 @@ function rb_show_block($box, $type="page"){ //Muestra bloque
     $style_inwidth = "";
   }
   $in_class = isset($box['boxin_class']) && $box['boxin_class']!="" ? $box['boxin_class'] : "";
-  $style_inbgcolor = isset($box['boxin_values']['bgcolor']) && $box['boxin_values']['bgcolor']!="" ? "background-color:".$box['boxin_values']['bgcolor'].";" : "";
+  $style_inbgcolor = isset($box['boxin_values']['bgcolor']) && $box['boxin_values']['bgcolor']!="" ? "background-color:#".$box['boxin_values']['bgcolor'].";" : "";
   if(isset($box['boxin_values']['bgimage']))  $file = rb_get_photo_details_from_id($box['boxin_values']['bgimage']);
   $style_inbgimage = isset($box['boxin_values']['bgimage']) && $box['boxin_values']['bgimage']!="" ? "background-image:url(".$file['file_url'].");background-position:center;background-size:cover;" : "";
   $style_inheight = isset($box['boxin_values']['height']) && $box['boxin_values']['height']!="" ? "height:".$box['boxin_values']['height'].";" : "";
@@ -1657,7 +1657,8 @@ function rb_disabled_cache(){
 /* Pass valid */
 function rb_valid_pass($pass){
   //http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=psw
-  if (preg_match('/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/', $pass)){
+  // Update 3/1/20 https://www.imtiazepu.com/password-validation/
+  if (preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pass)){
     return true; // Valido
   }else{
     return false;

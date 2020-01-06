@@ -3,14 +3,20 @@ BlackPyro CMS - Gestor Basico de Contenidos
 PHP, MySQL, JavaScript (jquery), HTML 5, CSS3
 
 Desarrollo: Yustus Liñan < jesusvld@gmail.com >
-Web: ribosomatic.com
+Web: ribosomatic.com / emocion.pe
 
 Licencia: ../rb-admin/licencia.txt
+
+version 3.0.0 pyro3 (diciembre 2019)
+-------------------
+- Mejoras en seudo editor de Paginas: elegir colores para bloques, imagenes de fondo, etc.
+- Blog modulo externo ahora.
+- Mejoras en gestion de contraseñas seguras y no
 
 version 2.0.6 pyro2 (septiembre 18)
 -------------------
 - Cabecera, Pie de pagina y Barra Lateral edicion similar a una pagina.
-- Modulo comentarios eliminado. 
+- Modulo comentarios eliminado.
 
 version 2.0.5 pyro2 (junio 18)
 -------------------

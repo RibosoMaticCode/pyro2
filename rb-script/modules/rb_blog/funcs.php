@@ -282,7 +282,7 @@ function rb_get_post_by_category($category_id="*", $num_posts=10, $regstart=0, $
 	if($category_id == "*"):
     if(G_ACCESOUSUARIO==0): // USUARIO FINAL, SOLO VISUALIZA PUBLICACIONES PUBLICAS
       $q_string = "SELECT c.acceso, c.niveles, a.*, $datetime_fields FROM blog_posts a, blog_posts_categories ac, blog_categories c
-			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.acceso = 'public'
+			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND a.activo='A' AND c.acceso = 'public'
 			ORDER BY $column $ord $limit";
 			$qa  = $objDataBase->Ejecutar($q_string);
     elseif(G_ACCESOUSUARIO==1): // USUARIO REGISTRADO
@@ -291,7 +291,7 @@ function rb_get_post_by_category($category_id="*", $num_posts=10, $regstart=0, $
 				$user_no_admin = "AND c.niveles LIKE '%".G_USERNIVELID."%'";
 			}
       $q_string = "SELECT c.acceso, c.niveles, a.*, $datetime_fields FROM blog_posts a, blog_posts_categories ac, blog_categories c
-			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND (c.acceso = 'public' OR c.acceso = 'privat' $user_no_admin)
+			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND a.activo='A' AND (c.acceso = 'public' OR c.acceso = 'privat' $user_no_admin)
 			ORDER BY $column $ord $limit";
 			$qa  = $objDataBase->Ejecutar($q_string);
 		endif;
@@ -315,7 +315,7 @@ function rb_get_post_by_category($category_id="*", $num_posts=10, $regstart=0, $
 			$category_id = $ra['id'];
       if(G_ACCESOUSUARIO==0): // USUARIO FINAL, SOLO VISUALIZA PUBLICACIONES PUBLICAS
         $q_string = "SELECT c.acceso, c.niveles, a.*, $datetime_fields FROM blog_posts a, blog_posts_categories ac, blog_categories c
-  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND c.acceso = 'public'
+  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND a.activo='A' AND c.id=$category_id AND c.acceso = 'public'
   			ORDER BY $column $ord $limit";
   			$qa  = $objDataBase->Ejecutar($q_string);
   		elseif(G_ACCESOUSUARIO==1): // USUARIO REGISTRADO
@@ -324,7 +324,7 @@ function rb_get_post_by_category($category_id="*", $num_posts=10, $regstart=0, $
 					$user_no_admin = "AND c.niveles LIKE '%".G_USERNIVELID."%'";
 				}
         $q_string = "SELECT c.acceso, c.niveles, a.*, $datetime_fields FROM blog_posts a, blog_posts_categories ac, blog_categories c
-  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND c.id=$category_id AND (c.acceso = 'public' OR c.acceso = 'privat' $user_no_admin)
+  			WHERE a.id=ac.articulo_id AND ac.categoria_id = c.id AND a.activo='A' AND c.id=$category_id AND (c.acceso = 'public' OR c.acceso = 'privat' $user_no_admin)
   			ORDER BY $column $ord $limit";
   			$qa  = $objDataBase->Ejecutar($q_string);
       endif;

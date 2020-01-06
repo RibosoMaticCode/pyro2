@@ -216,7 +216,7 @@ function rb_blog_call_url(){
 		$Categoria_id = $Cat['id'];
 
 		$file = ABSPATH.'rb-script/modules/rb_blog/frontend.pub.php';
-		if(file_exists( $file )): require_once( $file );rb_set_read_post($Post['id'], 'articulos');
+		if(file_exists( $file )): require_once( $file );rb_set_read_post($Post['id'], 'blog_posts');
 		else: die( message_error($file));
 		endif;
 		die();

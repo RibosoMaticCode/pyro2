@@ -133,16 +133,6 @@ section.seccion {
     border:1px solid #E4E4E4;
 	overflow:auto;
 }
-
-/*.seccion fieldset{
-	padding:0 10px;
-	border: 1px solid #cccccc;
-}
-.seccion fieldset legend{
-	font-family:light;
-	padding:0 5px;
-	color:#000;
-}*/
 .seccion picture{
 	position: relative;
 }
@@ -157,15 +147,6 @@ section.seccion {
 		font-size: .85em;
 		padding: 5px;
 }
-/*
-.seccion .titulo{
-	padding:8px 5px!important;
-	font-size:1.5em!important;
-	margin-bottom:10px!important;
-}
-.seccion h3{
-	font-size:1.2em;
-}*/
 .info{
 	font-size: 0.85em;
 	color: #7B7B7B;
@@ -202,7 +183,6 @@ section.seccion {
 }
 .seccion .seccion-body li{
 	list-style-type:none;
-	/*margin:4px 0;*/
 }
 .seccion-body .gallery-items li{
 	width:15.66%;
@@ -315,12 +295,6 @@ section.seccion .popup {
 	float:left;
 	width:calc(100% - 300px);
 }
-/*.content-centered {
-  padding: 5px;
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
-}*/
 .seccion label input[type="checkbox"]{
 	margin-right:5px;
 }
@@ -750,17 +724,6 @@ a.page-resalt {
 .header-message p{
 	padding:5px 0px 5px 0px;
 }
-
-/*.btn-submit{
-	background: #3396c9;
-  	-moz-box-shadow: 0 2px 0 0 #15719f;
-  	-webkit-box-shadow: 0 2px 0 0 #15719f;
-  	box-shadow: 0 2px 0 0 #15719f;
-  	color:#fff;
-  	padding:5px 15px;
-  	border:0;
-  	border-radius:3px;
-}*/
 
 /* Mensaje de resultados */
 #message_result {

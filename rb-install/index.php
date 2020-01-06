@@ -48,7 +48,7 @@ if($q!==false){ // existe la base de datos
 		<img class="imgLoading" src="<?= $rm_url ?>/rb-script/images/loading.gif" alt="Loading" style="display:none" />
 		<div class="wrap-content">
 			<div class="content">
-				<form id="frmCreateSite" class="frmlogin frminstall" method="post" action="">
+				<form id="frmCreateSite" class="frmlogin frminstall" method="post">
 					<div class="coverFormCreateSite">
 						<h2>Bienvenido!</h2>
 						<p class="frmmessage">Para empezar a usar el gestor de contenidos, deberás especificar algunos datos. El proceso no tomará mucho tiempo.</p>

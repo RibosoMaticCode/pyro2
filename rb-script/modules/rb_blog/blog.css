@@ -112,7 +112,8 @@
 }
 .wrap-posts-list article p {
   padding: 4px 0;
-  line-height: 28px;
+  line-height: 30px;
+  margin: 10px 0;
 }
 
 /* RESPONSIVE */

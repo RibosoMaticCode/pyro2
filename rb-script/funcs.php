@@ -955,6 +955,11 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
     "/\[LOGUEO_REGISTRO]/is",
     "/\[RUTA_SITIO]/is",
     "/\[RUTA_TEMA]/is",
+    "/\[FECHA_DIA]/is",
+    "/\[FECHA_NOMBREDIA]/is",
+    "/\[FECHA_MES]/is",
+    "/\[FECHA_NOMBREMES]/is",
+    "/\[FECHA_ANIO]/is",
     "/\[YOUTUBE=\"(.*?)\"]/is",
     "/\[MAPA coordenadas=\"(.*?)\" altura=\"(.*?)\"]/is"
 	);
@@ -975,6 +980,11 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
     $acceso_reg,
     G_SERVER.'',
     G_URLTHEME.'/',
+    date("j"),
+    rb_numadia(date("N")),
+    date("n"),
+    rb_mes_nombre(date("n")),
+    date('Y'),
     '<iframe class="img-responsive" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>',
     '<iframe frameborder="0" height="$2" src="'.G_SERVER.'rb-script/map.php?ubicacion='.G_TITULO.'&coordenadas=$1&alto=$2" class="img-responsive"></iframe>'
   );

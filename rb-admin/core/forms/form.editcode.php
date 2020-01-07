@@ -26,7 +26,7 @@ $(function() {
   // Mostrar la ventana de configuracion
   $('.editCodeForm').click(function(event){
     event.preventDefault();
-    $(".bg-opacity, #img_loading").show();
+    $(".bg-opacity").show();
     $("#codeForm").show();
 
     var box_edit_html = $(".estructure_html");
@@ -37,10 +37,10 @@ $(function() {
   //Aceptar cambios
   $('#codeForm-btnaccept').click(function() {
     $('.estructure_html').html($('#htmlraw_text_hidden').val());
-    $('#img_loading, .bg-opacity, #codeForm').hide();
+    $('.bg-opacity, #codeForm').hide();
   });
   $('#codeForm-btncancel').click(function() {
-    $('#img_loading, .bg-opacity, #codeForm').hide();
+    $('.bg-opacity, #codeForm').hide();
   });
 });
 </script>

@@ -47,7 +47,7 @@ $(document).ready(function() {
 				$('#img_loading, .bg-opacity').hide();
 				notify(data.message);
 				setTimeout(function(){
-					window.location.href = data.url+'/rb-admin/module.php?pag=forms&opc=edt&id='+data.last_id;
+					window.location.href = data.url+'rb-admin/module.php?pag=forms&opc=edt&id='+data.last_id;
 				}, 1000);
 			}else{
 				notify(data.message);

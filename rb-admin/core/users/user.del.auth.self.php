@@ -14,10 +14,10 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
   </label>
   <div class="cols-container">
     <div class="cols-6-md cols-content-left">
-      <button type="submit" style="background-color:red">Eliminar</button>
+      <button type="submit" class="button btn-delete">Eliminar</button>
     </div>
     <div class="cols-6-md cols-content-right">
-      <button type="button" class="CancelFancyBox">Cancelar</button>
+      <button type="button" class="button CancelFancyBox">Cancelar</button>
     </div>
   </div>
 </form>

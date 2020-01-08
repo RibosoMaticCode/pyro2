@@ -18,7 +18,7 @@ while ($row = $consulta->fetch_assoc()):
   <tr>
     <td><input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" /></td>
     <td>
-      <?= $row['titulo'] ?>
+      <?= rb_fragment_letters($row['titulo'],50) ?>
     </td>
     <td class="col_autor"><?= $row['nombres'] ?></td>
     <td class="col_categoria">

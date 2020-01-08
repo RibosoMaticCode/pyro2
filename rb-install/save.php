@@ -193,7 +193,7 @@ if(isset($_POST)):
 
 	/*$objDataBase = new DataBase;
 	// Creamos la estructura de la base de datos
-	$query_db = file_get_contents("_sql/pyro3.sql");
+	$query_db = file_get_contents("sql/pyro3.sql");
 	$conexion = $objDataBase->conexion();
 	$stmt = $conexion->prepare($query_db);
 	if( $stmt->execute() ):
@@ -231,7 +231,7 @@ if(isset($_POST)):
 		}
 		return true;
 	}
-	createDB("_sql/pyro3.sql");
+	createDB("sql/pyro3.sql");
 	/* Creamos al usuario admin */
 	$query_user = $objDataBase->Insertar("INSERT INTO ".G_PREFIX."users (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
 		VALUES ('admin', '".md5($usuario_pass)."', 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");

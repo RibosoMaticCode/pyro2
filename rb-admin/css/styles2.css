@@ -141,7 +141,7 @@
 
 /* PIE DE PAGINA */
 #footer {
-	z-index: 4;
+	z-index: 6;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -638,4 +638,25 @@ ul.box-options-list{
 }
 .tabs-sections .tab_padding{
 	padding:20px 15px;
+}
+
+/* EDITOR DE PLANTILLA */
+.file_selected{
+	background-color:#FFEB3B!important;
+	border:1px solid #f1dc23!important;
+}
+.file_item{
+	padding:0 5px;
+}
+.file_item li{
+	border: 1px solid #eaeaea;
+	padding: 5px;
+	margin-bottom:5px;
+	background-color: #fbfbfb;
+}
+.file_item li a{
+	color:gray;
+}
+.file_item li .info{
+	font-style:italic;
 }

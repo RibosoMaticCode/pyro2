@@ -773,6 +773,8 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		$destination_file = $path_to_thumbs_directory.$original_file;
 		$original_file = $path_to_image_directory.$original_file;
 
+    if(!exif_imagetype($original_file)) return false;
+
 		$height = empty(G_THEIGHT) ? "190" : strval(G_THEIGHT); //"190";
 		$width = empty(G_TWIDTH) ? "280" : strval(G_TWIDTH); //"280";
 
@@ -885,6 +887,8 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		imagedestroy($original_image);
 		imagedestroy($smaller_image);
 		imagedestroy($square_image);
+
+    return true;
 }
 
 

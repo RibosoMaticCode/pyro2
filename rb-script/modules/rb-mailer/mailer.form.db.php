@@ -4,7 +4,12 @@
 // El script envia el formulario que se edito y guardo en la base de datos
 // Maneja un array de valores y los campos a validar se establecen en la configuracion del formulario
 
-// Habilitar allow_url_fopen=on en PHP.ini
+// NOTA para desarrollador: Habilitar en PHP.ini
+// allow_url_fopen=on
+// para llamadas a urls https, asi verificar el recaptcha https://www.google.com/recaptcha/api/siteverify
+// Se puede colocar allow_url_fopen en un archivo php.ini en la raiz del sitio
+// De no funcionar acceder a cpanel y verificar si se puede
+// Si tiene acceso a WHM puede habilitarlo desde alli en Editor INI de MultiPHP
 header('Content-type: application/json; charset=utf-8');
 
 // Incluir varibales globales
@@ -57,16 +62,16 @@ if( isset($_POST['g-recaptcha-response']) ){
 	);
 
 	$context  = stream_context_create($opts);
-  	$rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+  $rsp = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
 
-  	$arr = json_decode($rsp, true);
-  	if($arr['success']==""){
-  		$recaptcha_msg = 'spam';
-  	}
+  $arr = json_decode($rsp, true);
+  if(!$arr['success']){
+  	$recaptcha_msg = 'spam';
+  }
 
-	if($arr['success']==1){
-  		$recaptcha_msg = 'done';
-  	}
+	if($arr['success']){
+  	$recaptcha_msg = 'done';
+  }
 }
 
 // Si respuesta del recaptcha es spam, termina todo

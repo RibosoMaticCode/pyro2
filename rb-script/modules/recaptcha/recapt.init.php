@@ -36,6 +36,8 @@ if($sitekey==""){
         </pre>
         <p>Al boton que realiza el envio puedes añadirle <code>id="btnSend"</code>, para que no se active hasta que el captcha responda valido. Deberia quedar asi en tu html</p>
         <pre>&lt;button id="btnSend" type="submit"&gt;Enviar&lt;/button&gt;</pre>
+        <h2>Nota de desarrollo</h2>
+        <p>Habilitar el módulo <code>allow_url_fopen=on</code> de PHP en el servidor, para que la verificación desde el servidor de Google pueda darse.</p>
       </div>
     </section>
   </div>

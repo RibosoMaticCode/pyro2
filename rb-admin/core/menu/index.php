@@ -24,7 +24,7 @@ function items_recursive($mainmenu_id, $parent, $level){
 // Mostrar items del menu segun su id
 function show_menu( $params ){
   $menu_html = '<div class="menu_main">'.items_recursive($params['id'], 0, 0).'</div>';
-  $menu_html .= '<a class="btnMenuOpen" href="#">Open Menu</a><a class="btnMenuClose" href="#">Close Menu</a>';
+  $menu_html .= '<a class="btnMenuOpen" href="#"><i class="fas fa-bars"></i></a><a class="btnMenuClose" href="#"><i class="fas fa-times"></i></a>';
 	return $menu_html;
 }
 

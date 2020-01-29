@@ -59,6 +59,7 @@ if(isset($_GET["id"])){
 	                //http://jsfiddle.net/beyondsanity/HgDZ9/
 
 	                $(".btnSaveOrderMenu").click(function(event){
+										var nivel_id = $(this).attr("data-id");
 	                  var optionTexts = [];
 	                  var i=1;
 	                  $("#sortable li").each(function() {
@@ -78,7 +79,7 @@ if(isset($_GET["id"])){
 	                  var myJsonString = JSON.stringify(optionTexts);
 	                  console.log(myJsonString);
 
-										var nivel_id = <?= $row['id'] ?>;
+										//var nivel_id = <?= $row['id'] ?>;
 
 	                  $.ajax({
 	                    method: "GET",
@@ -121,7 +122,7 @@ if(isset($_GET["id"])){
 	                }
 	                ?>
 	              </ul>
-	              <button class="button btn-primary btnSaveOrderMenu" type="button">Guardar permisos</button>
+	              <button class="button btn-primary btnSaveOrderMenu" data-id="<?= $row['id'] ?>" type="button">Guardar permisos</button>
 
 	          </div>
 	        </div>

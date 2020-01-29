@@ -32,7 +32,7 @@ function list_file($carpeta){
 
 // Funcion para ordenar el array multidimensional
 function sort_by_orden ($a, $b) {
-    return $a['tipo'] <=> $b['tipo'];
+    return $a['tipo'] > $b['tipo']; // In PHP7 se puede usar el operador spaceship <=> para comparar
 }
 
 // Array a mostrar en formato de lista

@@ -26,9 +26,7 @@ $path_module = G_SERVER."rb-admin/core/editfile/";
 							<textarea id="textarea" name="file_content" rows="30"></textarea>
 							<div id="editor-css-content"></div>
 						</div>
-						<!--<label>Ubicacion del archivo
-							<input type="text" id="file_name" name="file_name" readonly />
-						</label>-->
+						<input type="hidden" id="file_name" name="file_name" readonly />
 						<button class="button btn-primary" type="submit">Guardar cambios</button>
 					</form>
 					<div id="file-result"></div>

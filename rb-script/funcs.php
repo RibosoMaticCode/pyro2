@@ -773,6 +773,8 @@ function rb_createThumbnail($original_file, $path_to_thumbs_directory, $path_to_
 		$destination_file = $path_to_thumbs_directory.$original_file;
 		$original_file = $path_to_image_directory.$original_file;
 
+    // Para exif_imagetype, se necesita activar las extensiones: mbstring y exif, desde php.ini o si permite desde el servidor apache
+    // No de tener forma, comentar la siguiente linea
     if(!exif_imagetype($original_file)) return false;
 
 		$height = empty(G_THEIGHT) ? "190" : strval(G_THEIGHT); //"190";

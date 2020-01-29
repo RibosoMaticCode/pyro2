@@ -14,9 +14,11 @@
     z-index:2;
     background-color:#000000;
     padding-top:30px;
+    margin-top:0;
   }
   .menu_main li{
     padding: 4px 15px;
+    display: block;
   }
   .menu_main li a{
     color:#fff;
@@ -26,6 +28,13 @@
   }
   .btnMenuOpen{
     display: block;
+  }
+  .btnMenuOpen{
+    border:1px solid gray;
+    position:absolute;
+    right:10px;
+    top:10px;
+    padding:10px;
   }
   .btnMenuClose{
     position: fixed;

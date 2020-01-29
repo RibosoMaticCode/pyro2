@@ -8,6 +8,7 @@ rb-script/modules/medic1/*
 rb-script/modules/feria_suscrip/*
 rb-script/modules/plm/lib/*
 rb-script/modules/plm/vendor/*
+rb-script/modules/cadeza/
 rb-themes/metro3/
 pendientes.md
 _modules_extern/*

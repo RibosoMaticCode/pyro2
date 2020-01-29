@@ -231,7 +231,7 @@ if(isset($_POST)):
 		}
 		return true;
 	}
-	createDB("sql/pyro3.sql");
+	createDB("sql/pyro.sql");
 	/* Creamos al usuario admin */
 	$query_user = $objDataBase->Insertar("INSERT INTO ".G_PREFIX."users (nickname, password, nombres, apellidos, correo, tipo, sexo, photo_id)
 		VALUES ('admin', '".md5($usuario_pass)."', 'Admin', 'Del Sitio', '$usuario_correo', 1, 'h', 0)");

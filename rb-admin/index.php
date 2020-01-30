@@ -1,5 +1,8 @@
 <?php
+// Carga funciones gancho, funciones personalizadas
 require_once '../rb-script/hook.php';
+
+// Carga configuracion inicial del admin
 require_once 'admin.php';
 
 if(count($_GET)==0) { // Si index no tiene parametros cambiamos por la que establecio el cliente.
@@ -11,10 +14,10 @@ if(count($_GET)==0) { // Si index no tiene parametros cambiamos por la que estab
 	}
 }
 
-// Carga formato js de la base de datos
+// Carga Modulos en la base de datos en formato JSON
 $modules_prev = rb_get_values_options('modules_load');
 
-// Convierte json a array
+// Convierte JSON a array php
 $array_modules = json_decode($modules_prev, true);
 
 // Incluir los modulos externos desde la base de datos
@@ -23,12 +26,21 @@ require_once '../rb-script/modules.list.php';
 // Cargar los widgets del sistemas y personalizados (de los modulos)
 require_once 'widgets.system.php';
 
-$rb_title = "Panel Inicial | ".G_TITULO;
+// Titulo de la seccion
+$rb_title_module = do_action('module_title_page') ? do_action('module_title_page') : (isset($title_page) ? $title_page : "");
+$rb_title = $rb_title_module." | ".G_TITULO; // antes $rb_module_title
+
+//$rb_title = "Panel Inicial | ".G_TITULO;
 include_once 'header.php';
 ?>
 <section id="wrap">
 	<?php include('menu.php') ?>
 	<!--<div id="message"></div>-->
-	<?php require('seleccionar.php') ?>
+	<?php //require('seleccionar.php') ?>
+	<div id="contenedor">
+		<div class="inside_contenedor_list">
+			<?= do_action('module_content_main') ?>
+		</div>
+	</div>
 </section>
 <?php include_once 'footer.php' ?>

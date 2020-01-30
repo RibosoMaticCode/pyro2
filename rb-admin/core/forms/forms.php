@@ -3,10 +3,19 @@
 rb_add_specific_item_menu('visual', array(
 			'key' => 'forms',
 			'nombre' => "Formularios",
-			'url' => "module.php?pag=forms"
+			'url' => "forms"
 ));
 
-if(isset($_GET['pag']) && $_GET['pag']=="forms"):
+// Formulario nuevo
+if(rb_module_url('forms/new')):
+	add_function('module_title_page', function(){
+		return "Formulario Nuevo";
+	});
+endif;
+
+// Relacion de formularios
+//if(isset($_GET['pag']) && $_GET['pag']=="forms"):
+if(rb_module_url('forms')):
 	// Titulo de pagina
 	function forms_title(){
 		return "Editor de formularios";
@@ -173,11 +182,6 @@ function show_form( $params ){ // Mostrar el formulario segun su id
 	$formhtml .= "<div class='frm_response' id='frmresponse_".$form['id']."'></div>";
 	return $formhtml;
 }
-
-function test(){
-	return "Esto es una demostración de como usar los shortcodes - primitivo";
-}
-
 /*
 * Hay que crear los shortcodes para cada formulario, ANTES de usarse en el sistema,
 * NO DURANTE, pues no es posible cuando se trata de funciones dinamicas.
@@ -186,7 +190,11 @@ $r = $objDataBase->Ejecutar('SELECT * FROM '.G_PREFIX.'forms');
 while($form = $r->fetch_assoc()){
 	add_shortcode('FORM', 'show_form', ['id' => $form['id'] ]);
 }
-add_shortcode('DEMO', 'test');
 /*add_shortcode('FORM', 'show_form', ['id' => 7 ]);
 add_shortcode('FORM', 'show_form', ['id' => 6 ]);*/
+
+function test(){
+	return "Esto es una demostración de como usar los shortcodes - primitivo";
+}
+add_shortcode('DEMO', 'test');
 ?>

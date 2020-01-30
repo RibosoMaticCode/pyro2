@@ -171,7 +171,7 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 <header id="wrap-menu">
     <div class="logo">
     	<h1 class="title-web"><a href="<?= G_SERVER ?>rb-admin/" title="Página Inicial"><?= $titulo ?></a></h1>
-    	<a class="btnMenuOpen" href="#"><img src="img/icon_menu.png" height="24" width="24" alt="Menu"></a>
+    	<a class="btnMenuOpen" href="#"><img src="<?= G_SERVER ?>rb-admin/img/icon_menu.png" height="24" width="24" alt="Menu"></a>
     </div>
     <div class="bar">
     	<form id="search-form" action="index.php" method="get">
@@ -181,21 +181,21 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 			<div class="menu2">
 				<?php if(G_ESTILO!="0"): ?>
 	    	<a title="Ver Sitio Web" class="btn-goto-web" target="_blank" href="<?= G_SERVER ?>">
-					<img src="img/website-icon.png" alt="Ver Sitio Web">
+					<img src="<?= G_SERVER ?>rb-admin/img/website-icon.png" alt="Ver Sitio Web">
 				</a>
 				<?php endif ?>
 				<?php if($userType == "admin"): ?>
 	    	<a id="modules" title="Añadir funciones extras" href="modules.php">
-	    		<img src="img/plugin-icon.png" alt="Modulos">
+	    		<img src="<?= G_SERVER ?>rb-admin/img/plugin-icon.png" alt="Modulos">
 	    	</a>
 				<?php endif ?>
 	    	<?php if($userType == "admin"): ?>
 	    	<a id="config" title="Opciones" href="index.php?pag=opc">
-	    		<img src="img/options-icon.png" alt="Configuración general">
+	    		<img src="<?= G_SERVER ?>rb-admin/img/options-icon.png" alt="Configuración general">
 	    	</a>
 	    	<?php endif ?>
 	    	<a id="out" title="Cerrar sesion" href="<?= G_SERVER ?>login.php?out">
-	    		<img src="img/out-icon.png" alt="Cerrar">
+	    		<img src="<?= G_SERVER ?>rb-admin/img/out-icon.png" alt="Cerrar">
 	    	</a>
 			</div>
     </div>

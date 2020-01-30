@@ -1,4 +1,29 @@
 <?php
+// Enrutamiento amigable en panel administrativo
+function rb_module_url($url){
+  // Retiramos el directorio (rb-admin) de la url
+  // Solo consideramos desde rb-admin en adelante
+  $requestURI = str_replace("rb-admin", "", $_SERVER['REQUEST_URI']);
+
+  // Divimos la url por la barra, y lo convertimos a un array php
+  $requestURI = explode("/", $requestURI);
+
+  // Limpiamos el array para que solo obtengamos valores no vacios
+  $requestURI = array_values( array_filter( $requestURI ) );
+
+  // Contabilizamos elementos obtenidos
+  $numsItemArray = count($requestURI);
+
+  // El url establecido por el cliente debemos tambien dividirlo
+  // Y luego comparalo con la url del sistema
+  print $numsItemArray;
+  print_r($requestURI);
+  if($numsItemArray>0){
+  	if($requestURI[0]==$url) return true;
+  }else{
+    return false;
+  }
+}
 // Copia el directorio de la plantilla por defecto: default
 // A una posicion para que el usuario pueda modificarlo
 function rb_recurse_copy($src,$dst) {

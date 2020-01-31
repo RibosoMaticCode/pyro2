@@ -185,12 +185,12 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 				</a>
 				<?php endif ?>
 				<?php if($userType == "admin"): ?>
-	    	<a id="modules" title="Añadir funciones extras" href="modules.php">
+	    	<a id="modules" title="Añadir funciones extras" href="<?= G_SERVER ?>rb-admin/modules.php">
 	    		<img src="<?= G_SERVER ?>rb-admin/img/plugin-icon.png" alt="Modulos">
 	    	</a>
 				<?php endif ?>
 	    	<?php if($userType == "admin"): ?>
-	    	<a id="config" title="Opciones" href="index.php?pag=opc">
+	    	<a id="config" title="Opciones" href="<?= G_SERVER ?>rb-admin/index.php?pag=opc">
 	    		<img src="<?= G_SERVER ?>rb-admin/img/options-icon.png" alt="Configuración general">
 	    	</a>
 	    	<?php endif ?>

@@ -55,6 +55,9 @@ define('G_VERSION', rb_get_values_options('version'));
 //nombre del servidor http
 define('G_SERVER', rb_get_values_options('direccion_url')."/");
 
+//url del panel
+define('G_URLPANEL', rb_get_values_options('direccion_url')."/rb-admin/");
+
 //nombre del servidor http
 define('G_DIR_MODULES_URL', G_SERVER."rb-script/modules/");
 
@@ -66,10 +69,10 @@ $s = parse_url(G_SERVER);
 define('G_HOSTNAME', $s['host']);
 
 //numero registros
-define('G_NUMREGS', rb_get_values_options('num_registers'));
+//define('G_NUMREGS', rb_get_values_options('num_registers'));
 
 //tema usado o guardado en cookies
-define('G_CSS', rb_get_values_options('css_style'));
+//define('G_CSS', rb_get_values_options('css_style'));
 if(isset($_COOKIE['_ribosoma_style'])){
 	define('G_ESTILO', $_COOKIE['_ribosoma_style']);
 }else{
@@ -103,7 +106,7 @@ define('G_INITIAL', rb_get_values_options('initial'));
 define('G_LINKREGISTER', rb_get_values_options('linkregister'));
 
 // formulario de contacto
-define('G_FORM', rb_get_values_options('form_code'));
+//define('G_FORM', rb_get_values_options('form_code'));
 
 // ancho y alto thumbnails por defecto
 define('G_TWIDTH', rb_get_values_options('t_width'));
@@ -116,7 +119,7 @@ define('G_THEIGHT', rb_get_values_options('t_height'));
 define('G_COIN', rb_get_values_options('moneda'));
 
 // slide principal
-define('G_SLIDEMAIN', rb_get_values_options('slide_main'));
+//define('G_SLIDEMAIN', rb_get_values_options('slide_main'));
 
 // logo
 define('G_LOGO', rb_get_values_options('logo'));
@@ -128,7 +131,7 @@ define('G_FAVICON', rb_get_values_options('favicon'));
 define('G_BGLOGIN', rb_get_values_options('background-image'));
 
 // mail libreria externa
-define('G_LIBMAILNATIVE', rb_get_values_options('lib_mail_native'));
+//define('G_LIBMAILNATIVE', rb_get_values_options('lib_mail_native'));
 
 // base url links amigables
 //define('G_BASEPUB', rb_get_values_options('base_publication'));

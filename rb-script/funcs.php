@@ -1,29 +1,109 @@
 <?php
-// Enrutamiento amigable en panel administrativo
-function rb_module_url($url){
+// Verifica que sea comodin, que contenga caracteres <> al inicio y final respectivamente
+function comodin($comodin_value){
+  $verify1 = false;
+  $verify2 = false;
+  $first = substr($comodin_value, 0, 1);
+  $last = substr($comodin_value, -1);
+  if($first=="<"){
+    $verify1 = true;
+  }
+  if($last==">"){
+    $verify2 = true;
+  }
+  if($verify1 && $verify2){
+    return true;
+  }else{
+    return false;
+  }
+}
+// retira caracteres <>, del comodin <elemento>
+function get_item_value($comodin){
+  return substr($comodin, 1, -1);
+}
+
+// Enrutamiento amigable en panel administrativo:
+// La funcion compara la url establecida por el cliente, Ejemplos:
+//    forms/edit/6
+//    forms/new
+// Y la compara con la url activa, si coincide mostrara contenido
+// correspondiente
+function rb_module_url($url_custom){
   // Retiramos el directorio (rb-admin) de la url
   // Solo consideramos desde rb-admin en adelante
+  // En directorio rb-admin/ debe estar configurado archivo htaccess
   $requestURI = str_replace("rb-admin", "", $_SERVER['REQUEST_URI']);
 
   // Divimos la url por la barra, y lo convertimos a un array php
   $requestURI = explode("/", $requestURI);
 
-  // Limpiamos el array para que solo obtengamos valores no vacios
+  // Limpiamos el array para que solo obtengamos valores no vacios. Ej.
+  //    forms
+  //    edit
+  //    6
   $requestURI = array_values( array_filter( $requestURI ) );
 
   // Contabilizamos elementos obtenidos
   $numsItemArray = count($requestURI);
 
-  // El url establecido por el cliente debemos tambien dividirlo
-  // Y luego comparalo con la url del sistema
-  print $numsItemArray;
-  print_r($requestURI);
+  // El url establecido por el cliente debemos tambien dividirlo y obtener la cantidad
+  $url_custom = explode("/", $url_custom);
+  $num_url_custom = count($url_custom);
+
+  //print_r($url_custom);
+  //print_r($requestURI);
+
+  // Define si hay coincidencia de la url activa con la definida por usuario
+  $concidencia = false;
+
+  // Parametros devueltos
+  $parameters = [];
+
+  // Si la url activa tiene mas de 0 elementos, empezamos a comparar
   if($numsItemArray>0){
-  	if($requestURI[0]==$url) return true;
-  }else{
-    return false;
+    // Numero elementos url activa debe ser igual a la url cliente
+    if($numsItemArray == $num_url_custom){
+      $i=0;
+      // Comparamos cada elemento de la url activa con la url cliente
+      foreach ($requestURI as $URI) {
+        // Si el elemento de la url cliente es comodin estilo <comodin>
+        // ira como parametro de salida y el valor correspondiente. Ej
+        //    forms/edit/<comodin>    - url cliente
+        //    forms/edit/7            - url activa
+        //  parametro seria [comodin => 7]
+        if(comodin($url_custom[$i])){
+          $parameter = get_item_value($url_custom[$i]);
+          //echo "comodin:".$parameter;
+          $parameters[$parameter] = $URI;
+          $i++;
+          continue;
+        }
+        // si elemento de url activa coincide con los de url cliente
+        if($URI == $url_custom[$i]) {
+          //echo "sistema:".$URI."<br>";
+          //echo "custom:".$url_custom[$i]."<br>";
+          $concidencia = true;
+        }else{ // Vasta que uno no coincide, no evalua más y retorna falso
+          return $result=[
+            'result' => false
+          ];
+        }
+        $i++;
+      }
+      // Si despues de comparacion todos elementos del url coincide
+      // devuelve verdadero con parametros comodin si hubiera
+      return $result=[
+        'result' => $concidencia,
+        'parameters' => $parameters
+      ];
+    }
+  }else{ // Si no hay elementos en url activa
+    return $result=[
+      'result' => false
+    ];
   }
 }
+
 // Copia el directorio de la plantilla por defecto: default
 // A una posicion para que el usuario pueda modificarlo
 function rb_recurse_copy($src,$dst) {
@@ -384,23 +464,17 @@ function rb_get_photo_details_from_id($photo_id){
 function rb_photo_login($photo_id){ // logo image login (antes: rb_url_photo_from_id)
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
-	$Photos = $q->fetch_assoc();
-	if($Photos['src']==""):
-		return G_SERVER."rb-admin/img/user-default.png";
-	else:
-		return G_SERVER."rb-media/gallery/".$Photos['src'];
-	endif;
+  if($q->num_rows==0) return G_SERVER."rb-admin/img/user-default.png";
+  $Photos = $q->fetch_assoc();
+	return G_SERVER."rb-media/gallery/".$Photos['src'];
 }
 
 function rb_favicon($photo_id){
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
-	$Photos = $q->fetch_assoc();
-	if($Photos['src']==""):
-		return G_SERVER."rb-script/images/blackpyro-logo.png";
-	else:
-		return G_SERVER."rb-media/gallery/".$Photos['src'];
-	endif;
+  if($q->num_rows==0) return G_SERVER."rb-script/images/blackpyro-logo.png";
+  $Photos = $q->fetch_assoc();
+	return G_SERVER."rb-media/gallery/".$Photos['src'];
 }
 
 function rb_image_exists($name_img){

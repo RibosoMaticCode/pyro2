@@ -11,8 +11,7 @@ while ($row = $result->fetch_assoc()):
 		<td><?= $row['validations'] ?></td>
 		<td><code>[FORM id="<?= $row['id'] ?>"]</code></td>
 		<td class="row-actions">
-			<!--<a class="edit" title="Editar" href="?pag=forms&opc=edt&id=<?= $row['id']?>"><i class="fa fa-edit"></i></a>-->
-			<a class="edit" title="Editar" href="<?= G_URLPANEL ?>forms/edit/<?= $row['id']?>"><i class="fa fa-edit"></i></a>
+			<a class="edit" title="Editar" href="?pag=forms&opc=edt&id=<?= $row['id']?>"><i class="fa fa-edit"></i></a>
 			<a title="Eliminar" class="del del-item" data-id="<?= $row['id'] ?>" href="#"><i class="fa fa-times"></i></a>
 		</td>
 	</tr>

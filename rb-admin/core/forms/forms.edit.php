@@ -5,11 +5,12 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH.'global.php';
 
 if(G_ACCESOUSUARIO==0) die("No tiene permisos");
+if(!isset($_GET['opc'])) die("Error: acceso denegado");
 
 include_once ABSPATH.'rb-admin/tinymce/tinymce.config.php';
 $mode;
-if(isset($item)){
-	$id= $item;
+if(isset($_GET["id"])){
+	$id=$_GET["id"];
 	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."forms WHERE id=$id");
 	$row= $q->fetch_assoc();
 	$mode = "update";
@@ -17,13 +18,53 @@ if(isset($item)){
 	$mode = "new";
 }
 ?>
-<script  src="<?= G_URLPANEL ?>core/forms/forms.js"></script>
+<script>
+$(document).ready(function() {
+	$("#SaveForm").click(function (event) {
+		event.preventDefault();
+		tinyMCE.triggerSave();
+
+		var fname = $('#form_name').val();
+		var festr = $('#form_estructure').html();
+		var fvalid = $('#form_validations').val();
+		var fmode = $('#form_mode').val();
+		var fmails = $('#form_mails').val();
+		var fid = $('#form_id').val();
+		var fintro = $('#form_intro').val();
+		var frspta = $('#form_respuesta').val();
+
+		$.ajax({
+			url: "core/forms/forms.save.php",
+			method: 'post',
+			//data: $.param(data),
+			data: 'name='+fname+'&estructure='+festr+'&validations='+fvalid+'&mode='+fmode+'&id='+fid+'&mails='+fmails+'&intro='+fintro+'&rspta='+frspta,
+			beforeSend: function(){
+				$('#img_loading, .bg-opacity').show();
+			}
+		})
+		.done(function( data ) {
+			if(data.result){
+				$('#img_loading, .bg-opacity').hide();
+				notify(data.message);
+				if(fmode=="new"){
+					setTimeout(function(){
+						window.location.href = data.url+'rb-admin/module.php?pag=forms&opc=edt&id='+data.last_id;
+					}, 1000);
+				}
+			}else{
+				notify(data.message);
+				$('#img_loading, .bg-opacity').hide();
+			}
+		});
+	});
+});
+</script>
 <div class="inside_contenedor_frm">
 	<form id="frmForms" class="form">
 		<div id="toolbar">
 			<div class="inside_toolbar">
 	      <div class="navigation">
-	        <a href="<?= G_SERVER ?>rb-admin/forms">Formularios</a> <i class="fas fa-angle-right"></i>
+	        <a href="<?= G_SERVER ?>rb-admin/module.php?pag=forms">Formularios</a> <i class="fas fa-angle-right"></i>
 	        <?php if(isset($row)): ?>
 	          <span><?= $row['name'] ?></span>
 	        <?php else: ?>
@@ -31,7 +72,7 @@ if(isset($item)){
 	        <?php endif ?>
 	      </div>
 	      <input class="btn-primary" name="guardar"  id="SaveForm" type="submit" value="Guardar" />
-	      <a class="button" href="<?= G_SERVER ?>rb-admin/forms">Cancelar</a>
+	      <a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=forms">Cancelar</a>
 	    </div>
 		</div>
 			<section class="seccion">

@@ -30,13 +30,13 @@ require_once 'widgets.system.php';
 $rb_title_module = do_action('module_title_page') ? do_action('module_title_page') : (isset($title_page) ? $title_page : "");
 $rb_title = $rb_title_module." | ".G_TITULO; // antes $rb_module_title
 
-//$rb_title = "Panel Inicial | ".G_TITULO;
+$rb_title = "Panel Administrativo | ".G_TITULO;
 include_once 'header.php';
 ?>
 <section id="wrap">
 	<?php include('menu.php') ?>
 	<!--<div id="message"></div>-->
-	<?php //require('seleccionar.php') ?>
+	<?php require('seleccionar.php') ?>
 	<div id="contenedor">
 		<div class="inside_contenedor_list">
 			<?= do_action('module_content_main') ?>

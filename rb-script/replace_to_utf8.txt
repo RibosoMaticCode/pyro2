@@ -1,10 +1,15 @@
-update table set column = replace(column, 'Ã±', 'ñ');
-update table set column = replace(column, 'Ã¡', 'á');
-update table set column = replace(column, 'Ã³', 'ó');
-update table set column = replace(column, 'Ã', 'í');
-update table set column = replace(column, 'íº', 'ú');
-update table set column = replace(column, 'í‘', 'Ñ');
-update table set column = replace(column, 'Ãº', 'ú');
-update table set column = replace(column, 'í©', 'é');
-update table set column = replace(column, 'â€“', '–');
-update paginas set contenido = replace(contenido, 'http', 'https')
+update paginas set contenido = replace(contenido, 'Ã±', 'ñ');
+update paginas set contenido = replace(contenido, 'Ã¡', 'á');
+update paginas set contenido = replace(contenido, 'Ã³', 'ó');
+update paginas set contenido = replace(contenido, 'Ã', 'í');
+update paginas set contenido = replace(contenido, 'íº', 'ú');
+update paginas set contenido = replace(contenido, 'í‘', 'Ñ');
+update paginas set contenido = replace(contenido, 'Ãº', 'ú');
+update paginas set contenido = replace(contenido, 'í©', 'é');
+update paginas set contenido = replace(contenido, 'â€“', '–');
+update paginas set contenido = replace(contenido, 'http://', 'https://')
+
+update paginas set contenido = replace(contenido, 'Â', '');
+update paginas set contenido = replace(contenido, 'Ã©­', 'é');
+update paginas set contenido = replace(contenido, 'Ã­', 'í');
+update paginas set contenido = replace(contenido, 'Ã³­', 'ó');

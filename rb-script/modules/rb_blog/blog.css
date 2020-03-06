@@ -115,6 +115,11 @@
   line-height: 30px;
   margin: 10px 0;
 }
+.wrap-posts-list article li {
+  padding: 4px 0;
+  line-height: 30px;
+  margin-left:20px
+}
 
 /* RESPONSIVE */
 @media screen and (max-width: 425px) {

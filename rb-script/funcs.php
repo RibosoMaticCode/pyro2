@@ -1954,7 +1954,9 @@ function searchForId($id, $array) { // Buscar valor dentro un array multidimensi
 //    el array de campos
 function rb_validate_fields($array_validations, $array_fields){
   $keys_config = json_decode($array_validations, true); // Pasamos campos a validar en formato JSON a Array PHP
-
+  $rspmail = [
+    'result' => true
+  ];
 	foreach ($keys_config as $key => $value) {
 		// Verificamos si el campo a validar existe
 		if(array_key_exists($key, $array_fields)==false){
@@ -2011,5 +2013,6 @@ function rb_validate_fields($array_validations, $array_fields){
 			}
 		}
 	}
+  return $rspmail;
 }
 ?>

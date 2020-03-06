@@ -30,7 +30,7 @@ endif;
 				padding:0;
 			}
 		</style>
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDbXy3s0ofpebOTbSafhAjkv4T9eyrKwuo&sensor=true"></script>
+		<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDbXy3s0ofpebOTbSafhAjkv4T9eyrKwuo&sensor=true"></script>
 	  <script>
 	    function initialize() {
 				var styles = [

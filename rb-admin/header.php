@@ -126,6 +126,14 @@ include 'islogged.php';
 					$('.help').slideUp();
 				});
 			});
+
+			// Mostrar ocultar menu
+			$('.btnShowMenu').click(function(event){
+				event.preventDefault();
+				console.log('menu mostrar');
+				$('.items').toggleClass('items_expande', 500);
+				$('#contenedor').toggleClass('contenedor_collapse', 500);
+			});
 		});
 
 		var validateInputText = function(thisObj, msj){
@@ -170,6 +178,7 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 <div class="explorer"></div>
 <header id="wrap-menu">
     <div class="logo">
+			<a class="btnShowMenu" href="#">Mostrar</a>
     	<h1 class="title-web"><a href="<?= G_SERVER ?>rb-admin/" title="Página Inicial"><?= $titulo ?></a></h1>
     	<a class="btnMenuOpen" href="#"><img src="<?= G_SERVER ?>rb-admin/img/icon_menu.png" height="24" width="24" alt="Menu"></a>
     </div>

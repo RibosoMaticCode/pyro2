@@ -84,13 +84,24 @@
 	top:52px;
 	overflow: auto;
 	padding-bottom: 50px;
+	left:-160px;
+	transition:all 1s;
 }
 #contenedor{
 	float:right;
-	width:calc(100% - 160px);
+	width:100%;
 	font-size:.9em;
 	margin-top:52px;
 	margin-bottom: 100px;
+	transition:all 1s;
+}
+.items_expande{
+	left:0;
+	transition:all 1s;
+}
+.contenedor_collapse{
+	width:calc(100% - 160px)!important;
+	transition:all 1s;
 }
 #contenedor .page-header {
 	display: flex;

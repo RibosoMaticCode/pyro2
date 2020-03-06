@@ -16,12 +16,12 @@ if(!G_ACCESOUSUARIO){
 	$arr = array('result' => false, 'message' => 'No puede completarse esta accion, por que usuario no inicio sesion' );
   die(json_encode($arr));
 }
-print_r($_POST['dataToSend']);
+//print_r($_POST['dataToSend']);
 
 $dataJson = $_POST['dataToSend'];
 $tableName = $dataJson['table'];
 $colsToShow = $dataJson['colsToShow'];
-echo $dataJson['condition'];
+//echo $dataJson['condition'];
 
 $string_condition = "";
 if( isset($dataJson['condition']) ){
@@ -34,7 +34,7 @@ if( isset($dataJson['condition']) ){
 
 }
 //check:
-echo "SELECT $colsToShow FROM $tableName $string_condition";
+//echo "SELECT $colsToShow FROM $tableName $string_condition";
 $q = $objDataBase->Ejecutar("SELECT $colsToShow FROM $tableName $string_condition");
 $rows = $q->fetch_all(MYSQLI_ASSOC);
 

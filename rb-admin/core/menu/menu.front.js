@@ -18,7 +18,6 @@ $(window).resize(function() {
   function checkWidth() {
     var windowsize = $window.width();
     if (windowsize > 425) {
-      console.log("Mostrar menu normal");
       $('.menu_main').show();
       $('.btnMenuClose').hide();
     }else{

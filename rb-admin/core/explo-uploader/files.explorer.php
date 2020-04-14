@@ -85,9 +85,10 @@ $controlHideId = $_GET['controlHideId'];
 			<input type="text" id="search_box" placeholder="Archivo a buscar" />
 		</div>
 		<div id="imgsingallery" class="flibrary">
-			<?php
-			require_once 'files.explorer.refresh.php'
-			?>
+			<ul class="gallery" style="overflow:hidden;margin-bottom:20px;">
+				<?php require_once 'files.explorer.refresh.php' ?>
+			</ul>
+			<div style="clear:both"></div>
 		</div>
 	</div>
 	<!-- S U B I R   I M A G E N E S  -->

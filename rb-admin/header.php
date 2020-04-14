@@ -178,15 +178,10 @@ if(isset($_GET['m']) && $_GET['m']=="1")msgOk("Se envio un correo al usuario");
 <div class="explorer"></div>
 <header id="wrap-menu">
     <div class="logo">
-			<a class="btnShowMenu" href="#">Mostrar</a>
-    	<h1 class="title-web"><a href="<?= G_SERVER ?>rb-admin/" title="Página Inicial"><?= $titulo ?></a></h1>
-    	<a class="btnMenuOpen" href="#"><img src="<?= G_SERVER ?>rb-admin/img/icon_menu.png" height="24" width="24" alt="Menu"></a>
-    </div>
+		<a class="btnShowMenu" href="#"><i class="fas fa-bars"></i></a>
+   	</div>
     <div class="bar">
-    	<form id="search-form" action="index.php" method="get">
-    		<input type="text" name="term" placeholder="Escriba su busqueda" required />
-    		<button class="search">B</button>
-    	</form>
+    	<h1 class="title-web"><a href="<?= G_SERVER ?>rb-admin/" title="Página Inicial"><?= $titulo ?></a></h1>
 			<div class="menu2">
 				<?php if(G_ESTILO!="0"): ?>
 	    	<a title="Ver Sitio Web" class="btn-goto-web" target="_blank" href="<?= G_SERVER ?>">

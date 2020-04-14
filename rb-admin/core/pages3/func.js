@@ -383,6 +383,8 @@ $(document).ready(function() {
     var pagina_desc = $('#pagina_desc').val();
     var pagina_tags = $('#pagina_tags').val();
     var mode = $('#mode').val();
+    var pagina_tags = $('#pagina_tags').val();
+    var access_pass = $('#mode').val();
 
     if(pagina_title == "" ){
       notify('Escriba el titulo de la página');
@@ -501,19 +503,25 @@ $(document).ready(function() {
     final_string_content += boxesmain_string_start + all_columns_string + boxesmain_string_end;
     //console.log(final_string_content); // no es necesario pasar a json en js antes JSON.stringify
 
+    // Configuraciones extra
     sheader = $( "input[name$='sheader']:checked" ).val();
     h_cust_id = $( "select[name$='sheader_custom_id']" ).val();
     sfooter = $( "input[name$='sfooter']:checked" ).val();
     f_cust_id = $( "select[name$='sfooter_custom_id']" ).val();
     type = $( "input[name$='type']:checked" ).val();
-
-    //console.log(sheader+":"+h_cust_id);
-    //console.log(sfooter+":"+f_cust_id);
+    if( $('#access_required:checkbox:checked').length > 0 ){
+      access_required = 1;
+    }else{
+      access_required = 0;
+    }
+    access_pass = $( "input[name$='access_pass']" ).val();
+    image_id = $( "input[name$='image_id']" ).val();
+  
 
     $.ajax({
       url: "core/pages3/page.save.php",
       method: 'post',
-      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id,
+      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id+"&access_required="+access_required+"&access_pass="+access_pass+"&image_id="+image_id,
       beforeSend: function(){
         $('#img_loading, .bg-opacity').show();
       }

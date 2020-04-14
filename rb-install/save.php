@@ -151,7 +151,7 @@ $opciones_valores = array(
 	"show_terms_register" => "0",
 	"pass_security" => "0",
 	"more_fields_register" => '{"nombres":"Nombres"}',
-	"repet_pass_register" => 0,
+	"repit_pass_register" => 0,
 	"after_login_url" => "[RUTA_SITIO]?pa=panel",
 	"sidebar_id" => 0,
 	"files_allowed" => "jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf,svg",

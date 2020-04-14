@@ -25,7 +25,10 @@ if(G_ACCESOUSUARIO>0){
 		"show_footer" => $_POST['sf'],
 		"header_custom_id" => $_POST['h_cust_id'],
 		"footer_custom_id" => $_POST['f_cust_id'],
-		"type" => $_POST['type']
+		"type" => $_POST['type'],
+		"allow_access" => $_POST['access_required'],
+		"password_view" => $_POST['access_pass'],
+		"image_id" => $_POST['image_id']
 	];
 
 	if($mode=="new"):

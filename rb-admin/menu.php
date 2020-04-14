@@ -53,9 +53,4 @@ $item_parent_selected = rb_action_menu($menu_panel, $seccion );
 		<a class="additem" href="<?= G_SERVER ?>">Ir al sitio web</a>
 	</li>
 </ul>
-<span class="CoverBtnMenuClose">
-	<a class="btnMenuClose" href="#">
-		<img src="<?= G_SERVER ?>rb-admin/img/close-menu.png" alt="close" />
-	</a>
-</span>
 </div>

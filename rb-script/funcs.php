@@ -431,9 +431,17 @@ function rb_get_img_profile($user_id){
 
 /* OBTIENE DATOS FILES IN ARRAY FROM ID*/
 function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
-  global $objDataBase;
-	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
-	$Photo = $q->fetch_assoc();
+  if($photo_id == 0){
+    $Photo['src'] = "";
+  }else{
+    global $objDataBase;
+    $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
+    if($q->num_rows == 0){
+      $Photo['src'] = "";
+      return $Photo;
+    }
+    $Photo = $q->fetch_assoc();
+  }
 	return $Photo;
 }
 

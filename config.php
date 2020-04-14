@@ -3,7 +3,7 @@
 define('G_SERVIDOR','localhost');
 
 //nombre de la base de datos
-define('G_BASEDATOS','pyro3_test2');
+define('G_BASEDATOS','pyro2');
 
 //nombre del usuario
 define('G_USUARIO','root');

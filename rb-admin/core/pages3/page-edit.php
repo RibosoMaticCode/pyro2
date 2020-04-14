@@ -339,6 +339,19 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 					</select>
 				</label>
 			</div>
+			<h4>Acceso</h4>
+			<label>
+				<input id="access_required" type="checkbox" <?php if( isset($Page) && $Page['allow_access']==1) echo "checked" ?> /> Solicitar inicio de sesión
+			</label>
+			<label>
+				Establecer contraseña de visualización:
+				<input name="access_pass" type="text" value="<?php if( isset($Page) ) print $Page['password_view'] ?>" />
+			</label>
+			<h4>Image para redes sociales</h4>
+			<label>
+				Establecer imagen (beta):
+				<input name="image_id" type="text" placeholder="Escribir ID" value="<?php if( isset($Page) ) print $Page['image_id'] ?>" />
+			</label>
 		</div>
 	</div>
 	<div class="editor-footer">

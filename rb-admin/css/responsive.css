@@ -42,12 +42,9 @@
 	}
 	/* BARRA DE ICONOS - MENU DE MODULOS */
 	.items{
-		display:none;
-		width:60vw!important;
-		height:100vh!important;
 		position:fixed!important;
 		z-index:9999;
-		top:0!important;
+		top:52px!important;
 		overflow:auto;
 		min-width:150px;
 		/*max-width: 200px;*/

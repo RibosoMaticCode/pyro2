@@ -52,15 +52,14 @@ p{
 /* CABECERA */
 .fixed{
 	top: 52px;
-    position: fixed;
-    opacity: 1;
-    z-index: 3;
-    width: calc(100% - 160px);
-    background-color: #F7F7F9;
-
-    left:160px;
-    border-top: 1px solid #E2E2E2;
-    border-bottom: 1px solid #E2E2E2;
+	position: fixed;
+	opacity: 1;
+	z-index: 1;
+	width: 100%;
+	background-color: #F7F7F9;
+	left: 0;
+	border-top: 1px solid #E2E2E2;
+	border-bottom: 1px solid #E2E2E2;
 }
 
 #out,

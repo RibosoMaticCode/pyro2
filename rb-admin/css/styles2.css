@@ -30,7 +30,7 @@
 }
 .logo{
 	background-color:#3A404B;
-	width:160px;
+	width:60px;
 	float:left;
 	height:52px;
 	position: relative;
@@ -49,12 +49,30 @@
 	color:#fff;
 }
 .bar{
-	width:calc(100% - 160px);
+	width:calc(100% - 60px);
 	float:left;
 	height:52px;
 	padding:10px;
 	position:relative;
 	box-shadow: 2px -1px 5px 1px #A5A5A5;
+}
+a.btnShowMenu i {
+    font-size: 1.8em;
+    color: #fff;
+}
+
+a.btnShowMenu {
+    margin: 10px 15px;
+    display: inline-block;
+}
+
+h1.title-web {
+    display: inline-block;
+    font-size: 1.4em;
+}
+
+h1.title-web a {
+    color: gray;
 }
 /* SCROLL STYLES CSS3 */
 #bar_style::-webkit-scrollbar-track
@@ -79,13 +97,14 @@
 .items{
 	background-color:#3e4450;
 	width:160px;
-	height:calc(100vh - 80px);
+	height:calc(100vh - 52px);
 	position: fixed;
 	top:52px;
 	overflow: auto;
 	padding-bottom: 50px;
 	left:-160px;
 	transition:all 1s;
+	z-index: 2;
 }
 #contenedor{
 	float:right;

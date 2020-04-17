@@ -1,0 +1,14 @@
+ul.aula_contenidos_list li {
+    border: 1px solid #e2e2e2;
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+ul.aula_contenidos_list li ul {
+    margin: 5px 0 0 20px;
+}
+ul.aula_contenidos_list a {
+    font-size: .85em;
+    padding: 0;
+    margin-right: 10px;
+}

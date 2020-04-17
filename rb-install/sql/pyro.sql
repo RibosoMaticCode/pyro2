@@ -275,13 +275,16 @@ CREATE TABLE `py_pages` (
   `autor_id` int(7) NOT NULL,
   `tags` varchar(250) DEFAULT NULL,
   `contenido` text NOT NULL,
-  `lecturas` int(7) NOT NULL DEFAULT '0',
-  `show_header` tinyint(1) NOT NULL DEFAULT '1',
+  `lecturas` int(7) NOT NULL DEFAULT 0,
+  `show_header` tinyint(1) NOT NULL DEFAULT 1,
   `header_custom_id` varchar(250) NOT NULL DEFAULT '',
-  `show_footer` tinyint(1) NOT NULL DEFAULT '1',
+  `show_footer` tinyint(1) NOT NULL DEFAULT 1,
   `footer_custom_id` varchar(250) DEFAULT '',
   `description` tinytext NOT NULL,
-  `type` smallint(3) NOT NULL DEFAULT '0'
+  `type` smallint(3) NOT NULL DEFAULT 0,
+  `allow_access` tinyint(1) NOT NULL DEFAULT 0,
+  `password_view` varchar(50) NOT NULL DEFAULT '',
+  `image_id` smallint(5) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

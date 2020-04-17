@@ -166,7 +166,7 @@ $(document).ready(function() {
               </label>
             </div>
           </div>
-          <div class="cols-container">
+          <!--<div class="cols-container">
             <h3 class="subtitle">Redes sociales</h2>
             <div class="cols-6-md col-padding">
               <label>Twitter:
@@ -191,7 +191,7 @@ $(document).ready(function() {
                 <input name="youtube" type="text" value="<?php if(isset($row)) echo $row['youtube'] ?>" />
               </label>
             </div>
-          </div>
+          </div>-->
         </div>
       </section>
     </div>

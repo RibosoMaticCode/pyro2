@@ -28,13 +28,13 @@ $pwd1=$_POST['password1'];
 $sex = $_POST['sexo'];
 $photo = $_POST['photo_id'];
 $bio = trim($_POST['bio']);
-$tw = trim($_POST['tw']);
+/*$tw = trim($_POST['tw']);
 $fb = trim($_POST['fb']);
 $gplus = trim($_POST['gplus']);
 $in = trim($_POST['in']);
 $pin = trim($_POST['pin']);
 $insta = trim($_POST['insta']);
-$youtube = trim($_POST['youtube']);
+$youtube = trim($_POST['youtube']);*/
 $grupo_id = $_POST['grupo'];
 
 // tipo de accion
@@ -133,13 +133,13 @@ if($mode=="new"){
     $ultimo_id= $r['insert_id'];
 
     $objDataBase->EditarPorCampo("usuarios", "bio", $bio, $ultimo_id);
-    $objDataBase->EditarPorCampo("usuarios", "tw", $tw, $ultimo_id);
+    /*$objDataBase->EditarPorCampo("usuarios", "tw", $tw, $ultimo_id);
     $objDataBase->EditarPorCampo("usuarios", "fb", $fb, $ultimo_id);
     $objDataBase->EditarPorCampo("usuarios", "gplus", $gplus, $ultimo_id);
     $objDataBase->EditarPorCampo("usuarios", "in", $in, $ultimo_id);
     $objDataBase->EditarPorCampo("usuarios", "pin", $pin, $ultimo_id);
     $objDataBase->EditarPorCampo("usuarios", "insta", $insta, $ultimo_id);
-    $objDataBase->EditarPorCampo("usuarios", "youtube", $youtube, $ultimo_id);
+    $objDataBase->EditarPorCampo("usuarios", "youtube", $youtube, $ultimo_id);*/
     $objDataBase->EditarPorCampo("usuarios", "grupo_id", $grupo_id, $ultimo_id);
 
 		$arr = ['resultado' => 0, 'contenido' => "Datos del usuario registrados correctamente", 'insert_id' => $ultimo_id ];
@@ -202,13 +202,13 @@ if($mode=="new"){
     if($change_pwd==1) $objDataBase->EditarPorCampo(G_PREFIX."users", "password", md5(trim($pwd)),$id);
 
     $objDataBase->EditarPorCampo("usuarios", "bio", $bio, $id);
-    $objDataBase->EditarPorCampo("usuarios", "tw", $tw, $id);
+    /*$objDataBase->EditarPorCampo("usuarios", "tw", $tw, $id);
     $objDataBase->EditarPorCampo("usuarios", "fb", $fb, $id);
     $objDataBase->EditarPorCampo("usuarios", "gplus", $gplus, $id);
     $objDataBase->EditarPorCampo("usuarios", "in", $in, $id);
     $objDataBase->EditarPorCampo("usuarios", "pin", $pin, $id);
     $objDataBase->EditarPorCampo("usuarios", "insta", $insta, $id);
-    $objDataBase->EditarPorCampo("usuarios", "youtube", $youtube, $id);
+    $objDataBase->EditarPorCampo("usuarios", "youtube", $youtube, $id);*/
     $objDataBase->EditarPorCampo("usuarios", "grupo_id", $grupo_id, $id);
 
 		if(isset($_POST['profile'])):

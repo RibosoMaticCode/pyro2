@@ -579,7 +579,7 @@ function rb_get_images_from_gallery($album_id, $limit = 0){
   global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$rm_url = G_SERVER;
-	if($album_id=="") return false;
+	if($album_id=="" || $album_id==0) return false;
 	// Probamos con Nombre_Enlace
 	$qg = $objDataBase->Ejecutar("SELECT id FROM ".G_PREFIX."galleries WHERE nombre_enlace='$album_id'");
 	$num_reg = $qg->num_rows;

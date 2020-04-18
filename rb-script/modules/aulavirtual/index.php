@@ -9,6 +9,7 @@ Author URI: https://wwww.ribosomatic.com
 */
 
 //include_once 'vars.php';
+$rb_module_url_img = G_SERVER."rb-script/modules/aulavirtual/img/teacher.png";
 
 // Personalizar estructura del Menu
 $menu1 = array(

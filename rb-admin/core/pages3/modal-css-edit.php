@@ -2,7 +2,7 @@
 <!-- ========================================== -->
 <?php
 $fname = $_SERVER['DOCUMENT_ROOT'].G_DIRECTORY."/rb-themes/".G_ESTILO."/css/styles-add.css";
-$myfile = fopen($fname, "r") or die("¡No se puede abrir el archivo!");
+$myfile = fopen($fname, "r") or die("No se puede acceder a la hoja de estilos. Verifique si existe la plantilla en <code>".G_SERVER."rb-themes/</code>.");
 $content = fread($myfile,filesize($fname));
 fclose($myfile);
 ?>

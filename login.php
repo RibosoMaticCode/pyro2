@@ -119,7 +119,10 @@ if(isset($_POST['login'])){
 				endif;
 	}else{
 		// Si loguea y da exito
-		if(!empty($_POST['redirect'])) $url_panel = $_POST['redirect'];
+		if(!empty($_POST['redirect'])) {
+			$url_panel = $_POST['redirect'];
+			$url_panel_usuario = $_POST['redirect'];
+		}
 		if($usuario = $objUsuario->mostrar($user,md5($pwd))){
 			$_SESSION['usr'] = $_POST['usuario'];
 			$_SESSION['pwd'] = md5($_POST['contrasena']);

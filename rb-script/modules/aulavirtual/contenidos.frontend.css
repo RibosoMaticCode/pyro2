@@ -1,17 +1,16 @@
-.aula_cover_content h2 {
+.aula_content_header_info h2 {
     text-align: center;
     margin: 20px 0;
 }
-
 .aula_content_path {
     text-align: center;
 }
 .aula_content {
     padding: 20px 15px;
 }
-
 ul.secciones li {
     display: inline-block;
+    margin: 0 5px;
 }
 ul.secciones li a{
     background-color:#515151;
@@ -20,8 +19,18 @@ ul.secciones li a{
     display:inline-block;
     border-radius:5px;
 }
-
 ul.secciones {
     text-align: center;
     margin: 20px 0;
+}
+
+/* CONTENT */
+.aula_content p {
+    padding: 4px 0;
+    line-height: 24px;
+}
+.aula_content li {
+    padding: 4px 0;
+    line-height: 24px;
+    margin-left:20px;
 }

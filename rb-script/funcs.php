@@ -1065,6 +1065,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
   // BB codes del sistema
   $default_bb_codes = array(
 		"/\[LOGUEO]/is",
+    "/\[LOGUEO_PANEL]/is",
     "/\[LOGUEO_REGISTRO]/is",
     "/\[RUTA_SITIO]/is",
     "/\[RUTA_TEMA]/is",
@@ -1079,8 +1080,13 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
 
 	$acceso = '<a href="'.G_SERVER.'login.php">Ingresar</a>';
 	if(G_ACCESOUSUARIO==1){
-		$acceso = '<a href="'.G_SERVER.'?pa=panel">Panel usuario</a> <a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
+		$acceso = '<a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
 	}
+
+  $acceso_panel = '<a href="'.G_SERVER.'login.php">Ingresar</a>';
+  if(G_ACCESOUSUARIO==1){
+    $acceso_panel = '<a href="'.G_SERVER.'?pa=panel">Panel usuario</a> <a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
+  }
 
   $acceso_reg = '<a href="'.G_SERVER.'login.php">Ingresar</a> / <a href="'.G_SERVER.'login.php?reg">Registrarse</a>';
 	if(G_ACCESOUSUARIO==1){
@@ -1090,6 +1096,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
   // Ejecucion de los bbcodes del sistema
   $default_bb_htmls = array(
 		$acceso,
+    $acceso_panel,
     $acceso_reg,
     G_SERVER.'',
     G_URLTHEME.'/',

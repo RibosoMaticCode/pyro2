@@ -134,9 +134,23 @@ a{
   font-size:.9em
 }
 
-/* BLOCK CONTENT */
-.block-content{
-	padding: 40px 15px;
+/* CONTENT */
+.block_content {
+    padding: 40px 20px;
+}
+
+.block_content h1 {
+    color: #400e71;
+    margin: 8px 0;
+    font-family: light;
+}
+.block_content img {
+    max-width: 100%;
+}
+.block_content p {
+    font-size: 1em;
+    line-height: 30px;
+    padding: 5px 0;
 }
 .post-image{
 	height:300px;

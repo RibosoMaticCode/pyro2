@@ -514,14 +514,21 @@ $(document).ready(function() {
     }else{
       access_required = 0;
     }
-    access_pass = $( "input[name$='access_pass']" ).val();
+    //access_pass = $( "input[name$='access_pass']" ).val();
     image_id = $( "input[name$='image_id']" ).val();
+    var users_ids = []
+    $("input[name='users_ids[]']:checked").each(function ()
+    {
+        users_ids.push(parseInt($(this).val()));
+    });
+    console.log(users_ids);
+    //users_ids = $( "input[name$='users_ids[]']" );
   
 
     $.ajax({
       url: "core/pages3/page.save.php",
       method: 'post',
-      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id+"&access_required="+access_required+"&access_pass="+access_pass+"&image_id="+image_id,
+      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id+"&access_required="+access_required+"&users_ids="+users_ids+"&image_id="+image_id,
       beforeSend: function(){
         $('#img_loading, .bg-opacity').show();
       }

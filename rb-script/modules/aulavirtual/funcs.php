@@ -8,12 +8,24 @@ function path_classification($id){
 		$q = "SELECT * FROM aula_contenidos WHERE id=$id";
 		$r = $objDataBase->Ejecutar( $q );
 		$row = $r->fetch_assoc();
+		switch ( $row['tipo'] ) {
+			case 1:
+				$tipo = "curso";
+				break;
+			case 2:
+				$tipo = "sesion";
+				break;
+			case 3:
+				$tipo = "categoria";
+				break;
+		}
 		$arrow = "";
 		$prev = "";
 		if($row['padre_id']>0){
 			$arrow = " > ";
 			$prev = path_classification($row['padre_id']);
 		}
-		return $prev.$arrow.$row['titulo'];
+		$link = '<a href="'.G_SERVER.$tipo.'/'.$row['id'].'">'.$row['titulo'].'</a>';
+		return $prev.$arrow.$link;
 	}
 }

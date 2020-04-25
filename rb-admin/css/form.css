@@ -27,20 +27,6 @@
 	outline:0;
 	border:1px solid gray;
 }
-/*.form button{
-	color: #fff;
-  padding: 5px 15px;
-  border-radius: 4px;
-  font-size: .9em;
-  display: inline-block;
-  border: 0;
-}*/
-/*.form button[type="submit"]{
-	background-color: #4CAF50;
-}
-.form button[type="button"]{
-	background-color: #9E9E9E;
-}*/
 .form label{
 	display: block;
   padding: 4px 0;
@@ -58,4 +44,16 @@ input:disabled {
   text-align: center;
   font-size: 1.5em;
   padding: 10px 0;
+}
+
+/* BLOQUE DE LISTADO */
+.list_items {
+    border: 1px solid #cacaca;
+    padding: 3px;
+    background-color: #fff;
+    max-height: 150px;
+    overflow: auto;
+}
+.list_items li {
+    list-style-type: none;
 }

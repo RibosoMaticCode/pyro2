@@ -284,7 +284,8 @@ CREATE TABLE `py_pages` (
   `type` smallint(3) NOT NULL DEFAULT 0,
   `allow_access` tinyint(1) NOT NULL DEFAULT 0,
   `password_view` varchar(50) NOT NULL DEFAULT '',
-  `image_id` smallint(5) NOT NULL DEFAULT 0
+  `image_id` smallint(5) NOT NULL DEFAULT 0,
+  `allow_users_ids` tinytext NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

@@ -18,10 +18,10 @@ if($Content['acceso_permitir']==1 && G_ACCESOUSUARIO==0){
 		<div class="inner-content">
 			<div class="aula_cover_content">
 				<div class="aula_content_header_info">
-					<h2><?= $Content['titulo'] ?></h2>
 					<div class="aula_content_path">
-						<?= $path ?>
+						Navegación: <?= $path ?>
 					</div>
+					<h2><?= $Content['titulo'] ?></h2>
 					<?php
 					if( isset($Links) ){
 						print '<ul class="secciones">';
@@ -42,6 +42,7 @@ if($Content['acceso_permitir']==1 && G_ACCESOUSUARIO==0){
 						print '</ul>';
 					}
 					?>
+					
 				</div>
 				<div class="aula_content">
 					<?= $Content['contenido'] ?>

@@ -4,6 +4,7 @@
 }
 .aula_content_path {
     text-align: center;
+    margin-top: 20px;
 }
 .aula_content {
     padding: 20px 15px;
@@ -15,9 +16,12 @@ ul.secciones li {
 ul.secciones li a{
     background-color:#515151;
     color:#fff;
-    padding:5px;
+    padding: 5px 25px;
     display:inline-block;
-    border-radius:5px;
+    border-radius: 15px;
+}
+ul.secciones li a:hover{
+    background-color:#e82b1e;
 }
 ul.secciones {
     text-align: center;

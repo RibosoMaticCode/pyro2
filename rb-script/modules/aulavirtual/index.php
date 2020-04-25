@@ -120,10 +120,8 @@ function aula_contenidos_call_url(){
 					$Links = $rs->fetch_all(MYSQLI_ASSOC);
 				}	
 			}
-			//if($tipo==2 || $tipo==3){
-				$path = path_classification($Content['id']);
-			//}
-
+			$path = path_classification($Content['id']);
+			
 			define('rm_title' , $Content['titulo']." | ".G_TITULO);
 			define('rm_title_page' , '');
 			define('rm_page_image', '');

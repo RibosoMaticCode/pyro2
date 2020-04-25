@@ -13,6 +13,11 @@ if(G_ACCESOUSUARIO>0){
 	$mode = $_POST['mode'];
 	$pagina_id = $_POST['pid'];
 
+	$users_ids = "";
+	if(isset($_REQUEST['users_ids'])){
+		$users_ids = $_REQUEST['users_ids'];
+	}
+
 	$valores = [
 		"fecha_creacion" => date('Y-m-d G:i:s'),
 		"titulo" => trim($_POST['title']),
@@ -27,7 +32,7 @@ if(G_ACCESOUSUARIO>0){
 		"footer_custom_id" => $_POST['f_cust_id'],
 		"type" => $_POST['type'],
 		"allow_access" => $_POST['access_required'],
-		"password_view" => $_POST['access_pass'],
+		"allow_users_ids" => $users_ids,
 		"image_id" => $_POST['image_id']
 	];
 

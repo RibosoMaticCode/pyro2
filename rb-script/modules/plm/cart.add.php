@@ -14,11 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	// verificar si existe
 	$response = searchForId($id.$variant_id, $_SESSION['carrito']);
-	if ($response['result']) {
+	if(isset($response['result'])) {
 		$key = $response['key']; // Obtenemos key del valor encontrado
 
 		//capturamos cantidad anterior;
-    $cant_ant = $_SESSION['carrito'][$key]['cant'];
+    	$cant_ant = $_SESSION['carrito'][$key]['cant'];
 
 		// Añadimos nueva cantidad
 		$_SESSION['carrito'][$key]['cant'] = $cant_ant + $cant;

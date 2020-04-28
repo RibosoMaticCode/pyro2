@@ -68,6 +68,17 @@ CREATE TABLE `plm_config` (
   `plm_value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `plm_config` (`id`, `plm_option`, `plm_value`) VALUES
+(1, 'link_continue_purchase', ''),
+(2, 'plm_charge', '0'),
+(3, 'key_public', ''),
+(4, 'key_private', ''),
+(5, 'products_count_category', '12'),
+(6, 'frontview_product', '1'),
+(7, 'page_success', ''),
+(8, 'version', '1.1'),
+(9, 'page_error', '');
+
 -- --------------------------------------------------------
 
 --

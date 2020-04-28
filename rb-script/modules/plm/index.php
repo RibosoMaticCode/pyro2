@@ -141,10 +141,14 @@ endif;
 function plm_products_call_url(){
 	include_once 'funcs.php';
 	$items_to_show = get_option('products_count_category');
+	if($items_to_show=="" || $items_to_show == 0){
+		print "Parametro <code>products_count_category</code> no especificado";
+		die();
+	}
 	// Enlaces amigables
 	if(G_ENL_AMIG):
 		$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
-	  $requestURI = explode("/", $requestURI);
+	  	$requestURI = explode("/", $requestURI);
 		$requestURI = array_values( array_filter( $requestURI ) );
 		$numsItemArray = count($requestURI);
 
@@ -260,6 +264,9 @@ function plm_products_call_url(){
 		endif;
 
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
+		if($photo['file_url']==""){
+			$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+		}
 		$category = get_category_info($product['categoria']);
 
 		define('rm_title', $product['nombre']." | ".G_TITULO);
@@ -273,13 +280,12 @@ function plm_products_call_url(){
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.php';
 				break;
 		}
-
 		require_once( $file );
 
 		die();
@@ -303,6 +309,9 @@ function plm_products_call_url(){
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
+			if($photo['file_url']==""){
+				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+			}
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
 		endwhile;
@@ -334,15 +343,15 @@ function plm_products_call_url(){
 
 		$type = "cat";
 		$term = $category;
-		/*$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		/*$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
 		require_once( $file );*/
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
 				break;
 		}
 
@@ -370,6 +379,9 @@ function plm_products_call_url(){
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
+			if($photo['file_url']==""){
+				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+			}
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
 		endwhile;
@@ -400,15 +412,15 @@ function plm_products_call_url(){
 
 		$type = "search";
 		$term = $search;
-		/*$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		/*$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
 		require_once( $file );*/
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
 				break;
 		}
 
@@ -451,6 +463,9 @@ function plm_products_call_url(){
 			$products[$i]['precio'] = $precio_final;
 			$products[$i]['cantidad'] = $cantidad;
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
+			if($photo['file_url']==""){
+				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+			}
 			$products[$i]['image_url'] = $photo['file_url'];
 
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
@@ -530,6 +545,9 @@ function plm_products_call_url(){
 			$products[$i]['precio'] = $precio_final;
 			$products[$i]['cantidad'] = $cantidad;
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
+			if($photo['file_url']==""){
+				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+			}
 			$products[$i]['image_url'] = $photo['file_url'];
 
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
@@ -566,6 +584,9 @@ function plm_products_call_url(){
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 			$photo = rb_get_photo_details_from_id($product['foto_id']);
+			if($photo['file_url']==""){
+				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+			}
 			$products[$i]['image_url'] = $photo['file_url'];
 			$i++;
 		endwhile;
@@ -596,15 +617,15 @@ function plm_products_call_url(){
 
 		$type = "all";
 		$term = "";
-		/*$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+		/*$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
 		require_once( $file );*/
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/product.front.view.list.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
 				break;
 		}
 
@@ -622,7 +643,7 @@ function plm_front_css(){
 	$view_style = get_option('frontview_product');
 	switch ($view_style) {
 		case $view_style:
-			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/plm_style".$view_style.".css'>\n";
+			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style".$view_style.".css'>\n";
 			break;
 	}
 	return $css;
@@ -657,6 +678,9 @@ function plm_products_init(){
 	while($product = $qs->fetch_assoc()):
 
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
+		if($photo['file_url']==""){
+			$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+		}
 		if(G_ENL_AMIG) $product['url'] = G_SERVER."products/".$product['nombre_key']."/";
 		else $product['url'] = G_SERVER."?products=".$product['id'];
 

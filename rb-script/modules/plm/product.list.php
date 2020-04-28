@@ -1,10 +1,13 @@
 <?php
 while ($row = $qlist->fetch_assoc()):
   $photo = rb_get_photo_details_from_id($row['foto_id']);
+  if($photo['file_url']==""){
+    $photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
+  }
   $category = get_category_info($row['categoria']);
   ?>
 	<tr>
-		<td><img style="max-width:50px" src="<?= $photo['thumb_url'] ?>" alt="imagen" /></td>
+		<td><a class="fancybox" href="<?= $photo['file_url'] ?>"><img style="max-width:50px" src="<?= $photo['file_url'] ?>" alt="imagen" /></a></td>
     <td><?= $row['nombre'] ?></td>
 		<td><a target="_blank" href="<?= $category['url'] ?>"><?= $category['nombre'] ?></a></td>
     <td><?= $row['precio_oferta'] ?></td>

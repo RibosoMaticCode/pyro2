@@ -50,16 +50,45 @@ switch ($_GET['tipo']) {
 						Contenido:
 					   	<textarea class="mceEditor" name="contenido"><?php if(isset($row)) echo $row['contenido']; ?></textarea>
 					</label>
+					
+				</div>
+				<div class="cols-3-md col-padding">
+					<h3>Subir archivos</h3>
+					<?php include_once ABSPATH.'rb-admin/plugin-form-uploader.php' ?>
+
 					<label>
 						<input name="acceso_permitir" type="checkbox" <?php if( isset($row) && $row['acceso_permitir']==1) echo "checked" ?> /> Contenido privado
 						<span class="info">
 							Para ver el contenido tendra que iniciar sesion con un usuario y contraseña
 						</span>
 					</label>
-				</div>
-				<div class="cols-3-md col-padding">
-					<h3>Subir archivos</h3>
-					<?php include_once ABSPATH.'rb-admin/plugin-form-uploader.php' ?>
+					
+					<label>
+					Permitir solo a estos usuarios:
+					<?php
+					$qu = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."users");
+					?>
+					<input id="search_box" type="text" placeholder="Filtrar por..." />
+					<div class="list_items">			
+						<ul class="list">
+							<?php
+							while( $user = $qu->fetch_assoc() ){
+								$users_ids = [];
+								if( isset($row) ){
+									$users_ids = explode(",", $row['allow_users_ids']);
+								}
+								?>
+								<li>
+									<label class="user_name">
+										<input type="checkbox" name="users_ids[]" value="<?= $user['id'] ?>" <?php if(in_array ($user['id'], $users_ids)) print "checked"  ?> /> <?= $user['nombres'] ?> <?= $user['apellidos'] ?>
+									</label>
+								</li>
+								<?php
+							}
+							?>
+						</ul>
+					</div>
+				</label>
 				</div>
 			</div>
 		</div>

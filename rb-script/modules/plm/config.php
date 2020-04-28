@@ -13,14 +13,6 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
   </div>
   <div class="seccion-body">
     <form id="form_plm_config" class="form">
-      <!--<div class="cols-container">
-        <div class="cols-6-md">
-          Categorias
-        </div>
-        <div class="cols-6-md">
-          <input type="text" name="options[categorias]" value='<?= get_option('categorias') ?>' />
-        </div>
-      </div>-->
 			<div class="cols-container">
         <div class="cols-6-md">
           Link (Seguir comprando)

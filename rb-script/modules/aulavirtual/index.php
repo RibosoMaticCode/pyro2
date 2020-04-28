@@ -92,6 +92,7 @@ function aula_contenidos_call_url(){
 
 	if( $numsItemArray > 0 ):
 		//$Section = $requestURI[0];
+		$tipo = 0;
 		switch ( $requestURI[0] ) {
 			case 'curso':
 				$tipo = 1;
@@ -104,7 +105,7 @@ function aula_contenidos_call_url(){
 				break;
 		}
 
-		if( isset( $requestURI[1] ) ): // Id del curso
+		if( $tipo > 0 && isset( $requestURI[1] ) ): // Id del curso
 			$ContentId = $requestURI[1];
 			$r = $objDataBase->Ejecutar("SELECT * FROM aula_contenidos WHERE id=".$ContentId);
 

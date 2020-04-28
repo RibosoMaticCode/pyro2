@@ -19,8 +19,13 @@ if($prec > 0 && $desc > 0){
 	$prec_desc =	0;//$_POST['precio_oferta'];
 }
 
-// Revisar si tiene opciones de combos
+// Validaciones 
+if($_POST['categoria']=="0"){
+	$arr = ['resultado' => false, 'contenido' => 'Debe seleccionar una categoria, o creala'];
+	die(json_encode($arr));
+}
 
+// Asignacion valores
 $valores = [
   'nombre' => $_POST['nombre'],
   'nombre_key' => $nombre_key,

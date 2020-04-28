@@ -1080,7 +1080,7 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
 
 	$acceso = '<a href="'.G_SERVER.'login.php">Ingresar</a>';
 	if(G_ACCESOUSUARIO==1){
-		$acceso = '<a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
+		$acceso = '¡Bienvenido! <a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
 	}
 
   $acceso_panel = '<a href="'.G_SERVER.'login.php">Ingresar</a>';

@@ -17,9 +17,9 @@ if( isset($_GET['product_id']) ){
   $id = 0;
 }
 
-$qo = $objDataBase->Ejecutar("SELECT * FROM plm_config WHERE plm_option='categorias'");
+/*$qo = $objDataBase->Ejecutar("SELECT * FROM plm_config WHERE plm_option='categorias'");
 $option = $qo->fetch_assoc();
-$categories = json_decode($option['plm_value'], true);
+$categories = json_decode($option['plm_value'], true);*/
 ?>
 <div class="inside_contenedor_frm">
   <div id="toolbar">
@@ -71,7 +71,7 @@ $categories = json_decode($option['plm_value'], true);
       							<div class="cols-4-md">
       								<label title="Si existe variantes de productos. El precio sera determinado por las variantes.">
       				          Precio Normal
-      				          <input type="number" step=".01" name="precio" required value="<?php if(isset($row)) echo $row['precio'] ?>" />
+      				          <input type="number" step=".01" name="precio" required value="<?php if(isset($row)) echo $row['precio']; else echo '0'; ?>" />
       				        </label>
       							</div>
       							<div class="cols-4-md">
@@ -244,6 +244,7 @@ $categories = json_decode($option['plm_value'], true);
             <label>
               Categoria
               <select name="categoria">
+                <option value="0">Seleccione una, sino existe creela</option>
                 <?php
                 if(isset($row)):
                   $selected_id = $row['categoria'];

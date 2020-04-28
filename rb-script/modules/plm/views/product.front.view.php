@@ -34,6 +34,8 @@
                 <?= $product['tipo_envio'] ?>
             </div>
             <form class="frm_cart" method="post" id="frm_cart">
+              <input type="hidden" value="" id="variant_name" name="variant_name">
+              <input type="hidden" value="" id="variant_id" name="variant_id">
               <input type="hidden" value="<?= $product['id'] ?>" name="product_id">
               <?php
               if($product['estado']==1):

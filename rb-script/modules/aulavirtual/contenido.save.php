@@ -24,6 +24,11 @@ $acceso = 0;
 if( isset($_POST['acceso_permitir']) ){
 	$acceso = 1;
 }
+$users_ids = "";
+if(isset($_REQUEST['users_ids'])){
+	$users_ids =  implode (",",  $_REQUEST['users_ids']);
+}
+
 
 // Asignacion de valores a array de datos a enviar: nombre_columna => valor
 $data = [
@@ -34,7 +39,8 @@ $data = [
 	'autor_id' => G_USERID,
 	'tipo' => $tipo,
 	'padre_id' => $padre_id,
-	'acceso_permitir' => $acceso
+	'acceso_permitir' => $acceso,
+	'allow_users_ids' => $users_ids
 ];
 
 // Nuevo

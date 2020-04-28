@@ -44,7 +44,7 @@ $fcustid = isset($Page) ? $Page['footer_custom_id'] : 0;
 			<?php
 			}
 			?>
-			<a class="button" href="#" id="editCSSFile">Editar CSS</a>
+			<!--<a class="button" href="#" id="editCSSFile">Editar CSS</a>-->
 			<a class="button" href="#" id="showConfigPage">Configuración</a>
 			<a class="button" href="#" id="showFilesUpload"><i class="fa fa-upload"></i> Subir archivos</a>
 	</div>
@@ -327,7 +327,7 @@ include_once 'widgets/gallery/w.gallery.conf.php';
 include_once 'widgets/youtube/w.youtube.conf.php';
 include_once 'widgets/image/w.image.conf.php';
 include_once 'widgets/sidebar/w.sidebar.conf.php';
-include_once 'modal-css-edit.php';
+//include_once 'modal-css-edit.php';
 include_once 'modal-save-block.php';//widget
 include_once 'modal-save-box.php';
 do_action('modals-config');

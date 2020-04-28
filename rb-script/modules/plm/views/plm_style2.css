@@ -1,0 +1,237 @@
+/* CATEGORIAS - MENU // SHORTCODE:PLM_LIST_CATEGORIES */
+
+
+/* NAVEGACION */
+.product-nav {
+    padding: 20px 15px;
+}
+
+.product-nav a {
+    color: gray;
+}
+.product-nav a:hover {
+    text-decoration: underline;
+}
+
+/* PRODUCTO IMAGE AND GALLERYS */
+.product-cover-image {
+    border: 1px solid #eaeaea;
+    height: 340px;
+    width: 100%;
+    position:relative;
+}
+
+.product-cover-image img{
+    max-width:100%;
+    max-height:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}
+
+/* PRODUCTO INFO */
+.product-info{
+  padding: 10px 25px;
+}
+.product-info h3{
+  border-bottom:1px solid #d0d0d0;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+.product-price-info .cols-container{
+  padding: 6px 0;
+}
+.highlight{
+  font-family: Semibold;
+  color: #ff8d38;
+}
+
+/* PRODUCTS VARIANTS */
+.options_variants .cols-9-md a {
+    border: 2px solid #e6e6e6;
+    padding: 2px 5px;
+    font-size: .8em;
+    color: gray;
+}
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.isSelected{
+  border: 2px solid #FF9800!important;
+}
+.notice {
+    border: 2px solid gainsboro;
+    padding: 10px 20px;
+    color: gray;
+    margin: 0 0 10px;
+}
+.cover_prices_range {
+    padding: 5px 10px 10px;
+}
+
+span.price_range {
+    color: #ff8d38;
+    font-size: 1.4em;
+    font-family: Semibold;
+}
+
+/* PRODUCTO CALCULATOR*/
+.product-calculate {
+    border: 1px solid #e0e0e0;
+    padding: 20px 15px;
+}
+.product-calculate button{
+    width:100%;
+    background-color:#FF8D38;
+    border:0;
+    color:#fff;
+    font-size:1.1em;
+    font-family:Semibold;
+    padding:10px 10px;
+    display:inline-block;
+    margin:20px 0;
+    box-shadow: 1px 1px 5px gray;
+}
+.product-calculate button[disabled] {
+    box-shadow: none;
+    background-color: darkgrey;
+}
+
+.product-calculate .cantidad-botton {
+    background-color: #bbbbbb;
+    width: 24px;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.product-calculate #txtCantidad {
+    font-size: 1em;
+    text-align: center;
+    vertical-align: bottom;
+    max-width: 70px;
+}
+.product-total, .product-total span{
+    font-size:1.2em;
+    font-family:Semibold;
+    color: #ff8d38;
+}
+
+.line-price .cols-7-md,
+.line-quantity .cols-7-md{
+    text-align: right;
+}
+
+.line-price h3, .line-quantity h3 {
+    font-size: 1em;
+}
+
+.line-price, .line-quantity {
+    margin-bottom: 12px;
+}
+
+ul.payment-feat li {
+    font-size: .95em;
+    padding: 5px 0;
+    list-style-type: none;
+    color: #545454;
+}
+.product-security-info img {
+    width: 100%;
+}
+/* PROTECTION COMPRADOR */
+.product-security-info {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* TABS AND DETAILS FROM PRODUCT */
+.product-tabs {
+    border-bottom: 2px solid #005E8E;
+}
+
+.product-tabs {
+    border-bottom: 2px solid #005E8E;
+}
+
+.product-tabs a {
+    padding: 10px 15px;
+    display: inline-block;
+    border-top:1px solid #cecece;
+    border-left:1px solid #cecece;
+    border-right:1px solid #cecece;
+}
+.product-tabs a.selected {
+    background-color: #005E8E;
+    color: #fff;
+}
+.cover-tabs {
+    padding-right: 20px;
+}
+
+.product-description {
+    padding: 20px;
+}
+
+.product-description table {
+  max-width: 100%!important;
+  width:auto!important;
+}
+
+.product-description img{
+    max-width: 100%;
+    height:auto;
+}
+
+/* PRODUCTS RELATED */
+.side-related {
+    position: sticky;
+    top: 10px;
+}
+.side-related .product-item {
+    margin: 20px 0;
+}
+
+.side-related h4 {
+    font-family: Light;
+    font-size: 1.3em;
+}
+
+/* RESEÑAS */
+.review-login-before {
+    background-color: #efefef;
+    margin-bottom: 50px;
+    border: 1px solid #e4e4e4;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.review-login-before h4 {
+    color: #005e8e;
+    font-size: 1.6em;
+}
+
+.review-login-before a {
+    display: inline-block;
+    margin: 20px 0 0;
+    background-color: #005e8e;
+    padding: 10px 30px;
+    color: #fff;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 500px){
+  .cover-tabs,
+  .side-related{
+    padding: 10px 15px;
+  }
+  .product-description{
+    padding: 0;
+  }
+}

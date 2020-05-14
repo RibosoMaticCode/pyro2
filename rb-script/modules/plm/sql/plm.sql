@@ -1,32 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.9.0.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 22-10-2019 a las 15:37:47
--- Versión del servidor: 10.4.6-MariaDB
--- Versión de PHP: 7.3.8
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `pyro3_test`
---
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `plm_category`
---
 
 CREATE TABLE `plm_category` (
   `id` int(4) NOT NULL,
@@ -67,17 +38,6 @@ CREATE TABLE `plm_config` (
   `plm_option` varchar(100) NOT NULL,
   `plm_value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-INSERT INTO `plm_config` (`id`, `plm_option`, `plm_value`) VALUES
-(1, 'link_continue_purchase', ''),
-(2, 'plm_charge', '0'),
-(3, 'key_public', ''),
-(4, 'key_private', ''),
-(5, 'products_count_category', '12'),
-(6, 'frontview_product', '1'),
-(7, 'page_success', ''),
-(8, 'version', '1.1'),
-(9, 'page_error', '');
 
 -- --------------------------------------------------------
 
@@ -125,7 +85,9 @@ CREATE TABLE `plm_products` (
   `sku` varchar(200) NOT NULL,
   `options` mediumtext NOT NULL,
   `options_variants` mediumtext NOT NULL,
-  `salidas` int(5) NOT NULL
+  `salidas` int(5) NOT NULL,
+  `tipo` tinyint(1) NOT NULL DEFAULT 0,
+  `url_archivo` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -223,7 +185,3 @@ ALTER TABLE `plm_orders`
 ALTER TABLE `plm_products`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

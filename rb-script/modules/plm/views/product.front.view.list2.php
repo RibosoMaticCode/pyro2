@@ -49,9 +49,24 @@
                 </div>
                 <div class="product-item-desc">
                     <h3><?= $product['nombre'] ?></h3>
+                    <div class="product-type">
+                      Formato: 
+                      <span>
+                      <?php
+                      switch ($product['tipo']) {
+                        case 0:
+                          print "Fisico";
+                          break;
+                        case 1:
+                          print "Digital";
+                          break;
+                      }
+                      ?>
+                      </span>
+                    </div>
                     <?php
                     $response = product_have_variants($product['id']);
-                    if( $response['result'] ){
+                    /*if( $response['result'] ){
                       ?>
                       <div class="product-item-price">
                         <span class="product-item-before">Desde / Hasta</span>
@@ -70,7 +85,7 @@
                         <?php endif ?>
                       </div>
                       <?php
-                    }
+                    }*/
                     ?>
                 </div>
               </a>

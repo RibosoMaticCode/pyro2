@@ -147,10 +147,10 @@ if(isset($_GET['pa'])){
 		//define('rm_metadescription' , rb_get_values_options('descripcion') );
 		define('rm_metadescription' , "Panel del usuario. Puede editar sus datos personales y recibir notificaciones del sistema aqui." );
 		define('rm_metaauthor' , G_TITULO." - ".G_VERSION);
-		$css_add = [
+		/*$css_add = [
 			'/rb-script/modules/rb-userpanel/paneluser.css'
 		];
-		define('rm_css', $css_add);
+		define('rm_css', serialize($css_add));*/
 		$rm_menu_name = "";
 		require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
 

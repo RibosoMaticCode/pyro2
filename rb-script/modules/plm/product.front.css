@@ -74,16 +74,8 @@
     padding: 10px 0;
 }
 .product-item {
-    border: 1px solid #e8e8e8;
-    /*max-width: 90%;*/
-    /*margin: 0 auto 40px;*/
     max-height: 399px;
     position: relative;
-}
-.product-item:hover {
-    box-shadow: 0 0 5px #795548;
-    z-index: 9999;
-    border: 1px solid transparent;
 }
 
 .product-item-cover-img {

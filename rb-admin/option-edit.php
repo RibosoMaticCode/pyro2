@@ -271,6 +271,9 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <label>Copia de seguridad DB:
               <a href="#" class="gen_backup_sql" download="Backup_database">Generar copia</a>
             </label>
+            <label>Fecha de instalación:
+              <?= rb_get_values_options('date_install') ?>
+            </label>
             <script>
             //$(document).ready(function() {
               $('.gen_backup_sql').click(function(event){

@@ -11,6 +11,9 @@ if ( !defined('ABSPATH') )
 require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 
+// Zona horaria por defecto
+date_default_timezone_set('America/Lima'); // Versiones futuras sera modificable
+
 define('G_PREFIX', 'py_');
 $key_web = randomPassword(12,1,"lower_case,upper_case,numbers,special_symbols");
 
@@ -156,7 +159,8 @@ $opciones_valores = array(
 	"sidebar_id" => 0,
 	"files_allowed" => "jpeg,jpg,png,gif,doc,docx,xls,xlsx,pdf,svg",
 	"gallery_groups" => "",
-	"water_mark_image" => 0
+	"water_mark_image" => 0,
+	"date_install" => date('Y-m-d G:i:s')
 );
 
 if(isset($_POST)):
@@ -190,16 +194,6 @@ if(isset($_POST)):
 		$response = ['result' => false, 'message' => 'Las contraseñas no coinciden'];
 		die(json_encode($response));
 	}
-
-	/*$objDataBase = new DataBase;
-	// Creamos la estructura de la base de datos
-	$query_db = file_get_contents("sql/pyro3.sql");
-	$conexion = $objDataBase->conexion();
-	$stmt = $conexion->prepare($query_db);
-	if( $stmt->execute() ):
-		$response = ['result' => false, 'message' => 'Error al ejecutar script de base de datos'];
-		die(json_encode($response));
-	endif;*/
 
 	function createDB($filename){
 		// https://dev.to/erhankilic/how-to-import-sql-file-with-php--1jbc

@@ -23,7 +23,7 @@
 		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/rb-userpanel/paneluser.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page.css">
 		<link rel="stylesheet" href="<?= rm_url?>rb-script/modules/pages.view3/styles-page-responsive.css">
-		<?php if(defined('rm_css')) rb_css_list(rm_css) ?><link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
+		<link rel="shortcut icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<link rel="apple-touch-icon" href="<?= rb_favicon(G_FAVICON) ?>">
 		<!-- jquery -->
 		<script src="<?= rm_urltheme ?>js/jquery-1.11.2.min.js"></script>

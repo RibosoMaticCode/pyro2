@@ -1,0 +1,35 @@
+.frmSapiensOrders {
+	display: none;
+	position:fixed;
+	transform:translate(-50%, -50%);
+	left:50%;
+	top:50%;
+	border: 1px solid #868686;
+	width: 100%;
+	z-index: 2;
+	max-width: 500px;
+	background-color: #fff;
+	border-radius:15px;
+	overflow: hidden;
+}
+.frmSapiensOrderHeader img{
+	max-width: 100%;
+	height: auto;
+}
+.frmSapiensStep1,
+.frmSapiensStep2{
+    padding:30px;
+}
+.frmSapiensStep2{
+    display:none;
+    text-align: center;
+}
+.frmSapiensStep2 p {
+    line-height: 28px;
+    padding: 3px 0;
+}
+.frmSapiensClose {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+}

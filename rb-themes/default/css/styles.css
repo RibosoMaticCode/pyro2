@@ -146,6 +146,7 @@ a{
 }
 .block_content img {
     max-width: 100%;
+    height: auto;
 }
 .block_content p {
     font-size: 1em;

@@ -42,7 +42,7 @@ if($typ==0 || $typ==1){
       <div class="post">
         <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
         <!--<span class="post-category"></span>-->
-        <div class="post-desc">
+        <div class="post-desc <?php if($typ==1) print "clear" ?>">
         <h2><a title="<?= $PostRelated['titulo'] ?>" href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
         <?php if($desc==1): ?>
           <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>

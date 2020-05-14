@@ -304,6 +304,22 @@ $categories = json_decode($option['plm_value'], true);*/
             </label>
           </div>
         </section>
+        <section class="seccion">
+          <div class="seccion-header">
+            <h3>Tipo</h3>
+          </div>
+          <div class="seccion-body">
+            <label>
+              <select name="tipo">
+                <option value="0" <?php if(isset($row) && $row['tipo']==0) print "selected" ?>>Fisico</option>
+                <option value="1" <?php if(isset($row) && $row['tipo']==1) print "selected" ?>>Digital</option>
+              </select>
+            </label>
+            <label>URL de producto digital
+              <input type="text" name="url_archivo" placeholder="https://" value="<?php if(isset($row)) print $row['url_archivo'] ?>" />
+            </label>
+          </div>
+        </section>
       </div>
     </div>
   </form>

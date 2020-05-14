@@ -73,11 +73,11 @@
   color:gray;
 }
 .block-left-content{ /* SIDEBAR RIGHT */
-  width: 70%;
+  width: 60%;
   float: left;
 }
 .block-right-sidebar{
-  width: 28%;
+  width: 38%;
   float: right;
 }
 .block-right-content{ /* SIDEBAR LEFT */

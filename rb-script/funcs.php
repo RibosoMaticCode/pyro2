@@ -1,4 +1,12 @@
 <?php
+function get_title_page($url){
+  $str = file_get_contents($url);
+  if(strlen($str)>0){
+    $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
+    preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
+    return $title[1];
+  }
+}
 // Verifica que sea comodin, que contenga caracteres <> al inicio y final respectivamente
 function comodin($comodin_value){
   $verify1 = false;

@@ -29,6 +29,8 @@ if($_POST['categoria']=="0"){
 $valores = [
   'nombre' => $_POST['nombre'],
   'nombre_key' => $nombre_key,
+  'tipo' => $_POST['tipo'],
+  'url_archivo' => $_POST['url_archivo'],
   'precio' => $prec,
 	'descuento' => $desc,
   'precio_oferta' => $prec_desc,

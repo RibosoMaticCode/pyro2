@@ -23,13 +23,54 @@
             }
             ?>
       </div>
+      <?php
+        switch ($product['tipo']) {
+          case 0:
+            print rb_shortcode('[SAPIENS_ORDERS_PHYSICAL]');
+            break;
+          case 1:
+            print rb_shortcode('[SAPIENS_ORDERS_DIGITAL]');
+            break;
+        }
+      ?>
       <div class="cols-7-md"> <!-- price -->
         <div class="product-info">
-            <h3><?= $product['nombre'] ?></h3>
+            <h1><?= $product['nombre'] ?></h1>
+            <div class="product-type">
+              Formato: 
+              <span>
+              <?php
+              switch ($product['tipo']) {
+                case 0:
+                  print "Fisico";
+                  break;
+                case 1:
+                  print "Digital";
+                  break;
+              }
+              ?>
+              </span>
+            </div>
             <div class="product-description">
               <?= $product['descripcion'] ?>
             </div> 
-              <div class="product-price-info">
+            <div class="product-buttons">
+              <ul class="btn_links">
+                <li>
+                  <a class="frmSapiensShow" href="#">Comprar ahora</a>
+                </li>
+                <?php
+                if($product['tipo']=="1"): 
+                  ?>
+                  <li>
+                    <a href="<?= $product['url_archivo'] ?>">Leer libro</a>
+                  </li>
+                  <?php
+                endif;
+                ?>
+              </ul>
+            </div> 
+              <!--<div class="product-price-info">
                 <?php
                 $have_variants = false;
                 if($product['estado']==0){
@@ -80,7 +121,7 @@
                       <?php
                       if($product['descuento']>0):
                       ?>
-                      <div class="cols-container"> <!-- normal -->
+                      <div class="cols-container">
                         <div class="cols-6-md">
                           <strong>Precio normal:</strong>
                         </div>
@@ -91,7 +132,7 @@
                       <?php
                       endif;
                       ?>
-                      <div class="cols-container"> <!-- oferta -->
+                      <div class="cols-container">
                         <div class="cols-6-md">
                           <strong>Precio final:</strong>
                         </div>
@@ -110,7 +151,7 @@
                         </div>
                       </div>
                       <?php if($product['descuento']>0): ?>
-                      <div class="cols-container"> <!-- descuento -->
+                      <div class="cols-container">
                         <div class="cols-6-md">
                           <strong>Ahorras:</strong>
                         </div>
@@ -124,10 +165,10 @@
                   }
                 }
                 ?>
-              </div>
+              </div>-->
         </div>
         <!-- calculate total -->
-        <div class="product-calculate">
+        <!--<div class="product-calculate">
           <form class="frm_cart" method="post" id="frm_cart">
             <input type="hidden" value="" id="variant_name" name="variant_name">
             <input type="hidden" value="" id="variant_id" name="variant_id">
@@ -176,46 +217,71 @@
             <h3>Agotado</h3>
             <?php endif ?>
           </form>
-        </div>
+        </div>-->
       </div>
-    </div>
-    <div class="cols-3-md side-related"><!-- related products -->
-        <h4>Productos relacionados</h4>
-        <?php
-        $products = products_related($product['id'], 3);
-        if(!$products){
-          echo "No se encontraron relacionados";
-        }else{
-          foreach ($products as $product_rel) {
-            ?>
-            <div class="product-item">
-              <a href="<?= $product_rel['url'] ?>">
-              <?php if($product_rel['descuento']>0): ?>
-                <div class="product-discount">-<?= $product_rel['descuento'] ?>%</div>
-              <?php endif ?>
-              <div class="product-item-cover-img" style="background-image:url('<?= $product_rel['image_url'] ?>')">
-              </div>
-              <div class="product-item-desc">
-                <h3><?= $product_rel['nombre'] ?></h3>
-                <div class="product-item-price">
-                  <?php if($product_rel['precio_oferta']>0): ?>
-                    <span class="product-item-price-before">Normal: <?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>
-                    <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product_rel['precio_oferta'], 2) ?></span>
-                  <?php else: ?>
-                    <span class="product-item-price-before"></span>
-                    <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>
-                  <?php endif ?>
-                </div>
-              </div>
-              </a>
-            </div>
-            <?php
-          }//
-        }
-        ?>
     </div>
   </div> <!--- inner-content end -->
 </div>
+<?php
+$products = products_related($product['id'], 5);
+  if($products){
+    ?>
+    <div class="wrap-content wrap_related">
+      <div class="inner-content clear">
+        <div class="side-related"><!-- related products -->
+            <h4>Productos relacionados</h4>
+            <?php
+            $products = products_related($product['id'], 6);
+            /*if(!$products){
+              echo "No se encontraron relacionados";
+            }else{*/
+              foreach ($products as $product_rel) {
+                ?>
+                <div class="product-item">
+                  <a href="<?= $product_rel['url'] ?>">
+                  <?php if($product_rel['descuento']>0): ?>
+                    <div class="product-discount">-<?= $product_rel['descuento'] ?>%</div>
+                  <?php endif ?>
+                  <div class="product-item-cover-img" style="background-image:url('<?= $product_rel['image_url'] ?>')">
+                  </div>
+                  <div class="product-item-desc">
+                    <h3><?= $product_rel['nombre'] ?></h3>
+                    <div class="product-type">
+                      Formato: 
+                      <span>
+                      <?php
+                      switch ($product_rel['tipo']) {
+                        case 0:
+                          print "Fisico";
+                          break;
+                        case 1:
+                          print "Digital";
+                          break;
+                      }
+                      ?>
+                      </span>
+                    </div>
+                    <!--<div class="product-item-price">
+                      <?php if($product_rel['precio_oferta']>0): ?>
+                        <span class="product-item-price-before">Normal: <?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>
+                        <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product_rel['precio_oferta'], 2) ?></span>
+                      <?php else: ?>
+                        <span class="product-item-price-before"></span>
+                        <span class="product-item-price-now"><?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>
+                      <?php endif ?>
+                    </div>-->
+                  </div>
+                  </a>
+                </div>
+                <?php
+              }//
+            ?>
+        </div>
+      </div> <!--- inner-content end -->
+    </div>
+    <?php
+  }
+?>
 <script>
 $(document).ready(function() {
   function numberWithCommas(x) {

@@ -37,32 +37,39 @@ $menu1 = [
 			'pos' => 2
 		],
 		[
-			'key' => 'plm_orders',
-			'nombre' => "Pedidos de compra",
-			'url' => "module.php?pag=plm_orders",
+			'key' => 'plm_orders_simple',
+			'nombre' => "Pedidos",
+			'url' => "module.php?pag=plm_orders_simple",
 			'url_imagen' => "none",
 			'pos' => 3
+		],
+		[
+			'key' => 'plm_orders',
+			'nombre' => "Pedidos con tarjeta",
+			'url' => "module.php?pag=plm_orders",
+			'url_imagen' => "none",
+			'pos' => 4
 		],
 		[
 			'key' => 'plm_comments',
 			'nombre' => "Reseñas",
 			'url' => "module.php?pag=plm_comments",
 			'url_imagen' => "none",
-			'pos' => 4
+			'pos' => 5
 		],
 		[
 			'key' => 'plm_config',
 			'nombre' => "Configuracion",
 			'url' => "module.php?pag=plm_config",
 			'url_imagen' => "none",
-			'pos' => 5
+			'pos' => 6
 		],
 		[
 			'key' => 'plm_info',
 			'nombre' => "Informacion",
 			'url' => "module.php?pag=plm_info",
 			'url_imagen' => "none",
-			'pos' => 6
+			'pos' => 7
 		]
 	]
 ];
@@ -313,6 +320,7 @@ function plm_products_call_url(){
 				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
 			}
 			$products[$i]['image_url'] = $photo['file_url'];
+			$products[$i]['tipo'] = $product['tipo'];
 			$i++;
 		endwhile;
 		$category_info = get_category_info($category);
@@ -383,6 +391,7 @@ function plm_products_call_url(){
 				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
 			}
 			$products[$i]['image_url'] = $photo['file_url'];
+			$products[$i]['tipo'] = $product['tipo'];
 			$i++;
 		endwhile;
 
@@ -467,6 +476,7 @@ function plm_products_call_url(){
 				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
 			}
 			$products[$i]['image_url'] = $photo['file_url'];
+			$products[$i]['tipo'] = $product['tipo'];
 
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
@@ -549,6 +559,7 @@ function plm_products_call_url(){
 				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
 			}
 			$products[$i]['image_url'] = $photo['file_url'];
+			$products[$i]['tipo'] = $product['tipo'];
 
 			if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
 			else $products[$i]['url'] = G_SERVER."/?products=".$product['id'];
@@ -588,6 +599,7 @@ function plm_products_call_url(){
 				$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
 			}
 			$products[$i]['image_url'] = $photo['file_url'];
+			$products[$i]['tipo'] = $product['tipo'];
 			$i++;
 		endwhile;
 
@@ -684,21 +696,34 @@ function plm_products_init(){
 		if(G_ENL_AMIG) $product['url'] = G_SERVER."products/".$product['nombre_key']."/";
 		else $product['url'] = G_SERVER."?products=".$product['id'];
 
+		switch ($product['tipo']) {
+        	case 0:
+            	$product_type = "Fisico";
+            break;
+        	case 1:
+               	$product_type = "Digital";
+            break;
+        }
+
 		$products_list .= '<div class="cols-3-md">
 		<div class="product-item">
+			<a href="'.$product['url'].'">
 			<div class="product-item-cover-img" style="background-image:url(\''.$photo['file_url'].'\')">
 			</div>
 			<div class="product-item-desc">
 				<h3>'.$product['nombre'].'</h3>
-				<div class="product-item-price">';
+				<div class="product-type">Formato: 
+                    <span>'.$product_type.'</span>
+				</div>
+				<!--<div class="product-item-price">';
 					if($product['precio']>0):
 						$products_list .='<span class="product-item-price-before">Tienda: S/. '.$product['precio'] .'</span>
                     <span>Online: </span>';
                     endif;
 					$products_list .='<span class="product-item-price-now">S/.'.$product['precio_oferta'].'</span>
-				</div>
+				</div>-->
 			</div>
-			<a href="'.$product['url'].'">Ver detalles</a>
+			</a>
 		</div>
 	</div>';
 	endwhile;
@@ -807,7 +832,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_info"):
 	add_function('module_content_main','plm_info');
 endif;
 
-// ------ PEDIDOS DE PRODUCTOS ------ //
+// ------ PEDIDOS DE PRODUCTOS CON TARJETA ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_orders"):
 	function plm_orders_title(){
 		return "Configuracion de PLM";
@@ -818,6 +843,23 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_orders"):
 	}
 	add_function('module_title_page','plm_orders_title');
 	add_function('module_content_main','plm_orders');
+endif;
+
+// ------ PEDIDOS DE PRODUCTOS SIMPLE ------ //
+if(isset($_GET['pag']) && $_GET['pag']=="plm_orders_simple"):
+	function sapiens_orders_title(){
+		return "Sapiens pedidos";
+	}
+	function sapiens_orders_content(){
+		global $objDataBase;
+
+		$q = $objDataBase->Ejecutar('SELECT * FROM sapiens_orders ORDER BY date DESC');
+
+		include_once 'sapiens.orders.init.php';
+	}
+
+	add_function('module_title_page','sapiens_orders_title');
+	add_function('module_content_main','sapiens_orders_content');
 endif;
 
 // ------ CATEGORIAS DE PRODUCTOS ------ //
@@ -845,3 +887,52 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_comments"):
 	add_function('module_title_page','plm_comments_title');
 	add_function('module_content_main','plm_comments');
 endif;
+
+// -------- FORMULARIO PEDIDO DIGITAL FRONTEND ---------- //
+function sapiens_orders_digital(){
+  	//incluimos la clase
+  	include_once './rb-script/template.class.php';
+
+  	//iniciamos la clase
+  	$tpl=new TemplateClass();
+
+  	// directorio del template
+  	$tpl->DirTemplate("rb-script/modules/plm/sapiens.orders.formfrontend/");
+
+	// {variables} que reemplazaremos en la plantilla
+	$tpl->Assign('ruta_modulo', G_DIR_MODULES_URL."plm/");
+
+	//indicamos la plantilla sin extension solo el nombre
+	return $tpl->Template('form');
+}
+
+add_shortcode('SAPIENS_ORDERS_DIGITAL','sapiens_orders_digital');
+
+// -------- FORMULARIO PEDIDO FISICO FRONTEND ---------- //
+function sapiens_orders_physical(){
+  	//incluimos la clase
+  	include_once './rb-script/template.class.php';
+
+  	//iniciamos la clase
+  	$tpl=new TemplateClass();
+
+  	// directorio del template
+  	$tpl->DirTemplate("rb-script/modules/plm/sapiens.orders.formfrontend/");
+
+	// {variables} que reemplazaremos en la plantilla
+	$tpl->Assign('ruta_modulo', G_DIR_MODULES_URL."plm/");
+
+	//indicamos la plantilla sin extension solo el nombre
+	return $tpl->Template('form1');
+}
+
+add_shortcode('SAPIENS_ORDERS_PHYSICAL','sapiens_orders_physical');
+
+
+// ------------- CSS / JS ---------------//
+function header_files(){
+	//$files = "<script src='".G_DIR_MODULES_URL."suscripciones/suscrip.js'></script>\n";
+	$files = "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."plm/sapiens.orders.formfrontend/form.css' />\n";
+	return $files;
+}
+add_function('theme_header','header_files');

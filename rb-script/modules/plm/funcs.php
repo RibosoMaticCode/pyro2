@@ -96,7 +96,7 @@ function products_related($product_id, $limit=5){
 		else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
 		$photo = rb_get_photo_details_from_id($product['foto_id']);
 		$products[$i]['image_url'] = $photo['file_url'];
-		$products[$i]['tipo'] = $product['tipo'];
+		//$products[$i]['tipo'] = $product['tipo'];
 		$i++;
 	endwhile;
 	return $products;

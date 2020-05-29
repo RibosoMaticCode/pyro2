@@ -102,6 +102,10 @@
 .wrap-posts-list article{
   margin-bottom: 40px;
 }
+.wrap-posts-list article .info {
+    position: relative;
+    padding: 4px 0 15px;
+}
 .wrap-posts-list article .back {
     position: absolute;
     right: 15px;
@@ -114,6 +118,7 @@
   padding: 4px 0;
   line-height: 30px;
   margin: 10px 0;
+  font-size: .95em;
 }
 .wrap-posts-list article li {
   padding: 4px 0;

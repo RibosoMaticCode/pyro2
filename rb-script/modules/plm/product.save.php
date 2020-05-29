@@ -25,24 +25,35 @@ if($_POST['categoria']=="0"){
 	die(json_encode($arr));
 }
 
+$formato_fisico = 0;
+$formato_digital = 0;
+if(isset($_POST['formato_fisico'])){
+	$formato_fisico = 1;
+}
+if(isset($_POST['formato_digital'])){
+	$formato_digital = 1;
+}
+
 // Asignacion valores
 $valores = [
-  'nombre' => $_POST['nombre'],
-  'nombre_key' => $nombre_key,
-  'tipo' => $_POST['tipo'],
-  'url_archivo' => $_POST['url_archivo'],
-  'precio' => $prec,
+  	'nombre' => $_POST['nombre'],
+  	'nombre_largo' => $_POST['nombre_largo'],
+  	'nombre_key' => $nombre_key,
+  	'formato_fisico' => $formato_fisico,
+  	'formato_digital' => $formato_digital,
+  	'url_archivo' => $_POST['url_archivo'],
+  	'precio' => $prec,
 	'descuento' => $desc,
-  'precio_oferta' => $prec_desc,
+  	'precio_oferta' => $prec_desc,
 	'marca' => $_POST['marca'],
 	'modelo' => $_POST['modelo'],
-  'descripcion' => $_POST['descripcion'],
-  'tipo_envio' => trim($_POST['tipo_envio']),
-  'foto_id' => trim($_POST['foto_id_id']),
-  'galeria_id' => trim($_POST['galeria_id']),
-  'fecha_registro' => date('Y-m-d G:i:s'),
-  'categoria' => $_POST['categoria'],
-  'usuario_id' => G_USERID,
+  	'descripcion' => $_POST['descripcion'],
+  	'tipo_envio' => trim($_POST['tipo_envio']),
+  	'foto_id' => trim($_POST['foto_id_id']),
+  	'galeria_id' => trim($_POST['galeria_id']),
+  	'fecha_registro' => date('Y-m-d G:i:s'),
+  	'categoria' => $_POST['categoria'],
+  	'usuario_id' => G_USERID,
 	'estado' => $_POST['estado'],
 	'sku' => $_POST['sku'],
 	'options' => $_POST['opciones'],
@@ -50,9 +61,18 @@ $valores = [
 ];
 
 if($id==0){ // Nuevo
+	// Capturar numero de elementos actuales, para asignar numero de orden
+	$r = $objDataBase->Ejecutar("SELECT * FROM plm_products");
+	$num_products = $r->num_rows;
+
+	$valores['orden'] = $num_products;
+
 	$r = $objDataBase->Insert('plm_products', $valores);
 	if($r['result']){
 		$product_id = $r['insert_id'];
+
+		include_once 'sapiens.filter/save.fields.adds.php';
+
 		/* GRUPO DE OPCIONES */
 		if(isset($_POST['variant_name'])){
 		  $names = $_POST['variant_name'];
@@ -84,13 +104,16 @@ if($id==0){ // Nuevo
 		    $i++;
 		  }
 		}
-		$arr = ['resultado' => true, 'contenido' => 'Elemento añadido', 'id' => $r['insert_id'] ];
+		$arr = ['resultado' => true, 'contenido' => 'Elemento añadido', 'id' => $product_id ];
 	}else{
 		$arr = ['resultado' => false, 'contenido' => $r['error']];
 	}
 }else{ // Update
 	$r = $objDataBase->Update('plm_products', $valores, ["id" => $id]);
 	if($r['result']){
+
+		include_once 'sapiens.filter/save.fields.adds.php';
+
 		$arr = ['resultado' => true, 'contenido' => 'Elemento actualizado', 'id' => $id ];
 		/* GRUPO DE OPCIONES */
 		if(isset($_POST['variant_name'])){

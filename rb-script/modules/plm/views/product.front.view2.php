@@ -1,10 +1,10 @@
 <?php rb_header(['header-allpages.php'], false) ?>
 <div class="wrap-content">
   <div class="inner-content clear">
-    <div class="product-nav">
+    <!--<div class="product-nav">
       <a href="<?= G_SERVER ?>">Inicio</a> > <a href="<?= $category['url']?>"><?= $category['nombre']?></a> > <?= rb_fragment_letters($product['nombre'], 40) ?>
-    </div>
-    <div class="cols-container">
+    </div>-->
+    <div class="cols-container product_page">
       <div class="cols-5-md"> <!-- photo and gallery -->
             <a id="product_image_url" class="fancy" data-fancybox-group="visor" href="<?= $photo['file_url'] ?>">
               <!--<img src="<?= $photo['file_url'] ?>" alt="imagen" />-->
@@ -24,50 +24,43 @@
             ?>
       </div>
       <?php
-        switch ($product['tipo']) {
-          case 0:
-            print rb_shortcode('[SAPIENS_ORDERS_PHYSICAL]');
-            break;
-          case 1:
-            print rb_shortcode('[SAPIENS_ORDERS_DIGITAL]');
-            break;
+        if($product['formato_fisico']==1) {
+          print rb_shortcode('[SAPIENS_ORDERS_PHYSICAL]');
+        }
+        if($product['formato_digital']==1) {
+          print rb_shortcode('[SAPIENS_ORDERS_DIGITAL]');
         }
       ?>
       <div class="cols-7-md"> <!-- price -->
         <div class="product-info">
-            <h1><?= $product['nombre'] ?></h1>
-            <div class="product-type">
+          <?php
+          if($product['nombre_largo']!=""){
+            $product_name = $product['nombre_largo'];
+          }else{
+            $product_name = $product['nombre'];
+          }
+          ?>
+            <h1><?= $product_name ?></h1>
+            <!--<div class="product-type">
               Formato: 
-              <span>
-              <?php
-              switch ($product['tipo']) {
-                case 0:
-                  print "Fisico";
-                  break;
-                case 1:
-                  print "Digital";
-                  break;
-              }
-              ?>
-              </span>
+              <?php if($product['formato_fisico']==1) print "<span>Fisico</span>" ?>
+              <?php if($product['formato_digital']==1) print "<span>Digital</span>" ?>
+            </div>-->
+            <div class="product-link-digital">
+              <a href="<?= $product['url_archivo'] ?>">Leer libro</a>
             </div>
             <div class="product-description">
               <?= $product['descripcion'] ?>
             </div> 
             <div class="product-buttons">
+              <p><strong>Elige el formato que deseas comprar:</strong></p>
               <ul class="btn_links">
-                <li>
-                  <a class="frmSapiensShow" href="#">Comprar ahora</a>
-                </li>
-                <?php
-                if($product['tipo']=="1"): 
-                  ?>
-                  <li>
-                    <a href="<?= $product['url_archivo'] ?>">Leer libro</a>
-                  </li>
-                  <?php
-                endif;
-                ?>
+                <?php if($product['formato_digital']==1): ?>
+                  <li><a class="frmSapiensShowDigital" href="#">Digital</a></li>
+                <?php endif ?>
+                <?php if($product['formato_fisico']==1): ?>
+                  <li><a class="frmSapiensShowFisico" href="#">Físico</a></li>
+                <?php endif ?>
               </ul>
             </div> 
               <!--<div class="product-price-info">
@@ -246,21 +239,7 @@ $products = products_related($product['id'], 5);
                   </div>
                   <div class="product-item-desc">
                     <h3><?= $product_rel['nombre'] ?></h3>
-                    <div class="product-type">
-                      Formato: 
-                      <span>
-                      <?php
-                      switch ($product_rel['tipo']) {
-                        case 0:
-                          print "Fisico";
-                          break;
-                        case 1:
-                          print "Digital";
-                          break;
-                      }
-                      ?>
-                      </span>
-                    </div>
+                    
                     <!--<div class="product-item-price">
                       <?php if($product_rel['precio_oferta']>0): ?>
                         <span class="product-item-price-before">Normal: <?= G_COIN ?> <?= number_format($product_rel['precio'], 2) ?></span>

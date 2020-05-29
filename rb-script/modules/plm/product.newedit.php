@@ -46,13 +46,42 @@ $categories = json_decode($option['plm_value'], true);*/
         	<div class="seccion-body">
       		        <input type="hidden" name="id" value="<?= $id ?>" required />
       		        <label>
-      		          Nombre del producto
+      		          Nombre del producto *
       		          <input type="text" name="nombre" required value="<?php if(isset($row)) echo $row['nombre'] ?>" />
       		        </label>
+                  <label>
+                    Nombre largo del producto
+                    <span class="info">Este se mostrará en la página individual del producto</span>
+                    <input type="text" name="nombre_largo" value="<?php if(isset($row)) echo $row['nombre_largo'] ?>" />
+                  </label>
       			      <label>
       			         Descripción
       							 <textarea rows="25" id="editor1" name="descripcion" class="mceEditor" ><?php if(isset($row)) echo $row['descripcion'] ?></textarea>
       			       </label>
+          </div>
+        </section>
+
+        <section class="seccion">
+          <div class="seccion-header">
+            <h3>Formato</h3>
+          </div>
+          <div class="seccion-body">
+            <label>
+              <input type="checkbox" name="formato_fisico" <?php if(isset($row) && $row['formato_fisico']==1) print "checked" ?> /> Físico
+            </label>
+            <label>
+              <input type="checkbox" name="formato_digital" <?php if(isset($row) && $row['formato_digital']==1) print "checked" ?> /> Digital <br />
+              URL de producto digital
+              <input type="text" name="url_archivo" placeholder="https://" value="<?php if(isset($row)) print $row['url_archivo'] ?>" />
+            </label>
+          </div>
+        </section>
+
+        <section class="seccion">
+          <div class="seccion-header">
+            <h3>Detalles adicionales</h3>
+          </div>
+          <div class="seccion-body">
       						<div class="cols-container">
       							<div class="cols-6-md">
       								<label>
@@ -304,22 +333,7 @@ $categories = json_decode($option['plm_value'], true);*/
             </label>
           </div>
         </section>
-        <section class="seccion">
-          <div class="seccion-header">
-            <h3>Tipo</h3>
-          </div>
-          <div class="seccion-body">
-            <label>
-              <select name="tipo">
-                <option value="0" <?php if(isset($row) && $row['tipo']==0) print "selected" ?>>Fisico</option>
-                <option value="1" <?php if(isset($row) && $row['tipo']==1) print "selected" ?>>Digital</option>
-              </select>
-            </label>
-            <label>URL de producto digital
-              <input type="text" name="url_archivo" placeholder="https://" value="<?php if(isset($row)) print $row['url_archivo'] ?>" />
-            </label>
-          </div>
-        </section>
+        <?php include_once 'sapiens.filter/form.edit.fields.adds.php' ?>
       </div>
     </div>
   </form>

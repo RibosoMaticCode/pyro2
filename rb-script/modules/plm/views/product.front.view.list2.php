@@ -39,30 +39,20 @@
         foreach($products as $product){
         ?>
         <div class="cols-3-md">
-          <div class="item_cat">
             <div class="product-item">
-              <a href="<?= $product['url'] ?>">
+              
                 <?php if($product['descuento']>0): ?>
                 <div class="product-discount">-<?= $product['descuento'] ?>%</div>
                 <?php endif ?>
+                <a href="<?= $product['url'] ?>">
                 <div class="product-item-cover-img" style="background-image:url('<?= $product['image_url'] ?>')">
                 </div>
+                </a>
                 <div class="product-item-desc">
-                    <h3><?= $product['nombre'] ?></h3>
-                    <div class="product-type">
-                      Formato: 
-                      <span>
-                      <?php
-                      switch ($product['tipo']) {
-                        case 0:
-                          print "Fisico";
-                          break;
-                        case 1:
-                          print "Digital";
-                          break;
-                      }
-                      ?>
-                      </span>
+                    <h3><a href="<?= $product['url'] ?>"><?= $product['nombre'] ?></a></h3>
+                    <div class="product-item-btns">
+                      <a href="<?= $product['url_archivo'] ?>">Leer ahora</a>
+                      <a href="<?= $product['url'] ?>">Ver detalles</a>
                     </div>
                     <?php
                     $response = product_have_variants($product['id']);
@@ -88,9 +78,8 @@
                     }*/
                     ?>
                 </div>
-              </a>
+              
             </div>
-          </div>
         </div>
         <?php
         }

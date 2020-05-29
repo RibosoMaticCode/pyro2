@@ -73,9 +73,9 @@ add_shortcode('SAPIENS_ORDERS_FORM','sapiens_orders_form');
 
 
 // ------------- CSS / JS ---------------//
-function header_files(){
+function sapiens_header_files(){
 	//$files = "<script src='".G_DIR_MODULES_URL."suscripciones/suscrip.js'></script>\n";
 	$files = "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."sapiens/sapiens.orders.formfrontend/form.css' />\n";
 	return $files;
 }
-add_function('theme_header','header_files');
+add_function('theme_header','sapiens_header_files');

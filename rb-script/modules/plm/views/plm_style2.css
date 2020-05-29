@@ -58,13 +58,8 @@
 }
 
 /* PRODUCTS LIST */
-.product-item a:hover {
+.product-item:hover {
     border: 1px solid #c3c3c3;
-}
-
-.product-item a {
-    border: 1px solid #fff;
-    display: block;
 }
 
 /* PRODUCTS VARIANTS */
@@ -210,7 +205,6 @@ ul.payment-feat li {
     background-color: #f6f6f6;
 }
 .side-related .product-item a {
-    border: 1px solid #dadada;
     display: block;
     background-color: #fff;
 }
@@ -220,8 +214,7 @@ ul.payment-feat li {
 .side-related .product-item {
     margin: 20px 0;
     display: inline-block;
-    width: 25%;
-    padding: 0 10px;
+    width: 24%;
 }
 
 .side-related h4 {

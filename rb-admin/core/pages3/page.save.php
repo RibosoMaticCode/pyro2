@@ -33,7 +33,8 @@ if(G_ACCESOUSUARIO>0){
 		"type" => $_POST['type'],
 		"allow_access" => $_POST['access_required'],
 		"allow_users_ids" => $users_ids,
-		"image_id" => $_POST['image_id']
+		"image_id" => $_POST['image_id'],
+		"blocking_message" => $_POST['blocking_message'] 
 	];
 
 	if($mode=="new"):

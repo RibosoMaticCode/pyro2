@@ -20,7 +20,6 @@
 
 .product-description {
     padding: 10px 0;
-    margin-bottom: 40px;
 }
 
 .product-price-now {
@@ -76,12 +75,18 @@
 .product-item {
     max-height: 399px;
     position: relative;
+    border: 1px solid transparent;
+    max-width: 90%;
+    margin: 0 auto 20px;
+    width: 100%;
 }
-
 .product-item-cover-img {
     height: 260px;
     background-size: cover;
     background-position: center;
+    max-width: 95%;
+    width: 100%;
+    margin: 0 auto;
 }
 .product-item-desc h3 {
     padding: 8px 0;

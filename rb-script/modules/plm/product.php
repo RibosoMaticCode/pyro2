@@ -38,11 +38,12 @@ require_once ABSPATH."rb-script/modules/plm/funcs.php";
           <tr>
             <th>Foto</th>
             <th>Nombre</th>
+            <th>Nombre largo</th>
             <th>Categoria</th>
-            <th>Precio Final</th>
+            <!--<th>Precio Final</th>
             <th>Descuento %</th>
             <th>Precio Normal</th>
-            <th>Galeria</th>
+            <th>Galeria</th>-->
             <th>Acciones</th>
           </tr>
         </thead>

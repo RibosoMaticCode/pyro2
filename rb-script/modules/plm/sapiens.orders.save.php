@@ -12,19 +12,19 @@ $sendmail = $_POST['sendmail'];
 
 // Validar campos vacios
 if(isset($_POST['names']) && strlen($_POST['names']) < 3){
-	$arr = ['resultado' => false, 'contenido' => 'Campo names no debe quedar vacio, minimo caracteres 3', 'continue' => false ];
+	$arr = ['resultado' => false, 'contenido' => 'Campo Nombres no debe quedar vacio, minimo caracteres 3', 'continue' => false ];
 	die(json_encode($arr));
 }
 if(empty($_POST['email'])){
-	$arr = ['resultado' => false, 'contenido' => 'Campo correo no debe quedar vacio', 'continue' => false ];
+	$arr = ['resultado' => false, 'contenido' => 'Campo Correo no debe quedar vacio', 'continue' => false ];
 	die(json_encode($arr));
 }
 if( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
-	$arr = ['resultado' => false, 'contenido' => 'Formato de correo invalido', 'continue' => false ];
+	$arr = ['resultado' => false, 'contenido' => 'Formato de correo es invalido', 'continue' => false ];
 	die(json_encode($arr));
 }
-if(isset($_POST['phone']) && strlen($_POST['phone']) < 6){
-	$arr = ['resultado' => false, 'contenido' => 'Campo telefono no debe quedar vacio, minimo caracteres 6', 'continue' => false ];
+if(isset($_POST['phone']) && strlen($_POST['phone']) < 9){
+	$arr = ['resultado' => false, 'contenido' => 'Campo Celular no debe quedar vacio, minimo caracteres 9', 'continue' => false ];
 	die(json_encode($arr));
 }
 

@@ -8,31 +8,29 @@ while ($row = $result->fetch_assoc()):
 ?>
   <li class="grid-1">
     <label>
-      <div class="cover-img" style="background-image:url('<?= G_SERVER ?>rb-media/gallery/tn/<?= $row['src'] ?>')" title="<?= $row['src'] ?>">
-        <?php
+      <?php
         switch( rb_file_type( $row['type'] ) ){ // Mostrar un icono de algunos archivos permitidos en el sistema
+          case 'image':
+            $bg_image = G_SERVER.'rb-media/gallery/tn/'.$row['src'];
+          break;
           case 'pdf':
-          ?>
-          <img class="other-file" src="<?= G_SERVER ?>rb-admin/img/pdf.png" alt="Others files" />
-          <?php
+            $bg_image = G_SERVER.'rb-admin/img/pdf.png';
+          
           break;
           case 'word':
-          ?>
-          <img class="other-file" src="<?= G_SERVER ?>rb-admin/img/doc.png" alt="Others files" />
-          <?php
+            $bg_image = G_SERVER.'rb-admin/img/doc.png';
           break;
           case 'excel':
-          ?>
-          <img class="other-file" src="<?= G_SERVER ?>rb-admin/img/xls.png" alt="Others files" />
-          <?php
+            $bg_image = G_SERVER.'rb-admin/img/xls.png';
           break;
+          default:
+            $bg_image = G_SERVER.'rb-admin/img/document.png';
         }
         if($row['type'] == ""):
-        ?>
-          <img class="other-file" src="<?= G_SERVER ?>rb-admin/img/unknown.png" alt="Others files" />
-        <?php
+          $bg_image = G_SERVER.'rb-admin/img/unknown.png';
         endif;
-        ?>
+      ?>
+      <div class="cover-img" style="background-image:url('<?= $bg_image ?>')" title="<?= $row['src'] ?>">
         <input class="checkbox" id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" />
         <span class="filename truncate">
           <a target="_blank" class="fancybox" rel="group" href="<?= G_SERVER ?>rb-media/gallery/<?= utf8_encode($row['src']) ?>"><?= utf8_encode($row['src']) ?></a>

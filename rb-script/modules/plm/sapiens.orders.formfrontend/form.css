@@ -1,4 +1,5 @@
-.frmSapiensOrders {
+.frmSapiensOrdersFisico,
+.frmSapiensOrdersDigital {
 	display: none;
 	position:fixed;
 	transform:translate(-50%, -50%);

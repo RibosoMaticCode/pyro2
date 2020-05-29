@@ -57,3 +57,11 @@ ul.categories_list li .option {
 .plm_backend_text p{
   font-size: .9em;
 }
+
+/* ORDERN DE PRODUCTOS */
+.plm_products_order li {
+  border: 1px solid #d4d4d4;
+  margin: 5px 0;
+  padding: 8px;
+  background-color: #fff;
+}

@@ -113,6 +113,13 @@ a{
 	height: 400px;
 	width: 100%;
 }
+.camera_pag { /* PAGINATION SLIDE */
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+    z-index: 2;
+}
 
 /* INDIVIDUAL PAGES */
 .header-page{

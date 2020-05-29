@@ -516,6 +516,7 @@ $(document).ready(function() {
     }
     //access_pass = $( "input[name$='access_pass']" ).val();
     image_id = $( "input[name$='image_id']" ).val();
+    blocking_message = $( "textarea[name$='blocking_message']" ).val();
     var users_ids = []
     $("input[name='users_ids[]']:checked").each(function ()
     {
@@ -528,7 +529,7 @@ $(document).ready(function() {
     $.ajax({
       url: "core/pages3/page.save.php",
       method: 'post',
-      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id+"&access_required="+access_required+"&users_ids="+users_ids+"&image_id="+image_id,
+      data: "title="+pagina_title+"&type="+type+"&content="+final_string_content+"&pid="+pagina_id+"&mode="+mode+"&title_enlace="+pagina_enlace+"&page_desc="+pagina_desc+"&page_tags="+pagina_tags+"&sh="+sheader+"&sf="+sfooter+"&h_cust_id="+h_cust_id+"&f_cust_id="+f_cust_id+"&access_required="+access_required+"&users_ids="+users_ids+"&image_id="+image_id+"&blocking_message="+blocking_message,
       beforeSend: function(){
         $('#img_loading, .bg-opacity').show();
       }

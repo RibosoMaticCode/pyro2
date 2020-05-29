@@ -100,6 +100,10 @@ $(document).ready(function() {
 						</ul>
 					</div>
 				</label>
+				<label>
+					Personalizar mensaje de bloqueo
+					<textarea name="blocking_message" rows="5"><?php if( isset($Page) ) print $Page['blocking_message'] ?></textarea>
+				</label>
 			</div>
 			<div class="cols-6-md col-padding">
 				<h4>Image para redes sociales</h4>

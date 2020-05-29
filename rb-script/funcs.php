@@ -1091,9 +1091,13 @@ function rb_BBCodeToGlobalVariable($texto,$id=1){
 		$acceso = '¡Bienvenido! <a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
 	}
 
+  if(G_USERTYPE=="admin"){
+    $panel = '<a href="'.G_SERVER.'rb-admin">Gestionar el sitio</a> ';
+  }
+
   $acceso_panel = '<a href="'.G_SERVER.'login.php">Ingresar</a>';
   if(G_ACCESOUSUARIO==1){
-    $acceso_panel = '<a href="'.G_SERVER.'?pa=panel">Panel usuario</a> <a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
+    $acceso_panel = $panel. '<a href="'.G_SERVER.'login.php?out">Cerrar sesión</a>';
   }
 
   $acceso_reg = '<a href="'.G_SERVER.'login.php">Ingresar</a> / <a href="'.G_SERVER.'login.php?reg">Registrarse</a>';

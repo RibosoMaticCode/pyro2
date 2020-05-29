@@ -9,11 +9,12 @@ while ($row = $qlist->fetch_assoc()):
 	<tr>
 		<td><a class="fancybox" href="<?= $photo['file_url'] ?>"><img style="max-width:50px" src="<?= $photo['file_url'] ?>" alt="imagen" /></a></td>
     <td><?= $row['nombre'] ?></td>
+    <td><?= $row['nombre_largo'] ?></td>
 		<td><a target="_blank" href="<?= $category['url'] ?>"><?= $category['nombre'] ?></a></td>
-    <td><?= $row['precio_oferta'] ?></td>
+    <!--<td><?= $row['precio_oferta'] ?></td>
     <td><?= $row['descuento'] ?> %</td>
     <td><?= $row['precio'] ?></td>
-    <td><?= rb_link_gallery($row['galeria_id']) ?></td>
+    <td><?= rb_link_gallery($row['galeria_id']) ?></td>-->
 		<td class="row-actions">
       <?php
       if(G_ENL_AMIG) $product_url = G_SERVER."products/".$row['nombre_key']."/";

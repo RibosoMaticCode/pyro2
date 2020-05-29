@@ -3,6 +3,7 @@
 <div class="help" data-name="home">
   <h1>Bienvenido!</h1>
   <p>Esta es la página inicial del gestor de contenidos.</p>
+  <p><a href="<?= G_SERVER ?>">Ver sitio web</a></p>
 </div>
 <?php endif ?>
 <script src="<?= G_SERVER ?>/rb-admin/resource/ui/jquery-ui.js"></script>

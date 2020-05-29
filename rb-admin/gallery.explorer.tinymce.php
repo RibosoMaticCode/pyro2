@@ -56,13 +56,31 @@ if(isset($_GET['type'])):
 							<li>
 								<a class="explorer-file" datafld="<?= utf8_encode($row['src']) ?>" datasrc="<?= $row['id'] ?>" href="#" data-type="<?= $row['type'] ?>">
 									<?php
-									if(rb_file_type($row['type']) == "image"):
+									switch( rb_file_type( $row['type'] ) ){
+										case 'image':
+							            $bg_image = G_SERVER.'rb-media/gallery/tn/'.$row['src'];
+							          break;
+							          case 'pdf':
+							            $bg_image = G_SERVER.'rb-admin/img/pdf.png';
+							          
+							          break;
+							          case 'word':
+							            $bg_image = G_SERVER.'rb-admin/img/doc.png';
+							          break;
+							          case 'excel':
+							            $bg_image = G_SERVER.'rb-admin/img/xls.png';
+							          break;
+							          default:
+							            $bg_image = G_SERVER.'rb-admin/img/document.png';
+							        }
+									/*if(rb_file_type($row['type']) == "image"):
 										echo '<img class="thumb" src="'.G_SERVER.'/rb-media/gallery/tn/'.utf8_encode($row['tn_src']).'" data-filename="'.utf8_encode($row['tn_src']).'" />';
 									else:
 										if( rb_file_type( $row['type'] )=="pdf" ) echo '<img src="img/pdf.png" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
 										if( rb_file_type( $row['type'] )=="word" ) echo '<img src="img/doc.png" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
 										if( rb_file_type( $row['type'] )=="excel" ) echo '<img src="img/xls.png" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
-									endif;
+									endif;*/
+									echo '<img class="thumb" src="'.$bg_image.'" alt="png" data-filename="'.(utf8_encode($row['tn_src'])).'" />';
 									?>
 									<span><?= utf8_encode($row['tn_src']) ?></span>
 								</a>

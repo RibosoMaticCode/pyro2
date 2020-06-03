@@ -3,6 +3,7 @@ _rb-themes/*
 .htaccess
 .gitignore
 rb-media/*
+rb-script/modules/_sapiens/*
 rb-script/modules/metro/*
 rb-script/modules/medic1/*
 rb-script/modules/feria_suscrip/*

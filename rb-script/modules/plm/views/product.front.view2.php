@@ -24,12 +24,12 @@
             ?>
       </div>
       <?php
-        if($product['formato_fisico']==1) {
+        /*if($product['formato_fisico']==1) {
           print rb_shortcode('[SAPIENS_ORDERS_PHYSICAL]');
         }
         if($product['formato_digital']==1) {
           print rb_shortcode('[SAPIENS_ORDERS_DIGITAL]');
-        }
+        }*/
       ?>
       <div class="cols-7-md"> <!-- price -->
         <div class="product-info">
@@ -40,34 +40,18 @@
             $product_name = $product['nombre'];
           }
           ?>
-            <h1><?= $product_name ?></h1>
-            <!--<div class="product-type">
-              Formato: 
-              <?php if($product['formato_fisico']==1) print "<span>Fisico</span>" ?>
-              <?php if($product['formato_digital']==1) print "<span>Digital</span>" ?>
-            </div>-->
-            <div class="product-link-digital">
+            <h1 class="product_name"><?= $product_name ?></h1>
+            <!--<div class="product-link-digital">
               <a href="<?= $product['url_archivo'] ?>">Leer libro</a>
-            </div>
+            </div>-->
             <div class="product-description">
               <?= $product['descripcion'] ?>
             </div> 
-            <div class="product-buttons">
-              <p><strong>Elige el formato que deseas comprar:</strong></p>
-              <ul class="btn_links">
-                <?php if($product['formato_digital']==1): ?>
-                  <li><a class="frmSapiensShowDigital" href="#">Digital</a></li>
-                <?php endif ?>
-                <?php if($product['formato_fisico']==1): ?>
-                  <li><a class="frmSapiensShowFisico" href="#">Físico</a></li>
-                <?php endif ?>
-              </ul>
-            </div> 
-              <!--<div class="product-price-info">
+            <div class="product-price-info">
                 <?php
                 $have_variants = false;
                 if($product['estado']==0){
-                  echo "PRODUCTO AGOTADO";
+                  echo "Próximamente";
                 }else{
                   // VERIFICAMOS SI HAY VARIANTES
                   $qv = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE product_id=".$product['id']);
@@ -78,7 +62,11 @@
                     ?>
                     <div class="cover_prices_range">
                       <?php $response = product_have_variants($product['id']) ?>
-                      <span class="price_range"><?= G_COIN ?> <?= number_format($response['price_min'], 2) ?> - <?= number_format($response['price_max'], 2) ?></span> / unidad
+                      <span class="price_range"><?= G_COIN ?> 
+                        <?php if($response['price_min'] > 0): ?>
+                        <?= number_format($response['price_min'], 2) ?> - 
+                        <?php endif ?>
+                        <?= number_format($response['price_max'], 2) ?></span> / unidad
                     </div>
                     <div class="prices">
                       <div class="notice">Seleccione las alternativas disponibles</div>
@@ -133,11 +121,11 @@
                           <?php
                           if($product['descuento']>0):
                           ?>
-                          <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio_oferta'], 2) ?></span>
+                          Precio: <span class="product_currency"><?= G_COIN ?></span> <span class="product_price"><?= number_format($product['precio_oferta'], 2) ?></span>
                           <?php
                           else:
                           ?>
-                          <span class="highlight"><?= G_COIN ?> <?= number_format($product['precio'], 2) ?></span>
+                          Precio: <span class="product_currency"><?= G_COIN ?></span> <span class="product_price"><?= number_format($product['precio'], 2) ?></span>
                           <?php
                           endif;
                           ?>
@@ -158,10 +146,21 @@
                   }
                 }
                 ?>
-              </div>-->
+              </div>
+            <!--<div class="product-buttons">
+              <ul class="btn_links">
+                <?php if($product['formato_fisico']==1): ?>
+                  <li><a class="frmSapiensShowFisico" href="#">Físico</a></li>
+                <?php endif ?>
+                <?php if($product['formato_digital']==1): ?>
+                  <li><a class="frmSapiensShowDigital" href="#" style="background: gray!important">Digital</a></li>
+                <?php endif ?>
+              </ul>
+            </div> -->
+              
         </div>
         <!-- calculate total -->
-        <!--<div class="product-calculate">
+        <div class="product-calculate">
           <form class="frm_cart" method="post" id="frm_cart">
             <input type="hidden" value="" id="variant_name" name="variant_name">
             <input type="hidden" value="" id="variant_id" name="variant_id">
@@ -207,10 +206,10 @@
             </div>
             <button <?php if($have_variants) echo "disabled" ?> class="btnaddcart" type="button"><i class="fas fa-shopping-cart"></i> Añadir al carrito</button>
             <?php else: ?>
-            <h3>Agotado</h3>
+            <h3>Próximamente</h3>
             <?php endif ?>
           </form>
-        </div>-->
+        </div>
       </div>
     </div>
   </div> <!--- inner-content end -->
@@ -296,7 +295,7 @@ $(document).ready(function() {
         //console.log(data);
         if(data.result){
           if(data.state==0){
-            $('.prices').empty().append('<div class="notice"><h2>AGOTADO</h2></div>');
+            $('.prices').empty().append('<div class="notice"><h2>Próximamente</h2></div>');
             $('.cover_prices_range').show();
             $('#product_total').empty().append('0.00');
             $('#product_price').val('0.00');

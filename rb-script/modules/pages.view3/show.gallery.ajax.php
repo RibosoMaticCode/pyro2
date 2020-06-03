@@ -1,24 +1,25 @@
-<script>
-$(document).ready(function() {
-  $('.back_gallery').on('click',function() {
-    $('.rb-cover-galleries').show();
-    $('.rb-gallery-photos').hide();
-  });
-});
-</script>
 <?php
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
-require_once ABSPATH.'rb-script/funciones.php';
+require_once ABSPATH.'rb-script/funcs.php';
 
 $gallery_id = $_GET['gallery_id'];
 $redirect = $_GET['redirect'];
 $gallery = rb_get_info_gallery($gallery_id);
 $fotos = rb_get_images_from_gallery($gallery_id);
 ?>
+<script>
+$(document).ready(function() {
+  $('.back_gallery').on('click',function(event) {
+    event.preventDefault();
+    $('.rb-cover-galleries').show();
+    $('.rb-gallery-photos').hide();
+  });
+});
+</script>
 <h2><?= $gallery['nombre']?></h2>
 <a href="#" class="back_gallery">Volver</a>
 <?php

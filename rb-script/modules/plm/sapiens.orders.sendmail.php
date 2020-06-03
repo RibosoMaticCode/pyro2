@@ -15,13 +15,17 @@ $email_headers .= "Content-Type: text/html; UTF-8\r\n";
 
 // Email content
 $email_content = "Detalles del pedido:<br /><br />";
+$email_content .= "Numero del pedido: ".$num_order."<br />";
 $email_content .= "Nombres: ".$valores['names']." ".$valores['lastnames']."<br />";
 $email_content .= "Email: ".$valores['email']."<br />";
 $email_content .= "Celular: ".$valores['phone']."<br />";
-$email_content .= "Libro titulo: ".$valores['book_title']."<br />";
-$email_content .= "Libro url: ".$valores['book_url']."<br />";
-$email_content .= "Carrera: ".$valores['career']."<br />";
-$email_content .= "Colegio: ".$valores['school']."<br />";
+//$email_content .= "Libro titulo: ".$valores['book_title']."<br />";
+//$email_content .= "Libro url: ".$valores['book_url']."<br />";
+$email_content .= "Dirección: ".$valores['address']."<br />";
+$email_content .= "Total del pedido: ".$valores['total']."<br />";
+$email_content .= "Costo de envio: ".$valores['delivery_cost']."<br />";
+$email_content .= "Numero de operacion: ".$valores['num_operation']."<br />";
+
 $email_content .= "<br />Para ver este y otros pedidos a detalle, ingrese a la web. 
 	Aqui: <a href='".G_SERVER."login.php'>".G_SERVER."login.php</a><br />";
 $email_content .= "--<br />El e-mail fue enviado a través del formulario de la web.";
@@ -46,13 +50,19 @@ if (mail($recipient, $subject, $email_content, $email_headers)) {
 
 	// Email content
 	$email_content = "";
-	$email_content .= '<h2>Gracias por registrarte</h2>
-    <p>Para finalizar el proceso, realizar tu pago de esta forma:</p>
-    <p><strong>Deposito a cuenta corriente</strong></p>
-    <p>BCP 850 91828102 020</p>
-    <p>BBVA 127 12121 10910 00</p>
-    <p><strong>Coordinar pago por Whatsapp</strong></p>
-    <p><a href="https://api.whatsapp.com/send?phone=51920810299">+51 920 810 299</a></p>';
+	$email_content .= '<h2>Gracias por registrar tu pedido</h2>
+	<p>Pronto nos pondremos en contacto contigo</p>
+    <p>Para finalizar el proceso, realizar tu pago de:</p> 
+    <p><strong>S/. '.$valores['total'].'</strong></p>
+    <p>Más el costo de envio:</p>
+    <p><strong>S/. '.$valores['delivery_cost'].'</strong></p>
+    <br />
+    <p>Deposito a cuenta corriente</p>
+    <p><strong>BCP 570-7150004-0-36</strong></p>
+    <br />
+    <p>Coordinar pago por Whatsapp</strong></p>
+    <p><a href="https://api.whatsapp.com/send?phone=51924986883">+51 924 986 883</a></p>
+    <br />';
 
 	mail($recipient, $subject, $email_content, $email_headers);
 

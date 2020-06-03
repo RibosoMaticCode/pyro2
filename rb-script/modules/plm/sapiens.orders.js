@@ -4,12 +4,15 @@ var base_module = base_url+'rb-script/modules/plm/';
 $(document).ready(function() {
 	// Tabla
 	if ( $( "#table" ).length > 0) {
-	    console.log("existe");
-	    $('#table').DataTable({
+	    var table = $('#table').DataTable({
 	      "language": {
 	        "url": "resource/datatables/Spanish.json"
 	      }
 	    });
+
+	    table
+	    	.order( [ 0, 'desc' ] )
+    		.draw();
 	}
 
     // Eliminar orden
@@ -27,7 +30,7 @@ $(document).ready(function() {
 		      	if(data.resultado){
 		       		notify(data.contenido);
 			        setTimeout(function(){
-			          window.location.href = base_url+'rb-admin/module.php?pag=sapiens_orders';
+			          window.location.href = base_url+'rb-admin/module.php?pag=plm_orders_simple';
 			        }, 1000);
 		      	}else{
 		        	notify(data.contenido);
@@ -37,12 +40,12 @@ $(document).ready(function() {
 	});
 
 	// Boton Cancelar
-    $('.CancelFancyBox').on('click',function(event){
+	$(document).on('click','.CancelFancyBox', function(event){
 		$.fancybox.close();
 	});
 
     // Boton Guardar
-    $('#frmData').submit(function(event){
+    $(document).on('submit', '#frmData', function( event ){
       	event.preventDefault();
   		//tinyMCE.triggerSave(); //save first tinymce en textarea
   		$.ajax({
@@ -55,7 +58,7 @@ $(document).ready(function() {
 				$.fancybox.close();
   				notify(data.contenido);
 				setTimeout(function(){
-		          	window.location.href = base_url+'rb-admin/module.php?pag=sapiens_orders';
+		          	window.location.href = base_url+'rb-admin/module.php?pag=plm_orders_simple';
 		        }, 1000);
 	  	  	}else{
 	  			notify(data.contenido);

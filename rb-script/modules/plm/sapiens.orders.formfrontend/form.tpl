@@ -36,7 +36,7 @@
     <p><strong>Deposito a cuenta corriente</strong></p>
     <p>BCP 570-7150004-0-36</p>
     <p><strong>Coordinar pago por Whatsapp</strong></p>
-    <p><a href="https://api.whatsapp.com/send?phone=51920810299">+51 920 810 299</a></p>
+    <p><a href="https://api.whatsapp.com/send?phone=51924986883">+51 924 986 883</a></p>
   </div>
   <p style="text-align:right">
     <a class="frmSapiensClose" href="#">Cerrar</a>

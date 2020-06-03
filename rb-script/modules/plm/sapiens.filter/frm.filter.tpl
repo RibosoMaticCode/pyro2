@@ -16,7 +16,7 @@
         Tipo de libro:
           <select name="tipo_lib" class="tipo_lib">
             <option value="0">Selecciona</option>
-            <option value="Vademecum">Vademecum</option>
+            <option value="Vademecum">Vademécum</option>
             <option value="Banco de preguntas">Banco de preguntas</option>
           </select>
         </label>

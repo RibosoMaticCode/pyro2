@@ -1,27 +1,39 @@
 <?php
 $estilo = $widget['widget_values']['estilo'];
 $tipo = $widget['widget_values']['tipo'];
+$limite = $widget['widget_values']['limite'];
+$categoria = $widget['widget_values']['categoria'];
 $class = $widget['widget_class'];
-$limite = 8; // default
+
+// Validaciones
+$limite_string = "";
+if($limite > 0 || $limite != ""){
+  $limite_string = "LIMIT ".$limite;
+}
+$categoria_string = "";
+if($categoria > 0 || $categoria != ""){
+  $categoria_string = "AND categoria = ".$categoria;
+}
+
 global $objDataBase;
 // I. Consulta sql
 
 switch($tipo){
   case 1;
     // mas vendidos - sold
-    $q = "SELECT * FROM plm_products WHERE mostrar=1 ORDER BY salidas DESC LIMIT $limite";
+    $q = "SELECT * FROM plm_products WHERE mostrar=1 ".$categoria_string." ORDER BY salidas DESC ".$limite_string;
   break;
   case 2:
     // mejores ofertas - discount
-    $q = "SELECT * FROM plm_products WHERE mostrar=1 ORDER BY descuento DESC LIMIT $limite";
+    $q = "SELECT * FROM plm_products WHERE mostrar=1 ".$categoria_string." ORDER BY descuento DESC ".$limite_string;
   break;
   case 3:
     // recientes - recents
-    $q = "SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id DESC LIMIT $limite";
+    $q = "SELECT * FROM plm_products WHERE mostrar=1 ".$categoria_string." ORDER BY id DESC ".$limite_string;
   break;
   case 4:
     // antiguos - olds
-    $q = "SELECT * FROM plm_products WHERE mostrar=1 ORDER BY id ASC LIMIT $limite";
+    $q = "SELECT * FROM plm_products WHERE mostrar=1 ".$categoria_string." ORDER BY id ASC ".$limite_string;
   break;
 }
 
@@ -40,11 +52,13 @@ while($product = $qr->fetch_assoc()):
   else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
   $photo = rb_get_photo_details_from_id($product['foto_id']);
   $products[$i]['image_url'] = $photo['file_url'];
+  $products[$i]['url_archivo'] = $product['url_archivo'];
   $i++;
 endwhile;
 
 // II. Estilo visual
 switch($estilo){
+  // LISTADO DESTACADO
   case 1:
     ?>
     <div class="cols-container <?= $class ?>">
@@ -82,6 +96,19 @@ switch($estilo){
     }?>
     </div>
     <?php
+  break;
+  // LISTADO NORMAL
+  case 2:
+    $view_style = get_option('frontview_product');
+    switch ($view_style) {
+      case $view_style:
+        $file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
+        break;
+      default:
+        $file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
+        break;
+    }
+    require( $file );
   break;
 }
 ?>

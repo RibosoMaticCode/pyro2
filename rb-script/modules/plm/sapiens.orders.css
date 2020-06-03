@@ -1,0 +1,22 @@
+.table_orders th{
+	font-size: .8em;
+	color: gray;
+}
+.table_orders td{
+	font-size:.75em
+}
+.table_orders img{
+	max-width: 50px!important;
+}
+.sapi_cart_del,
+.sapi_cart_prod{
+	display: none;
+}
+.sapi_details_order{
+	min-height: 540px;
+	overflow: auto;
+}
+.sapiens_actions a{
+	margin:0 10px;
+	text-decoration: underline!important;
+}

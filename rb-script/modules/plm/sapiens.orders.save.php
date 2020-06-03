@@ -31,14 +31,16 @@ if(isset($_POST['phone']) && strlen($_POST['phone']) < 9){
 // Asignando valores
 $valores = [
 	'date' => date('Y-m-d G:i:s'),
-	'book_title' => $_POST['book_title'],
-	'book_url' => $_POST['book_url'],
+	//'book_title' => $_POST['book_title'],
+	//'book_url' => $_POST['book_url'],
 	'names' => isset($_POST['names']) ? trim($_POST['names']) : "sin nombre",
 	'lastnames' => isset($_POST['lastnames']) ? trim($_POST['lastnames']) : "sin nombre",
 	'email' => isset($_POST['email']) ? trim($_POST['email']) : "sin correo",
 	'phone' => isset($_POST['phone']) ? trim($_POST['phone']) : "sin fono",
 	'career' => $_POST['career'],
-	'school' => $_POST['school']
+	'school' => $_POST['school'],
+	'total' => $_POST['total'],
+	'order_details' => $_POST['order_details']
 ];
 
 if( isset($_POST['delivery']) && $_POST['delivery']==""){
@@ -54,6 +56,13 @@ if( isset($_POST['delivery']) && $_POST['delivery']=="0" && $_POST['address'] ==
 	$valores['address'] = $_POST['address'];
 }
 
+if( isset($_POST['num_operacion']) ){
+	$valores['num_operation'] = $_POST['num_operacion'];
+}
+if( isset($_POST['costo_delivery']) ){
+	$valores['delivery_cost'] = $_POST['costo_delivery'];
+}
+
 // Validar mail
 /*if($_POST['mode']=="new"){
 	$q = $objDataBase->Ejecutar("SELECT * FROM sapiens_orders WHERE email='".$valores['email']."'");
@@ -66,10 +75,16 @@ if( isset($_POST['delivery']) && $_POST['delivery']=="0" && $_POST['address'] ==
 if($id==0){ // Nuevo
 	$r = $objDataBase->Insert('sapiens_orders', $valores);
 	if($r['result']){
+		// Registrar numero de pedido
+		$num_order = date('Y').date('m').date('d').str_pad($r['insert_id'], 4, "0", STR_PAD_LEFT);
+		$objDataBase->Update('sapiens_orders', ["num_order" => $num_order] , ["id" => $r['insert_id']]);
+
 		// Send mail
 		if($sendmail==1){
 			require_once 'sapiens.orders.sendmail.php';
 		}
+
+		unset($_SESSION['carrito']);
 
 		$arr = ['resultado' => true, 'contenido' => 'Pedido registrado', 'id' => $r['insert_id'], 'continue' => true ];
 	}else{

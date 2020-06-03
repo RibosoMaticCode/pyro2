@@ -371,15 +371,14 @@ function plm_products_call_url(){
 
 		$type = "cat";
 		$term = $category;
-		/*$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
-		require_once( $file );*/
+
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 				break;
 		}
 
@@ -441,15 +440,14 @@ function plm_products_call_url(){
 
 		$type = "search";
 		$term = $search;
-		/*$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
-		require_once( $file );*/
+
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 				break;
 		}
 
@@ -514,7 +512,16 @@ function plm_products_call_url(){
 		define('rm_metaauthor', G_METAAUTHOR);
 		define('rm_page_image', '' );
 
-		$file = ABSPATH.'rb-script/modules/plm/cart.front.view.php';
+		$view_style = get_option('frontview_product');
+		switch ($view_style) {
+			case $view_style:
+				$file = ABSPATH.'rb-script/modules/plm/views/cart.front.view'.$view_style.'.php';
+				break;
+			default:
+				$file = ABSPATH.'rb-script/modules/plm/views/cart.front.view.php';
+				break;
+		}
+		//$file = ABSPATH.'rb-script/modules/plm/cart.front.view.php';
 		include_once 'funcs.php';
 		require_once( $file );
 
@@ -649,15 +656,14 @@ function plm_products_call_url(){
 
 		$type = "all";
 		$term = "";
-		/*$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
-		require_once( $file );*/
+
 		$view_style = get_option('frontview_product');
 		switch ($view_style) {
 			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
 				break;
 			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
+				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 				break;
 		}
 
@@ -671,11 +677,11 @@ add_function('call_modules_url','plm_products_call_url');
 // CSS Front End
 function plm_front_css(){
 	include_once 'funcs.php';
-	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/product.front.css'>\n";
+	//$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/product.front.css'>\n";
 	$view_style = get_option('frontview_product');
 	switch ($view_style) {
 		case $view_style:
-			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style".$view_style.".css'>\n";
+			$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style".$view_style.".css'>\n";
 			break;
 	}
 	return $css;
@@ -723,18 +729,20 @@ function plm_products_init(){
 			</div>
 			</a>
 			<div class="product-item-desc">
-				<h3><a href="'.$product['url'].'">'.$product['nombre'].'</a></h3>
-				<div class="product-item-btns">
+				<h3><a href="'.$product['url'].'">'.$product['nombre'].'</a></h3>';
+
+		$products_list .= '<div class="product-item-price">';
+                        if($product['precio_oferta']>0):
+                          $products_list .= '<span class="product-item-price-now">'.G_COIN.' '.number_format($product['precio_oferta'], 2).'</span>';
+                        else:
+                          $products_list .= '<span class="product-item-price-now">'.G_COIN.' '.number_format($product['precio'], 2).'</span>';
+                        endif;
+                      $products_list .='</div>';
+
+		$products_list .= '<div class="product-item-btns">
 					<a href="'.$product['url_archivo'].'">Leer ahora</a>
 					<a href="'.$product['url'].'">Ver detalles</a>
 				</div>
-				<!--<div class="product-item-price">';
-					if($product['precio']>0):
-						$products_list .='<span class="product-item-price-before">Tienda: S/. '.$product['precio'] .'</span>
-                    <span>Online: </span>';
-                    endif;
-					$products_list .='<span class="product-item-price-now">S/.'.$product['precio_oferta'].'</span>
-				</div>-->
 			</div>
 		</div>
 	</div>';
@@ -857,23 +865,6 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_orders"):
 	add_function('module_content_main','plm_orders');
 endif;
 
-// ------ PEDIDOS DE PRODUCTOS SIMPLE ------ //
-if(isset($_GET['pag']) && $_GET['pag']=="plm_orders_simple"):
-	function sapiens_orders_title(){
-		return "Sapiens pedidos";
-	}
-	function sapiens_orders_content(){
-		global $objDataBase;
-
-		$q = $objDataBase->Ejecutar('SELECT * FROM sapiens_orders ORDER BY date DESC');
-
-		include_once 'sapiens.orders.init.php';
-	}
-
-	add_function('module_title_page','sapiens_orders_title');
-	add_function('module_content_main','sapiens_orders_content');
-endif;
-
 // ------ CATEGORIAS DE PRODUCTOS ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_category"):
 	function plm_category_title(){
@@ -903,6 +894,30 @@ endif;
 /******************************************************/
 /*************			SAPIENS 	*******************/
 /******************************************************/
+
+// ------ PEDIDOS DE PRODUCTOS SIMPLE ------ //
+if(isset($_GET['pag']) && $_GET['pag']=="plm_orders_simple"):
+	function sapiens_orders_title(){
+		return "Sapiens pedidos";
+	}
+	function sapiens_orders_content(){
+		global $objDataBase;
+
+		$q = $objDataBase->Ejecutar('SELECT * FROM sapiens_orders ORDER BY date DESC');
+
+		include_once 'sapiens.orders.init.php';
+	}
+
+	add_function('module_title_page','sapiens_orders_title');
+	add_function('module_content_main','sapiens_orders_content');
+endif;
+
+// CSS
+function sapiens_backend_css(){
+	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/sapiens.orders.css'>\n";
+	return $css;
+}
+add_function('panel_header_css','sapiens_backend_css');
 
 // -------- FORMULARIO PEDIDO DIGITAL FRONTEND ---------- //
 function sapiens_orders_digital(){
@@ -1051,10 +1066,10 @@ function sapiens_filter_url(){
 			$view_style = get_option('frontview_product');
 			switch ($view_style) {
 				case $view_style:
-					$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list'.$view_style.'.php';
+					$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
 					break;
 				default:
-					$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.list.php';
+					$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 					break;
 			}
 

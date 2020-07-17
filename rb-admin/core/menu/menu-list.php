@@ -8,7 +8,16 @@ while ($row = $result->fetch_assoc()):
     <?= $row['nombre']?>
   </td>
   <td>
-    <code>[MENU id="<?= $row['id']?>"]</code>
+    <code>[MENU id="<?= $row['id']?>" type="<?= $row['tipo']?>"]</code>
+  </td>
+  <td>
+    <?php
+    if($row['tipo']==1){
+      print 'Menu principal';
+    }else{
+      print 'Menu';
+    }
+    ?>
   </td>
   <td class="row-actions">
     <a title="Añadir elementos" class="edit" href='<?= G_SERVER ?>rb-admin/index.php?pag=menu&amp;id=<?= $row['id']?>'><i class="fas fa-plus"></i></a>

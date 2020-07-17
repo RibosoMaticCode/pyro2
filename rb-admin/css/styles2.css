@@ -318,7 +318,7 @@ h1.title-web a {
 .explorer-body .preview{
 	margin: 20px auto;
 	display: block;
-	max-width: 80vh;
+	max-width: 80%;
 	padding: 10px;
 }
 .explorer-body .search-bar{

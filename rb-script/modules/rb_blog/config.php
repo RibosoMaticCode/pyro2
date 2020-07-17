@@ -46,6 +46,22 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=rb_blog_config';
           <input type="text" name="options[base_category]" value='<?= blog_get_option('base_category') ?>' />
         </div>
       </div>
+      <div class="cols-container">
+        <div class="cols-6-md">
+          Plantilla listado de categorias
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[design_categories_list]" value='<?= blog_get_option('design_categories_list') ?>' />
+        </div>
+      </div>
+      <div class="cols-container">
+        <div class="cols-6-md">
+          Plantilla publicacion
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[design_post]" value='<?= blog_get_option('design_post') ?>' />
+        </div>
+      </div>
       <button class="button btn-primary" type="submit">Guardar configuracion</button>
     </form>
     <script>

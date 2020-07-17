@@ -166,6 +166,7 @@ span.rb-gallery-desc {
 }
 .rb-gallery-photos{
   width:100%;
+  padding: 0 20px;
 }
 .rb-gallery-photos .cols-container a {
   display: block;

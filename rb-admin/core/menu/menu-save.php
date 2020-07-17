@@ -11,6 +11,10 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 $id = $_POST['id'];
 //$mode=$_POST['mode'];
 $nom=$_POST['nombre'];
+$tipo = 0;
+if(isset($_POST['tipo'])){
+	$tipo = 1;
+}
 
 if($nom=="") {
 	$arr = ['resultado' => false, 'contenido' => "Nombre del menu no debe quedar vacio"];
@@ -18,7 +22,8 @@ if($nom=="") {
 }
 
 $valores = [
-  'nombre' => $nom
+  'nombre' => $nom,
+  'tipo' => $tipo
 ];
 
 if($id==0){

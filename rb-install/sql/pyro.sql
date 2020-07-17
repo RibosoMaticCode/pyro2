@@ -209,7 +209,8 @@ CREATE TABLE `py_log` (
 
 CREATE TABLE `py_menus` (
   `id` smallint(4) NOT NULL,
-  `nombre` varchar(75) NOT NULL
+  `nombre` varchar(75) NOT NULL,
+  `tipo` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -284,6 +285,7 @@ CREATE TABLE `py_pages` (
   `type` smallint(3) NOT NULL DEFAULT 0,
   `allow_access` tinyint(1) NOT NULL DEFAULT 0,
   `password_view` varchar(50) NOT NULL DEFAULT '',
+  `blocking_message` text NOT NULL,
   `image_id` smallint(5) NOT NULL DEFAULT 0,
   `allow_users_ids` tinytext NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

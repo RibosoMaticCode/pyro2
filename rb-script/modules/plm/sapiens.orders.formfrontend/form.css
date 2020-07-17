@@ -11,6 +11,8 @@
 	max-width: 500px;
 	background-color: #fff;
 	border-radius:15px;
+    max-height: 100vh;
+    overflow: auto;
 }
 .frmSapiensOrdersFisico {
     font-size: 90%;
@@ -90,8 +92,8 @@ span.frmUserName {
 }
 a.frmSapiensClose {
     position: absolute;
-    top: -16px;
-    right: -16px;
+    top: 0;
+    right: 0;
     z-index: 2;
     background-color: #fff;
     height: 32px;

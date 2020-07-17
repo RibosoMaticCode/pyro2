@@ -114,22 +114,26 @@ global $objDataBase;
 				</label>
 			</div>
 		</div>
-		<!--<div class="cols-container">
-			<div class="cols-12-md">
+		<div class="cols-container">
+			<div class="cols-6-md spacing-right">
 				<label>
-					<input type="checkbox" name="post1_showimg" id="post1_showimg" /> Mostrar imagen
-				</label>
-				<label>
-					<input type="checkbox" name="post1_showtitle" id="post1_showtitle" /> Mostrar titulo
-				</label>
-				<label>
-					<input type="checkbox" name="post1_showsocial" id="post1_showsocial" /> Mostrar social
-				</label>
-				<label>
-					<input type="checkbox" name="post1_datetime" id="post1_datetime" /> Mostrar fecha y hora
+					<span>Imagen destacada:</span>
+					<select name="post1_show_img" id="post1_show_img" >
+						<option value="0">No mostrar</option>
+						<option value="1">Mostrar</option>
+					</select>
 				</label>
 			</div>
-		</div>-->
+			<div class="cols-6-md spacing-left">
+				<label>
+					<span>Categorias:</span>
+					<select name="post1_show_cat" id="post1_show_cat" >
+						<option value="0">No mostrar</option>
+						<option value="1">Mostrar</option>
+					</select>
+				</label>
+			</div>
+		</div>
 	</div>
 	<div class="editor-footer">
 		<input type="hidden" id="post1_id" value="" />
@@ -152,31 +156,36 @@ $(document).ready(function() {
 			widgets.append(data);
 		});
 	});
+
 	// Mostrar Editor de Post1
 	$("#boxes").on("click", ".<?= $action ?>", function (event) {
-    var post1_id = $(this).closest(".widget").attr('data-id');
-    var post1_class = $(this).closest(".widget").attr('data-class');
-    var post1_values_string = $(this).closest(".widget").attr('data-values');
-    var pva = JSON.parse(post1_values_string);
-    $('#post1_id').val(post1_id);
-    $('#post1_title').val(pva.tit);
-    $('#post1_category').val(pva.cat);
-    $('#post1_count').val(pva.count);
-    $('#post1_order').val(pva.ord);
-	$('#post1_desc').val(pva.desc);
-	$('#post1_link').val(pva.link);
-	$('#post1_byrow').val(pva.byrow);
-    $("input[name='post1_type'][value='"+pva.typ+"']").prop('checked', true);
-    $('#post1_class').val(post1_class);
-    $(".bg-opacity").show();
-    $("#<?= $frm_config_id ?>").show();
-    event.preventDefault();
-  });
+	    var post1_id = $(this).closest(".widget").attr('data-id');
+	    var post1_class = $(this).closest(".widget").attr('data-class');
+	    var post1_values_string = $(this).closest(".widget").attr('data-values');
+	    var pva = JSON.parse(post1_values_string);
+	    console.log(pva);
+	    $('#post1_id').val(post1_id);
+	    $('#post1_title').val(pva.tit);
+	    $('#post1_category').val(pva.cat);
+	    $('#post1_count').val(pva.count);
+	    $('#post1_order').val(pva.ord);
+		$('#post1_desc').val(pva.desc);
+		$('#post1_link').val(pva.link);
+		$('#post1_show_img').val(pva.show_img);
+		$('#post1_show_cat').val(pva.show_cat);
+		$('#post1_byrow').val(pva.byrow);
+	    $("input[name='post1_type'][value='"+pva.typ+"']").prop('checked', true);
+	    $('#post1_class').val(post1_class);
+	    $(".bg-opacity").show();
+	    $("#<?= $frm_config_id ?>").show();
+	    event.preventDefault();
+	 });
+
 	// Aceptando cambios
 	$('#<?= $btnAccept ?>').click(function() {
 		var post1_id = $('#post1_id').val();
 		$('#'+ post1_id).attr('data-class', $('#post1_class').val());
-		//captura de valores
+		
 		var post1_title = $('#post1_title').val();
 		if (post1_title=="") post1_title = "";
 		var post1_category = $('#post1_category').val();
@@ -189,17 +198,24 @@ $(document).ready(function() {
 		if (post1_order=="") post1_count = "DESC";
 		var post1_type = $('input[name=post1_type]:checked').val();
 		if (post1_type=="") post1_type = 0;
+		var post1_desc = $('#post1_desc').val();
+		if (post1_desc== null) post1_desc = 0;
+		var post1_link = $('#post1_link').val();
+		if (post1_link== null) post1_link = 0;
+		var post1_show_img = $('#post1_show_img').val();
+		if (post1_show_img== null) post1_show_img = 0;
+		var post1_show_cat = $('#post1_show_cat').val();
+		if (post1_show_cat== null) post1_show_cat = 0;
 
-		var post1_values_string = '{"cat":'+post1_category+',"count":'+post1_count+',"byrow":'+post1_byrow+',"ord":"'+post1_order+'","tit":"'+post1_title+'","typ":'+post1_type+', "desc": '+$('#post1_desc').val()+', "link": '+$('#post1_link').val()+'}';
+		console.log($('#post1_show_cat').val());
+
+		var post1_values_string = '{"cat":'+post1_category+',"count":'+post1_count+',"byrow":'+post1_byrow+',"ord":"'+post1_order+'","tit":"'+post1_title+'","typ":'+post1_type+', "desc": '+post1_desc+', "link": '+post1_link+', "show_img": '+post1_show_img+', "show_cat": '+post1_show_cat+'}';
 		console.log(post1_values_string);
 		$('#'+ post1_id).attr('data-values', post1_values_string );
-		/*if ($('#$post1_showimg').is(':checked')) {
-			var post1_showimg = 1;
-		}else{
-			var post1_showimg = 0;
-		}*/
+
 		$('.bg-opacity, #<?= $frm_config_id ?>').hide();
 	});
+
 	// Cancelando cambios
 	$('#<?= $btnCancel ?>').click(function() {
 		$('.bg-opacity, #<?= $frm_config_id ?>').hide();

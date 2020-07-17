@@ -17,6 +17,9 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
   <label title="Nombre del Menu" for="nombre">Nombre del Menu:
     <input required  name="nombre" type="text" value="<?php if(isset($row))echo $row['nombre'] ?>" />
   </label>
+  <label>
+    <input name="tipo" type="checkbox" <?php if(isset($row) && $row['tipo'] == 1) echo "checked"; ?> /> Menu principal
+  </label>
   <div class="cols-container">
     <div class="cols-6-md cols-content-left">
       <button type="submit" class="button btn-primary">Guardar</button>

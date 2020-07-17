@@ -46,7 +46,7 @@ $(document).ready(function() {
 						else $url_redirect = "";
 						?>
 						<input type="hidden" name="redirect" value="<?= $url_redirect ?>" />
-						<input type="text" name="usuario" required placeholder="Correo ó nombre de usuario ó teléfono" autocomplete="off" />
+						<input type="text" name="usuario" required placeholder="Correo, nombre de usuario o teléfono" autocomplete="off" />
 						<input type="password" name="contrasena" required placeholder="Contraseña" autocomplete="off" />
 						<div class="cols-container">
 							<label class="cols-6-md center">

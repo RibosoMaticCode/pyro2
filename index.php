@@ -38,7 +38,6 @@ if($show_sidebar==1){
 	endif;
 }else{
 	define('class_col_1', "block-full");
-	//$class_col_1 = " block-full ";
 }
 
 // Verifica en los modulos si hay alguna URL personalizada que direccione a otro lado
@@ -86,7 +85,7 @@ if(G_ENL_AMIG):
 	// debemos obviarlo antes de destriparlo :-)
 	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
 	// Pasamos la URL a un array que contenga sus elementos delimitados por la barra (slash)
-  $requestURI = explode("/", $requestURI);
+  	$requestURI = explode("/", $requestURI);
 	// Indexamos numericamente el array para mas facil consultar
 	$requestURI = array_values( array_filter( $requestURI ) );
 	$numsItemArray = count($requestURI);
@@ -144,13 +143,8 @@ if(isset($_GET['pa'])){
 		define('rm_title_page' , "Panel de usuario");
 		define('rm_page_image', G_SERVER.'rb-script/images/gallery-default.jpg');
 		define('rm_title' , "Panel de usuario | ".G_TITULO );
-		//define('rm_metadescription' , rb_get_values_options('descripcion') );
 		define('rm_metadescription' , "Panel del usuario. Puede editar sus datos personales y recibir notificaciones del sistema aqui." );
 		define('rm_metaauthor' , G_TITULO." - ".G_VERSION);
-		/*$css_add = [
-			'/rb-script/modules/rb-userpanel/paneluser.css'
-		];
-		define('rm_css', serialize($css_add));*/
 		$rm_menu_name = "";
 		require_once ABSPATH.'rb-script/modules/rb-userpanel/panel.php';
 
@@ -209,8 +203,6 @@ if(isset($_GET['pa'])){
 	$qs = $objDataBase->Search($data_to_search, 'articulos', ['titulo', 'contenido']);
 	$CountPosts = $qs->num_rows;
 
-	//$CountTotal = $CountPosts + $CountPages;
-
 	define('rm_title',"Buscando ".$data_to_search." | ".G_TITULO);
 	define('rm_title_page',"Buscando ".$data_to_search);
 	define('rm_page_image', rb_photo_login(G_LOGO));
@@ -224,7 +216,6 @@ if(isset($_GET['pa'])){
 
 // GALERIA DE IMAGENES
 }elseif( isset( $GalleryId ) ){
-	//$gallery_id = $_GET['gallery_id'];
 	$gallery = rb_get_info_gallery($GalleryId);
 	$fotos = rb_get_images_from_gallery($GalleryId);
 
@@ -247,33 +238,28 @@ if(isset($_GET['pa'])){
 		header('Location: '.rb_get_values_options('direccion_url').'/login.php');
 	}
 }else{
-	// ** PAGINA INDEX DEL TEMA MUESTRA EN BLOG POR DEFECTO **
+	// PAGINAS
 	if(G_INITIAL==0){
-		// Pagina por defecto, pagina de bienvenida
-		define('rm_title', rm_longtitle);
-		define('rm_page_image', rb_photo_login(G_LOGO));
-		define('rm_metadescription', G_METADESCRIPTION);
-		define('rm_metaauthor', "Blackpyro");
-		$rm_menu_name = "m-inicio";
-
+		// Pagina por defecto tomada de la plantilla. pagina de bienvenida por defecto
 		$file = ABSPATH.'rb-themes/'.G_ESTILO.'/index.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
-	}else{ // Pagina seleccionada por el usuario
-	  $Page = rb_show_specific_page(G_INITIAL);
+	}else{ 
+		// Pagina personalizada seleccionada por el usuario
+	  	$Page = rb_show_specific_page(G_INITIAL);
 		define('rm_title', rm_longtitle);
 		define('rm_title_page', $Page['titulo']);
 		define('rm_page_image', rb_photo_login(G_LOGO));
 		define('rm_metadescription', rb_get_values_options('meta_description'));
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
-	  define('rm_metakeywords', $Page['tags']);
+	  	define('rm_metakeywords', $Page['tags']);
 
 		$show_header = $Page['show_header'];
 		$show_footer = $Page['show_footer'];
 		$block_header_id = $Page['header_custom_id'];
 		$block_footer_id = $Page['footer_custom_id'];
 
-	  $file = ABSPATH.'rb-script/modules/pages.view3/page.php';
+	  	$file = ABSPATH.'rb-script/modules/pages.view3/page.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}

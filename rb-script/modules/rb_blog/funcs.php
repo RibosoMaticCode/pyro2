@@ -210,7 +210,7 @@ function rb_set_read_post($id, $table){
 	$objDataBase->EditarPorCampo_int($table,'lecturas','lecturas+1',$id);
 }
 
-// Obtener categoria del post segun id del post
+// Obtener 1 categoria del post segun id del post
 function rb_get_category_by_post_id($post_id){
 	global $objDataBase;
 	$result = $objDataBase->Ejecutar("SELECT c.* FROM blog_categories c, blog_posts_categories ac, blog_posts a
@@ -243,7 +243,7 @@ function rb_get_category_info($category){
 	return $CategoriesArray;
 }
 
-/* MUESTRA CATEGORIAS DE POST EN PARTICULAR */
+/* MUESTRA LASCCATEGORIAS DE POST EN PARTICULAR */
 function rb_show_category_from_post($article_id){
   global $objDataBase;
 
@@ -381,7 +381,7 @@ function rb_show_half_post($content,$link) { // antes -> more_content
  * */
 function rb_categories_to_array($category_id, $all=true) {
 	global $objDataBase;
-  $q = "SELECT c.categoria_id, c.nivel, c.id, c.nombre, c.acceso, c.niveles, Items.Count FROM blog_categories c LEFT OUTER JOIN (SELECT categoria_id, COUNT(*) AS Count FROM blog_categories GROUP BY categoria_id) Items ON c.id = Items.categoria_id WHERE c.categoria_id=$category_id ORDER BY id";
+  	$q = "SELECT c.categoria_id, c.nivel, c.id, c.nombre, c.acceso, c.niveles, Items.Count FROM blog_categories c LEFT OUTER JOIN (SELECT categoria_id, COUNT(*) AS Count FROM blog_categories GROUP BY categoria_id) Items ON c.id = Items.categoria_id WHERE c.categoria_id=$category_id ORDER BY id";
 	//$r = mysql_query($q);
 	$r = $objDataBase->Ejecutar( $q );
 	while ( $row = $r.fetch_assoc() ):
@@ -401,18 +401,18 @@ function rb_categories_to_array($category_id, $all=true) {
 			$categories[$i]['categoria_id'] = $row['categoria_id'];
 			$categories[$i]['nivel'] = $row['nivel'];
 			$categories[$i]['nombre'] = $row['nombre'];
-      $categories[$i]['acceso'] = $row['acceso'];
-      $categories[$i]['niveles'] = $row['niveles'];
-      $categories[$i]['url'] = rb_url_link_blog( 'cat' , $row['id'] );
+      		$categories[$i]['acceso'] = $row['acceso'];
+      		$categories[$i]['niveles'] = $row['niveles'];
+      		$categories[$i]['url'] = rb_url_link_blog( 'cat' , $row['id'] );
 			$categories[$i]['items'] = rb_categories_to_array($row['id']);
 		elseif($row['Count']==0):
 			$categories[$i]['id'] = $row['id'];
 			$categories[$i]['categoria_id'] = $row['categoria_id'];
 			$categories[$i]['nivel'] = $row['nivel'];
 			$categories[$i]['nombre'] = $row['nombre'];
-      $categories[$i]['acceso'] = $row['acceso'];
-      $categories[$i]['niveles'] = $row['niveles'];
-      $categories[$i]['url'] = rb_url_link_blog( 'cat' , $row['id'] );
+      		$categories[$i]['acceso'] = $row['acceso'];
+      		$categories[$i]['niveles'] = $row['niveles'];
+      		$categories[$i]['url'] = rb_url_link_blog( 'cat' , $row['id'] );
 		endif;
 	endwhile;
 
@@ -456,5 +456,43 @@ function rb_url_link_blog($section, $id, $page=0){
 			}
 			break;
 	}
+}
+
+// LISTADO DE CATEGORIAS, PARA EL EDITOR DE PUBLICACION
+function blog_list_category($parent_id){
+	global $objDataBase;
+
+	$array_main = [];
+
+	$result = $objDataBase->Ejecutar("SELECT c.id, c.nombre, c.nombre_enlace, c.descripcion, c.photo_id, SubTable.Count FROM `blog_categories` c
+    LEFT OUTER JOIN (SELECT categoria_id, COUNT(*) AS Count FROM `blog_categories` GROUP BY categoria_id) SubTable ON c.id = SubTable.categoria_id
+    WHERE c.categoria_id=". $parent_id);
+
+	while ($row = $result->fetch_assoc()):
+		if ($row['Count'] > 0) {
+			$array = [
+				'id' => $row['id'],
+				'nombre' => $row['nombre'],
+				'nombre_enlace' => $row['nombre_enlace'],
+				'descripcion' => $row['descripcion'],
+				'foto_id' => $row['photo_id'],
+				'url' => rb_url_link_blog( 'cat' , $row['id'] ),
+				'items' => blog_list_category( $row['id'] )
+			];
+		}elseif ($row['Count']==0) {
+			$array = [
+				'id' => $row['id'],
+				'nombre' => $row['nombre'],
+				'nombre_enlace' => $row['nombre_enlace'],
+				'descripcion' => $row['descripcion'],
+				'foto_id' => $row['photo_id'],
+				'url' => rb_url_link_blog( 'cat' , $row['id'] )
+			];
+
+		}
+		array_push($array_main, $array);
+	endwhile;
+
+	return $array_main;
 }
 ?>

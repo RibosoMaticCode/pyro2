@@ -4,7 +4,7 @@ include_once("rb-conexion.class.php");
 class Usuarios{
  //constructor
 	public $con;
- 	public function Usuarios(){
+ 	public function __construct() {
  		$this->con = new Conector();
 	}
 

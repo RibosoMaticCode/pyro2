@@ -353,25 +353,42 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
           </div>
           <div id="catlist">
             <?php
-              $cons_cat = $objDataBase->Ejecutar("SELECT * FROM blog_categories ORDER BY nombre ASC");
-              while( $row_c = $cons_cat->fetch_assoc() ){
-                $categoria_id=$row_c['id'];
-                if(isset($row)){ // si esta definida variable con datos cargados para actualizar
-                  //buscar las coincidencias articulos-categorias
-                  $result = $objDataBase->Ejecutar("SELECT * FROM blog_posts_categories WHERE articulo_id=$id AND categoria_id=$categoria_id");
-                  $coincidencia = $result->num_rows;
-                }else{
-                  $coincidencia = 0;
+              // Categorias seleccionadas con la publicacion
+              $array_pub_cat = [];
+              if(isset($row)){
+                $res_pub_cat = $objDataBase->Ejecutar("SELECT * FROM blog_posts_categories WHERE articulo_id=$id");
+                while ($pub_cat = $res_pub_cat->fetch_assoc()) {
+                  array_push($array_pub_cat,$pub_cat['categoria_id']);
                 }
-                echo "<label class=\"label_checkbox\">";
-                if($coincidencia>0){
-                  echo "<input type=\"checkbox\" value=\"$row_c[id]\" checked=\"checked\" name=\"categoria[]\" /> $row_c[nombre] \n";
-                }else{
-                  echo "<input type=\"checkbox\" value=\"$row_c[id]\" name=\"categoria[]\" /> $row_c[nombre] \n";
-                }
-                echo "</label>";
               }
-              ?>
+
+              $categorias = blog_list_category(0);
+              $nivel = 0;
+
+              function show_categories_list($categorias,$nivel, $array_pub_cat){
+                foreach ($categorias as $categoria) {
+                  $selected = "";
+                  if (in_array($categoria['id'], $array_pub_cat)) {
+                    $selected = " checked ";
+                  }
+                  ?>
+                  <div style="margin-left:<?= $nivel * 10 ?>px">
+                  <label>
+                    <input type="checkbox" value="<?= $categoria['id'] ?>" name="categoria[]" <?= $selected ?> /> 
+                    <?= $categoria['nombre']?>
+                  </label>
+                  <?php
+                  if(isset($categoria['items'])){
+                    show_categories_list($categoria['items'], $nivel+1, $array_pub_cat);
+                  }
+                  ?>
+                  </div>
+                  <?php
+                }
+              }
+
+              show_categories_list($categorias, $nivel, $array_pub_cat);
+            ?>
           </div>
         </div>
       </div>

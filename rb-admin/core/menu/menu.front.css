@@ -3,6 +3,11 @@
   display: none;
 }
 
+.menu_main li{
+  display: inline-block;
+  padding: 5px;
+}
+
 /* RESPONSIVE */
 @media screen and (max-width: 425px) {
   .menu_main{

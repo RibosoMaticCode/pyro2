@@ -23,9 +23,13 @@ function items_recursive($mainmenu_id, $parent, $level){
 
 // Mostrar items del menu segun su id
 function show_menu( $params ){
-  $menu_html = '<div class="menu_main">'.items_recursive($params['id'], 0, 0).'</div>';
-  $menu_html .= '<a class="btnMenuOpen" href="#"><i class="fas fa-bars"></i></a><a class="btnMenuClose" href="#"><i class="fas fa-times"></i></a>';
-	return $menu_html;
+  if($params['type']==0){
+    $menu_html = items_recursive($params['id'], 0, 0);
+  }else{
+    $menu_html = '<div class="menu_main">'.items_recursive($params['id'], 0, 0).'</div>';
+    $menu_html .= '<a class="btnMenuOpen" href="#"><i class="fas fa-bars"></i></a><a class="btnMenuClose" href="#"><i class="fas fa-times"></i></a>';
+  }
+  return $menu_html;
 }
 
 /* ---------------- SHORTCODES --------------- */
@@ -35,11 +39,11 @@ function show_menu( $params ){
 */
 $r = $objDataBase->Ejecutar('SELECT * FROM '.G_PREFIX.'menus');
 while($form = $r->fetch_assoc()){
-	add_shortcode('MENU', 'show_menu', ['id' => $form['id'] ]);
+	add_shortcode('MENU', 'show_menu', ['id' => $form['id'], 'type' => $form['tipo'] ]);
 }
 
 /*
-  Hoja de estilo del menu
+  Hoja de estilo del menu y javascript
 */
 function menu_front_files(){
   global $rb_modure_dir;
@@ -49,7 +53,4 @@ function menu_front_files(){
 }
 add_function('theme_header','menu_front_files');
 
-/*
-  Hoja de Javascript
-*/
 ?>

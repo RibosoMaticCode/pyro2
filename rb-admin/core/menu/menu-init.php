@@ -100,6 +100,7 @@ $(document).ready(function() {
                 <th width="30px"><input type="checkbox" value="all" id="select_all" /></th>
                 <th>Nombre</th>
                 <th>Shortcode</th>
+                <th>Tipo</th>
                 <th>Acciones</th>
               </tr>
             </thead>

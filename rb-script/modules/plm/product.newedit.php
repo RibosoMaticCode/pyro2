@@ -284,7 +284,7 @@ $categories = json_decode($option['plm_value'], true);*/
                 $categorias = list_category(0);
                 $nivel = 0;
                 function show_categories_list($categorias,$nivel, $selected_id){
-                  $newedit_path = G_DIR_MODULES_URL."plm/category.newedit.php";
+                  //$newedit_path = G_DIR_MODULES_URL."plm/category.newedit.php";
                   foreach ($categorias as $categoria) {
                     ?>
                     <option value="<?= $categoria['id'] ?>" <?php if($categoria['id']==$selected_id) echo "selected" ?>><?php echo str_repeat("-", $nivel) ?> <?= $categoria['nombre'] ?></option>

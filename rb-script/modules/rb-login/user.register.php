@@ -1,4 +1,5 @@
 <?php
+$test_local = false; // default false
 /* BLACKPYRO APP.
  * Version 3.0 - 18/05/2016
  * Permite registrar al usuario sin necesidad de pedir un nombre de usuario (nickname)
@@ -233,10 +234,10 @@ if(isset($_POST)){
 		foreach ($array_admins as $user_admin_id) {
 			$admin = rb_get_user_info( $user_admin_id );
 			$recipient = $admin['correo'];
-	    // Set the email subject.
-	    $subject = "Notificación de nuevo usuario";
+	    	// Set the email subject.
+	    	$subject = "Notificación de nuevo usuario";
 
-	    // Build the email content.
+	    	// Build the email content.
 			$email_content = "Datos del nuevo usuario:<br />";
 			if(isset($array_fields_value['nombres'])):
 				$nm = $array_fields_value['nombres'];
@@ -254,17 +255,19 @@ if(isset($_POST)){
 			endif;
 			$email_content .= "<br />Este correo se ha enviado automaticamente por el gestor de contenidos. No responda.";
 
-	    // Build the email headers.
-	    $email_headers = "MIME-Version: 1.0" . "\r\n";
+	    	// Build the email headers.
+	    	$email_headers = "MIME-Version: 1.0" . "\r\n";
 			$email_headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-	    $email_headers .= "From: ".trim(G_TITULO)." <no-reply@".G_HOSTNAME.">";
+	    	$email_headers .= "From: ".trim(G_TITULO)." <no-reply@".G_HOSTNAME.">";
 
-	  	// Send the email.
-	    if (mail($recipient, $subject, $email_content, $email_headers)):
-	      $msg_response_admin .= "|SendMailAdmin:".$recipient;
-			else:
-				$msg_response_admin .= "|NoSendMailTo:".$recipient;
-			endif;
+	  		// Send the email.
+	  		if($test_local==false){
+		    	if (mail($recipient, $subject, $email_content, $email_headers)):
+		      		$msg_response_admin .= "|SendMailAdmin:".$recipient;
+				else:
+					$msg_response_admin .= "|NoSendMailTo:".$recipient;
+				endif;
+			}
 		}
 
 		// ENVIAR MAIL AL USUARIO NUEVO REGISTRADO
@@ -303,11 +306,13 @@ if(isset($_POST)){
 
 		// Send the email.
 		$msg_response_mail_user = "";
-		if (mail($recipient2, $subject2, $email_content2, $email_headers2)):
-	   	$msg_response_mail_user = "Correo enviado a usuario";
-		else:
-			$msg_response_mail_user = "Usuario creado, pero hay un error al enviar mail al usuario.";
-		endif;
+		if($test_local==false){
+			if (mail($recipient2, $subject2, $email_content2, $email_headers2)):
+		   		$msg_response_mail_user = "Correo enviado a usuario";
+			else:
+				$msg_response_mail_user = "Usuario creado, pero hay un error al enviar mail al usuario.";
+			endif;
+		}
 
 		// Armando el mensaje luego del registro
 		if(G_USERACTIVE==2): // Admin lo activa

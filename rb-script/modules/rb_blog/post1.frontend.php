@@ -12,6 +12,8 @@ $typ = $widget['widget_values']['typ'];
 $desc = $widget['widget_values']['desc'];
 $link = $widget['widget_values']['link'];
 $byrow = $widget['widget_values']['byrow'];
+$show_img = isset($widget['widget_values']['show_img']) ? $widget['widget_values']['show_img']: 0;
+$show_cat = isset($widget['widget_values']['show_cat']) ? $widget['widget_values']['show_cat']: 0;
 $width_post = 100;
 if($typ==0){
   $width_post = round(100/$byrow,2);
@@ -40,17 +42,31 @@ if($typ==0 || $typ==1){
     ?>
     <div class="post-list clear" style="width:<?= $width_post?>%">
       <div class="post">
+        <?php if($show_img==1): ?>
         <div class="post-img" style="background-image:url('<?= $PostRelated['url_img_pri_max']  ?>')"></div>
+        <?php endif ?>
         <!--<span class="post-category"></span>-->
         <div class="post-desc <?php if($typ==1) print "clear" ?>">
-        <h2><a title="<?= $PostRelated['titulo'] ?>" href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
-        <?php if($desc==1): ?>
-          <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
-        <?php endif ?>
-        <?php if($link==1): ?>
-          <br />
-          <a class="post-more" href="<?= $PostRelated['url'] ?>">Leer mas</a>
-        <?php endif ?>
+          <h2><a title="<?= $PostRelated['titulo'] ?>" href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
+          <?php if($desc==1): ?>
+            <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
+          <?php endif ?>
+          <?php if($link==1): ?>
+            <br />
+            <a class="post-more" href="<?= $PostRelated['url'] ?>">Leer mas</a>
+          <?php endif ?>
+          <?php if($show_cat==1): ?>
+            <ul class="post-categories">
+              <?php
+              $categorias = rb_show_category_from_post($PostRelated['id']);
+              foreach ($categorias as $categoria) {
+                ?>
+                <li><a href="<?= $categoria['url'] ?>"><?= $categoria['nombre'] ?></a></li>
+                <?php
+              }
+              ?>
+            </ul>
+          <?php endif ?>
         </div>
       </div>
     </div>

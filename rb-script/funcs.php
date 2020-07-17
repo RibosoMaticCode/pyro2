@@ -1,4 +1,119 @@
 <?php
+// La funcion retornar la url actual
+function current_url(){
+  if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+    $url = "https://";   
+  else  
+    $url = "http://";   
+  
+  // Append the host(domain name, ip) to the URL.   
+  $url.= $_SERVER['HTTP_HOST'];   
+       
+  // Append the requested resource location to the URL   
+  $url.= $_SERVER['REQUEST_URI'];
+  return $url;
+}
+
+// Enrutamiento amigable en panel administrativo:
+// La funcion compara la url establecida por el cliente, Ejemplos:
+//    forms/edit/6
+//    forms/new
+// Y la compara con la url activa, si coincide mostrara contenido
+// correspondiente
+function custom_url($url_custom){
+  global $url_found;
+  // Retiramos el directorio (dashboard) de la url
+  // Solo consideramos desde dashboard en adelante
+  // En directorio dashboard/ debe estar configurado archivo htaccess
+  //$requestURI = str_replace("dashboard", "", $_SERVER['REQUEST_URI']);
+
+  // Divimos la url por la barra, y lo convertimos a un array php
+  $requestURI = explode("/", $_SERVER['REQUEST_URI']);
+
+  // Limpiamos el array para que solo obtengamos valores no vacios. Ej.
+  //    forms
+  //    edit
+  //    6
+  $requestURI = array_values( array_filter( $requestURI ) );
+
+  // Contabilizamos elementos obtenidos
+  $numsItemArray = count($requestURI);
+
+  // Si es raiz (http://dominio.com/dashboard/)
+  if($url_custom=="/" && $numsItemArray==0){
+    $url_found = true;
+    return $result=[
+      'result' => true
+    ];
+  }
+
+  // El url establecido por el cliente debemos tambien dividirlo y obtener la cantidad
+  $url_custom = explode("/", $url_custom);
+  $num_url_custom = count($url_custom);
+
+  //print "custom";
+  //print_r($url_custom);
+  //print "sistema";
+  //print_r($requestURI);
+
+  // Define si hay coincidencia de la url activa con la definida por usuario
+  $concidencia = false;
+
+  // Parametros devueltos
+  $parameters = [];
+
+  // Si la url activa tiene mas de 0 elementos, empezamos a comparar
+  if($numsItemArray>0){
+    // Numero elementos url activa debe ser igual a la url cliente
+    if($numsItemArray == $num_url_custom){
+      $i=0;
+      // Comparamos cada elemento de la url activa con la url cliente
+      foreach ($requestURI as $URI) {
+        // Si el elemento de la url cliente es comodin estilo <comodin>
+        // ira como parametro de salida y el valor correspondiente. Ej
+        //    forms/edit/<comodin>    - url cliente
+        //    forms/edit/7            - url activa
+        //  parametro seria [comodin => 7]
+        if(comodin($url_custom[$i])){
+          $parameter = get_item_value($url_custom[$i]);
+          //echo "comodin:".$parameter;
+          $parameters[$parameter] = $URI;
+          $i++;
+          continue;
+        }
+        // si elemento de url activa coincide con los de url cliente
+        if($URI == $url_custom[$i]) {
+          //echo "sistema:".$URI."<br>";
+          //echo "custom:".$url_custom[$i]."<br>";
+          $concidencia = true;
+        }else{ // Vasta que uno no coincide, no evalua más y retorna falso
+          return $result=[
+            'result' => false
+          ];
+        }
+        $i++;
+      }
+      // Si despues de comparacion todos elementos del url coincide
+      // devuelve verdadero con parametros comodin si hubiera
+      $url_found = true;
+      return $result=[
+        'result' => $concidencia,
+        'parameters' => $parameters
+      ];
+    }else{
+      // Si numero elemento url activa es distinta que la url cliente
+      // retornar falso
+      return $result=[
+        'result' => false
+      ];
+    }
+  }else{ // Si no hay elementos en url activa
+    return $result=[
+      'result' => false
+    ];
+  }
+}
+
 function get_title_page($url){
   $str = file_get_contents($url);
   if(strlen($str)>0){
@@ -587,16 +702,17 @@ function rb_get_images_from_gallery($album_id, $limit = 0){
   global $objDataBase;
 	require_once( dirname( dirname(__FILE__) ) ."/global.php");
 	$rm_url = G_SERVER;
-	if($album_id=="" || $album_id==0) return false;
+
+	if(empty($album_id)) return false;
 	// Probamos con Nombre_Enlace
-	$qg = $objDataBase->Ejecutar("SELECT id FROM ".G_PREFIX."galleries WHERE nombre_enlace='$album_id'");
+  $q_link = "SELECT id FROM ".G_PREFIX."galleries WHERE nombre_enlace='".$album_id."'";
+	$qg = $objDataBase->Ejecutar($q_link);
 	$num_reg = $qg->num_rows;
 	if($num_reg==0):
 		//Probamos con el Id
 		$qg = $objDataBase->Ejecutar("SELECT id FROM ".G_PREFIX."galleries WHERE id='$album_id'");
 		$num_reg = $qg->num_rows;
 	endif;
-
   if($limit > 0 ){
     $limit_filter = " LIMIT ".$limit;
   }else{
@@ -605,7 +721,8 @@ function rb_get_images_from_gallery($album_id, $limit = 0){
 	if($qg && $num_reg > 0 ):
 		$rg = $qg->fetch_assoc();
 		$album_id = $rg['id'];
-		$qp = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE album_id=".$album_id." ORDER BY orden ".$limit_filter);
+    $q = "SELECT * FROM ".G_PREFIX."files WHERE album_id=".$album_id." ORDER BY orden ".$limit_filter;
+		$qp = $objDataBase->Ejecutar( $q );
 
 		$FotosArray = array();
 		$i=0;
@@ -1756,15 +1873,30 @@ function rb_footer($add_footer = array(), $page=true){
 /*
 * Muestra la columna lateral de la plantilla, por defecto el archivo se llama sidebar.php
 */
-function rb_sidebar($add_sidebar = array()){
+function rb_sidebar(){
   global $show_sidebar;
+
   if(isset($show_sidebar) && $show_sidebar==0) return false;
 
-  if ( !defined('ABSPATH') )
-  	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
+  print '<aside class="wrap-sidebar '.class_col_2.'">';
+  /*if(count($sidebar_files)>0){
+    foreach ($sidebar_files as $sidebar_file) {
+      if(!file_exists($sidebar_file)) continue;
+      include_once $sidebar_file;
+    }
+  }else{*/
+    $SidebarId = rb_get_values_options('sidebar_id');
+    if($SidebarId == 0) return false;
 
-  require_once ABSPATH."global.php";
-  include_once ABSPATH."rb-themes/".G_ESTILO."/sidebar.php";
+    $Sidebar = rb_show_specific_page($SidebarId);
+
+    $array_content = json_decode($Sidebar['contenido'], true);
+    foreach ($array_content['boxes'] as $box) {
+      rb_show_block($box, "sidebar");
+    }
+  //}
+  
+  print '</aside>';
 }
 
 function rb_validar_mail($pMail) { // Antes validar_mail, solo usado en registro de usuario

@@ -46,10 +46,16 @@ $menu_asincrono = true;
 		<?php
 		$result = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."menus_items ORDER BY id DESC LIMIT 1");
 		$row = $result->fetch_assoc();
+
+		if($result->num_rows == 0){
+			$last_item = 1;
+		}else{
+			$last_item = $row['id'];
+		}
 		?>
 
 		// añadir un nuevo item, con todo el form para configurar
-		var last_item = <?= $row['id'] ? $row['id'] : "1" ?>;
+		var last_item = <?= $last_item ?>;
 
 		// GUARDAR ESTRUCTURA DEL MENU EN JSON
 		$('#savesubitems').click(function( event ){

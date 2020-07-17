@@ -215,7 +215,12 @@ function rb_blog_call_url(){
 		$Cat = $qc->fetch_assoc();
 		$Categoria_id = $Cat['id'];
 
-		$file = ABSPATH.'rb-script/modules/rb_blog/frontend.pub.php';
+		// Relacionados
+		$Posts_related = rb_get_post_by_category($Categoria_id);
+
+		$design_post = blog_get_option('design_post');
+		if($design_post > 0) $file = ABSPATH.'rb-script/modules/rb_blog/front/frontend.pub'.$design_post.'.php';
+		else $file = ABSPATH.'rb-script/modules/rb_blog/front/frontend.pub.php';
 		if(file_exists( $file )): require_once( $file );rb_set_read_post($Post['id'], 'blog_posts');
 		else: die( message_error($file));
 		endif;
@@ -260,10 +265,13 @@ function rb_blog_call_url(){
 		define('rm_url_page', rb_url_link('cat', $categoria_id));
 
 		$Photo = rb_get_photo_from_id( $Categoria['photo_id'] );
-		if($Photo) $rm_url_page_img = $rm_url."rb-media/gallery/".$Photo['src'];
+		$rm_url_page_img = "";
+		if($Photo['src'] != "") $rm_url_page_img = G_SERVER."rb-media/gallery/".$Photo['src'];
 
 		$Posts = rb_get_post_by_category($categoria_id);
-		$file = ABSPATH.'rb-script/modules/rb_blog/frontend.pubs.category.php';
+		$category_design = blog_get_option('design_categories_list');
+		if($category_design > 0) $file = ABSPATH.'rb-script/modules/rb_blog/front/frontend.pubs.category'.$category_design.'.php';
+		else $file = ABSPATH.'rb-script/modules/rb_blog/front/frontend.pubs.category.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 		die();
@@ -278,7 +286,7 @@ function rb_blog_call_url(){
 		define('rm_metaauthor', "Blackpyro");
 		$rm_menu_name = "m-inicio";
 
-		$file = ABSPATH.'rb-script/modules/rb_blog/frontend.pubs.all.php';
+		$file = ABSPATH.'rb-script/modules/rb_blog/front/frontend.pubs.all.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 		die();
@@ -289,7 +297,8 @@ add_function('call_modules_url','rb_blog_call_url');
 // Frontend CSS
 function blog_css(){
   global $rb_modure_dir;
-	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."rb_blog/blog.css'>\n";
+	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."rb_blog/front/blog.css'>\n";
+	$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."rb_blog/front/blog1.css'>\n";
 	return $css;
 }
 add_function('theme_header','blog_css');

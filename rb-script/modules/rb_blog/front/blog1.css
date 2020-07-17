@@ -1,0 +1,67 @@
+/* CABECERA DE CATEGORIA */
+.wrap_category_header_img{
+	background-size:cover;
+	background-position: center;
+}
+.category_header_img {
+    height: 250px;
+}
+.wrap_category_header_info{
+	background-color: #371E62;
+}
+.category_header_info h1,
+.category_header_info p{
+	text-align: center;
+	color:#fff;
+	line-height: 24px;
+}
+.category_header_info h1{
+	margin-bottom: 20px;
+}
+.category_header_info{
+	padding: 30px 10px;
+}
+
+/* LISTADO DE PUBLICACIONES EN CATEGORIA */
+.posts_list article{
+	width: 50%;
+	float:left;
+	padding: 10px 20px;
+}
+.posts_list article h2{
+	padding: 5px 0;
+	margin-bottom: 10px;
+}
+.posts_list article p{
+	padding: 15px 0;
+	line-height: 26px;
+}
+ul.post-categories a{
+	background-color: #371E62;
+}
+
+.cover_categories li {
+    display: inline-block;
+    padding: 0 6px;
+}
+
+.cover_categories {
+    text-align: center;
+    margin: 10px 0 40px;
+}
+
+.cover_categories li a {
+    background-color: #371e62;
+    color: #fff;
+    padding: 4px 10px;
+    display: block;
+    border-radius:6px
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 425px) {
+	.posts_list article{
+		width: 100%;
+		float:none;
+	}
+}

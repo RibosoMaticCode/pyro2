@@ -56,7 +56,7 @@ if($mode=="new"){
   $result = $objDataBase->Insert( 'blog_categories', $values );
   if($result['result']){
 		$ultimo_id= $result['insert_id'];
-		$enlace=G_SERVER.'rb-admin/module.php?pag=rb_blog_category&cat_id='.$ultimo_id;
+		$enlace=G_SERVER.'rb-admin/module.php?pag=rb_blog_category'; //&cat_id='.$ultimo_id;
 		header('Location: '.$enlace);
 	}else{
 		die("Error: ".$result['error']);
@@ -65,7 +65,7 @@ if($mode=="new"){
   $id=$_POST['id'];
 	$result = $objDataBase->Update( 'blog_categories', $values, ['id' => $id] );
   if($result['result']){
-		$enlace=G_SERVER.'rb-admin/module.php?pag=rb_blog_category&cat_id='.$id;
+		$enlace=G_SERVER.'rb-admin/module.php?pag=rb_blog_category'; //&cat_id='.$id;
 		header('Location: '.$enlace);
 	}else{
 		die("Error: ".$result['error']);

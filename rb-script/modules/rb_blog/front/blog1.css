@@ -15,26 +15,42 @@
 	color:#fff;
 	line-height: 24px;
 }
+.category_header_info p {
+    font-size: .9em;
+}
 .category_header_info h1{
 	margin-bottom: 20px;
+	text-transform: uppercase;
 }
 .category_header_info{
 	padding: 30px 10px;
 }
 
 /* LISTADO DE PUBLICACIONES EN CATEGORIA */
+.posts_list {
+    display: flex;
+    flex-flow: row wrap;
+  
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
 .posts_list article{
 	width: 50%;
-	float:left;
 	padding: 10px 20px;
+	margin-bottom: 20px;
 }
 .posts_list article h2{
 	padding: 5px 0;
-	margin-bottom: 10px;
+	text-transform: uppercase;
+    font-size: 1.2em;
 }
 .posts_list article p{
 	padding: 15px 0;
 	line-height: 26px;
+	text-align: justify;
+	font-size: .9em;
 }
 ul.post-categories a{
 	background-color: #371E62;
@@ -51,17 +67,19 @@ ul.post-categories a{
 }
 
 .cover_categories li a {
-    background-color: #371e62;
+    background-color: #4E57A5;
     color: #fff;
     padding: 4px 10px;
     display: block;
     border-radius:6px
+}
+.cover_categories li a:hover{
+    background-color: #361C62;
 }
 
 /* RESPONSIVE */
 @media screen and (max-width: 425px) {
 	.posts_list article{
 		width: 100%;
-		float:none;
 	}
 }

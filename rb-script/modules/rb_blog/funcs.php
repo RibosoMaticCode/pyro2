@@ -54,7 +54,7 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 				echo "
 				 <tr>
       		<td><a title='Agregar una subcategoria' href='../rb-admin/module.php?pag=rb_blog_category&cat_id=0&parent_id=".$value['id']."&niv=".($value['nivel']+1)."'><img width=\"16px\" height=\"16px\" style=\"border:0px;\" src=\"img/add-black-16.png\" alt=\"Agregar Sub Categoria\" /></a>  ".$value['nombre']."</td>
-					<td>".$value['descripcion']."</td>
+					<td>".rb_fragment_letters($value['descripcion'],50)."</td>
 					<td>".rb_showvisiblename($value['acceso'])."</td>
 					<td>".rb_niveltoname($value['niveles'])."</td>
           <td><a target='_blank' href='".G_SERVER."?cat=".$value['id']."'>Link</a></td>
@@ -77,7 +77,7 @@ function rb_listar_categorias($id_padre){ // antes listar_categorias
 				echo "
 				 <tr>
       		<td>".str_repeat('- - ', $value['nivel'])."<a title='Agregar una subcategoria' href='../rb-admin/module.php?pag=rb_blog_category&cat_id=0&parent_id=".$value['id']."&niv=".($value['nivel']+1)."'><img style=\"border:0px;\" src=\"img/add-black-16.png\" width=\"16px\" height=\"16px\" alt=\"Agregar Sub Categoria\" /></a>  ".$value['nombre']."</td>
-					<td>".$value['descripcion']."</td>
+					<td>".rb_fragment_letters($value['descripcion'],50)."</td>
 					<td>".rb_showvisiblename($value['acceso'])."</td>
 					<td>".rb_niveltoname($value['niveles'])."</td>
           <td><a target='_blank' href='".G_SERVER."?cat=".$value['id']."'>Link</a></td>

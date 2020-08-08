@@ -571,24 +571,30 @@ function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
 /* OBTIENE DATOS FILES FROM ID*/
 function rb_get_photo_details_from_id($photo_id){
   $DetailsPhoto = array();
+
+  // Si id foto es 0, retornar valores vacios
   if($photo_id==0){
-    $DetailsPhoto['file_name'] = "";
-    $DetailsPhoto['file_url'] = "";
-    $DetailsPhoto['thumb_url'] = "";
+    $DetailsPhoto['file_url'] = G_SERVER."rb-script/images/no_image_available.jpg";
+    $DetailsPhoto['thumb_url'] = G_SERVER."rb-script/images/no_image_available.jpg";
     return $DetailsPhoto;
   }
+
   global $objDataBase;
 	$q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
+
+  // Si no existe id imagen, retornar image por defecto.
+  if($q->num_rows == 0){
+    $DetailsPhoto['file_url'] = G_SERVER."rb-script/images/no_image_available.jpg";
+    $DetailsPhoto['thumb_url'] = G_SERVER."rb-script/images/no_image_available.jpg";
+    return $DetailsPhoto;
+  }
+
+  // Si todo es correcto retorna valores de la imagen
 	$Photo = $q->fetch_assoc();
 
   $DetailsPhoto['file_name'] = $Photo['src'];
-  /*if($Photo['src']==""):
-    $DetailsPhoto['file_url'] = G_SERVER."rb-script/images/gallery-default.jpg";
-    $DetailsPhoto['thumb_url'] = G_SERVER."rb-script/images/gallery-default.jpg";
-  else:*/
   $DetailsPhoto['file_url'] = G_SERVER."rb-media/gallery/".$Photo['src'];
   $DetailsPhoto['thumb_url'] = G_SERVER."rb-media/gallery/tn/".$Photo['src'];
-  //endif;
 	return $DetailsPhoto;
 }
 

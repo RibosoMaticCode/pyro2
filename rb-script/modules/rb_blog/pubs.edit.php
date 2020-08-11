@@ -23,8 +23,8 @@ if(isset($_GET["pub_id"]) && $_GET["pub_id"] > 0){
   $mode = "update";
   //$new_button = '<a href="'.G_SERVER.'/rb-admin/?pag=art&opc=nvo"><input title="Nuevo" class="button_new" name="nuevo" type="button" value="Nuevo" /></a>';
   $new_button = '<a class="button" href="'.G_SERVER.'rb-admin/module.php?pag=rb_blog_pubs&pub_id=0">Nuevo</a>';
-  $qattr = $objDataBase->Ejecutar("SELECT * FROM blog_posts_posts WHERE articulo_id_padre =". $row['id']);
-  $count_attr = $qattr->num_rows;
+  //$qattr = $objDataBase->Ejecutar("SELECT * FROM blog_posts_posts WHERE articulo_id_padre =". $row['id']);
+  //$count_attr = $qattr->num_rows;
 }
 if(isset($_GET["pub_id"]) && $_GET["pub_id"] == 0){
   $mode = "new";
@@ -221,90 +221,20 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         </div>
       </div>
     </section>
-    <!-- SECCION ENLAZAR -->
-    <section id="post-enl" class="seccion" <?php if($array_post_options['enl']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-      <div class="seccion-header">
-        <h3>Enlazar con otras Publicaciones</h3>
-        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-      </div>
-      <div class="seccion-body">
-        <?php if(isset($row)):?>
-          <table class="tables form" id="t_atributo" width="100%">
-            <tr>
-              <th>Nombre de Atributo</th>
-              <th>Publicación</th>
-              <th></th>
-            </tr>
-          <?php
-          $qAll = $objDataBase->Ejecutar("SELECT titulo, id FROM blog_posts");
-          $qo = $objDataBase->Ejecutar("SELECT * FROM blog_posts_posts WHERE articulo_id_padre =". $row['id']);
-          while($Atributo = $qo->fetch_assoc()):
-          ?>
-            <tr>
-              <td><input id="input_<?= $Atributo['id']?>" type="text" name="atributo[<?= $Atributo['id']?>][nombre]" value="<?= $Atributo['nombre_atributo'] ?>" /> </td>
-              <td>
-                <select class="select" data-id="<?= $Atributo['id']?>" id="select_<?= $Atributo['id']?>" required name="atributo[<?= $Atributo['id']?>][id]">
-                <?php
-                while($Posts = $qAll->fetch_assoc()):
-                ?>
-                  <option title="<?= $Posts['titulo'] ?>" value="<?= $Posts['id'] ?>" <?php if($Posts['id']==$Atributo['articulo_id_hijo']) echo " selected " ?>><?= $Posts['id'] ?>-<?= $Posts['titulo'] ?></option>
-                <?php
-                endwhile;
-                $qAll->data_seek(0);
-                //mysql_data_seek($qAll, 0)
-                ?>
-                </select>
-              </td>
-              <td><a title="Borrar" class="deleteAtributo" href="#"><img src="img/del-red-16.png" alt="delete" /></a></td>
-            </tr>
-          <?php
-          endwhile;
-          ?>
-          </table>
-          <a class="add" id="newAtributo" href="#">Añadir atributo</a>
-        <?php else: ?>
-          <table class="tables form" id="t_atributo" width="100%">
-            <tr>
-              <th>Nombre de Atributo</th>
-              <th>Publicación</th>
-              <th></th>
-            </tr>
-          </table>
-          <a class="add" id="newAtributo" href="#">Añadir atributo</a>
-        <?php endif; ?>
-      </div>
-    </section>
+   
     <!-- SECCIONES ADJUNTOS -->
     <section id="post-adj" class="seccion" <?php if($array_post_options['adj']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
       <div class="seccion-header">
-        <h3>Adjuntos</h3>
+        <h3>Imagen destacada</h3>
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
       <div class="seccion-body form">
         <div id="featured-image">
-          <!-- A C T U A L I Z A R -->
-          <?php // if(isset($row)):?>
-            <table id="t_imagen" class="tables form">
-              <tr>
-                <td width="40%"><strong>Imagen de Portada</strong>
-                  <span class="info">Sirve como imagen de fondo, para slideshow, por lo general una imagen grande.</span>
-                </td>
-                <td>
-                  <script>
-                  $(document).ready(function() {
-                    $(".explorer-back").filexplorer({
-                      inputHideValue: "<?= isset($row) ? $row['img_back'] : 0 ?>"
-                    });
-                  });
-                  </script>
-                  <input name="img_back" type="text" id="img_back" class="explorer-back" readonly value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['img_back'] : 0 ); echo $photos['src']; ?>" />
-                </td>
-              </tr>
-              <tr>
-                <td><strong>Imagen Perfil</strong>
-                  <span class="info">Sirve como imagen que identifica a la publicación o artículo.</span>
-                </td>
-                <td>
+              <div class="cols-container">
+                <div class="cols-4-md col-padding">
+                  <span class="info">Acompañara a la publicación en los listados de publicaciones.</span>
+                </div>
+                <div class="cols-8-md col-padding">
                   <script>
                   $(document).ready(function() {
                     $(".explorer-profile").filexplorer({
@@ -312,10 +242,16 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
                     });
                   });
                   </script>
-                  <input name="img_profile" type="text" id="img_profile" class="explorer-profile" readonly value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['img_profile'] : 0 ); echo $photos['src']; ?>" />
-                </td>
-              </tr>
-            </table>
+                  <?php
+                  $photo_post_img = "";
+                  if( isset($row) && $row['img_profile'] > 0){
+                    $Photo = rb_get_photo_details_from_id( $row['img_profile'] );
+                    $photo_post_img = $Photo['file_name'];
+                  }
+                  ?>
+                  <input name="img_profile" type="text" id="img_profile" class="explorer-profile" readonly value="<?= $photo_post_img ?>" />
+                </div>
+              </div>
         </div>
       </div>
     </section>
@@ -326,7 +262,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
       </div>
       <div class="seccion-body form">
-        <label>Enlace por defecto:
+        <label>Enlace por defecto: <span class="info">Deje en blanco, en sistema lo genera automaticamente.</span>
           <input maxlength="200"  name="titulo_enlace" type="text" id="titulo-enlace" value="<?php if(isset($row)) echo $row['titulo_enlace'] ?>" />
         </label>
         <label>Etiquetas <span class="info">palabras claves relacionadas con la Publicacion. Ej. viajes, caribe, ofertas</span>
@@ -393,6 +329,63 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
         </div>
       </div>
     </section>
+
+    <!-- SECCION SUBIR IMAGENES -->
+    <section id="post-sub" class="seccion" <?php if($array_post_options['sub']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
+      <div class="seccion-header">
+        <h3>Subir imagenes</h3>
+        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+      </div>
+      <div class="seccion-body form">
+      <?php
+      include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
+      ?>
+      </div>
+    </section>
+                <!-- SECCION GALERIAS / IMAGENES -->
+                <section id="post-gal" class="seccion" <?php if($array_post_options['gal']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
+                  <div class="seccion-header">
+                    <h3>Galerías e imágenes</h3>
+                    <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
+                  </div>
+                  <div class="seccion-body form">
+                  <!--<div class="mitad">-->
+          <div id="alblist">
+          <?php
+          if($userType == "user-panel"):
+            $cons_cat = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries WHERE usuario_id = ".G_USERID." ORDER BY nombre ASC");
+          else:
+            $cons_cat = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries ORDER BY nombre ASC");
+          endif;
+
+          while($row_c = $cons_cat->fetch_assoc()){
+            $album_id=$row_c['id'];
+            /*if(isset($row)){ // si esta definida variable con datos cargados para actualizar
+                //buscar las coincidencias articulos-categorias
+                $result = $objDataBase->Ejecutar("SELECT * FROM articulos_albums WHERE articulo_id=$id AND album_id=$album_id");
+              $coincidencia=$result->num_rows;
+            }else{
+                $coincidencia=0;
+              }*/
+
+                            echo "<label class=\"label_checkbox\">";
+                            if(isset($row) && $row['gallery_id']==$album_id){
+                              echo "<input type=\"radio\" value=\"$row_c[id]\" checked=\"checked\" name=\"albums\" /> $row_c[nombre]  (<a data-id='".$row_c['id']."' class='galleries' href='#'>Ver</a>) \n";
+                            }else{
+                                echo "<input type=\"radio\" value=\"$row_c[id]\" name=\"albums\" /> $row_c[nombre]  (<a data-id='".$row_c['id']."' class='galleries' href='#'>Ver</a>) \n";
+                            }
+                            echo "</label>";
+                      }
+          ?>
+          </div>
+          <a href="#" class="popup_galeria add" title="Nueva Galería">Nueva Galería</a>
+                      <div class="galeria_nueva" style="display:none">
+                        <input type="text" name="galeria_nombre" form="formgaleria" id="galeria_nombre" required value="" />
+                        <input type="submit" form="formgaleria" value="Guardar" /> <input type="button" form="formgaleria" value="Cancelar" id="cancel_galeria" />
+                      </div>
+                  </div>
+                  <div style="clear: both"></div>
+              </section>
 
     <!-- SECCION CAMPOS ADICIONALES -->
     <section id="post-adi" class="seccion" <?php if($array_post_options['adi']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
@@ -463,89 +456,7 @@ include_once("../rb-admin/tinymce/tinymce.config.php");
       </div>
       </section>
 
-                <!-- SECCION GALERIAS / IMAGENES -->
-                <section id="post-gal" class="seccion" <?php if($array_post_options['gal']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-                  <div class="seccion-header">
-                    <h3>Galerías e imágenes</h3>
-                    <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-                  </div>
-                  <div class="seccion-body form">
-                  <!--<div class="mitad">-->
-          <div id="alblist">
-          <?php
-          if($userType == "user-panel"):
-            $cons_cat = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries WHERE usuario_id = ".G_USERID." ORDER BY nombre ASC");
-          else:
-            $cons_cat = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."galleries ORDER BY nombre ASC");
-          endif;
-
-          while($row_c = $cons_cat->fetch_assoc()){
-            $album_id=$row_c['id'];
-            /*if(isset($row)){ // si esta definida variable con datos cargados para actualizar
-                //buscar las coincidencias articulos-categorias
-                $result = $objDataBase->Ejecutar("SELECT * FROM articulos_albums WHERE articulo_id=$id AND album_id=$album_id");
-              $coincidencia=$result->num_rows;
-            }else{
-                $coincidencia=0;
-              }*/
-
-                            echo "<label class=\"label_checkbox\">";
-                            if(isset($row) && $row['gallery_id']==$album_id){
-                              echo "<input type=\"radio\" value=\"$row_c[id]\" checked=\"checked\" name=\"albums\" /> $row_c[nombre]  (<a data-id='".$row_c['id']."' class='galleries' href='#'>Ver</a>) \n";
-                            }else{
-                                echo "<input type=\"radio\" value=\"$row_c[id]\" name=\"albums\" /> $row_c[nombre]  (<a data-id='".$row_c['id']."' class='galleries' href='#'>Ver</a>) \n";
-                            }
-                            echo "</label>";
-                      }
-          ?>
-          </div>
-          <a href="#" class="popup_galeria add" title="Nueva Galería">Nueva Galería</a>
-                      <div class="galeria_nueva" style="display:none">
-                        <input type="text" name="galeria_nombre" form="formgaleria" id="galeria_nombre" required value="" />
-                        <input type="submit" form="formgaleria" value="Guardar" /> <input type="button" form="formgaleria" value="Cancelar" id="cancel_galeria" />
-                      </div>
-                  </div>
-                  <div style="clear: both"></div>
-              </section>
-
-    <!-- SECCION VIDEO -->
-
-    <!-- SECCION CALENDARIO -->
-
-    <!-- SECCION OTRAS OPCIONES -->
-    <section id="post-otr" class="seccion" <?php if($array_post_options['otr']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-      <div class="seccion-header">
-        <h3>Otras opciones</h3>
-        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-      </div>
-      <div class="seccion-body form">
-        <span class="info">Estas opciones afectan las publicaciones dependiendo de la plantilla usada.</span>
-        <label class="label_checkbox" for="featured">
-          <?php $chektext = "Destacar <img src='img/star-16.png' alt='starred' />"?>
-          <?php if(isset($row)):
-          $check ="";
-          if($row['portada']==1) $check = " checked=\"checked\" ";
-          ?>
-          <input type="checkbox" name="featured" id="featured" value="1" <?php echo $check ?> /> <?=$chektext?>
-          <?php else: ?>
-          <input type="checkbox" name="featured" id="featured" value="1" /> <?=$chektext?>
-          <?php endif; ?>
-        </label>
-      </div>
-    </section>
-
-    <!-- SECCION SUBIR IMAGENES -->
-    <section id="post-sub" class="seccion" <?php if($array_post_options['sub']==1) echo ' style="display:block" '; else echo ' style="display:none" ' ?>>
-      <div class="seccion-header">
-        <h3>Subir imagenes</h3>
-        <a class="more" href="#"><span class="arrow-up">&#9650;</span><span class="arrow-down">&#9660;</span></a>
-      </div>
-      <div class="seccion-body form">
-      <?php
-      include_once ABSPATH.'rb-admin/plugin-form-uploader.php';
-      ?>
-      </div>
-    </section>
+    
   </div>
 
   <input name="section" value="art" type="hidden" />

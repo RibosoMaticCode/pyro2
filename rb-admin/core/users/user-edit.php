@@ -151,7 +151,7 @@ $(document).ready(function() {
                   <option <?php if(isset($row) && $row['sexo']=='m') echo "selected=\"selected\"" ?> value="m">Mujer</option>
                 </select>
               </label>
-              <label title="Imagen de perfil" for="sexo" >Image Perfil:
+              <label title="Imagen de perfil">Image Perfil:
                 <script>
                   $(document).ready(function() {
                     $(".explorer-file").filexplorer({
@@ -159,39 +159,20 @@ $(document).ready(function() {
                     });
                   });
                 </script>
-                <input readonly type="text" name="photo" class="explorer-file" value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" id="photo" />
+                <?php
+                  $photo_user = "";
+                  if( isset($row) && $row['photo_id'] > 0){
+                    $Photo = rb_get_photo_details_from_id( $row['photo_id'] );
+                    $photo_user = $Photo['file_name'];
+                  }
+                ?>
+                <input readonly type="text" name="photo" class="explorer-file" value="<?= $photo_user ?>" id="photo" />
               </label>
               <label>Biografía:
                 <textarea name="bio" placeholder="Cuentanos algo sobre ti"><?php if(isset($row)) echo $row['bio'] ?></textarea>
               </label>
             </div>
           </div>
-          <!--<div class="cols-container">
-            <h3 class="subtitle">Redes sociales</h2>
-            <div class="cols-6-md col-padding">
-              <label>Twitter:
-                <input name="tw" type="text" value="<?php if(isset($row)) echo $row['tw'] ?>" />
-              </label>
-              <label>Facebook:
-                <input name="fb" type="text" value="<?php if(isset($row)) echo $row['fb'] ?>" />
-              </label>
-              <label>Google +:
-                <input name="gplus" type="text" value="<?php if(isset($row)) echo $row['gplus'] ?>" />
-              </label>
-              <label>LinkedIn:
-                <input name="in" type="text" value="<?php if(isset($row)) echo $row['in'] ?>" />
-              </label>
-              <label>Pinterest:
-                <input name="pin" type="text" value="<?php if(isset($row)) echo $row['pin'] ?>" />
-              </label>
-              <label>Instagram:
-                <input name="insta" type="text" value="<?php if(isset($row)) echo $row['insta'] ?>" />
-              </label>
-              <label>Youtube:
-                <input name="youtube" type="text" value="<?php if(isset($row)) echo $row['youtube'] ?>" />
-              </label>
-            </div>
-          </div>-->
         </div>
       </section>
     </div>

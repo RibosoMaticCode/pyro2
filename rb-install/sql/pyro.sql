@@ -104,18 +104,6 @@ CREATE TABLE `blog_posts_categories` (
   `categoria_id` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `blog_posts_posts`
---
-
-CREATE TABLE `blog_posts_posts` (
-  `id` int(7) NOT NULL,
-  `nombre_atributo` varchar(250) NOT NULL,
-  `articulo_id_padre` smallint(7) NOT NULL,
-  `articulo_id_hijo` smallint(7) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 

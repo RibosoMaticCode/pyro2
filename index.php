@@ -157,6 +157,8 @@ if(isset($_GET['pa'])){
 // PAGINAS
 }elseif( isset( $PageId ) ){
 	$Page = rb_show_specific_page( $PageId );
+	$Photo = rb_get_photo_details_from_id($Page['image_id']);
+
 	// Si no es una pagina del sistema arroja FALSE
 	if($Page==false){ // En tal caso es una pagina independiente alojada en la plantilla
 		// Primero revisamos si es "panel" (ya que es una pagina reservada del sistema)
@@ -179,7 +181,7 @@ if(isset($_GET['pa'])){
 	}else{ // Asignando valores
 		define('rm_title', $Page['titulo']." | ".G_TITULO);
 		define('rm_title_page', $Page['titulo']);
-		define('rm_page_image', rb_photo_login(G_LOGO)); // IMAGEN PARA PAGINA
+		define('rm_page_image', $Photo['file_url']);
 	  	define('rm_metakeywords', $Page['tags']);
 	  	define('rm_metadescription', rb_fragment_text($Page['description'],30, false));
 	  	define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
@@ -238,18 +240,24 @@ if(isset($_GET['pa'])){
 		header('Location: '.rb_get_values_options('direccion_url').'/login.php');
 	}
 }else{
-	// PAGINAS
+	// PAGINA PRINCIPAL - INDEX
 	if(G_INITIAL==0){
-		// Pagina por defecto tomada de la plantilla. pagina de bienvenida por defecto
+		// Pagina principal de la plantilla, Pagina de bienvenida por defecto
+		define('rm_title', G_TITULO);
+		define('rm_metadescription', G_METADESCRIPTION);
+		define('rm_metaauthor', G_METAAUTHOR);
+		define('rm_page_image', rb_favicon(G_FAVICON));
+
 		$file = ABSPATH.'rb-themes/'.G_ESTILO.'/index.php';
 		if(file_exists( $file )) require_once( $file );
 		else die( message_error($file));
 	}else{ 
-		// Pagina personalizada seleccionada por el usuario
+		// Pagina principal personalizada seleccionada por el usuario
 	  	$Page = rb_show_specific_page(G_INITIAL);
+
 		define('rm_title', rm_longtitle);
 		define('rm_title_page', $Page['titulo']);
-		define('rm_page_image', rb_photo_login(G_LOGO));
+		define('rm_page_image', rb_favicon(G_FAVICON));
 		define('rm_metadescription', rb_get_values_options('meta_description'));
 		define('rm_metaauthor', $Page['autor_id']); //--> capturar codigo de usuario
 	  	define('rm_metakeywords', $Page['tags']);

@@ -20,11 +20,7 @@ while ($row = $q->fetch_assoc()):
   <tr>
     <td><input id="art-<?= $row['id'] ?>" type="checkbox" value="<?= $row['id'] ?>" name="items" /></td>
     <td>
-      <?php
-      if($photo['file_name']=="") $photo_url = G_SERVER."rb-script/images/gallery-default.jpg";
-      else $photo_url = $photo['file_url'];
-      ?>
-      <img style="max-width:70px;margin-right: 10px;vertical-align: middle;" src="<?= $photo_url ?>" alt="Imagen portada" />
+      <img style="max-width:70px;margin-right: 10px;vertical-align: middle;" src="<?= $photo['file_url'] ?>" alt="Imagen portada" />
       <a title="Ver contenido" href="<?= G_SERVER ?>rb-admin/index.php?pag=gal&album_id=<?= $row['id']?>"><?= $row['nombre']?></a><br />
       <span class="info"><?= $row['nrophotos']?> elementos</span>
     </td>

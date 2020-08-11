@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 	<head>
-    <meta charset="utf-8">
+    	<meta charset="utf-8">
 		<title><?= rm_title ?></title>
 		<meta name="theme-color" content="#fff" /> <!-- mobil bg color -->
 		<meta name="description" content="<?= rm_metadescription ?>">

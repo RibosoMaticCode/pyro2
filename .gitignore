@@ -20,3 +20,7 @@ rb-script/modules/cecil/*
 rb-script/modules/blocknext/*
 rb-script/modules/classification/*
 rb-script/modules/ersil_projects/*
+rb-script/modules/diplomas/*
+rb-script/modules/dompdf/*
+rb-script/modules/sofma/*
+rb-script/modules/carousel_owl/*

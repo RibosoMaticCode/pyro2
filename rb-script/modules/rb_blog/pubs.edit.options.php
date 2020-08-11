@@ -65,7 +65,7 @@ switch($seccion):
 				</div>
 				<div class="cols-6-md">
 					<label>
-					<input id="postcheck-adj" type="checkbox" name="post_options[adj]" value="1" <?php if($array_post_options['adj']==1) echo "checked" ?> /> Adjuntar imagenes destacadas
+					<input id="postcheck-adj" type="checkbox" name="post_options[adj]" value="1" <?php if($array_post_options['adj']==1) echo "checked" ?> /> Imagen destacada
 					<span class="info">
 						Habilita la opción para adjuntar imagen de portada y perfil
 					</span>
@@ -91,14 +91,7 @@ switch($seccion):
 				</div>
 			</div>
 			<div class="cols-container">
-				<div class="cols-6-md">
-					<label>
-					<input id="postcheck-enl" type="checkbox" name="post_options[enl]" value="1" <?php if($array_post_options['enl']==1) echo "checked" ?> /> Enlazar con publicación
-					<span class="info">
-						Permite enlazar la publicación con otra.
-					</span>
-					</label>
-				</div>
+				
 				<div class="cols-6-md">
 					<label>
 					<input id="postcheck-sub" type="checkbox" name="post_options[sub]" value="1" <?php if($array_post_options['sub']==1) echo "checked" ?> /> Subir imágenes
@@ -116,7 +109,15 @@ switch($seccion):
 						Habilita un calendario, para seleccionar una fecha especifica.
 					</span>
 					</label>
-				</div>-->
+				</div>
+				<div class="cols-6-md">
+					<label>
+					<input id="postcheck-enl" type="checkbox" name="post_options[enl]" value="1" <?php if($array_post_options['enl']==1) echo "checked" ?> /> Enlazar con publicación
+					<span class="info">
+						Permite enlazar la publicación con otra.
+					</span>
+					</label>
+				</div>
 				<div class="cols-6-md">
 					<label>
 					<input id="postcheck-otr" type="checkbox" name="post_options[otr]" value="1" <?php if($array_post_options['otr']==1) echo "checked" ?> /> Otras opciones
@@ -124,7 +125,7 @@ switch($seccion):
 						Otras opciones para la publicación
 					</span>
 					</label>
-				</div>
+				</div>-->
 			</div>
 		<ul class="options-list">
 

@@ -511,32 +511,6 @@ function rb_get_user_info($User_id){
 	endwhile;
 	return $UserArray;
 }
-/*function rb_photos_from_album_post($Post_id){
-  global $objDataBase;
-  $result = $objDataBase->Ejecutar( "SELECT b.nombre, b.id FROM blog_posts a, albums b, articulos_albums ab WHERE a.id=ab.articulo_id AND ab.album_id = b.id AND a.id =".$Post_id." LIMIT 1" );
-  $row = $result->fetch_assoc();
-	$album_id = $row['id'];
-	if($album_id==0) return false;
-
-	$qa = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE album_id = ".$album_id." ORDER BY orden ASC");
-
-	if($qa->num_rows==0) return false;
-
-	$rm_url = G_SERVER;
-
-	$FotosArray = array();
-	$i=0;
-	while($Fotos = $qa->fetch_assoc()):
-			$FotosArray[$i]['id'] = $Fotos['id'];
-			$FotosArray[$i]['description'] = $Fotos['description'];
-			$FotosArray[$i]['tipo'] = $Fotos['tipo'];
-			$FotosArray[$i]['url_max'] = $rm_url.'rb-media/gallery/'.$Fotos['src'];
-			$FotosArray[$i]['url_min'] = $rm_url.'rb-media/gallery/tn/'.$Fotos['src'];
-			$FotosArray[$i]['goto_url'] = rb_url_link( $Fotos['tipo'] , $Fotos['url'] );
-		$i++;
-	endwhile;
-	return $FotosArray;
-}*/
 
 // mostrar foto de perfil
 function rb_get_img_profile($user_id){
@@ -544,28 +518,15 @@ function rb_get_img_profile($user_id){
 
 	$q = $objDataBase->Ejecutar("SELECT photo_id FROM ".G_PREFIX."users WHERE id=".$user_id);
 	$Usuario = $q->fetch_assoc();
-	$Photo = rb_get_photo_from_id($Usuario['photo_id']);
-	if($Photo['src']==""):
-		return G_SERVER."rb-admin/img/user-default.png";
-	else:
-		return G_SERVER."rb-media/gallery/tn/".$Photo['src'];
-	endif;
-}
 
-/* OBTIENE DATOS FILES IN ARRAY FROM ID*/
-function rb_get_photo_from_id($photo_id){ //antes rb_get_data_from_id
-  if($photo_id == 0){
-    $Photo['src'] = "";
-  }else{
-    global $objDataBase;
-    $q = $objDataBase->Ejecutar("SELECT * FROM ".G_PREFIX."files WHERE id=".$photo_id);
-    if($q->num_rows == 0){
-      $Photo['src'] = "";
-      return $Photo;
-    }
-    $Photo = $q->fetch_assoc();
+  $photo_user = G_SERVER."rb-admin/img/user-default.png";
+  if($Usuario['photo_id'] > 0){
+    $Photo = rb_get_photo_details_from_id($Usuario['photo_id']);
+    $photo_user =G_SERVER."rb-media/gallery/tn/".$Photo['file_name'];
   }
-	return $Photo;
+
+  return $photo_user;
+
 }
 
 /* OBTIENE DATOS FILES FROM ID*/
@@ -620,30 +581,6 @@ function rb_image_exists($name_img){
 	if(file_exists ($path_img)) return true;
 	else return false;
 }
-
-/* MUESTRA COMENTARIOS DE ARTICULOS */
-/*function rb_comments_from_post($article_id){
-  global $objDataBase;
-
-	$q = $objDataBase->Ejecutar("SELECT *,  DATE_FORMAT(fecha, '%Y-%m-%d') as fecha_corta, DATE_FORMAT(fecha, '%d') as fecha_dia, DATE_FORMAT(fecha, '%M') as fecha_mes_l, DATE_FORMAT(fecha, '%m') as fecha_mes, DATE_FORMAT(fecha, '%Y') as fecha_anio
-  FROM comentarios WHERE articulo_id=$article_id");
-
-	$CommentsArray = array();
-	$i=0;
-	while($Comments = $q->fetch_assoc()):
-		$CommentsArray[$i]['id'] = $Comments['id'];
-		$CommentsArray[$i]['nombre'] = $Comments['nombre'];
-		$CommentsArray[$i]['contenido'] = $Comments['contenido'];
-		$CommentsArray[$i]['fecha'] = $Comments['fecha'];
-		$CommentsArray[$i]['email'] = $Comments['mail'];
-		$CommentsArray[$i]['fec_dia'] = $Comments['fecha_dia'];
-		$CommentsArray[$i]['fec_mes'] = $Comments['fecha_mes'];
-		$CommentsArray[$i]['fec_mes_l'] = rb_mes_nombre($Comments['fecha_mes']);
-		$CommentsArray[$i]['fec_anio'] = $Comments['fecha_anio'];
-		$i++;
-	endwhile;
-	return $CommentsArray;
-}*/
 
 /* MUESTRA CONTENIDO DE UNA PÁGINA EN PARTICULAR */
 function rb_show_specific_page($page_id){
@@ -1600,13 +1537,14 @@ function rb_get_info_gallery($album_id){
 			$GaleriasArray['usuario_id'] = $Galerias['usuario_id'];
 			$GaleriasArray['galeria_grupo'] = $Galerias['galeria_grupo'];
       $GaleriasArray['private'] = $Galerias['private'];
-      $photos = rb_get_photo_from_id($Galerias['photo_id']);
-    	if($photos['src']==""):
+      
+    	if($Galerias['photo_id']==0):
     		$GaleriasArray['url_bgimage'] = G_SERVER."rb-script/images/gallery-default.jpg";
         $GaleriasArray['url_bgimagetn'] = G_SERVER."rb-script/images/gallery-default.jpg";
     	else:
-    		$GaleriasArray['url_bgimage'] = G_SERVER."rb-media/gallery/".$photos['src'];
-        $GaleriasArray['url_bgimagetn'] = G_SERVER."rb-media/gallery/tn/".$photos['src'];
+        $photos = rb_get_photo_details_from_id($Galerias['photo_id']);
+    		$GaleriasArray['url_bgimage'] = G_SERVER."rb-media/gallery/".$photos['file_name'];
+        $GaleriasArray['url_bgimagetn'] = G_SERVER."rb-media/gallery/tn/".$photos['file_name'];
     	endif;
 	endwhile;
 	return $GaleriasArray;
@@ -1649,14 +1587,17 @@ function rb_list_galleries($limit=0, $groupname=""){
 			$GaleriasArray[$i]['usuario_id'] = $Galerias['usuario_id'];
 			$GaleriasArray[$i]['galeria_grupo'] = $Galerias['galeria_grupo'];
 			$GaleriasArray[$i]['nrophotos'] = $Galerias['nrophotos'];
-      $photos = rb_get_photo_from_id($Galerias['photo_id']);
-    	if($photos['src']==""):
-    		$GaleriasArray[$i]['url_bgimage'] = G_SERVER."rb-script/images/gallery-default.jpg";
+
+      if($Galerias['photo_id']==0):
+        $GaleriasArray[$i]['url_bgimage'] = G_SERVER."rb-script/images/gallery-default.jpg";
         $GaleriasArray[$i]['url_bgimagetn'] = G_SERVER."rb-script/images/gallery-default.jpg";
-    	else:
-    		$GaleriasArray[$i]['url_bgimage'] = G_SERVER."rb-media/gallery/".$photos['src'];
-        $GaleriasArray[$i]['url_bgimagetn'] = G_SERVER."rb-media/gallery/tn/".$photos['src'];
-    	endif;
+      else:
+        $photos = rb_get_photo_details_from_id($Galerias['photo_id']);
+        print_r($photos);
+
+        $GaleriasArray[$i]['url_bgimage'] = G_SERVER."rb-media/gallery/".$photos['file_name'];
+        $GaleriasArray[$i]['url_bgimagetn'] = G_SERVER."rb-media/gallery/tn/".$photos['file_name'];
+      endif;
 		$i++;
 	endwhile;
 	return $GaleriasArray;

@@ -77,7 +77,14 @@ if(isset($_GET["id"])){
             });
           });
         </script>
-        <input name="imgfondo" type="text" class="explorer-file" readonly value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" />
+        <?php
+          $photo_bggallery = "";
+          if( isset($row) && $row['photo_id'] > 0){
+            $Photo = rb_get_photo_details_from_id( $row['photo_id'] );
+            $photo_bggallery = $Photo['file_name'];
+          }
+        ?>
+        <input name="imgfondo" type="text" class="explorer-file" readonly value="<?= $photo_bggallery ?>" />
       </label>
       <label>
         <input type="checkbox" name="private" <?php if(isset($row) && $row['private']==1) echo "checked" ?>> Galería privada

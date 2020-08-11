@@ -113,7 +113,14 @@ if(isset($_GET["cat_id"]) && $_GET["cat_id"] > 0){
         <div class="seccion-body">
           <label>Seleccionar imagen:
             <span class="info">De preferencia una imagen de las misma dimensión horizontal y vertical</span>
-            <input readonly name="imagen-categoria" type="text" class="explorer-file" value="<?php if(isset($row)): $photos = rb_get_photo_from_id($row['photo_id']); echo $photos['src']; endif ?>" />
+            <?php
+              $photo_cat = "";
+              if( isset($row) && $row['photo_id'] > 0){
+                $Photo = rb_get_photo_details_from_id( $row['photo_id'] );
+                $photo_cat = $Photo['file_name'];
+              }
+            ?>
+            <input readonly name="imagen-categoria" type="text" class="explorer-file" value="<?= $photo_cat ?>" />
           </label>
         </div>
       </section>

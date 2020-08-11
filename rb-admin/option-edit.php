@@ -48,22 +48,36 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
             <label>Favicon
               <script>
               $(document).ready(function() {
-                $(".explorer-file").filexplorer({
+                $(".explorer-favicon").filexplorer({
                   inputHideValue: "<?=  rb_get_values_options('favicon') ?>"
                 });
               });
               </script>
-              <input name="favicon" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('favicon') ); echo $photos['src']; ?>" />
+              <?php
+              $photo_favicon = "";
+              if( rb_get_values_options('favicon') > 0){
+                $Photo = rb_get_photo_details_from_id( rb_get_values_options('favicon') );
+                $photo_favicon = $Photo['file_name'];
+              }
+              ?>
+              <input name="favicon" type="text" class="explorer-favicon" readonly value="<?= $photo_favicon ?>" />
             </label>
             <label>Logo <span class="info">Logotipo para la pagina de inicio de sesión</span>
               <script>
               $(document).ready(function() {
-                $(".explorer-file").filexplorer({
+                $(".explorer-logo").filexplorer({
                   inputHideValue: "<?=  rb_get_values_options('logo') ?>" // establacer un valor por defecto al cammpo ocutlo
                 });
               });
               </script>
-              <input name="logo" type="text" class="explorer-file" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('logo') ); echo $photos['src']; ?>" />
+              <?php
+              $photo_logo = "";
+              if( rb_get_values_options('logo') > 0){
+                $Photo = rb_get_photo_details_from_id( rb_get_values_options('logo') );
+                $photo_logo = $Photo['file_name'];
+              }
+              ?>
+              <input name="logo" type="text" class="explorer-logo" readonly value="<?= $photo_logo ?>" />
             </label>
             <label>Imagen de fondo <span class="info">Imagen de fondo para la pagina de inicio de sesión</span>
               <script>
@@ -73,7 +87,14 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 });
               });
               </script>
-              <input name="bgimage" type="text" class="explorer-bgimage" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('background-image') ); echo $photos['src']; ?>" />
+              <?php
+              $photo_bglogin = "";
+              if( rb_get_values_options('background-image') > 0){
+                $Photo = rb_get_photo_details_from_id( rb_get_values_options('background-image') );
+                $photo_bglogin = $Photo['file_name'];
+              }
+              ?>
+              <input name="bgimage" type="text" class="explorer-bgimage" readonly value="<?= $photo_bglogin ?>" />
             </label>
             <label title="Tema" for="tema">Plantilla del sitio web
               <span class="info">Las plantillas temas se guardan en la carpeta raiz <code>rb-themes</code></span>
@@ -239,12 +260,19 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
                 });
               });
               </script>
-              <input name="water_mark_image" type="text" class="explorer_water_mark_image" readonly value="<?php $photos = rb_get_photo_from_id( rb_get_values_options('water_mark_image') ); echo $photos['src']; ?>" />
+              <?php
+              $photo_water_img = "";
+              if( rb_get_values_options('water_mark_image') > 0){
+                $Photo = rb_get_photo_details_from_id( rb_get_values_options('water_mark_image') );
+                $photo_water_img = $Photo['file_name'];
+              }
+              ?>
+              <input name="water_mark_image" type="text" class="explorer_water_mark_image" readonly value="<?= $photo_water_img ?>" />
             </label>
           </div>
           <div class="cols-6-md col-padding">
             <label>Enlace amigable para el sitio web:</label>
-            <span class="info">Asegúrese que el archivo <code>.htaccess</code> figure en la raíz del sitio.</span>
+            <!--<span class="info">Asegúrese que el archivo <code>.htaccess</code> figure en la raíz del sitio.</span>
             <label class="lbl-listoptions">
               <input name="amigable" type="radio" value="1" <?php if(rb_get_values_options('enlaceamigable')=='1') echo "checked=\"checked\""?> />
               Enlace amigable. Ej. <code>/articulos/mi-post-sobre-web/</code>
@@ -253,8 +281,8 @@ if(isset($_GET['m']) && $_GET['m']=="ok") msgOk("Cambios guardados");
               <input name="amigable" type="radio" value="0" <?php if(rb_get_values_options('enlaceamigable')=='0') echo "checked=\"checked\""?> />
               Enlace estandar. Ej. <code>/?art=mi-post-sobre-web</code>
             </label>
-            <span class="info">Solo si activo la opción URL amigables podrá ver reflejados los cambios</span>
-
+            <span class="info">Solo si activo la opción URL amigables podrá ver reflejados los cambios</span>-->
+            
             <label>Base URL para usuarios:
               <input type="text" name="base_usu" value="<?= rb_get_values_options('base_user') ?>" />
             </label>

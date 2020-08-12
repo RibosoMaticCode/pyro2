@@ -15,13 +15,9 @@ if(isset($_GET['id']) && $_GET['id'] > 0):
 	$mode = "upd";
 endif;
 ?>
-<form id="frmcomunica" class="form">
+<form id="frmSuscrip" class="form">
 	<input type="hidden" name="mode" value="<?= $mode ?>" required />
 	<input type="hidden" name="id" value="<?= $suscriptor_id ?>" required />
-	<label>
-		DNI:
-    <input type="text" name="dni" required value="<?php if(isset($row)) echo $row['dni']; ?>" />
-  </label>
   <label>
 		Nombres:
     <input type="text" name="nombres" required value="<?php if(isset($row)) echo $row['nombres']; ?>" />
@@ -43,33 +39,3 @@ endif;
     </div>
   </div>
 </form>
-<script>
-	$(document).ready(function() {
-    // Boton Cancelar
-    $('.CancelFancyBox').on('click',function(event){
-			$.fancybox.close();
-		});
-
-    // Boton Guardar
-    $('#frmcomunica').submit(function(event){
-      event.preventDefault();
-  		//tinyMCE.triggerSave(); //save first tinymce en textarea
-  		$.ajax({
-  			method: "post",
-  			url: "<?= G_SERVER ?>rb-script/modules/suscripciones/save.suscriptor.php",
-  			data: $( this ).serialize()
-  		})
-  		.done(function( data ) {
-  			if(data.resultado){
-					$.fancybox.close();
-  				notify(data.contenido);
-					setTimeout(function(){
-	          window.location.href = '<?= $urlreload ?>';
-	        }, 1000);
-  	  	}else{
-  				notify(data.contenido);
-  	  	}
-  		});
-    });
-  });
-</script>

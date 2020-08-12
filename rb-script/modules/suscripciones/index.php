@@ -4,11 +4,13 @@ Module Name: Suscripciones
 Plugin URI: http://emocion.pe
 Description: Base datos para suscriptores de la web. Administracion desde el panel y registro del front-end
 Author: Jesus Liñan
-Version: 1.1
+Version: 1.2 (12-02-2020)
 Author URI: http://ribosomatic.com
 */
 
 include_once 'vars.php';
+
+/* BACKEND */
 
 // Personalizar estructura del Menu
 $menu1 = array(
@@ -44,20 +46,12 @@ function suscrip_title(){
 	return "Suscripciones";
 }
 
-// ------ FUNCIONES PARA EL FRONT-END ------ //
-function header_files(){
-	global $rb_module_url;
-	$files = "<script src='".G_DIR_MODULES_URL."suscripciones/suscrip.js'></script>\n";
-	//$files .= "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."suscripciones/suscrip.css' />\n";
-	return $files;
-}
-add_function('theme_header','header_files');
 
 // ------ SUSCRIPTORES ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="rb_sus_susc"):
 	function sus_suscriptores(){
 		global $rb_module_url;
-		include_once 'suscriptores.php';
+		include_once 'suscrip.php';
 	}
 	add_function('module_title_page','suscrip_title');
 	add_function('module_content_main','sus_suscriptores');
@@ -68,7 +62,7 @@ endif;
 if(isset($_GET['pag']) && $_GET['pag']=="rb_sus_susc_config"):
 	function sus_suscriptores_config(){
 		global $rb_module_url;
-		include_once 'suscriptores_config.php';
+		include_once 'suscrip_config.php';
 	}
 	add_function('module_title_page','suscrip_title');
 	add_function('module_content_main','sus_suscriptores_config');
@@ -79,7 +73,7 @@ endif;
 // si se suscribe o ya esta suscrito permite continuar, caso contrario al cancelar
 // redirecciona a la pagina principal
 
-function sus_required(){
+/*function sus_required(){
 	$action = "<a id='hidden_link' href='".G_SERVER."rb-script/modules/suscripciones/suscrip.frm.frontendreq.php' class='fancySuscrip fancybox.ajax'>Suscripcion</a>
 	<script type='text/javascript'>
 		$(document).ready(function() {
@@ -89,9 +83,19 @@ function sus_required(){
 	return $action;
 }
 
-add_shortcode('suscripformreq', 'sus_required');
+add_shortcode('suscripformreq', 'sus_required');*/
 
-/* FORMULARIO TRADICIONAL DE SUSCRIPCION */
+/* FRONTEND */
+
+function header_files(){
+	global $rb_module_url;
+	$files = "<script src='".G_DIR_MODULES_URL."suscripciones/front/suscrip.js'></script>\n";
+	$files .= "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."suscripciones/front/suscrip.css' />\n";
+	return $files;
+}
+add_function('theme_header','header_files');
+
+/* FRONTEND - SHORTCODE */
 
 function sus_form(){
 	global $objDataBase;
@@ -99,27 +103,28 @@ function sus_form(){
 	$susconfig = $qs->fetch_assoc();
 	$jsonconfig = json_decode($susconfig['valor'], true);
 	$form = '
-	<form id="frm_suscrip">
+	<form id="suscrip_form" class="suscrip_form form">
 		<input type="hidden" name="id" value="0" />
-		<div class="sus_fields">
+		<input type="hidden" name="mode" value="new" required />
+		<div class="suscrip_fields">
 		';
 		if($jsonconfig['Nombres']=="show"){
-			$form .= '<div class="sus_fiel">
+			$form .= '<div class="suscrip_field">
 			<input type="text" name="nombres" placeholder="Introduce tus nombres" required />
 			</div>';
 		}
 		if($jsonconfig['Correo']=="show"){
-			$form .= '<div class="sus_fiel">
+			$form .= '<div class="suscrip_field">
 			<input type="text" name="correo" placeholder="Introduce tu correo electronico" required />
 			</div>';
 		}
 		if($jsonconfig['Telefono']=="show"){
-			$form .= '<div class="sus_fiel">
+			$form .= '<div class="suscrip_field">
 			<input type="text" name="telefono" placeholder="Introduce tu numero de telefono" required />
 			</div>';
 		}
 		$form .= '</div>
-		<div class="sus_coverbutton">
+		<div class="suscrip_coverbutton">
 			<button class="sus_btnsend" type="submit">Suscribir</button>
 		</div>
 	</form>
@@ -131,7 +136,7 @@ function sus_form(){
 
 		$.ajax({
 			method: "post",
-			url: "'.G_SERVER.'rb-script/modules/suscripciones/save.suscriptor.php",
+			url: "'.G_DIR_MODULES_URL.'suscripciones/suscrip.save.php",
 			data: $( this ).serialize()
 			})
 			.done(function( data ) {

@@ -29,18 +29,17 @@ if(isset($_POST['telefono']) && strlen($_POST['telefono']) < 6){
 
 // Asignando valores
 $valores = [
-	'dni' => $_POST['dni'],
 	'nombres' => isset($_POST['nombres']) ? trim($_POST['nombres']) : "sin nombre",
 	'correo' => isset($_POST['correo']) ? trim($_POST['correo']) : "sin correo",
 	'telefono' => isset($_POST['telefono']) ? trim($_POST['telefono']) : "sin fono",
-  'fecha' => date('Y-m-d G:i:s')
+  	'fecha' => date('Y-m-d G:i:s')
 ];
 
 // Validar mail
 if($_POST['mode']=="new"){
 	$q = $objDataBase->Ejecutar("SELECT * FROM suscriptores WHERE correo='".$valores['correo']."'");
 	if($q->num_rows > 0){
-		$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos.', 'continue' => false ];
+		$arr = ['resultado' => false, 'contenido' => 'Correo existente en la base de datos. Intente con otro.', 'continue' => false ];
 		die(json_encode($arr));
 	}
 }

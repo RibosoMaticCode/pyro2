@@ -13,12 +13,11 @@ while ($row = $q->fetch_assoc()):
   ?>
 	<tr>
 		<td><?= rb_sqldate_to($row['fecha']) ?></td>
-		<td><?= $row['dni'] ?></td>
 		<td><?= $row['nombres'] ?></td>
 		<td><?= $row['correo'] ?></td>
 		<td><?= $row['telefono'] ?></td>
 		<td>
-			<a class="fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/newedit.suscriptor.php?id=<?= $row['id'] ?>">Editar</a>
+			<a class="fancyboxForm fancybox.ajax" href="<?= G_DIR_MODULES_URL ?>suscripciones/suscrip.newedit.php?id=<?= $row['id'] ?>">Editar</a>
 			<a class="del" data-item="<?= $row['id'] ?>" href="#">Eliminar</a>
 		</td>
 	</tr>

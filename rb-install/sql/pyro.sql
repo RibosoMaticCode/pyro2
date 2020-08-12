@@ -387,12 +387,6 @@ ALTER TABLE `blog_posts`
 ALTER TABLE `blog_posts` ADD FULLTEXT KEY `titulo` (`titulo`,`contenido`);
 
 --
--- Indices de la tabla `blog_posts_posts`
---
-ALTER TABLE `blog_posts_posts`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `py_configuration`
 --
 ALTER TABLE `py_configuration`
@@ -502,12 +496,6 @@ ALTER TABLE `blog_fields`
 -- AUTO_INCREMENT de la tabla `blog_posts`
 --
 ALTER TABLE `blog_posts`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `blog_posts_posts`
---
-ALTER TABLE `blog_posts_posts`
   MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
 
 --

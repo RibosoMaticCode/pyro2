@@ -4,5 +4,3 @@ PHP 7.1 (preferible) en adelante
 Contar con los siguiente modulos activados:
 
 - allow_url_fopen, para solicitar informacion de otras url ssl en caso de recaptcha
-- exif, para obtener informacion de imagenes, en el caso de subida de archivos.
-- mbstring, para funcion exif_imagetype.

@@ -34,7 +34,7 @@
     <h2>Datos registrados</h2>
     <p>Para finalizar el proceso, realizar tu pago de esta forma:</p>
     <p><strong>Deposito a cuenta corriente</strong></p>
-    <p>BCP 570-7150004-0-36</p>
+    <p>BCP 570 265 0904081</p>
     <p><strong>Coordinar pago por Whatsapp</strong></p>
     <p><a href="https://api.whatsapp.com/send?phone=51924986883">+51 924 986 883</a></p>
   </div>

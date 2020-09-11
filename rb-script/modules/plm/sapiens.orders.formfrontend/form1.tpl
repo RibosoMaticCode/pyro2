@@ -66,7 +66,7 @@
     <p style="font-weight:bold">S/. <span class="frmTotal"></span> soles</p>
     <p>Puedes hacerlo depositando el monto a la siguiente cuenta:</p>
     <p class="frmCuenta">Banco de Crédito del Perú - BCP <br />
-      570 - 7150004-0-36</p>
+      570 265 0904081</p>
     <p>Ingresa aquí tu número de operación:</p>
     <p>
       <input type="text" style="width:70%;min-width:auto!important" name="num_operacion" />

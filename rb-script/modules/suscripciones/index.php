@@ -68,23 +68,6 @@ if(isset($_GET['pag']) && $_GET['pag']=="rb_sus_susc_config"):
 	add_function('module_content_main','sus_suscriptores_config');
 endif;
 
-// ----------- SHORTCODE ----------------- //
-// Este short code, muestra el formulario de suscripcion al iniciar una pagina,
-// si se suscribe o ya esta suscrito permite continuar, caso contrario al cancelar
-// redirecciona a la pagina principal
-
-/*function sus_required(){
-	$action = "<a id='hidden_link' href='".G_SERVER."rb-script/modules/suscripciones/suscrip.frm.frontendreq.php' class='fancySuscrip fancybox.ajax'>Suscripcion</a>
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			$('#hidden_link').trigger('click');
-		});
-	</script>";
-	return $action;
-}
-
-add_shortcode('suscripformreq', 'sus_required');*/
-
 /* FRONTEND */
 
 function header_files(){
@@ -131,7 +114,7 @@ function sus_form(){
 	<script>
 	$(document).ready(function() {
 
-	$("#frm_suscrip").submit(function( event ){
+	$("#suscrip_form").submit(function( event ){
 		event.preventDefault();
 
 		$.ajax({

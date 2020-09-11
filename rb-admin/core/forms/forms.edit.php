@@ -97,7 +97,7 @@ $(document).ready(function() {
 					</div>
 					<label>Validaciones:
 						<span class="info">Usar estructura JSON para los campos a validar. Ejemplo:</span>
-						<span class="info">{"NombreCampo1": "req|min=3|max=50", "NombreCampo2": "req", "NombreCampo3", "max=50" }</span>
+						<span class="info">{"NombreCampo1": "req|min=3|max=50", "NombreCampo2": "req", "NombreCampo3": "max=50" }</span>
 						<textarea name="validations" id="form_validations"><?php if(isset($row)) echo $row['validations'] ?></textarea>
 					</label>
 					<label>Correos destino:

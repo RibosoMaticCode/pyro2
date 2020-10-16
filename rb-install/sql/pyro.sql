@@ -152,7 +152,9 @@ CREATE TABLE `py_forms` (
   `mails` text NOT NULL,
   `user_id` int(5) NOT NULL,
   `intro` text NOT NULL,
-  `respuesta` text NOT NULL
+  `respuesta` text NOT NULL,
+  `sender` VARCHAR(150) NOT NULL,
+  `sender_mail` VARCHAR(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

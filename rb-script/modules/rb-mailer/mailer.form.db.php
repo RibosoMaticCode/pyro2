@@ -164,9 +164,9 @@ $recipient = $form['mails']=="" ? rb_get_values_options('mail_destination') : $f
 //$cc = "dweb@emocion.pe"; -> copia, habilitar luego
 
 // Configuracion del cabecera
-$subject = $form['name'];//"Formulario de Contacto";
-$from_name = rb_get_values_options('name_sender');
-$mail_no_reply = rb_get_values_options('mail_sender');
+$subject = $form['name'];
+$from_name = empty($form['sender']) ? rb_get_values_options('name_sender') : $form['sender'];
+$mail_no_reply = empty($form['sender_mail']) ? rb_get_values_options('mail_sender') : $form['sender_mail'];
 //$mail_reply = "info@".G_HOSTNAME; -> correo de respuesta, habilitar luego
 
 // Build the email headers. // El que envia es el sender no el usuario

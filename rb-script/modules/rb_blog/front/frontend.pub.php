@@ -8,9 +8,9 @@
           <a class="back" href="javascript:history.back()" class="back_gallery">Volver</a>
         </div>
         <h2><a href="<?= $Post['url'] ?>"><?= $Post['titulo']  ?></a></h2>
-        <?php if($Post['url_img_pri_max']!=""): ?>
+        <?php /*if($Post['url_img_pri_max']!=""): ?>
         <div class="post-image" style="background-image:url('<?= $Post['url_img_pri_max']  ?>')"></div>
-        <?php endif ?>
+        <?php endif*/ ?>
         <?= rb_shortcode(rb_BBCodeToGlobalVariable($Post['contenido'])) ?>
       </article>
     </div>

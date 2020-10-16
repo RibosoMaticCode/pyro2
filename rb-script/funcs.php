@@ -535,6 +535,7 @@ function rb_get_photo_details_from_id($photo_id){
 
   // Si id foto es 0, retornar valores vacios
   if($photo_id==0){
+    $DetailsPhoto['file_name'] = "";
     $DetailsPhoto['file_url'] = G_SERVER."rb-script/images/no_image_available.jpg";
     $DetailsPhoto['thumb_url'] = G_SERVER."rb-script/images/no_image_available.jpg";
     return $DetailsPhoto;
@@ -1589,7 +1590,6 @@ function rb_list_galleries($limit=0, $groupname=""){
         $GaleriasArray[$i]['url_bgimagetn'] = G_SERVER."rb-script/images/gallery-default.jpg";
       else:
         $photos = rb_get_photo_details_from_id($Galerias['photo_id']);
-        print_r($photos);
 
         $GaleriasArray[$i]['url_bgimage'] = G_SERVER."rb-media/gallery/".$photos['file_name'];
         $GaleriasArray[$i]['url_bgimagetn'] = G_SERVER."rb-media/gallery/tn/".$photos['file_name'];

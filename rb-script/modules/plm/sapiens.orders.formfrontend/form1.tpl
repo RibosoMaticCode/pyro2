@@ -65,8 +65,13 @@
     <p>El monto a depositar es:</p>
     <p style="font-weight:bold">S/. <span class="frmTotal"></span> soles</p>
     <p>Puedes hacerlo depositando el monto a la siguiente cuenta:</p>
-    <p class="frmCuenta">Banco de Crédito del Perú - BCP <br />
-      570 265 0904081</p>
+      <div class="frmCuenta">
+        <p><strong>Numero de cuenta BCP</strong></p>
+        <p><strong>EDITORIAL SAPIENS E.I.R.L.</strong></p>
+        <p>5702650904081</p>
+        <p>Código de cuenta interbancario:</p>
+        <p>002-570265090408107</p>
+      </div>
     <p>Ingresa aquí tu número de operación:</p>
     <p>
       <input type="text" style="width:70%;min-width:auto!important" name="num_operacion" />

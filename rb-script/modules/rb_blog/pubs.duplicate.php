@@ -35,11 +35,6 @@ if( $result['result'] ):
 	while($r = $q->fetch_assoc()):
 		$objDataBase->Ejecutar("INSERT INTO blog_posts_categories (articulo_id, categoria_id) VALUES ($ultimo_id, ".$r['categoria_id'].")");
 	endwhile;
-		// CONSULTAMOS EN ARTICULOS ARTICULOS
-	$q =  $objDataBase->Ejecutar("SELECT * FROM blog_posts_posts WHERE articulo_id_padre= $id");
-	while($r = $q->fetch_assoc()):
-		$objDataBase->Ejecutar("INSERT INTO blog_posts_posts (articulo_id_padre, articulo_id_hijo) VALUES ($ultimo_id, ".$r['articulo_id_hijo'].")");
-	endwhile;
 		// CONSULTAMOS EN TABLA OBJETOS
 	$q =  $objDataBase->Ejecutar("SELECT * FROM blog_fields WHERE articulo_id= $id");
 	while($r = $q->fetch_assoc()):

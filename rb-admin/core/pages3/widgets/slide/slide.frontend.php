@@ -31,7 +31,7 @@ if( !$fotos ){
         <?php if($widget['widget_values']['activelink']==1): ?>
           <a class="fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
         <?php else: ?>
-          <a class="fancy" data-fancybox-group="gallery" href="<?= $foto['goto_url'] ?>">
+          <a class="fancy" data-fancybox-group="gallery<?= $gallery_id?>" href="<?= $foto['goto_url'] ?>">
         <?php endif ?>
           <div>
             <div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>

@@ -174,7 +174,8 @@ $email_headers = "From: $from_name <$mail_no_reply> \r\n";
 //$email_headers .= "Cc: $cc \r\n"; --> Futuras versiones
 //$email_headers .= "Reply-To: <$mail_reply>\r\n"; --> Futuras versiones
 $email_headers .= "MIME-Version: 1.0\r\n";
-$email_headers .= "Content-Type: text/html; UTF-8\r\n";
+$email_headers .= "Content-Type: text/html; utf-8\r\n";
+$email_headers .= "Content-Transfer-Encoding: 8bit\r\n";
 
 // Send the email.
 if (mail($recipient, $subject, $email_content, $email_headers)) {

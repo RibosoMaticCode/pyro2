@@ -137,6 +137,7 @@ function rb_return_post_array($qa){
 		$PostsArray[$i]['vistas'] = $Posts['lecturas'];
 		//$PostsArray[$i]['comentarios'] = rb_get_num_comments_by_post_id($Posts['id']);
 		$PostsArray[$i]['url'] = rb_url_link_blog( 'art' , $Posts['id'] );
+		$PostsArray[$i]['fecha'] = $Posts['fecha_dia']." de ".rb_mes_nombre( $Posts['fecha_mes'] ).", ". $Posts['fecha_anio'];
 		$PostsArray[$i]['fec_dia'] = isset( $Posts['fecha_dia'] ) ? $Posts['fecha_dia'] : "";
 		$PostsArray[$i]['fec_mes'] = isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "";
 		$PostsArray[$i]['fec_mes_l'] = rb_mes_nombre( isset( $Posts['fecha_mes'] ) ? $Posts['fecha_mes'] : "" );

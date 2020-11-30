@@ -298,7 +298,7 @@ add_function('call_modules_url','rb_blog_call_url');
 function blog_css(){
   global $rb_modure_dir;
 	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."rb_blog/front/blog.css'>\n";
-	$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."rb_blog/front/blog1.css'>\n";
+	//$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."rb_blog/front/blog1.css'>\n";
 	return $css;
 }
 add_function('theme_header','blog_css');

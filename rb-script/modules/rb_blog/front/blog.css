@@ -126,17 +126,8 @@
   margin-left:20px
 }
 
-ul.post-categories {
-    margin: 10px 0;
-}
 .post-categories li{
   display: inline-block;
-}
-.post-categories li a{
-  background: #a0a0a0;
-  color:#fff;
-  padding: 3px 10px;
-  font-size: .85em;
 }
 
 /* RESPONSIVE */

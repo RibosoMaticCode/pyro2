@@ -10,6 +10,8 @@
 // Se puede colocar allow_url_fopen en un archivo php.ini en la raiz del sitio
 // De no funcionar acceder a cpanel y verificar si se puede
 // Si tiene acceso a WHM puede habilitarlo desde alli en Editor INI de MultiPHP
+// Para enviar a correo zoho o MXs, en Cpanel habilitar opcion Enrutamiento de correo: Remoto
+
 header('Content-type: application/json; charset=utf-8');
 
 // Incluir varibales globales

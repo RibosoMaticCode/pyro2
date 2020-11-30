@@ -47,25 +47,32 @@ if($typ==0 || $typ==1){
         <?php endif ?>
         <!--<span class="post-category"></span>-->
         <div class="post-desc <?php if($typ==1) print "clear" ?>">
+          <div class="post-info clear">
+            <?php if($show_cat==1): ?>
+              <ul class="point post-categories">
+                <?php
+                $categorias = rb_show_category_from_post($PostRelated['id']);
+                foreach ($categorias as $categoria) {
+                  ?>
+                  <li><a href="<?= $categoria['url'] ?>"><?= $categoria['nombre'] ?></a></li>
+                  <?php
+                }
+                ?>
+              </ul>
+            <?php endif ?>
+            <div class="point post-date">
+              <?= $PostRelated['fecha'] ?>
+            </div>
+          </div>
           <h2><a title="<?= $PostRelated['titulo'] ?>" href="<?= $PostRelated['url'] ?>"><?= $PostRelated['titulo'] ?></a></h2>
           <?php if($desc==1): ?>
-            <?= rb_fragment_text($PostRelated['contenido'],30, false)  ?>
+            <div class="post-content">
+              <?= rb_fragment_text($PostRelated['contenido'],20, false)  ?>
+            </div>
           <?php endif ?>
           <?php if($link==1): ?>
             <br />
             <a class="post-more" href="<?= $PostRelated['url'] ?>">Leer mas</a>
-          <?php endif ?>
-          <?php if($show_cat==1): ?>
-            <ul class="post-categories">
-              <?php
-              $categorias = rb_show_category_from_post($PostRelated['id']);
-              foreach ($categorias as $categoria) {
-                ?>
-                <li><a href="<?= $categoria['url'] ?>"><?= $categoria['nombre'] ?></a></li>
-                <?php
-              }
-              ?>
-            </ul>
           <?php endif ?>
         </div>
       </div>

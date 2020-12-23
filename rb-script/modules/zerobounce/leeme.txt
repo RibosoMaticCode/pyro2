@@ -1,0 +1,15 @@
+https://www.zerobounce.net/
+
+Zerobounce
+==========
+
+Permite validar la integridad de un correo.
+
+La version gratuita, previo registro, permite validar hasta 100 correos por mes.
+
+La implementación es sencilla y práctica.
+
+Hay que tener habilitada la libreria CURL en php.
+
+Link de la api:
+https://github.com/zerobounce/zerobounce-php-api-v2

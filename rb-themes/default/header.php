@@ -37,6 +37,7 @@
 		<script src="<?= rm_urltheme ?>res/fancybox/source/helpers/jquery.fancybox-media.js"></script>
 		<!-- camera plugin -->
 		<link rel="stylesheet" href="<?= rm_urltheme ?>res/camera/css/camera.css">
+		<link rel="stylesheet" href="<?= rm_urltheme ?>css/slide.css">
 		<script src="<?= rm_urltheme ?>res/camera/scripts/jquery.easing.1.3.js"></script>
 		<script src="<?= rm_urltheme ?>res/camera/scripts/camera.min.js"></script>
 		<!-- functions js additional -->

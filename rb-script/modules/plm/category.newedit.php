@@ -51,7 +51,14 @@ if( isset($_GET['parent_id']) ){
 				});
 			});
 		</script>
-		<input type="text" readonly name="foto_id" class="foto_id" value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['foto_id'] : 0 ); echo $photos['src']; ?>" />
+    <?php
+              $photo_category = "";
+              if( isset($row) ){
+                $Photo = rb_get_photo_details_from_id( $row['foto_id'] );
+                $photo_category = $Photo['file_name'];
+              }
+              ?>
+		<input type="text" readonly name="foto_id" class="foto_id" value="<?= $photo_category ?>" />
   </label>
 	<label>
     Categoria padre

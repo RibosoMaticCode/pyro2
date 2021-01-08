@@ -112,7 +112,7 @@ if($id==0){ // Nuevo
 	$r = $objDataBase->Update('plm_products', $valores, ["id" => $id]);
 	if($r['result']){
 
-		include_once 'sapiens.filter/save.fields.adds.php';
+		//include_once 'sapiens.filter/save.fields.adds.php';
 
 		$arr = ['resultado' => true, 'contenido' => 'Elemento actualizado', 'id' => $id ];
 		/* GRUPO DE OPCIONES */

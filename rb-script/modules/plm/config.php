@@ -55,7 +55,7 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
       </div>
 			<div class="cols-container">
         <div class="cols-6-md">
-          Estilo visual de mostrar producto
+          Estilo visual de mostrar producto <span class="info">Vacio:Default, 1:Zetzun, 2:Sapiens, 3:cienpharma</span>
         </div>
         <div class="cols-6-md">
           <input type="text" name="options[frontview_product]" value='<?= get_option('frontview_product') ?>' />

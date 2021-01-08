@@ -40,3 +40,4 @@ foreach ($options as $key => $value) {
 }
 
 die(json_encode($arr));
+?>

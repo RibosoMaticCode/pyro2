@@ -65,6 +65,7 @@ CREATE TABLE `plm_orders` (
 CREATE TABLE `plm_products` (
   `id` int(5) NOT NULL,
   `nombre` varchar(250) NOT NULL,
+  `nombre_largo` varchar(250) NOT NULL,
   `nombre_key` varchar(250) NOT NULL,
   `precio` float NOT NULL,
   `marca` varchar(90) NOT NULL,
@@ -86,9 +87,12 @@ CREATE TABLE `plm_products` (
   `options` mediumtext NOT NULL,
   `options_variants` mediumtext NOT NULL,
   `salidas` int(5) NOT NULL,
-  `tipo` tinyint(1) NOT NULL DEFAULT 0,
-  `url_archivo` tinytext NOT NULL
+  `formato_fisico` tinyint(1) NOT NULL DEFAULT 0,
+  `formato_digital` tinyint(1) NOT NULL DEFAULT 0,
+  `url_archivo` tinytext NOT NULL,
+  `orden` mediumint(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 

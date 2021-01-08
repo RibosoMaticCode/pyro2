@@ -891,10 +891,18 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_comments"):
 	add_function('module_content_main','plm_comments');
 endif;
 
+// CSS Pedido por email sin registro
+function order_header_files(){
+	$files = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/ordermail/order.css'>\n";
+	$files .= "<script src='".G_DIR_MODULES_URL."plm/ordermail/order.js'></script>";
+	return $files;
+}
+add_function('theme_header','order_header_files');
+
 /******************************************************/
 /*************			SAPIENS 	*******************/
 /******************************************************/
-
+/*
 // ------ PEDIDOS DE PRODUCTOS SIMPLE ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_orders_simple"):
 	function sapiens_orders_title(){
@@ -1080,4 +1088,4 @@ function sapiens_filter_url(){
 		endif;
 	endif;
 }
-add_function('call_modules_url','sapiens_filter_url');
+add_function('call_modules_url','sapiens_filter_url');*/

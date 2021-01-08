@@ -315,7 +315,14 @@ $categories = json_decode($option['plm_value'], true);*/
                   });
                 });
               </script>
-              <input type="text" readonly name="foto_id" class="foto_id" value="<?php $photos = rb_get_photo_from_id( isset($row) ? $row['foto_id'] : 0 ); echo $photos['src']; ?>" />
+              <?php
+              $photo_product = "";
+              if( isset($row) ){
+                $Photo = rb_get_photo_details_from_id( $row['foto_id'] );
+                $photo_product = $Photo['file_name'];
+              }
+              ?>
+              <input type="text" readonly name="foto_id" class="foto_id" value="<?= $photo_product ?>" />
             </label>
             <label>
               Galeria de imagenes
@@ -333,7 +340,7 @@ $categories = json_decode($option['plm_value'], true);*/
             </label>
           </div>
         </section>
-        <?php include_once 'sapiens.filter/form.edit.fields.adds.php' ?>
+        <?php //include_once 'sapiens.filter/form.edit.fields.adds.php' ?>
       </div>
     </div>
   </form>

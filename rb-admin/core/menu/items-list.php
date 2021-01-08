@@ -33,7 +33,7 @@ function rb_menus_edition($mainmenu_id, $parent, $level) {
             ?>
             <li class="item" data-id="item<?= $row['id'] ?>" data-title="<?= $row['nombre'] ?>" data-url="<?= $row['url'] ?>" data-menumain="<?= $row['mainmenu_id'] ?>" data-type="<?= $row['tipo'] ?>" data-style="<?= $row['style'] ?>" data-img="<?= $row['img'] ?>">
             	<div class="header">
-            		<span class="item-title"><?= $row['nombre'] ?></span> [<?=$type_det ?>]
+            		<span class="item-title"><?= html_entity_decode($row['nombre']) ?></span> [<?=$type_det ?>]
             	</div>
             	<a class="more" href="#"><span class="arrow-up" style="display: none;">&#9650;</span><span class="arrow-down">&#9660;</span></a>
             	<div class="item-body" style="display: none">
@@ -66,7 +66,7 @@ function rb_menus_edition($mainmenu_id, $parent, $level) {
 			?>
 			<li class="item" data-id="item<?= $row['id'] ?>" data-title="<?= $row['nombre'] ?>" data-url="<?= $row['url'] ?>" data-menumain="<?= $row['mainmenu_id'] ?>" data-type="<?= $row['tipo'] ?>" data-style="<?= $row['style'] ?>" data-img="<?= $row['img'] ?>">
             	<div class="header">
-            		<span class="item-title"><?= $row['nombre'] ?></span> [<?= $type_det ?>]
+            		<span class="item-title"><?= html_entity_decode($row['nombre']) ?></span> [<?= $type_det ?>]
             	</div>
             	<a class="more" href="#"><span class="arrow-up" style="display: none;">&#9650;</span><span class="arrow-down">&#9660;</span></a>
             	<div class="item-body" style="display: none">

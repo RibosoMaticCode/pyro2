@@ -226,14 +226,14 @@ $menu_asincrono = true;
 							type_det = "Categoria de Blog";
 						break;*/
 					}
-					var item = '<li class="item" data-id="item'+last_item+'" data-title="'+title+'" data-url="'+url+'" data-menumain="<?= $mainmenu_id ?>" data-type="'+type+'" data-style="" data-img="">';
+					var item = '<li class="item" data-id="item'+last_item+'" data-title=\''+title+'\' data-url="'+url+'" data-menumain="<?= $mainmenu_id ?>" data-type="'+type+'" data-style="" data-img="">';
 						item += '<div class="header"><span class="item-title">'+title+'</span> ['+type_det+']</div>';
 						item += '<a class="more" href="#"><span class="arrow-up" style="display: none;">&#9650;</span><span class="arrow-down">&#9660;</span></a>';
 						item += '';
 
 						item += '<div class="item-body" style="display: none">';
 						item += '	<label title="Titulo del Item" for="nombre">Titulo del Item:';
-						item += ' 		<input id="item-menu-name-'+last_item+'" autocomplete="off"  name="nombre" class="menu_title" type="text" value="'+title+'" required />';
+						item += ' 		<input id="item-menu-name-'+last_item+'" autocomplete="off"  name="nombre" class="menu_title" type="text" value=\''+title+'\' required />';
                         item += '	</label>';
                         if(type == "per"){
                         	item += '	<label title="URL" for="nombre">URL (incluir http://):';
@@ -376,6 +376,7 @@ $menu_asincrono = true;
 							<code>[RUTA_TEMA]</code>: Apunta a la url donde esta alojado el tema.
 						</li>
 					</ul>
+					<p>Puedes usar fontawesome, con este formato: <code>&lt;i class=&quot;fas fa-arrow-alt-circle-left&quot;&gt;&lt;/i&gt;</code></p>
 					</div>
 				</div>
 			</div>

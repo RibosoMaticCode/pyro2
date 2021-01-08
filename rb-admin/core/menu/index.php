@@ -10,7 +10,7 @@ function items_recursive($mainmenu_id, $parent, $level){
 
   $menuhtml = '<ul>';
   while($menu_item = $r->fetch_assoc()):
-    $menuhtml .= '<li><a class="'.$menu_item['style'].'" href="'.rb_url_link($menu_item['tipo'], $menu_item['url']).'">'.$menu_item['nombre'].'</a>';
+    $menuhtml .= '<li><a class="'.$menu_item['style'].'" href="'.rb_url_link($menu_item['tipo'], $menu_item['url']).'">'.html_entity_decode($menu_item['nombre']).'</a>';
     // Si campo Count, contiene items, ejecutara nuevamente la funcion... y asi recursivamente
     if($menu_item['Count']>0){
       $menuhtml .= items_recursive($mainmenu_id, $menu_item['id'], $level+1);

@@ -29,18 +29,18 @@ if( !$fotos ){
       ?>
       <div class="rb-cover-img" <?= $style ?>>
         <?php if($widget['widget_values']['activelink']==1): ?>
-          <a class="fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
+          <a class="rb-img-link fancy <?= $foto['class'] ?>" href="<?= $foto['goto_url'] ?>">
         <?php else: ?>
-          <a class="fancy" data-fancybox-group="gallery<?= $gallery_id?>" href="<?= $foto['goto_url'] ?>">
+          <a class="rb-img-link fancy" data-fancybox-group="gallery<?= $gallery_id?>" href="<?= $foto['goto_url'] ?>">
         <?php endif ?>
-          <div>
-            <div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
-            <div class="shadow"></div>
-            <?php if($widget['widget_values']['show_title']==1): ?>
-            <?= $foto['title'] ?>
-            <?php endif ?>
-          </div>
+          <div class="rb-img" style="background-image:url('<?= $foto['url_max'] ?>')"></div>
           </a>
+          <div class="shadow"></div>
+          <?php if($widget['widget_values']['show_title']==1): ?>
+            <div class="rb-img-desc">
+            <?= $foto['title'] ?>
+            </div>
+          <?php endif ?>          
       </div>
       <?php
     }

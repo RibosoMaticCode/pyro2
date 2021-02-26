@@ -54,7 +54,7 @@ foreach ($Galleries as $Gallery) {
 
     echo '<div class="rb-gallery-info">'; // open rb-gallery-info
       echo '<span class="rb-gallery-title">'.$Gallery['nombre'].'</span>';
-      echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</title>';
+      echo '<span class="rb-gallery-desc">'.$Gallery['descripcion'].'</span>';
     echo '</div>'; // close rb-gallery-info
 
     echo '</div>'; // close div

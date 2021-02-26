@@ -161,7 +161,7 @@
 		<div class="cols-container">
 			<div class="cols-6-md spacing-right">
 				<label>
-					<input type="checkbox" name="slide_showtitle" id="slide_showtitle" /> <span>Mostrar titulo de la imagen</span>
+					<input type="checkbox" name="slide_showtitle" id="slide_showtitle" /> <span>Mostrar descripción de la imagen</span>
 				</label>
 				<label>
 					<input type="checkbox" name="slide_activelink" id="slide_activelink" /> <span>Activar el link de la imagen</span>

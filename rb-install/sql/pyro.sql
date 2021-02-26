@@ -389,6 +389,13 @@ ALTER TABLE `blog_posts`
 ALTER TABLE `blog_posts` ADD FULLTEXT KEY `titulo` (`titulo`,`contenido`);
 
 --
+-- Indices de la tabla `blog_config`
+--
+ALTER TABLE `blog_config`
+  ADD UNIQUE KEY `blog_option` (`blog_option`);
+COMMIT;
+
+--
 -- Indices de la tabla `py_configuration`
 --
 ALTER TABLE `py_configuration`

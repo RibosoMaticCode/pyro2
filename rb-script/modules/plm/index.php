@@ -43,13 +43,13 @@ $menu1 = [
 			'url_imagen' => "none",
 			'pos' => 3
 		],
-		[
+		/*[
 			'key' => 'plm_orders_simple',
 			'nombre' => "Pedidos",
 			'url' => "module.php?pag=plm_orders_simple",
 			'url_imagen' => "none",
 			'pos' => 4
-		],
+		],*/
 		[
 			'key' => 'plm_orders',
 			'nombre' => "Pedidos con tarjeta",
@@ -739,11 +739,7 @@ function plm_products_init(){
                         endif;
                       $products_list .='</div>';
 
-		$products_list .= '<div class="product-item-btns">
-					<a href="'.$product['url_archivo'].'">Leer ahora</a>
-					<a href="'.$product['url'].'">Ver detalles</a>
-				</div>
-			</div>
+		$products_list .= '</div>
 		</div>
 	</div>';
 	endwhile;
@@ -899,193 +895,3 @@ function order_header_files(){
 }
 add_function('theme_header','order_header_files');
 
-/******************************************************/
-/*************			SAPIENS 	*******************/
-/******************************************************/
-/*
-// ------ PEDIDOS DE PRODUCTOS SIMPLE ------ //
-if(isset($_GET['pag']) && $_GET['pag']=="plm_orders_simple"):
-	function sapiens_orders_title(){
-		return "Sapiens pedidos";
-	}
-	function sapiens_orders_content(){
-		global $objDataBase;
-
-		$q = $objDataBase->Ejecutar('SELECT * FROM sapiens_orders ORDER BY date DESC');
-
-		include_once 'sapiens.orders.init.php';
-	}
-
-	add_function('module_title_page','sapiens_orders_title');
-	add_function('module_content_main','sapiens_orders_content');
-endif;
-
-// CSS
-function sapiens_backend_css(){
-	$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/sapiens.orders.css'>\n";
-	return $css;
-}
-add_function('panel_header_css','sapiens_backend_css');
-
-// -------- FORMULARIO PEDIDO DIGITAL FRONTEND ---------- //
-function sapiens_orders_digital(){
-  	//incluimos la clase
-  	include_once './rb-script/template.class.php';
-
-  	//iniciamos la clase
-  	$tpl=new TemplateClass();
-
-  	// directorio del template
-  	$tpl->DirTemplate("rb-script/modules/plm/sapiens.orders.formfrontend/");
-
-	// {variables} que reemplazaremos en la plantilla
-	$tpl->Assign('ruta_modulo', G_DIR_MODULES_URL."plm/");
-
-	//indicamos la plantilla sin extension solo el nombre
-	return $tpl->Template('form');
-}
-
-add_shortcode('SAPIENS_ORDERS_DIGITAL','sapiens_orders_digital');
-
-// -------- FORMULARIO PEDIDO FISICO FRONTEND ---------- //
-function sapiens_orders_physical(){
-  	//incluimos la clase
-  	include_once './rb-script/template.class.php';
-
-  	//iniciamos la clase
-  	$tpl=new TemplateClass();
-
-  	// directorio del template
-  	$tpl->DirTemplate("rb-script/modules/plm/sapiens.orders.formfrontend/");
-
-	// {variables} que reemplazaremos en la plantilla
-	$tpl->Assign('ruta_modulo', G_DIR_MODULES_URL."plm/");
-
-	//indicamos la plantilla sin extension solo el nombre
-	return $tpl->Template('form1');
-}
-
-add_shortcode('SAPIENS_ORDERS_PHYSICAL','sapiens_orders_physical');
-
-// ------------- FILTRAR BUSQUEDA -------------------- //
-
-// ------------- CSS / JS ---------------//
-function sapiens_plm_header_files(){
-	//$files = "<script src='".G_DIR_MODULES_URL."suscripciones/suscrip.js'></script>\n";
-	$files = "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."plm/sapiens.orders.formfrontend/form.css' />\n";
-	$files .= "<link rel='stylesheet' type='text/css' href='".G_DIR_MODULES_URL."plm/sapiens.filter/frm.filter.css' />\n";
-
-	$files .= "<script src='".G_DIR_MODULES_URL."plm/sapiens.orders.formfrontend/form.js'></script>";
-	return $files;
-}
-add_function('theme_header','sapiens_plm_header_files');
-
-// -------- FORMULARIO FRONTEND FILTRADO BIBLIOTECA ---------- //
-function sapiens_filter(){
-  	//incluimos la clase
-  	include_once './rb-script/template.class.php';
-
-  	//iniciamos la clase
-  	$tpl=new TemplateClass();
-
-  	// directorio del template
-  	$tpl->DirTemplate("rb-script/modules/plm/sapiens.filter/");
-
-	// {variables} que reemplazaremos en la plantilla
-	$tpl->Assign('ruta_modulo', G_DIR_MODULES_URL."plm/sapiens.filter/");
-
-	//indicamos la plantilla sin extension solo el nombre
-	return $tpl->Template('frm.filter');
-}
-
-add_shortcode('SAPIENS_FILTER','sapiens_filter');
-
-// ---------------- URL ACTION FILTER PRODUCT ------------------ //
-function sapiens_filter_url(){
-	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
-	$requestURI = explode("/", $requestURI);
-	$requestURI = array_values( array_filter( $requestURI ) );
-
-	$numsItemArray = count($requestURI);
-
-	if( $requestURI[0] == "products-filter" ):
-		if( $numsItemArray == 4 ):
-			// Valores a buscar
-			$univ = $requestURI[1];
-			$tipo_lib = $requestURI[2]; 
-			$tipo_lib = str_replace(['%20'], " ", $tipo_lib);
-			$area =  $requestURI[3];
-
-			global $objDataBase;
-			$p = 1;
-			$items_to_show = get_option('products_count_category');
-			$start = ($p - 1) * $items_to_show;
-			
-			$qsAll = $objDataBase->Ejecutar("SELECT p.*, s.universidad, s.tipo_libro, s.area FROM plm_products p, sapiens_fields_adds s WHERE p.id = s.product_id AND s.universidad = '".$univ."' AND s.tipo_libro = '".$tipo_lib."' AND s.area = '".$area."'");
-
-			$qs = $objDataBase->Ejecutar("SELECT p.*, s.universidad, s.tipo_libro, s.area FROM plm_products p, sapiens_fields_adds s WHERE p.id = s.product_id AND s.universidad = '".$univ."' AND s.tipo_libro = '".$tipo_lib."' AND s.area = '".$area."' AND mostrar=1 LIMIT $start, $items_to_show");
-
-			$CountResult = $qsAll->num_rows;
-			$total_products = $qsAll->num_rows;
-			$products = [];
-			$i=0;
-			while($product = $qs->fetch_assoc()):
-				$products[$i]['id'] = $product['id'];
-				$products[$i]['nombre'] = $product['nombre'];
-				$products[$i]['precio_oferta'] = $product['precio_oferta'];
-				$products[$i]['precio'] = $product['precio'];
-				$products[$i]['descuento'] = $product['descuento'];
-				$products[$i]['categoria'] = $product['categoria'];
-				if(G_ENL_AMIG) $products[$i]['url'] = G_SERVER."products/".$product['nombre_key']."/";
-				else $products[$i]['url'] = G_SERVER."?products=".$product['id'];
-				$photo = rb_get_photo_details_from_id($product['foto_id']);
-				if($photo['file_url']==""){
-					$photo['file_url'] = G_SERVER.'rb-script/images/no_image_available.jpg';
-				}
-				$products[$i]['image_url'] = $photo['file_url'];
-				
-				$i++;
-			endwhile;
-
-			define('rm_title', "Resultado del filtrado | ".G_TITULO);
-			define('rm_title_page', "Resultado del filtrado");
-			define('rm_metakeywords', "");
-			define('rm_metadescription', "Resultado de filtrado");
-			define('rm_metaauthor', G_METAAUTHOR);
-			define('rm_page_image', '' );
-
-			// Definiendo el paginado
-			if($p>1){
-				$CurrentPage = $p;
-				$NextPage = $CurrentPage+1;
-				$PrevPage = $CurrentPage-1;
-			}else{
-				$CurrentPage = 1;
-				$NextPage = 2;
-				$PrevPage = 0;
-			}
-			$TotalPage  = floor($total_products / $items_to_show);
-			if($total_products % $items_to_show) $TotalPage++;
-			$LastPage = $TotalPage;
-
-			if($NextPage > $TotalPage) $NextPage = 0;
-			if($CurrentPage == $TotalPage) $LastPage = 0;
-
-			$view_style = get_option('frontview_product');
-			switch ($view_style) {
-				case $view_style:
-					$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
-					break;
-				default:
-					$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
-					break;
-			}
-
-			require_once( $file );
-			die();
-		else:
-			header('Location: '.G_SERVER.'404.php');
-		endif;
-	endif;
-}
-add_function('call_modules_url','sapiens_filter_url');*/

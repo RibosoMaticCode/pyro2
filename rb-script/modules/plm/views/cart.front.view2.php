@@ -48,7 +48,12 @@ print rb_shortcode('[SAPIENS_ORDERS_PHYSICAL]');
 		</div>
 		<div class="cover-btn-cart">
 			<?php if(count($products)>0): ?>
-				<a class="frmSapiensShowFisico btn-cart-next" href="#">Realizar mi pedido</a>
+				<!-- ANULADO <a class="frmSapiensShowFisico btn-cart-next" href="#">Realizar mi pedido</a>-->
+				<?php if(G_ACCESOUSUARIO==0): ?>
+					<a class="btn-cart-next" href="<?= G_SERVER ?>login.php?redirect=<?= $pre_payment_url ?>">Continuar con mi compra</a>
+				<?php else: ?>
+					<a class="btn-cart-next" href="<?= $pre_payment_url ?>">Continuar con mi compra</a>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 	</div>

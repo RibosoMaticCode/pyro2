@@ -41,10 +41,10 @@
                       <?php
                     }
                     ?>
-                    <div class="product-item-btns">
+                    <!--<div class="product-item-btns">
                       <a href="<?= $product['url_archivo'] ?>">Leer ahora</a>
                       <a href="<?= $product['url'] ?>">Ver detalles</a>
-                    </div>
+                    </div>-->
                     
                 </div>
               

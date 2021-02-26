@@ -2,6 +2,22 @@
 <?php
 include_once ABSPATH.'rb-script/modules/plm/ordermail/order.form.php';
 ?>
+<div class="clear page_header" style="background-image:url(https://www.cienpharma.com/rb-media/gallery/bg-breadcrumb-scaled.jpg);background-position:center;background-size:cover;">
+  <div class="inner-content inner_page_header clear" style="">
+    <div class="cols">
+      <div class="col ">
+        <div class="">
+          <h1>MI CARRITO</h1>
+        </div>
+      </div><!--end col or coverwidgets-->
+      <div class="col ">
+        <div class="">
+          <p><i class="fas fa-home"></i> <a href="https://www.cienpharma.com/">INICIO</a> <span class="separador">&nbsp;<i class="fas fa-chevron-right"></i></span> MI CARRITO</p>
+        </div>
+      </div><!--end col or coverwidgets-->
+    </div><!--end cols-->
+  </div><!--end inner box-->
+</div>
 <div class="wrap-content">
 	<div class="inner-content inner-cart">
 		<h3>Mi carrito</h3>

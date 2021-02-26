@@ -1,5 +1,5 @@
 <?php
-//header('Content-type: application/json; charset=utf-8');
+$send_mail = true; // Modo local no enviara el mail
 
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
@@ -99,47 +99,49 @@ if($r['result']){
 	$unique_code = date('Ymd').str_pad($r['insert_id'], 6, '0', STR_PAD_LEFT);
 	$objDataBase->Update('plm_orders', ['codigo_unico' => $unique_code], ['id' => $r['insert_id']]);
 
-	// ----------- ENVIAR MAIL A CLIENTE
-	$cliente = rb_get_user_info(G_USERID);
+	if($send_mail){
+		// ----------- ENVIAR MAIL A CLIENTE
+		$cliente = rb_get_user_info(G_USERID);
 
-	// Destinatarios :
-	$recipient = $cliente['correo'];
+		// Destinatarios :
+		$recipient = $cliente['correo'];
 
-	// Configuracion del cabecera
-	$subject = $cliente['nombres']." gracias por tu pedido";
-	$from_name = rb_get_values_options('name_sender');
-	$mail_no_reply = rb_get_values_options('mail_sender');
+		// Configuracion del cabecera
+		$subject = $cliente['nombres']." gracias por tu pedido";
+		$from_name = rb_get_values_options('name_sender');
+		$mail_no_reply = rb_get_values_options('mail_sender');
 
-	// Content
-	$email_content = "<div style='background-color:whitesmoke; padding:20px 10px;'><div style='padding:15px;margin:0 auto;width:100%;max-width:600px'><img src='".rb_photo_login(G_LOGO)."' alt='logo' style='max-width:120px' /></div>";
-	$email_content .= "<div style='background-color:#fff;width:100%;max-width:600px;margin:0 auto;padding:15px;'><h1>Gracias por tu pedido, ".$cliente['nombres']."</h1><p>Pronto nos comunicaremos contigo para coordinar el envio</p><p><strong>Número de pedido: ".$unique_code."</strong></p><br />".$html_content."<br /><p>----<br />Este correo fue enviado automaticamente, no responder.</p></div>";
+		// Content
+		$email_content = "<div style='background-color:whitesmoke; padding:20px 10px;'><div style='padding:15px;margin:0 auto;width:100%;max-width:600px'><img src='".rb_photo_login(G_LOGO)."' alt='logo' style='max-width:120px' /></div>";
+		$email_content .= "<div style='background-color:#fff;width:100%;max-width:600px;margin:0 auto;padding:15px;'><h1>Gracias por tu pedido, ".$cliente['nombres']."</h1><p>Pronto nos comunicaremos contigo para coordinar el envio</p><p><strong>Número de pedido: ".$unique_code."</strong></p><br />".$html_content."<br /><p>----<br />Este correo fue enviado automaticamente, no responder.</p></div>";
 
-	// Build the email headers. // El que envia es el sender no el usuario
-	$email_headers = "From: $from_name <$mail_no_reply> \r\n";
-	$email_headers .= "MIME-Version: 1.0\r\n";
-	$email_headers .= "Content-Type: text/html; UTF-8\r\n";
+		// Build the email headers. // El que envia es el sender no el usuario
+		$email_headers = "From: $from_name <$mail_no_reply> \r\n";
+		$email_headers .= "MIME-Version: 1.0\r\n";
+		$email_headers .= "Content-Type: text/html; UTF-8\r\n";
 
-	mail($recipient, $subject, $email_content, $email_headers);
+		mail($recipient, $subject, $email_content, $email_headers);
 
-	// ----------- ENVIAR MAIL A ADMIN DEL SITIO
-	// Destinatarios :
-	$recipient = rb_get_values_options('mail_destination');
+		// ----------- ENVIAR MAIL A ADMIN DEL SITIO
+		// Destinatarios :
+		$recipient = rb_get_values_options('mail_destination');
 
-	// Configuracion del cabecera
-	$subject = "Nueva Orden de Pedido";
-	$from_name = rb_get_values_options('name_sender');
-	$mail_no_reply = rb_get_values_options('mail_sender');
+		// Configuracion del cabecera
+		$subject = "Nueva Orden de Pedido";
+		$from_name = rb_get_values_options('name_sender');
+		$mail_no_reply = rb_get_values_options('mail_sender');
 
-	// Content
-	$email_content = "<strong>Hola ".G_TITULO."!</strong><p>Hay una nueva orden de pedido: ".$unique_code."</p><p>Detalles a continuacion:</p><br />".$html_content."<br />";
-	$email_content .= "<p>Datos del cliente:</p><p>Nombres completos: <strong>".$cliente['nombrecompleto']."</strong></p><p>Telefonos: <strong>".$cliente['telefono_fijo']."/".$cliente['telefono_movil']."</strong></p><p>Correo electronico: <strong>".$cliente['correo']."</strong></p><p>Dirección: <strong>".$cliente['direccion']."</strong></p><p>----<br />Este correo fue enviado automaticamente, no responder.</p>";
+		// Content
+		$email_content = "<strong>Hola ".G_TITULO."!</strong><p>Hay una nueva orden de pedido: ".$unique_code."</p><p>Detalles a continuacion:</p><br />".$html_content."<br />";
+		$email_content .= "<p>Datos del cliente:</p><p>Nombres completos: <strong>".$cliente['nombrecompleto']."</strong></p><p>Telefonos: <strong>".$cliente['telefono_fijo']."/".$cliente['telefono_movil']."</strong></p><p>Correo electronico: <strong>".$cliente['correo']."</strong></p><p>Dirección: <strong>".$cliente['direccion']."</strong></p><p>----<br />Este correo fue enviado automaticamente, no responder.</p>";
 
-	// Build the email headers. // El que envia es el sender no el usuario
-	$email_headers = "From: $from_name <$mail_no_reply> \r\n";
-	$email_headers .= "MIME-Version: 1.0\r\n";
-	$email_headers .= "Content-Type: text/html; UTF-8\r\n";
+		// Build the email headers. // El que envia es el sender no el usuario
+		$email_headers = "From: $from_name <$mail_no_reply> \r\n";
+		$email_headers .= "MIME-Version: 1.0\r\n";
+		$email_headers .= "Content-Type: text/html; UTF-8\r\n";
 
-	mail($recipient, $subject, $email_content, $email_headers);
+		mail($recipient, $subject, $email_content, $email_headers);
+	}
 
 	unset($_SESSION['carrito']);
   //$arr = ['resultado' => true, 'contenido' => 'Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.' ];

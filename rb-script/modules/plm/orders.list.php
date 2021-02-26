@@ -9,14 +9,14 @@ while ($row = $qlist->fetch_assoc()):
     <td><?= $row['total'] ?></td>
     <td><?= $row['charge_id'] ?></td>
     <td><?= $row['detalles'] ?></td>
-		<td class="row-actions">
+		<!--<td class="row-actions">
       <a title="Previsualizar" class="edit" href="<?= $product_url ?>" target="_blank">
         <i class="fa fa-external-link-alt"></i>
       </a>
       <a title="Eliminar" class="del" data-item="<?= $row['id'] ?>" href="#">
         <i class="fa fa-times"></i>
       </a>
-    </td>
+    </td>-->
 	</tr>
   <?php
 endwhile;

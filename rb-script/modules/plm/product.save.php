@@ -48,7 +48,7 @@ $valores = [
 	'marca' => $_POST['marca'],
 	'modelo' => $_POST['modelo'],
   	'descripcion' => $_POST['descripcion'],
-  	'tipo_envio' => trim($_POST['tipo_envio']),
+  	//'tipo_envio' => trim($_POST['tipo_envio']),
   	'foto_id' => trim($_POST['foto_id_id']),
   	'galeria_id' => trim($_POST['galeria_id']),
   	'fecha_registro' => date('Y-m-d G:i:s'),
@@ -71,7 +71,7 @@ if($id==0){ // Nuevo
 	if($r['result']){
 		$product_id = $r['insert_id'];
 
-		include_once 'sapiens.filter/save.fields.adds.php';
+		include_once ABSPATH.'rb-script/modules/plm_sapiens/sapiens.filter/save.fields.adds.php';
 
 		/* GRUPO DE OPCIONES */
 		if(isset($_POST['variant_name'])){
@@ -112,7 +112,7 @@ if($id==0){ // Nuevo
 	$r = $objDataBase->Update('plm_products', $valores, ["id" => $id]);
 	if($r['result']){
 
-		//include_once 'sapiens.filter/save.fields.adds.php';
+		include_once ABSPATH.'rb-script/modules/plm_sapiens/sapiens.filter/save.fields.adds.php';
 
 		$arr = ['resultado' => true, 'contenido' => 'Elemento actualizado', 'id' => $id ];
 		/* GRUPO DE OPCIONES */

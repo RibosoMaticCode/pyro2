@@ -44,16 +44,17 @@
 			</table>
 		</div>
 		<div class="cover-btn-cart">
-			<?php
-			if(count($products)>0):
-				if(G_ACCESOUSUARIO==0): ?>
-					<a class="btn-cart-next" href="<?= G_SERVER ?>login.php?redirect=<?= $pre_payment_url ?>">Continuar con mi compra</a>
+			<?php if(count($products)>0): ?>
+				<?php if ( get_option('plm_charge') == 0 ): ?>
+					<a class="frmSapiensShowFisico btn-cart-next" href="#">Realizar mi pedido</a>
 				<?php else: ?>
-					<a class="btn-cart-next" href="<?= $pre_payment_url ?>">Continuar con mi compra</a>
-				<?php
-				endif;
-			endif;
-			?>
+					<?php if(G_ACCESOUSUARIO==0): ?>
+						<a class="btn-cart-next" href="<?= G_SERVER ?>login.php?redirect=<?= $pre_payment_url ?>">Continuar con mi compra</a>
+					<?php else: ?>
+						<a class="btn-cart-next" href="<?= $pre_payment_url ?>">Continuar con mi compra</a>
+					<?php endif; ?>
+				<?php endif; ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

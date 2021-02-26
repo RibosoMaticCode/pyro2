@@ -1,4 +1,20 @@
 <?php rb_header(['header-allpages.php'], false) ?>
+<div class="clear page_header" style="background-image:url(https://www.cienpharma.com/rb-media/gallery/bg-breadcrumb-scaled.jpg);background-position:center;background-size:cover;">
+  <div class="inner-content inner_page_header clear" style="">
+    <div class="cols">
+      <div class="col ">
+        <div class="">
+          <h1>CATÁLOGO</h1>
+        </div>
+      </div><!--end col or coverwidgets-->
+      <div class="col ">
+        <div class="">
+          <p><i class="fas fa-home"></i> <a href="https://www.cienpharma.com/">INICIO</a> <span class="separador">&nbsp;<i class="fas fa-chevron-right"></i></span> CATÁLOGO</p>
+        </div>
+      </div><!--end col or coverwidgets-->
+    </div><!--end cols-->
+  </div><!--end inner box-->
+</div>
 <div class="wrap-content">
   <div class="inner-content clear">
     <!--<div class="product-nav">

@@ -116,7 +116,7 @@ $categories = json_decode($option['plm_value'], true);*/
       				        </label>
       							</div>
       						</div>
-      						<div class="cols-container">
+      						<!--<div class="cols-container">
       							<div class="cols-6-md">
       								<label>
       				          Tipo envio
@@ -129,7 +129,7 @@ $categories = json_decode($option['plm_value'], true);*/
       				          <input type="number" name="tiempo_envio" value="<?php if(isset($row)) echo $row['tiempo_envio'] ?>" />
       				        </label>
       							</div>
-      						</div>
+      						</div>-->
       						<div class="cols-container">
       							<div class="cols-6-md">
       								<label>
@@ -340,7 +340,7 @@ $categories = json_decode($option['plm_value'], true);*/
             </label>
           </div>
         </section>
-        <?php //include_once 'sapiens.filter/form.edit.fields.adds.php' ?>
+        <?php include_once ABSPATH.'rb-script/modules/plm_sapiens/sapiens.filter/form.edit.fields.adds.php' ?>
       </div>
     </div>
   </form>

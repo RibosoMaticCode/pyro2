@@ -427,7 +427,7 @@ a.page-resalt {
 	height:100vh;
 	position:fixed;
 	display:none;
-	z-index:8000;
+	z-index:1000;
 }
 
 .cover-input-dialog{

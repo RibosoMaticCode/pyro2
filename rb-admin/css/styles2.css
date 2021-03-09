@@ -369,12 +369,12 @@ h1.title-web a {
 .editor-window{
 	position: fixed;
 	width: 100%;
-	max-width: 720px;
+	max-width: 760px;
 	top:50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	display: none;
-	z-index: 8001;
+	z-index: 1001;
 	background-color: #fff;
 	max-height: 100vh;
 	overflow: auto;
@@ -689,4 +689,9 @@ ul.box-options-list{
 }
 .file_item li .info{
 	font-style:italic;
+}
+
+/* TINY */
+.fancybox-overlay{
+	z-index: 1010!important;
 }

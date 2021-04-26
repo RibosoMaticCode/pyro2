@@ -11,13 +11,13 @@ $(function() {
     //forced_root_block : false,
     extended_valid_elements: "i[class], span, span[class]",
     plugins: [
-      'advlist autolink lists link image charmap print preview anchor textcolor',
+      'advlist autolink lists link image charmap anchor textcolor',
       'searchreplace visualblocks code fullscreen table',
-      'insertdatetime media table contextmenu paste code'
+      'media table contextmenu paste code'
     ],
-    toolbar: 'insert | table |  formatselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat code',
+    toolbar: 'formatselect | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | media link image table | removeformat code',
     content_css: '//www.tinymce.com/css/codepen.min.css',
-    file_browser_callback   : function(field_name, url, type, win) {
+    /*file_browser_callback   : function(field_name, url, type, win) {
       if (type == 'file') {
         var cmsURL       = 'gallery.explorer.tinymce.php?type=file';
       } else if (type == 'image') {
@@ -35,6 +35,17 @@ $(function() {
       }, {
         window  : win,
         input   : field_name
+      });
+    }*/
+    file_picker_types: 'file image media',
+    file_picker_callback: function (callback, value, meta) {
+      browseFiles(value, meta.filetype, function (fileUrl) {
+        callback(fileUrl);
+
+        tinymce.activeEditor.windowManager.openUrl({
+   title: 'Just a title',
+   url: 'http://www.tiny.cloud/example.html'
+});
       });
     }
   });

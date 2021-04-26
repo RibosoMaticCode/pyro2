@@ -6,6 +6,7 @@ if ( !defined('ABSPATH') )
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/funcs.php';
+require_once ABSPATH.'rb-script/modules/plm/funcs.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$id = $_POST['product_id'];
@@ -35,7 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		array_push($_SESSION['carrito'], $cart_item);
 	}
 	$cant_cart = count($_SESSION['carrito']);
-	//print_r($_SESSION['carrito']);
+	
+	// Ajustar total con descuento
+	if(isset($_SESSION['discount']) && count($_SESSION['discount']) > 0){
+		discount_adjust($_SESSION['discount']['coupon']['code']);
+	}
+
 	$arr = ['resultado' => true, 'contenido' => 'Producto agregado al carrito de compras', 'cant_new' => $cant_cart ];
 }else{
 	$arr = ['resultado' => false, 'contenido' => 'No se recibieron parametros.'];

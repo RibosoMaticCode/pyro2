@@ -85,39 +85,6 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
           <input type="text" name="options[page_error]" value='<?= get_option('page_error') ?>' />
         </div>
       </div>
-      <h4>Datos de la transferencia</h4>
-      <div class="cols-container">
-        <div class="cols-6-md">
-          Bancos
-        </div>
-        <div class="cols-6-md">
-          <input type="text" name="options[transfer_bank]" value='<?= get_option('transfer_bank') ?>' />
-        </div>
-      </div>
-      <div class="cols-container">
-        <div class="cols-6-md">
-          Cuentas
-        </div>
-        <div class="cols-6-md">
-          <textarea rows="5" name="options[transfer_account]"><?= get_option('transfer_account') ?></textarea>
-        </div>
-      </div>
-      <div class="cols-container">
-        <div class="cols-6-md">
-          Telefono
-        </div>
-        <div class="cols-6-md">
-          <input type="text" name="options[transfer_phone]" value='<?= get_option('transfer_phone') ?>' />
-        </div>
-      </div>
-      <div class="cols-container">
-        <div class="cols-6-md">
-          E-mail
-        </div>
-        <div class="cols-6-md">
-          <input type="text" name="options[transfer_mail]" value='<?= get_option('transfer_mail') ?>' />
-        </div>
-      </div>
       <button class="button btn-primary" type="submit">Guardar configuracion</button>
     </form>
     <script>

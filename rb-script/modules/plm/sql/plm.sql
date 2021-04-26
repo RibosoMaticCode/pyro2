@@ -53,8 +53,11 @@ CREATE TABLE `plm_orders` (
   `user_id` int(4) NOT NULL,
   `charge_id` varchar(150) NOT NULL,
   `codigo_unico` varchar(16) NOT NULL,
-  `tiempo_envio` int(2) NOT NULL
+  `tiempo_envio` int(2) NOT NULL,
+  `forma_pago` tinyint(1) NOT NULL DEFAULT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -188,4 +191,58 @@ ALTER TABLE `plm_orders`
 --
 ALTER TABLE `plm_products`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+
+CREATE TABLE `plm_coupons` (
+  `id` mediumint(5) NOT NULL,
+  `code` varchar(80) NOT NULL,
+  `description` tinytext NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `amount` mediumint(5) NOT NULL,
+  `date_expired` datetime NOT NULL,
+  `expensive_min` decimal(10,0) NOT NULL,
+  `expensive_max` decimal(10,0) NOT NULL,
+  `limit_by_user` int(11) NOT NULL DEFAULT 0,
+  `date_register` datetime NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `plm_coupons_user`
+--
+
+CREATE TABLE `plm_coupons_user` (
+  `user_id` mediumint(5) NOT NULL,
+  `coupon_id` mediumint(5) NOT NULL,
+  `used` smallint(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `plm_coupons`
+--
+ALTER TABLE `plm_coupons`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `plm_coupons_user`
+--
+ALTER TABLE `plm_coupons_user`
+  ADD PRIMARY KEY (`user_id`,`coupon_id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `plm_coupons`
+--
+ALTER TABLE `plm_coupons`
+  MODIFY `id` mediumint(5) NOT NULL AUTO_INCREMENT;
 COMMIT;

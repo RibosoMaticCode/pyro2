@@ -369,7 +369,7 @@ h1.title-web a {
 .editor-window{
 	position: fixed;
 	width: 100%;
-	max-width: 760px;
+	max-width: 900px;
 	top:50%;
 	left: 50%;
 	transform: translate(-50%, -50%);

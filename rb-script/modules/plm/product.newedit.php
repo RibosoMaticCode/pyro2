@@ -34,6 +34,7 @@ $categories = json_decode($option['plm_value'], true);*/
       </div>
     	<button class="button btn-primary" type="submit" form="frmproduct">Guardar</button>
     	<a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products">Volver</a>
+      <a class="button" href="<?= G_SERVER ?>rb-admin/module.php?pag=plm_products&product_id=0">Nuevo</a>
     </div>
   </div>
   <form id="frmproduct" class="form">

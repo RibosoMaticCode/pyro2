@@ -210,6 +210,9 @@
     font-weight: bold;
     text-align: center;
 }
+.tot_discount {
+    text-align: right;
+}
 /* mobile */
 @media (min-width: 320px) and (max-width: 480px) {
   .btn-cart-next{
@@ -664,4 +667,40 @@ ul.payment-feat li {
   .side-related .product-item{
     width: 100%;
   }
+}
+
+
+/* ELEGIR FORMA DE PAGO */
+.cover_creditcard,
+.cover_transfer{
+    margin: 10px 10px 40px;
+    padding: 15px;
+    background-color: #f3f3f3;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    display: none;
+}
+.cover_creditcard p,
+.cover_transfer p{
+    padding: 10px 0;
+}
+.info_transfer{
+  width:100%;
+  max-width: 500px;
+  position: fixed;
+  z-index: 10;
+  background-color: #fff;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  display: none;
+  padding: 20px;
+}
+.info_transfer table td {
+    padding: 5px;
+    border: 1px solid #ececec;
+}
+.info_transfer a {
+    color:#FF5722;
+    text-decoration:underline;
 }

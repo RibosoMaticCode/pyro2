@@ -31,7 +31,7 @@ class TemplateClass{
             return $output;
         }
         else
-            return $this->_dir.$file.$this->_file_ext."La plantilla no existe.";
+            return $this->_dir.$file.$this->_file_ext." La plantilla no existe.";
     }
 }
 ?>

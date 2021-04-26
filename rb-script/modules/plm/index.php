@@ -43,13 +43,13 @@ $menu1 = [
 			'url_imagen' => "none",
 			'pos' => 3
 		],
-		/*[
-			'key' => 'plm_orders_simple',
-			'nombre' => "Pedidos",
-			'url' => "module.php?pag=plm_orders_simple",
+		[
+			'key' => 'plm_coupons',
+			'nombre' => "Cupones",
+			'url' => "module.php?pag=plm_coupons",
 			'url_imagen' => "none",
 			'pos' => 4
-		],*/
+		],
 		[
 			'key' => 'plm_orders',
 			'nombre' => "Pedidos con tarjeta",
@@ -677,11 +677,11 @@ add_function('call_modules_url','plm_products_call_url');
 // CSS Front End
 function plm_front_css(){
 	include_once 'funcs.php';
-	//$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/product.front.css'>\n";
+	$css = "\n<script src='".G_DIR_MODULES_URL."plm/plm.js'></script>\n";
 	$view_style = get_option('frontview_product');
 	switch ($view_style) {
 		case $view_style:
-			$css = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style".$view_style.".css'>\n";
+			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style".$view_style.".css'>\n";
 			break;
 	}
 	return $css;
@@ -895,3 +895,20 @@ function order_header_files(){
 }
 add_function('theme_header','order_header_files');
 
+
+// ------ CUPONES ------ //
+if(isset($_GET['pag']) && $_GET['pag']=="plm_coupons"):
+	function plm_coupons_title(){
+		return "Cupones";
+	}
+	function plm_coupons(){
+		global $rb_module_url;
+		if(isset($_GET['product_id'])){
+			include_once 'coupons.newedit.php';
+		}else{
+			include_once 'coupons.php';
+		}
+	}
+	add_function('module_title_page','plm_coupons_title');
+	add_function('module_content_main','plm_coupons');
+endif;

@@ -265,4 +265,131 @@ function product_have_variants($product_id){
 	}
 	return $response;
 }
+
+// REAJUSTA EL DESCUENTO, DE ESTAR APLICADO
+
+function discount_adjust($coupon_code){
+	global $objDataBase;
+	// Consultar cupon
+	$coupon_res = $objDataBase->Ejecutar("SELECT * FROM plm_coupons WHERE code='".$coupon_code."'");
+
+	// Si no existe
+	if($coupon_res->num_rows == 0){
+		$response = [
+			'result' => false,
+			'message' => 'Cupón de descuento no existe'
+		];
+		return $response;
+	}
+
+	// Cargar datos del cupon
+	$coupon = $coupon_res->fetch_assoc();
+	$type = $coupon['type'];
+	$amount = $coupon['amount'];
+
+	// Verificamos si fue usada por usuario actual
+	if(G_ACCESOUSUARIO==1){
+		$user_id = G_USERID;
+		$coupon_id = $coupon['id'];
+
+		$coupon_used_res = $objDataBase->Ejecutar('SELECT * FROM plm_coupons_user WHERE user_id='.$user_id.' AND coupon_id='.$coupon_id);
+		if($coupon_used_res->num_rows > 0){
+			$coupon_used = $coupon_used_res->fetch_assoc();
+			$used = $coupon_used['used'];
+			if($coupon['limit_by_user'] >0 && $used >= $coupon['limit_by_user']){
+				unset($_SESSION['discount']);
+				$response = [
+					'result' => false,
+					'message' => 'El cupón de descuento ingresado ya alcanzo su límite de uso. Intenta con otro cupón.'
+				];
+				return $response;
+			}
+		}
+	}
+
+	// Verificamos fecha de expiracion
+	$date_expired = $coupon['date_expired'];
+	if($date_expired != "0000-00-00 00:00:00" && $date_expired < date('Y-m-d G:i:s')){
+		unset($_SESSION['discount']);
+		$response = [
+			'result' => false,
+			'message' => 'Cupón de descuento ha expirado'
+		];
+		return $response;
+	}
+
+	// Calculamos el total del pedido
+	$i=1;
+	$totsum = 0;
+	if(isset($_SESSION['carrito'])){
+		$cart = $_SESSION['carrito'];
+
+		foreach($cart as $item){
+			$codigo = $item['product_id'];
+			$cantidad = $item['cant'];
+			$combo_id = $item['variant_id'];
+			$qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
+			$product = $qp->fetch_assoc();
+
+			if($combo_id>0){
+				$qc = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE variant_id=".$combo_id);
+				$combo = $qc->fetch_assoc();
+				if($combo['price_discount']==0) $precio_final = $combo['price'];
+				else $precio_final = $combo['price_discount'];
+				$variant_details = "<br />Variante: ".$combo['name'];
+			}else{
+				if($product['precio_oferta']==0) $precio_final = $product['precio'];
+				else $precio_final = $product['precio_oferta'];
+				$variant_details = "";
+			}
+			$tot = round($precio_final * $cantidad,2);
+			$totsum += $tot;
+			$i++;
+		}
+	}
+
+	// Realizamos el descuento segun el tipo. Por defecto 0 es monto fijo, 1 porcentual
+	if($type==1){
+		$amount = round($totsum * ($amount/100), 2);
+	}
+	$tot_update = round($totsum - $amount, 2);
+
+	// Validamos monto minimo de compra
+	$expensive_min = $coupon['expensive_min'];
+
+	if($expensive_min > 0 && $totsum < $expensive_min){
+		unset($_SESSION['discount']);
+		$response = [
+			'result' => false,
+			'message' => 'Cupón aplica a monto minimo total de S/. '.$expensive_min
+		];
+		return $response;
+	}
+
+	// Validamos monto maximo de compra
+	$expensive_max = $coupon['expensive_max'];
+
+	if($expensive_max >0 && $totsum > $expensive_max){
+		unset($_SESSION['discount']);
+		$response = [
+			'result' => false,
+			'message' => 'Cupón aplica a monto maximo total de S/. '.$expensive_max
+		];
+		return $response;
+	}
+
+	// Enviamos respuesta
+	$response = [
+		'result' => true,
+		'coin' => G_COIN,
+		'tot_discount' => $amount,
+		'tot_discount_text' => number_format(round($amount, 2),2),
+		'tot_update' => number_format(round($tot_update, 2),2),
+		'coupon' => $coupon
+	];
+
+	// Actualizacion session
+	$_SESSION['discount'] = $response;
+	return $response;
+}
 ?>

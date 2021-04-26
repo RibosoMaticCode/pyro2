@@ -1,26 +1,13 @@
 <?php
 $send_mail = false; // Modo local no enviara el mail
 
-header('Content-type: application/json; charset=utf-8');
-
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(dirname(dirname(dirname(__FILE__)))) . '/');
 
 require_once ABSPATH.'global.php';
 require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once ABSPATH.'rb-script/funcs.php';
-require_once ABSPATH.'rb-script/modules/plm/funcs.php';
-
-//metodo de pago
-$metodo = 1; // Con tarjeta por defecto
-$estado = 1; // Por defecto pagado
-$metodo_text = "Tarjeta";
-$transfer_info = "";
-if(isset($_GET['method'])){
-	$metodo = 2;
-	$estado = 0;
-	$metodo_text = "Transferencia";
-}
+require_once 'funcs.php';
 
 // Se encargara de enviar informacion tanto a cliente como al administrador del pago
 // PREPARANDO EL HTML PARA ENVIAR POR CORREO AL USUARIO
@@ -36,37 +23,37 @@ $html_content = '
   </thead>
   <tbody>';
 
-  $totsum = 0;
-	$cart = $_SESSION['carrito'];
-	foreach($cart as $item){
-		$codigo = $item['product_id'];
-		$cantidad = $item['cant'];
-		$combo_id = $item['variant_id'];
+$totsum = 0;
+$cart = $_SESSION['carrito'];
+foreach($cart as $item){
+	$codigo = $item['product_id'];
+	$cantidad = $item['cant'];
+	$combo_id = $item['variant_id'];
 
     $qp = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE id=".$codigo);
     $product = $qp->fetch_assoc();
 
-		if($combo_id>0){
-			$qc = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE variant_id=".$combo_id);
-			$combo = $qc->fetch_assoc();
-			if($combo['price_discount']==0) $precio_final = $combo['price'];
-			else $precio_final = $combo['price_discount'];
-			$variant_details = "<br />Variante: ".$combo['name'];
-		}else{
-			if($product['precio_oferta']==0) $precio_final = $product['precio'];
-			else $precio_final = $product['precio_oferta'];
-			$variant_details = "";
-		}
+	if($combo_id>0){
+		$qc = $objDataBase->Ejecutar("SELECT * FROM plm_products_variants WHERE variant_id=".$combo_id);
+		$combo = $qc->fetch_assoc();
+		if($combo['price_discount']==0) $precio_final = $combo['price'];
+		else $precio_final = $combo['price_discount'];
+		$variant_details = "<br />Variante: ".$combo['name'];
+	}else{
+		if($product['precio_oferta']==0) $precio_final = $product['precio'];
+		else $precio_final = $product['precio_oferta'];
+		$variant_details = "";
+	}
 
-		$tot = round($precio_final * $cantidad,2);
+	$tot = round($precio_final * $cantidad,2);
     $photo = rb_get_photo_details_from_id($product['foto_id']);
 
-    if(G_ENL_AMIG) $product_url = G_SERVER."/products/".$product['nombre_key']."/";
-    else $product_url = G_SERVER."/?products=".$product['id'];
+    if(G_ENL_AMIG) $product_url = G_SERVER."products/".$product['nombre_key']."/";
+    else $product_url = G_SERVER."?products=".$product['id'];
 
-		// Actualizar las salidas de cada producto
-		//$objDataBase->Update('plm_products', ['salidas' => 'salidas +'.$cantidad], ['id' => $product['id']]);
-		$objDataBase->Ejecutar('UPDATE plm_products SET salidas = salidas + 1 WHERE id ='.$product['id']);
+	// Actualizar las salidas de cada producto
+	//$objDataBase->Update('plm_products', ['salidas' => 'salidas +'.$cantidad], ['id' => $product['id']]);
+	$objDataBase->Ejecutar('UPDATE plm_products SET salidas = salidas + 1 WHERE id ='.$product['id']);
 
     $html_content .= '
     <tr>
@@ -78,7 +65,7 @@ $html_content = '
     </tr>';
 
     $totsum += $tot;
-  }
+}
 
 $html_content .= '
   </tbody>
@@ -98,32 +85,35 @@ if(isset($_SESSION['discount']) && count($_SESSION['discount'])>0){
 			</td>
 		</tr>
 	';
-}   
-$html_content .= '
-    <tr>
-      <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"></td>
-      <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"></td>
-      <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"></td>
+}    
+
+if(get_option('charge_card')>0){
+	$charge_card = get_option('charge_card');
+	$tot_charge = round($totsum * ($charge_card/100),2);
+	$totsum = round($totsum + ($totsum * ($charge_card/100)),2);
+	$html_content .='
+	<tr>
+      <td colspan="3" style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"></td>
+      <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"><strong>Cargo Tarjeta ('.$charge_card.'%)</strong></td>
+      <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"><strong>'.G_COIN.' '.number_format(round($tot_charge, 2), 2).'</strong></td>
+    </tr>';
+}
+$html_content .='
+	<tr>
+      <td colspan="3" style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"></td>
       <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"><strong>TOTAL</strong></td>
       <td style="text-align:center;padding: 5px;border-top: 1px solid #ffffff;border-bottom: 1px solid #e0e0e0;border-left: 1px solid #e0e0e0;background: #fafafa;"><strong>'.G_COIN.' '.number_format(round($totsum, 2), 2).'</strong></td>
     </tr>
   </tfoot>
 </table>';
 
-if(isset($_GET['charge_id'])){
-	$charge_id = $_GET['charge_id'];
-}else{
-	$charge_id = "000000";
-}
 //Crear una orden del pedido
 $valores = [
   	'fecha_registro' => date('Y-m-d G:i:s'),
   	'detalles' => $html_content,
   	'total' => round($totsum, 2),
   	'user_id' => G_USERID,
-	'charge_id' => $charge_id,
-	'forma_pago' => $metodo,
-	'status' => $estado
+	'charge_id' => "TransId: ".$id_transac." OrderRef: ".$id_order
 ];
 
 $r = $objDataBase->Insert('plm_orders', $valores);
@@ -165,8 +155,7 @@ if($r['result']){
 
 		// Content
 		$email_content = "<div style='background-color:whitesmoke; padding:20px 10px;'><div style='padding:15px;margin:0 auto;width:100%;max-width:600px'><img src='".rb_photo_login(G_LOGO)."' alt='logo' style='max-width:120px' /></div>";
-		$email_content .= "<div style='background-color:#fff;width:100%;max-width:600px;margin:0 auto;padding:15px;'><h1>Gracias por tu pedido, ".$cliente['nombres']."</h1>";
-		$email_content .= "<p>Pronto nos comunicaremos contigo para coordinar el pago y/o envio</p><p><strong>Número de pedido: ".$unique_code."</strong></p><br />".$html_content."<br /><p>----<br />Este correo fue enviado automaticamente, no responder.</p></div>";
+		$email_content .= "<div style='background-color:#fff;width:100%;max-width:600px;margin:0 auto;padding:15px;'><h1>Gracias por tu pedido, ".$cliente['nombres']."</h1><p>Pronto nos comunicaremos contigo para coordinar el envio</p><p><strong>Número de pedido: ".$unique_code."</strong></p><p><strong>TransID / OrdenRef: ".$id_transac." / ".$id_order."</strong></p><br />".$html_content."<br /><p>----<br />Este correo fue enviado automaticamente, no responder.</p></div>";
 
 		// Build the email headers. // El que envia es el sender no el usuario
 		$email_headers = "From: $from_name <$mail_no_reply> \r\n";
@@ -174,60 +163,7 @@ if($r['result']){
 		$email_headers .= "Content-Type: text/html; UTF-8\r\n";
 
 		mail($recipient, $subject, $email_content, $email_headers);
-	}
 
-		// ----------- ENVIAR MAIL CON INFORMACION PARA HACER LA TRANSFERENCIA
-		if($metodo==2){
-			$subject = "Información para realizar la transferencia/deposito";
-			$transfer_info = '<h2 style="text-align: center;">GRACIAS, TU PEDIDO SE HA REGISTRADO</h2>
-			<table style="border-collapse: collapse; width: 100%;max-width:500px" border="1">
-			<tbody>
-			<tr>
-			<td style="width: 50%;">Número de pedido</td>
-			<td style="width: 50%;"><strong>'.$unique_code.'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Fecha</td>
-			<td style="width: 50%;"><strong>'.date('d-m-Y G:i:s').'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Total </td>
-			<td style="width: 50%;"><strong>'.G_COIN.' '.number_format(round($totsum, 2), 2).'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Método de pago</td>
-			<td style="width: 50%;"><strong>Transferencia</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Banco</td>
-			<td style="width: 50%;"><strong>'.get_option('transfer_bank').'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Cuenta</td>
-			<td style="width: 50%;line-height:26px;"><strong>'.nl2br(get_option('transfer_account')).'</strong></td>
-			</tr>
-			</tbody>
-			</table>
-			<p>Después de realizar tu transferencia o depósito enviar la información a cualquiera de estos medios:</p>
-			<table style="border-collapse: collapse; width: 100%;max-width:500px;" border="1">
-			<tbody>
-			<tr>
-			<td style="width: 50%;">Celular </td>
-			<td style="width: 50%;"><strong>'.get_option('transfer_phone').'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Correo electrónico</td>
-			<td style="width: 50%;"><strong>'.get_option('transfer_mail').'</strong></td>
-			</tr>
-			</tbody>
-			</table>
-			<p>Cualquier consulta no dudes en hacerla.</p>';
-			if($send_mail){
-				mail($recipient, $subject, $transfer_info, $email_headers);
-			}
-		}
-
-	if($send_mail){
 		// ----------- ENVIAR MAIL A ADMIN DEL SITIO
 		// Destinatarios :
 		$recipient = rb_get_values_options('mail_destination');
@@ -239,9 +175,7 @@ if($r['result']){
 
 		// Content
 		$email_content = "<strong>Hola ".G_TITULO."!</strong><p>Hay una nueva orden de pedido: ".$unique_code."</p><p>Detalles a continuacion:</p><br />".$html_content."<br />";
-		$email_content .= "<p>Datos del cliente:</p><p>Nombres completos: <strong>".$cliente['nombrecompleto']."</strong></p><p>Telefonos: <strong>".$cliente['telefono_fijo']."/".$cliente['telefono_movil']."</strong></p><p>Correo electronico: <strong>".$cliente['correo']."</strong></p><p>Dirección: <strong>".$cliente['direccion']."</strong></p>";
-		$email_content .= "<p>Metodo de pago: <strong>".$metodo_text."</strong></p>";
-		$email_content .= "<p>----<br />Este correo fue enviado automaticamente, no responder.</p>";
+		$email_content .= "<p>Datos del cliente:</p><p>Nombres completos: <strong>".$cliente['nombrecompleto']."</strong></p><p>Telefonos: <strong>".$cliente['telefono_fijo']."/".$cliente['telefono_movil']."</strong></p><p>Correo electronico: <strong>".$cliente['correo']."</strong></p><p>Dirección: <strong>".$cliente['direccion']."</strong></p><p>----<br />Este correo fue enviado automaticamente, no responder.</p>";
 
 		// Build the email headers. // El que envia es el sender no el usuario
 		$email_headers = "From: $from_name <$mail_no_reply> \r\n";
@@ -250,15 +184,17 @@ if($r['result']){
 
 		mail($recipient, $subject, $email_content, $email_headers);
 	}
-  	$arr = [
-		'resultado' => true,
-		'contenido' => 'Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.',
-		'transfer_info' => $transfer_info
-	];
-  	unset($_SESSION['carrito']);
-  	unset($_SESSION['discount']);
+
+	unset($_SESSION['carrito']);
+	unset($_SESSION['discount']);
+  	//$arr = ['resultado' => true, 'contenido' => 'Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.' ];
+	//echo "Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.";
+	//echo 'Información del Pedido puedes verla en la sección <a href="'.G_SERVER.'/?pa=panel&section=pedidos">Mis Pedidos</a>';
+
+	// Direccion a pagina de proceso satisfactorio
+	header("Location: ".get_option('page_success') );
 }else{
-  	$arr = ['resultado' => false, 'contenido' => $r['error']];
+	// Direccion a pagina de proceso erroneo
+	header("Location: ".get_option('page_success') );
 }
-die(json_encode($arr));
 ?>

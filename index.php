@@ -81,14 +81,19 @@ if(G_ENL_AMIG):
 
 	// Analizamos URL amigable y destripamos sus elementos:
 
-	// Si la web estuviera instalada en un subdirectorio distinto a la raiz
-	// debemos obviarlo antes de destriparlo :-)
+	// Si la web estuviera instalada en un subdirectorio distinto a la raiz lo retiramos de la url
 	$requestURI = str_replace(G_DIRECTORY, "", $_SERVER['REQUEST_URI']);
+
+	// Retiramos la parte de las variables get de la url, desde ?
+	$requestURI = str_replace('?'.$_SERVER['QUERY_STRING'], "", $requestURI);
+
 	// Pasamos la URL a un array que contenga sus elementos delimitados por la barra (slash)
   	$requestURI = explode("/", $requestURI);
+
 	// Indexamos numericamente el array para mas facil consultar
 	$requestURI = array_values( array_filter( $requestURI ) );
 	$numsItemArray = count($requestURI);
+	
 	// Empezamos a hacer las comparaciones
 	if( $numsItemArray > 0 ):
 		// Si es Usuario ??? Revisar

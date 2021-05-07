@@ -1729,15 +1729,16 @@ function rb_header($add_header = array(), $page=true){
   	define('ABSPATH', dirname( dirname(__FILE__) ) . '/');
 
   require_once ABSPATH."global.php";
-  include_once ABSPATH."rb-themes/".G_ESTILO."/header.php";
 
   if($page){
     // Si es pagina generada por el sistema
     if($show_header==1){
+      include_once ABSPATH."rb-themes/".G_ESTILO."/header.php";
       foreach ($add_header as $header) {
         include_once ABSPATH."rb-themes/".G_ESTILO."/".$header;
       }
     }elseif($show_header==2){
+      include_once ABSPATH."rb-themes/".G_ESTILO."/header.php";
       // New version
       $Header = rb_show_specific_page($block_header_id);
       $array_content = json_decode($Header['contenido'], true);
@@ -1747,6 +1748,7 @@ function rb_header($add_header = array(), $page=true){
     }
   }else{
     // Si son paginas de las plantilla
+    include_once ABSPATH."rb-themes/".G_ESTILO."/header.php";
     if(G_BLOCK_HEADER!="0"){
       // New version
       $Header = rb_show_specific_page(G_BLOCK_HEADER);
@@ -1784,6 +1786,7 @@ function rb_footer($add_footer = array(), $page=true){
       foreach ($add_footer as $footer) {
         include_once ABSPATH."rb-themes/".G_ESTILO."/".$footer;
       }
+      include_once ABSPATH."rb-themes/".G_ESTILO."/footer.php";
     }elseif($show_footer==2){
       // New version
       $Footer = rb_show_specific_page($block_footer_id);
@@ -1791,6 +1794,7 @@ function rb_footer($add_footer = array(), $page=true){
       foreach ($array_content['boxes'] as $box) {
         rb_show_block($box);
       }
+      include_once ABSPATH."rb-themes/".G_ESTILO."/footer.php";
     }
   }else{
     // Si son paginas de las plantilla
@@ -1809,8 +1813,8 @@ function rb_footer($add_footer = array(), $page=true){
         include_once ABSPATH."rb-themes/".G_ESTILO."/".$footer;
       }
     }
+    include_once ABSPATH."rb-themes/".G_ESTILO."/footer.php";
   }
-  include_once ABSPATH."rb-themes/".G_ESTILO."/footer.php";
 }
 
 /*

@@ -26,6 +26,7 @@ $qlist = $objDataBase->Ejecutar("SELECT * FROM plm_orders ORDER BY id DESC");
             <th>Usuario ID</th>
             <th>Total pagado</th>
             <th>Cargo ID</th>
+            <th>Forma pago</th>
             <th>Detalles</th>
             <!--<th>Acciones</th>-->
           </tr>

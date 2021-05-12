@@ -52,7 +52,7 @@ $menu1 = [
 		],
 		[
 			'key' => 'plm_orders',
-			'nombre' => "Pedidos con tarjeta",
+			'nombre' => "Pedidos",
 			'url' => "module.php?pag=plm_orders",
 			'url_imagen' => "none",
 			'pos' => 5
@@ -304,24 +304,20 @@ function plm_products_call_url(){
 		define('rm_page_image', $photo['thumb_url'] );
 		$cantidad = 'salidas + 1';
 
-		$view_style = get_option('frontview_product');
-		switch ($view_style) {
-			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view'.$view_style.'.php';
-				break;
-			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.php';
-				break;
+		$view_style = get_option('theme_mini');
+		if ($view_style == 0) {
+			$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.php';
+		}else{
+			$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.mini.php';
 		}
 		require_once( $file );
-
 		die();
 	endif;
 
 	// Mostrar solo listado por categoria
 	if(isset($seccion) && isset($category)):
 		$start = ($p - 1) * $items_to_show;
-		$qsAll = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY ordern DESC");
+		$qsAll = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY orden DESC");
 		$qs = $objDataBase->Ejecutar("SELECT * FROM plm_products WHERE categoria = '$category' AND mostrar=1 ORDER BY orden DESC LIMIT $start, $items_to_show");
 		$total_products = $qsAll->num_rows;
 		$products = [];
@@ -372,16 +368,7 @@ function plm_products_call_url(){
 		$type = "cat";
 		$term = $category;
 
-		$view_style = get_option('frontview_product');
-		switch ($view_style) {
-			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
-				break;
-			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
-				break;
-		}
-
+		$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 		require_once( $file );
 
 		die();
@@ -441,16 +428,7 @@ function plm_products_call_url(){
 		$type = "search";
 		$term = $search;
 
-		$view_style = get_option('frontview_product');
-		switch ($view_style) {
-			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
-				break;
-			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
-				break;
-		}
-
+		$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 		require_once( $file );
 
 		die();
@@ -512,16 +490,7 @@ function plm_products_call_url(){
 		define('rm_metaauthor', G_METAAUTHOR);
 		define('rm_page_image', '' );
 
-		$view_style = get_option('frontview_product');
-		switch ($view_style) {
-			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/cart.front.view'.$view_style.'.php';
-				break;
-			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/cart.front.view.php';
-				break;
-		}
-		//$file = ABSPATH.'rb-script/modules/plm/cart.front.view.php';
+		$file = ABSPATH.'rb-script/modules/plm/views/cart.front.view.php';
 		include_once 'funcs.php';
 		require_once( $file );
 
@@ -544,7 +513,7 @@ function plm_products_call_url(){
 			die();
 		endif;
 		if( !isset($_SESSION['carrito']) || count($_SESSION['carrito'])==0 ):
-			$error_message = "Su carrito de compra está vacio";
+			$error_message = 'Su carrito de compra está vacio <br ?><a href="'.G_SERVER.'products">Ver productos</a>';
 			$file = ABSPATH.'rb-script/modules/plm/payment.error.php';
 			require_once( $file );
 			die();
@@ -657,16 +626,7 @@ function plm_products_call_url(){
 		$type = "all";
 		$term = "";
 
-		$view_style = get_option('frontview_product');
-		switch ($view_style) {
-			case $view_style:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list'.$view_style.'.php';
-				break;
-			default:
-				$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
-				break;
-		}
-
+		$file = ABSPATH.'rb-script/modules/plm/views/product.front.view.header.list.php';
 		require_once( $file );
 
 		die();
@@ -674,16 +634,11 @@ function plm_products_call_url(){
 }
 add_function('call_modules_url','plm_products_call_url');
 
-// CSS Front End
+// JS-CSS Front End
 function plm_front_css(){
 	include_once 'funcs.php';
 	$css = "\n<script src='".G_DIR_MODULES_URL."plm/plm.js'></script>\n";
-	$view_style = get_option('frontview_product');
-	switch ($view_style) {
-		case $view_style:
-			$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style".$view_style.".css'>\n";
-			break;
-	}
+	$css .= "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/views/plm_style.css'>\n";
 	return $css;
 }
 add_function('theme_header','plm_front_css');
@@ -832,7 +787,7 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_config"):
 endif;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-//+++++++++++++++++++++ 				URL ACTION					++++++++++++++++++++++++ //
+//+++++++++++++++++++++ 				BACKEND					++++++++++++++++++++++++ //
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
 // ------ CONFIGURACIN PRODUCTOS ------ //
@@ -886,15 +841,6 @@ if(isset($_GET['pag']) && $_GET['pag']=="plm_comments"):
 	add_function('module_title_page','plm_comments_title');
 	add_function('module_content_main','plm_comments');
 endif;
-
-// CSS Pedido por email sin registro
-function order_header_files(){
-	$files = "<link rel='stylesheet' href='".G_DIR_MODULES_URL."plm/ordermail/order.css'>\n";
-	$files .= "<script src='".G_DIR_MODULES_URL."plm/ordermail/order.js'></script>";
-	return $files;
-}
-add_function('theme_header','order_header_files');
-
 
 // ------ CUPONES ------ //
 if(isset($_GET['pag']) && $_GET['pag']=="plm_coupons"):

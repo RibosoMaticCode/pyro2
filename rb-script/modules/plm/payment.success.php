@@ -11,15 +11,35 @@ require_once ABSPATH.'rb-script/class/rb-database.class.php';
 require_once ABSPATH.'rb-script/funcs.php';
 require_once ABSPATH.'rb-script/modules/plm/funcs.php';
 
-//metodo de pago
-$metodo = 1; // Con tarjeta por defecto
+//metodo de pago por defecto: tarjeta
+$metodo = 1; 
 $estado = 1; // Por defecto pagado
 $metodo_text = "Tarjeta";
-$transfer_info = "";
-if(isset($_GET['method'])){
-	$metodo = 2;
-	$estado = 0;
-	$metodo_text = "Transferencia";
+
+$result_message = "";
+switch( $_GET['method'] ){
+	case 'transfer':
+		$metodo = 2;
+		$estado = 0;
+		$metodo_text = "Transferencia";
+		break;
+	case 'order_only':
+		$metodo = 0;
+		$estado = 0;
+		$metodo_text = "Solo pedido";
+		break;
+}
+
+/* Obtener datos del cliente */
+/* Sino esta logueado, y metodo de SOLO PEDIDO consultar la variable con sus datos */
+if(G_ACCESOUSUARIO == 0){
+	if( $_GET['method']=="order_only" && isset($_GET['data_client']) ){
+		$cliente = json_decode($_GET['data_client'], true);
+		$cliente['nombrecompleto'] = $cliente['nombres']." ".$cliente['apellidos'];
+		$cliente['telefono_fijo'] = $cliente['telefono_movil'];
+	}
+}else{
+	$cliente = rb_get_user_info(G_USERID);
 }
 
 // Se encargara de enviar informacion tanto a cliente como al administrador del pago
@@ -36,7 +56,7 @@ $html_content = '
   </thead>
   <tbody>';
 
-  $totsum = 0;
+  	$totsum = 0;
 	$cart = $_SESSION['carrito'];
 	foreach($cart as $item){
 		$codigo = $item['product_id'];
@@ -115,7 +135,8 @@ if(isset($_GET['charge_id'])){
 }else{
 	$charge_id = "000000";
 }
-//Crear una orden del pedido
+
+//Crear la orden del pedido
 $valores = [
   	'fecha_registro' => date('Y-m-d G:i:s'),
   	'detalles' => $html_content,
@@ -123,6 +144,10 @@ $valores = [
   	'user_id' => G_USERID,
 	'charge_id' => $charge_id,
 	'forma_pago' => $metodo,
+	'client_names' => $cliente['nombrecompleto'],
+	'client_address' => $cliente['direccion'],
+	'client_email' => $cliente['correo'],
+	'client_phone' => $cliente['telefono_movil'],
 	'status' => $estado
 ];
 
@@ -151,10 +176,8 @@ if($r['result']){
 	$unique_code = date('Ymd').str_pad($r['insert_id'], 6, '0', STR_PAD_LEFT);
 	$objDataBase->Update('plm_orders', ['codigo_unico' => $unique_code], ['id' => $r['insert_id']]);
 
+	// Enviar informacion del pedido al cliente por correo
 	if($send_mail){
-		// ----------- ENVIAR MAIL A CLIENTE
-		$cliente = rb_get_user_info(G_USERID);
-
 		// Destinatarios :
 		$recipient = $cliente['correo'];
 
@@ -176,59 +199,66 @@ if($r['result']){
 		mail($recipient, $subject, $email_content, $email_headers);
 	}
 
-		// ----------- ENVIAR MAIL CON INFORMACION PARA HACER LA TRANSFERENCIA
-		if($metodo==2){
-			$subject = "Información para realizar la transferencia/deposito";
-			$transfer_info = '<h2 style="text-align: center;">GRACIAS, TU PEDIDO SE HA REGISTRADO</h2>
-			<table style="border-collapse: collapse; width: 100%;max-width:500px" border="1">
-			<tbody>
-			<tr>
-			<td style="width: 50%;">Número de pedido</td>
-			<td style="width: 50%;"><strong>'.$unique_code.'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Fecha</td>
-			<td style="width: 50%;"><strong>'.date('d-m-Y G:i:s').'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Total </td>
-			<td style="width: 50%;"><strong>'.G_COIN.' '.number_format(round($totsum, 2), 2).'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Método de pago</td>
-			<td style="width: 50%;"><strong>Transferencia</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Banco</td>
-			<td style="width: 50%;"><strong>'.get_option('transfer_bank').'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Cuenta</td>
-			<td style="width: 50%;line-height:26px;"><strong>'.nl2br(get_option('transfer_account')).'</strong></td>
-			</tr>
-			</tbody>
-			</table>
-			<p>Después de realizar tu transferencia o depósito enviar la información a cualquiera de estos medios:</p>
-			<table style="border-collapse: collapse; width: 100%;max-width:500px;" border="1">
-			<tbody>
-			<tr>
-			<td style="width: 50%;">Celular </td>
-			<td style="width: 50%;"><strong>'.get_option('transfer_phone').'</strong></td>
-			</tr>
-			<tr>
-			<td style="width: 50%;">Correo electrónico</td>
-			<td style="width: 50%;"><strong>'.get_option('transfer_mail').'</strong></td>
-			</tr>
-			</tbody>
-			</table>
-			<p>Cualquier consulta no dudes en hacerla.</p>';
-			if($send_mail){
-				mail($recipient, $subject, $transfer_info, $email_headers);
-			}
-		}
+	// Enviar informacion de respuesta y/o al cliente por mail, segun tipo de metodo usado
+	if($metodo==0){ // Solo pedido
+		$result_message = '<h2 style="text-align: center;">GRACIAS, TU PEDIDO SE HA REGISTRADO</h2>
+			<p>Recibirás un correo con los detalles de tu pedido</p>
+			<p>Nos pondremos en contacto contigo lo mas pronto</p><br /><br /><a href="'.G_SERVER.'">Cerrar</a>';
+	}
 
+	if($metodo==2){ // Transferencia. Envio de datos de cuentas a transferir
+		$subject = "Información para realizar la transferencia/deposito";
+		$result_message = '<h2 style="text-align: center;">GRACIAS, TU PEDIDO SE HA REGISTRADO</h2>
+		<table style="border-collapse: collapse; width: 100%;max-width:500px" border="1">
+		<tbody>
+		<tr>
+		<td style="width: 50%;">Número de pedido</td>
+		<td style="width: 50%;"><strong>'.$unique_code.'</strong></td>
+		</tr>
+		<tr>
+		<td style="width: 50%;">Fecha</td>
+		<td style="width: 50%;"><strong>'.date('d-m-Y G:i:s').'</strong></td>
+		</tr>
+		<tr>
+		<td style="width: 50%;">Total </td>
+		<td style="width: 50%;"><strong>'.G_COIN.' '.number_format(round($totsum, 2), 2).'</strong></td>
+		</tr>
+		<tr>
+		<td style="width: 50%;">Método de pago</td>
+		<td style="width: 50%;"><strong>Transferencia</strong></td>
+		</tr>
+		<tr>
+		<td style="width: 50%;">Banco</td>
+		<td style="width: 50%;"><strong>'.get_option('transfer_bank').'</strong></td>
+		</tr>
+		<tr>
+		<td style="width: 50%;">Cuenta</td>
+		<td style="width: 50%;line-height:26px;"><strong>'.nl2br(get_option('transfer_account')).'</strong></td>
+		</tr>
+		</tbody>
+		</table>
+		<p>Después de realizar tu transferencia o depósito enviar la información a cualquiera de estos medios:</p>
+		<table style="border-collapse: collapse; width: 100%;max-width:500px;" border="1">
+		<tbody>
+		<tr>
+		<td style="width: 50%;">Celular </td>
+		<td style="width: 50%;"><strong>'.get_option('transfer_phone').'</strong></td>
+		</tr>
+		<tr>
+		<td style="width: 50%;">Correo electrónico</td>
+		<td style="width: 50%;"><strong>'.get_option('transfer_mail').'</strong></td>
+		</tr>
+		</tbody>
+		</table>
+		<p>Cualquier consulta no dudes en hacerla.</p>';
+		if($send_mail){
+			mail($recipient, $subject, $result_message, $email_headers);
+		}
+	}
+
+	// Enviar informacion del pedido al admin
 	if($send_mail){
-		// ----------- ENVIAR MAIL A ADMIN DEL SITIO
+		
 		// Destinatarios :
 		$recipient = rb_get_values_options('mail_destination');
 
@@ -253,7 +283,8 @@ if($r['result']){
   	$arr = [
 		'resultado' => true,
 		'contenido' => 'Pedido generado con exito. Se envio informacion de este a tu cuenta de correo asociada. Nos pondremos en contacto pronto.',
-		'transfer_info' => $transfer_info
+		'result_message' => $result_message,
+		'metodo' => $metodo
 	];
   	unset($_SESSION['carrito']);
   	unset($_SESSION['discount']);

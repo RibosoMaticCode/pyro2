@@ -1,4 +1,3 @@
-
 CREATE TABLE `plm_category` (
   `id` int(4) NOT NULL,
   `nombre` varchar(50) NOT NULL,
@@ -8,12 +7,6 @@ CREATE TABLE `plm_category` (
   `parent_id` mediumint(5) NOT NULL,
   `islink` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `plm_comments`
---
 
 CREATE TABLE `plm_comments` (
   `id` int(5) NOT NULL,
@@ -27,23 +20,31 @@ CREATE TABLE `plm_comments` (
   `img_ids` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `plm_config`
---
-
 CREATE TABLE `plm_config` (
   `id` int(4) NOT NULL,
   `plm_option` varchar(100) NOT NULL,
   `plm_value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+CREATE TABLE `plm_coupons` (
+  `id` mediumint(5) NOT NULL,
+  `code` varchar(80) NOT NULL,
+  `description` tinytext NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `amount` mediumint(5) NOT NULL,
+  `date_expired` datetime NOT NULL,
+  `expensive_min` decimal(10,0) NOT NULL,
+  `expensive_max` decimal(10,0) NOT NULL,
+  `limit_by_user` int(11) NOT NULL DEFAULT 0,
+  `date_register` datetime NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Estructura de tabla para la tabla `plm_orders`
---
+CREATE TABLE `plm_coupons_user` (
+  `user_id` mediumint(5) NOT NULL,
+  `coupon_id` mediumint(5) NOT NULL,
+  `used` smallint(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `plm_orders` (
   `id` int(4) NOT NULL,
@@ -54,16 +55,13 @@ CREATE TABLE `plm_orders` (
   `charge_id` varchar(150) NOT NULL,
   `codigo_unico` varchar(16) NOT NULL,
   `tiempo_envio` int(2) NOT NULL,
-  `forma_pago` tinyint(1) NOT NULL DEFAULT '1',
-  `status` tinyint(1) NOT NULL DEFAULT '1'
+  `forma_pago` tinyint(1) NOT NULL DEFAULT 1,
+  `client_names` varchar(200) NOT NULL,
+  `client_address` varchar(200) NOT NULL,
+  `client_email` varchar(150) NOT NULL,
+  `client_phone` varchar(50) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `plm_products`
---
 
 CREATE TABLE `plm_products` (
   `id` int(5) NOT NULL,
@@ -96,13 +94,6 @@ CREATE TABLE `plm_products` (
   `orden` mediumint(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `plm_products_variants`
---
-
 CREATE TABLE `plm_products_variants` (
   `variant_id` int(5) NOT NULL,
   `product_id` mediumint(5) NOT NULL,
@@ -116,133 +107,67 @@ CREATE TABLE `plm_products_variants` (
   `image_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Índices para tablas volcadas
---
 
---
--- Indices de la tabla `plm_category`
---
 ALTER TABLE `plm_category`
   ADD PRIMARY KEY (`id`);
 
---
--- Indices de la tabla `plm_comments`
---
 ALTER TABLE `plm_comments`
   ADD PRIMARY KEY (`id`);
 
---
--- Indices de la tabla `plm_config`
---
 ALTER TABLE `plm_config`
   ADD PRIMARY KEY (`id`);
 
---
--- Indices de la tabla `plm_orders`
---
+ALTER TABLE `plm_coupons`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `plm_coupons_user`
+  ADD PRIMARY KEY (`user_id`,`coupon_id`);
+
 ALTER TABLE `plm_orders`
   ADD PRIMARY KEY (`id`);
 
---
--- Indices de la tabla `plm_products`
---
 ALTER TABLE `plm_products`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nombre_key` (`nombre_key`);
 ALTER TABLE `plm_products` ADD FULLTEXT KEY `busqueda` (`nombre`,`descripcion`,`marca`,`modelo`);
 
---
--- Indices de la tabla `plm_products_variants`
---
 ALTER TABLE `plm_products_variants`
   ADD UNIQUE KEY `combo_id` (`variant_id`,`product_id`);
 
---
--- AUTO_INCREMENT de las tablas volcadas
---
 
---
--- AUTO_INCREMENT de la tabla `plm_category`
---
 ALTER TABLE `plm_category`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `plm_comments`
---
 ALTER TABLE `plm_comments`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `plm_config`
---
 ALTER TABLE `plm_config`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `plm_orders`
---
+ALTER TABLE `plm_coupons`
+  MODIFY `id` mediumint(5) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `plm_orders`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT de la tabla `plm_products`
---
 ALTER TABLE `plm_products`
   MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
-COMMIT;
 
-
-CREATE TABLE `plm_coupons` (
-  `id` mediumint(5) NOT NULL,
-  `code` varchar(80) NOT NULL,
-  `description` tinytext NOT NULL,
-  `type` tinyint(1) NOT NULL,
-  `amount` mediumint(5) NOT NULL,
-  `date_expired` datetime NOT NULL,
-  `expensive_min` decimal(10,0) NOT NULL,
-  `expensive_max` decimal(10,0) NOT NULL,
-  `limit_by_user` int(11) NOT NULL DEFAULT 0,
-  `date_register` datetime NOT NULL,
-  `status` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `plm_coupons_user`
---
-
-CREATE TABLE `plm_coupons_user` (
-  `user_id` mediumint(5) NOT NULL,
-  `coupon_id` mediumint(5) NOT NULL,
-  `used` smallint(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `plm_coupons`
---
-ALTER TABLE `plm_coupons`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `plm_coupons_user`
---
-ALTER TABLE `plm_coupons_user`
-  ADD PRIMARY KEY (`user_id`,`coupon_id`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `plm_coupons`
---
-ALTER TABLE `plm_coupons`
-  MODIFY `id` mediumint(5) NOT NULL AUTO_INCREMENT;
-COMMIT;
+INSERT INTO `plm_config` (`id`, `plm_option`, `plm_value`) VALUES
+(1, 'link_continue_purchase', ''),
+(2, 'plm_charge', '0'),
+(3, 'key_public', ''),
+(4, 'key_private', ''),
+(5, 'products_count_category', '12'),
+(6, 'frontview_product', '2'),
+(7, 'page_success', ''),
+(8, 'page_error', 'h'),
+(9, 'version', '1.1'),
+(10, 'charge_card', ''),
+(11, 'transfer_phone', ''),
+(12, 'transfer_mail', ''),
+(13, 'transfer_bank', ''),
+(14, 'transfer_account', ''),
+(15, 'show_cupons_form', '0'),
+(16, 'theme_mini', '1'),
+(17, 'allow_buy_without_login', '0');

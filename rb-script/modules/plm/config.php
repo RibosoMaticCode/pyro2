@@ -69,6 +69,23 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
           <input type="text" name="options[frontview_product]" value='<?= get_option('frontview_product') ?>' />
         </div>
       </div>
+      <div class="cols-container">
+        <div class="cols-6-md">
+          Estilo visual minimalista
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[theme_mini]" value='<?= get_option('theme_mini') ?>' />
+        </div>
+      </div>
+      <div class="cols-container">
+        <div class="cols-6-md">
+          Hacer pedido sin loguearse
+          <span class="info">Permite hacer un pedido sin iniciar sesion. Usar solo cuando no haya formas pago configuradas.</span>
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[allow_buy_without_login]" value='<?= get_option('allow_buy_without_login') ?>' />
+        </div>
+      </div>
 			<div class="cols-container">
         <div class="cols-6-md">
           Pagina proceso satisfactorio
@@ -83,6 +100,14 @@ $urlreload=G_SERVER.'rb-admin/module.php?pag=plm_config';
         </div>
         <div class="cols-6-md">
           <input type="text" name="options[page_error]" value='<?= get_option('page_error') ?>' />
+        </div>
+      </div>
+      <div class="cols-container">
+        <div class="cols-6-md">
+          Mostrar cuadro de cupones
+        </div>
+        <div class="cols-6-md">
+          <input type="text" name="options[show_cupons_form]" value='<?= get_option('show_cupons_form') ?>' />
         </div>
       </div>
       <h4>Datos de la transferencia</h4>

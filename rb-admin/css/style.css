@@ -54,7 +54,7 @@ p{
 	top: 52px;
 	position: fixed;
 	opacity: 1;
-	z-index: 5000;
+	z-index: 999;
 	width: 100%;
 	background-color: #F7F7F9;
 	left: 0;

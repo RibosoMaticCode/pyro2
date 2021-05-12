@@ -5,7 +5,7 @@
       <a href="<?= G_SERVER ?>">Inicio</a> > <a href="<?= $category['url']?>"><?= $category['nombre']?></a> > <?= rb_fragment_letters($product['nombre'], 40) ?>
     </div>-->
     <div class="cols-container product_page">
-      <div class="cols-5-md"> <!-- photo and gallery -->
+      <div class="cols-6-md"> <!-- photo and gallery -->
             <a id="product_image_url" class="fancy" data-fancybox-group="visor" href="<?= $photo['file_url'] ?>">
               <!--<img src="<?= $photo['file_url'] ?>" alt="imagen" />-->
               <div class="product-cover-image">
@@ -23,15 +23,7 @@
             }
             ?>
       </div>
-      <?php
-        /*if($product['formato_fisico']==1) {
-          print rb_shortcode('[SAPIENS_ORDERS_PHYSICAL]');
-        }
-        if($product['formato_digital']==1) {
-          print rb_shortcode('[SAPIENS_ORDERS_DIGITAL]');
-        }*/
-      ?>
-      <div class="cols-7-md"> <!-- price -->
+      <div class="cols-6-md"> <!-- price -->
         <div class="product-info">
           <?php
           if($product['nombre_largo']!=""){

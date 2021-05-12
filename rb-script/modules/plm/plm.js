@@ -2,7 +2,7 @@ var base_url = window.location.origin+'/';
 var base_module = base_url+'rb-script/modules/plm/';
 
 $(document).ready(function() {
-	/* VALIDACIONES */
+	/* Cupones */
 	$('#coupon_apply').prop('disabled',true);
 
 	$('#coupon_code').keyup(function(event) {
@@ -13,7 +13,7 @@ $(document).ready(function() {
 	    }
 	});
 
-	/* APLICAR */
+	/* Aplicar cupon */
 	$('#coupon_apply').click(function(event){
 		event.preventDefault();
 		var code = $('#coupon_code').val();
@@ -38,6 +38,7 @@ $(document).ready(function() {
       	});
 	});
 
+	/* Retirar cupon */
 	$('#coupon_retire').click(function(event){
 		event.preventDefault();
       	$.ajax({
@@ -47,5 +48,43 @@ $(document).ready(function() {
       	.done(function( data ) {
         	window.location.href = base_url + 'shopping-cart/';
       	});
+	});
+
+	/* Realizar solo pedido sin logueo */
+
+	/* Mostra el formulario para cliente complete sus datos */
+	$('#btnShowClientForm').click(function(event){
+		event.preventDefault();
+      	$('.bg, .frmOrder').show();
+	});
+
+	$('#btnCloseClientForm').click(function(event){
+		event.preventDefault();
+		$('.bg, .frmOrder').hide();
+	});
+
+	/* Realizar el pedido */
+	$('#orderFormClient').submit(function(event){
+		event.preventDefault();
+		var data_client_inputs = $("#orderFormClient").serializeArray();
+		var data_client = {};
+		$(data_client_inputs).each(function(index, obj){
+			data_client[obj.name] = obj.value;
+		});
+		console.log(data_client);		
+		$.ajax({
+			method: "get",
+			url: base_module+"payment.success.php?method=order_only&data_client="+JSON.stringify(data_client)
+		})
+		.done(function( data ) {
+			if(data.resultado){
+				$('#orderFormClient').remove();
+				$('#orderResultMessage').append(data.result_message);
+				$('#btnCloseClientForm').hide();
+			}else{
+				alert(data.contenido);
+				console.log(data.contenido);
+			}
+		});
 	});
 });

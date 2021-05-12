@@ -141,8 +141,13 @@
 					<label>
 						<input type="radio" name="metodo_pago" value="transferencia" /> Transferencia / Déposito
 					</label>
+					<?php if(get_option('plm_charge')>0): ?>
 					<label>
 						<input type="radio" name="metodo_pago" value="tarjeta" /> Tarjeta de crédito (<?= get_option('charge_card') ?>% adicional)
+					</label>
+					<?php endif ?>
+					<label>
+						<input type="radio" name="metodo_pago" value="order_only" /> Orden previa por e-mail
 					</label>
 					<script>
 					$("input[name='metodo_pago']").change(function(event){
@@ -150,11 +155,15 @@
 						var method = $(this).val();
 						if(method=="transferencia") {
 							$('.cover_transfer').show();
-							$('.cover_creditcard').hide();
+							$('.cover_creditcard, .cover_order').hide();
 						}
 						if(method=="tarjeta") {
 							$('.cover_creditcard').show();
-							$('.cover_transfer').hide();
+							$('.cover_transfer, .cover_order').hide();
+						}
+						if(method=="order_only") {
+							$('.cover_order').show();
+							$('.cover_transfer, .cover_creditcard').hide();
 						}
 					});
 					</script>
@@ -162,12 +171,12 @@
 				<!-- pago con deposito -->
 				<div class="cover_transfer">
 					<p>Realiza tu pago directamente en nuestra cuenta bancaria. Por favor, usa el número de pedido como referencia de pago. Tu pedido no será enviado hasta que el importe haya sido recibido en nuestra cuenta.</p>
-					<a class="btn-cart-next cart_button" href="#">Realizar el pedido</a>
+					<a class="btn btnSubmitOrderTrans" href="#">Realizar el pedido</a>
 					<div class="info_transfer"></div>
 					<script>
 						$(document).ready(function() {
 							// Boton realizar pedido pago transferencia
-							$('.cart_button').click(function(event){
+							$('.btnSubmitOrderTrans').click(function(event){
 								event.preventDefault();
 								$.ajax({
 									method: "get",
@@ -175,7 +184,7 @@
 								})
 								.done(function( data ) {
 									if(data.resultado){
-										$('.info_transfer').html(data.transfer_info);
+										$('.info_transfer').html(data.result_message);
 										$('.info_transfer').append('<p>La informacion anterior se ha enviado a tu correo</p><p><a href="<?= G_SERVER ?>/?pa=panel&section=pedidos">Cerrar e ir a la sección Mis Pedidos</a></p>');
 										$('.bg, .info_transfer').show();
 									}else{
@@ -188,39 +197,12 @@
 					</script>
 				</div>
 				<!-- pago con tarjeta -->
+				<?php if(get_option('plm_charge')>0): ?>
 				<div class="cover_creditcard">
 					<?php
-						// Realizar el pedido por correo sin ningun cargo
-						/*if(get_option('plm_charge')=="0"){
-							?>
-							<script>
-								$(document).ready(function() {
-							    // Boton Realizar el pago
-							    $('.cart_button').click(function(event){
-							      event.preventDefault();
-							  		$.ajax({
-							  			method: "get",
-							  			url: "<?= G_SERVER ?>/rb-script/modules/plm/payment.success.php"
-							  		})
-							  		.done(function( data ) {
-							  			if(data.resultado){
-												setTimeout(function(){
-								          window.location.href = '<?= $panel_user ?>';
-								        }, 1000);
-							  	  	}else{
-							  				console.log(data.contenido);
-							  	  	}
-							  		});
-							    });
-							  });
-							</script>
-							<a class="cart_button" href="#">Realizar el pedido de <?= G_COIN ?> <?= number_format(round($totsum, 2), 2) ?></a>
-							<?php
-						}*/
-						// Culqui
 						if(get_option('plm_charge')=="1"){
 							?>
-							<button class="btn-cart-next" id="buyButton">Realizar el pago de <?= G_COIN ?> <?= number_format(round($totsum, 2), 2) ?></button>
+							<button class="btn" id="buyButton">Realizar el pago de <?= G_COIN ?> <?= number_format(round($totsum, 2), 2) ?></button>
 							<script src="https://checkout.culqi.com/js/v3"></script>
 							<script>
 							    // Configura tu llave pública
@@ -330,6 +312,33 @@
 						}
 					?>
 					<p>IMPORTANTE: No interrumpir el siguiente proceso.</p>
+				</div>
+				<?php endif ?>
+				<!-- solo pedido por mail -->
+				<div class="cover_order">
+					<script>
+						$(document).ready(function() {
+						   	// Boton Realizar el pago
+							$('.btnSubmitOrder').click(function(event){
+								event.preventDefault();
+							  	$.ajax({
+							  		method: "get",
+							  		url: "<?= G_SERVER ?>/rb-script/modules/plm/payment.success.php?method=order_only"
+							  	})
+							  	.done(function( data ) {
+									if(data.resultado){
+										$('.info_transfer').html(data.result_message);
+										$('.bg, .info_transfer').show();
+									}else{
+										alert(data.contenido);
+										console.log(data.contenido);
+									}
+							  	});
+							});
+						});
+					</script>
+					<a class="btn btnSubmitOrder" href="#">Realizar el pedido de <?= G_COIN ?> <?= number_format(round($totsum, 2), 2) ?></a>
+					<div class="info_transfer"></div>
 				</div>
 				<?php
 				}

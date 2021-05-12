@@ -2,7 +2,7 @@
 <div class="wrap-content">
 	<div class="inner-content">
 		<div class="plm_error_message">
-	    Sucedio un error :( Mensaje de error:<br />
+	    	<strong>Mensaje de error:</strong><br />
 			<?= $error_message ?>
 		</div>
   </div>

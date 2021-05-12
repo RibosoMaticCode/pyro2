@@ -1,4 +1,47 @@
-/* PRODUCT INFO PAGE ALONE */
+/*
+1. Pagina solo del producto
+    1.1 Navegacion superior
+    Version minimalista:
+    1.2 Informacion producto
+    Version detallada:
+    1.3 Imagen del producto
+    1.4 Información del producto
+    1.5 Variantes del producto
+    1.6 Calculador de precio y cantidades
+    1.7 Pestañas de detalle del producto y reseñas
+    1.8 Productos relacionados
+    1.9 Seccion reseñas del producto
+2. Listado de productos
+3. Listado de producto en vista vertical
+4. Carrito de compra
+5. Mensajes 
+6. Pre carrito de compra
+7. Paginación de categorias
+8. Formulario de reseñas
+9. Listado de reseñas
+10. Forma de pagos
+0. Vista Celular
+*/
+
+/* 1. Pagina solo del producto */
+
+/* 1.1 Navegacion superior */
+.product-nav {
+    padding: 20px 15px;
+}
+
+.product-nav a {
+    color: gray;
+}
+.product-nav a:hover {
+    text-decoration: underline;
+}
+
+/* plantilla minimalista */
+/* 1.2 Informacion producto */
+.product_page{
+    padding: 50px 10px;
+}
 .product {
     margin: 0 auto;
     width: 100%;
@@ -31,8 +74,229 @@
     padding: 8px 0;
 }
 
+/* Plantilla detallada */
+/* 1.3 Imagen del producto */
+.product-cover-image {
+    height: 340px;
+    width: 100%;
+    position:relative;
+}
 
-/* PRODUCT REQUEST */
+.product-cover-image img{
+    max-width:100%;
+    max-height:100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+}
+
+/* 1.4 Información del producto */
+.product-info{
+  padding: 10px 25px;
+  margin-bottom: 20px;
+}
+.product-info h3{
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+.product-price-info .cols-container{
+  padding: 6px 0;
+}
+.highlight{
+  font-family: Semibold;
+  color: #ff8d38;
+}
+.product-type span {
+    background-color: #a2a2a2;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+
+/* 1.5 Variantes del producto */
+.options_variants .cols-9-md a {
+    border: 2px solid #e6e6e6;
+    padding: 2px 5px;
+    font-size: .8em;
+    color: gray;
+}
+.isDisabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.isSelected{
+  border: 2px solid #FF9800!important;
+}
+.notice {
+    border: 2px solid gainsboro;
+    padding: 10px 20px;
+    color: gray;
+    margin: 0 0 10px;
+}
+.cover_prices_range {
+    padding: 5px 10px 10px;
+}
+
+span.price_range {
+    color: #ff8d38;
+    font-size: 1.4em;
+    font-family: Semibold;
+}
+
+/* 1.6 Calculador de precio y cantidades */
+.product-calculate {
+    border-top: 1px solid #e0e0e0;
+    margin: 0 25px;
+    padding: 10px 0;
+}
+.product-calculate button{
+    width:100%;
+    background-color: #523e75;
+    border:0;
+    color:#fff;
+    font-size:1.1em;
+    font-family:Semibold;
+    padding:10px 10px;
+    display:inline-block;
+    margin:20px 0;
+    box-shadow: 1px 1px 5px gray;
+}
+.product-calculate button[disabled] {
+    box-shadow: none;
+    background-color: darkgrey;
+}
+
+.product-calculate .cantidad-botton {
+    background-color: #523e75;
+    width: 24px;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.product-calculate #txtCantidad {
+    font-size: 1em;
+    text-align: center;
+    vertical-align: bottom;
+    max-width: 70px;
+}
+.product-total, .product-total span{
+    font-size:1.2em;
+    font-family:Semibold;
+    color: #ff8d38;
+}
+
+.line-price .cols-7-md,
+.line-quantity .cols-7-md{
+    text-align: right;
+}
+
+.line-price h3, .line-quantity h3 {
+    font-size: 1em;
+}
+
+.line-price, .line-quantity {
+    margin-bottom: 12px;
+}
+
+ul.payment-feat li {
+    font-size: .95em;
+    padding: 5px 0;
+    list-style-type: none;
+    color: #545454;
+}
+.product-security-info img {
+    width: 100%;
+}
+
+/* 1.7 Pestañas de detalle del producto y reseñas */
+.product-tabs {
+    border-bottom: 2px solid #005E8E;
+}
+
+.product-tabs {
+    border-bottom: 2px solid #005E8E;
+}
+
+.product-tabs a {
+    padding: 10px 15px;
+    display: inline-block;
+    border-top:1px solid #cecece;
+    border-left:1px solid #cecece;
+    border-right:1px solid #cecece;
+}
+.product-tabs a.selected {
+    background-color: #005E8E;
+    color: #fff;
+}
+.cover-tabs {
+    padding-right: 20px;
+}
+.product-description li {
+    margin-left: 20px;
+}
+.product-description table {
+  max-width: 100%!important;
+  width:auto!important;
+}
+
+.product-description img{
+    max-width: 100%;
+    height:auto;
+}
+
+/* 1.8 Productos relacionados */
+.wrap_related {
+    background-color: #f6f6f6;
+}
+.side-related .product-item a {
+    display: block;
+    background-color: #fff;
+}
+.side-related {
+    padding: 40px 15px;
+}
+.side-related .product-item {
+    margin: 20px 0;
+    display: inline-block;
+    width: 24%;
+}
+
+.side-related h4 {
+    font-family: Light;
+    font-size: 1.3em;
+}
+
+/* 1.9 Seccion reseñas del producto */
+.review-login-before {
+    background-color: #efefef;
+    margin-bottom: 50px;
+    border: 1px solid #e4e4e4;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.review-login-before h4 {
+    color: #005e8e;
+    font-size: 1.6em;
+}
+
+.review-login-before a {
+    display: inline-block;
+    margin: 20px 0 0;
+    background-color: #005e8e;
+    padding: 10px 30px;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* PRODUCT REQUEST ??? */
 .sections .section{
     padding:20px;
 }
@@ -57,7 +321,7 @@
     padding: 5px 0;
 }
 
-/* PRODUCT LIST */
+/* 2. Listado de productos */
 .item_cat{
   padding: 15px;
 }
@@ -136,7 +400,7 @@
     padding: 10px;
 }
 
-/* LISTADO EN VISTA EN VERTICAL */
+/* 3. Listado de producto en vista vertical */
 .view-vertical .product-item .product-item-cover-img {
     height: 133px;
     float: left;
@@ -162,15 +426,7 @@
     right:initial;
 }
 
-/* SHOPPING CART */
-.cart_button{
-  background-color: green;
-  color:#fff;
-  padding: 5px 15px;
-  border-radius: 8px;
-  display: inline-block;
-  margin: 5px 0;
-}
+/* 4. Carrito de compra */
 .cover-cart-items {
     overflow: auto;
     margin: 10px;
@@ -179,7 +435,7 @@
 .inner-cart h3{
   padding: 10px;
 }
-.btn-cart-next {
+.btn {
     background-color: #523e75;
     color: #fff;
     padding: 4px 10px;
@@ -194,7 +450,6 @@
 
 .cover-btn-cart {
     padding: 10px 10px 40px;
-    text-align: right;
 }
 .cover-prepayment .user-info{
   padding: 10px;
@@ -213,21 +468,37 @@
 .tot_discount {
     text-align: right;
 }
-/* mobile */
-@media (min-width: 320px) and (max-width: 480px) {
-  .btn-cart-next{
-    width: 100%;
-  }
+.frmOrder{
+    max-width: 400px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    padding:20px;
+    display: none;
+    z-index:2;
+    background-color: #fff;
+    border-radius: 10px;
+    width:90%;
 }
-
-/* ERROR MESSAGE */
-.plm_error_message {
-    padding: 50px 30px;
+.frmOrder h2 {
+    font-size: 1.2em;
     text-align: center;
-    font-size: 2em;
+    margin: 10px 0 30px;
 }
 
-/* PRE SHOPING CART */
+/* 5. Mensajes */
+.plm_error_message {
+    padding: 30px 30px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: #ffcfcf;
+    margin: 40px 10px;
+    border: 1px solid #ff9999;
+    line-height: 30px;
+}
+
+/* 6. Pre carrito de compra */
 .block_wait {
     position: absolute;
     top: 50%;
@@ -251,7 +522,7 @@
     text-decoration: underline;
 }
 
-/* CATEGORY PAGINATION */
+/* 7. Paginación de categorias */
 .category-pagination{
     background-color: #fff;
     border-bottom: 1px solid #E4E4E4;
@@ -295,7 +566,7 @@
     pointer-events: none;
 }
 
-/* RESEÑAS FORM */
+/* 8. Formulario de reseñas */
 .product-review-form {
   background-color: #fbfbfb;
   padding: 10px 15px;
@@ -359,7 +630,7 @@ ul.review-core-list input[type="radio"] {
     font-weight: bold;
 }
 
-/* RESEÑAS LISTADO */
+/* 9. Listado de reseñas */
 .review-detail-headers {
     background-color: #007cbb;
     text-align:center;
@@ -416,263 +687,10 @@ ul.review-core-list input[type="radio"] {
     height: auto;
 }
 
-/* CATEGORIAS - MENU // SHORTCODE:PLM_LIST_CATEGORIES */
-
-/* NAVEGACION */
-.product-nav {
-    padding: 20px 15px;
-}
-
-.product-nav a {
-    color: gray;
-}
-.product-nav a:hover {
-    text-decoration: underline;
-}
-
-/* PRODUCTO IMAGE AND GALLERYS */
-.product-cover-image {
-    height: 340px;
-    width: 100%;
-    position:relative;
-}
-
-.product-cover-image img{
-    max-width:100%;
-    max-height:100%;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-}
-
-/* PRODUCTO INFO */
-.product-info{
-  padding: 10px 25px;
-  margin-bottom: 20px;
-}
-.product-info h3{
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-}
-.product-price-info .cols-container{
-  padding: 6px 0;
-}
-.highlight{
-  font-family: Semibold;
-  color: #ff8d38;
-}
-.product-type span {
-    background-color: #a2a2a2;
-    color: #fff;
-    padding: 2px 5px;
-    border-radius: 5px;
-}
-
-
-/* PRODUCTS VARIANTS */
-.options_variants .cols-9-md a {
-    border: 2px solid #e6e6e6;
-    padding: 2px 5px;
-    font-size: .8em;
-    color: gray;
-}
-.isDisabled {
-  color: currentColor;
-  cursor: not-allowed;
-  opacity: 0.5;
-  text-decoration: none;
-}
-.isSelected{
-  border: 2px solid #FF9800!important;
-}
-.notice {
-    border: 2px solid gainsboro;
-    padding: 10px 20px;
-    color: gray;
-    margin: 0 0 10px;
-}
-.cover_prices_range {
-    padding: 5px 10px 10px;
-}
-
-span.price_range {
-    color: #ff8d38;
-    font-size: 1.4em;
-    font-family: Semibold;
-}
-
-/* PRODUCTO CALCULATOR*/
-.product-calculate {
-    border-top: 1px solid #e0e0e0;
-    margin: 0 25px;
-    padding: 10px 0;
-}
-.product-calculate button{
-    width:100%;
-    background-color: #523e75;
-    border:0;
-    color:#fff;
-    font-size:1.1em;
-    font-family:Semibold;
-    padding:10px 10px;
-    display:inline-block;
-    margin:20px 0;
-    box-shadow: 1px 1px 5px gray;
-}
-.product-calculate button[disabled] {
-    box-shadow: none;
-    background-color: darkgrey;
-}
-
-.product-calculate .cantidad-botton {
-    background-color: #523e75;
-    width: 24px;
-    display: inline-block;
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-.product-calculate #txtCantidad {
-    font-size: 1em;
-    text-align: center;
-    vertical-align: bottom;
-    max-width: 70px;
-}
-.product-total, .product-total span{
-    font-size:1.2em;
-    font-family:Semibold;
-    color: #ff8d38;
-}
-
-.line-price .cols-7-md,
-.line-quantity .cols-7-md{
-    text-align: right;
-}
-
-.line-price h3, .line-quantity h3 {
-    font-size: 1em;
-}
-
-.line-price, .line-quantity {
-    margin-bottom: 12px;
-}
-
-ul.payment-feat li {
-    font-size: .95em;
-    padding: 5px 0;
-    list-style-type: none;
-    color: #545454;
-}
-.product-security-info img {
-    width: 100%;
-}
-/* PROTECTION COMPRADOR */
-.product-security-info {
-    text-align: center;
-    padding: 20px 0;
-}
-
-/* TABS AND DETAILS FROM PRODUCT */
-.product-tabs {
-    border-bottom: 2px solid #005E8E;
-}
-
-.product-tabs {
-    border-bottom: 2px solid #005E8E;
-}
-
-.product-tabs a {
-    padding: 10px 15px;
-    display: inline-block;
-    border-top:1px solid #cecece;
-    border-left:1px solid #cecece;
-    border-right:1px solid #cecece;
-}
-.product-tabs a.selected {
-    background-color: #005E8E;
-    color: #fff;
-}
-.cover-tabs {
-    padding-right: 20px;
-}
-.product-description li {
-    margin-left: 20px;
-}
-.product-description table {
-  max-width: 100%!important;
-  width:auto!important;
-}
-
-.product-description img{
-    max-width: 100%;
-    height:auto;
-}
-
-/* PRODUCTS RELATED */
-.wrap_related {
-    background-color: #f6f6f6;
-}
-.side-related .product-item a {
-    display: block;
-    background-color: #fff;
-}
-.side-related {
-    padding: 40px 15px;
-}
-.side-related .product-item {
-    margin: 20px 0;
-    display: inline-block;
-    width: 24%;
-}
-
-.side-related h4 {
-    font-family: Light;
-    font-size: 1.3em;
-}
-
-/* RESEÃ‘AS */
-.review-login-before {
-    background-color: #efefef;
-    margin-bottom: 50px;
-    border: 1px solid #e4e4e4;
-    text-align: center;
-    padding: 20px 10px;
-}
-
-.review-login-before h4 {
-    color: #005e8e;
-    font-size: 1.6em;
-}
-
-.review-login-before a {
-    display: inline-block;
-    margin: 20px 0 0;
-    background-color: #005e8e;
-    padding: 10px 30px;
-    color: #fff;
-    font-weight: bold;
-}
-
-@media screen and (max-width: 500px){
-  .cover-tabs,
-  .side-related{
-    padding: 10px 15px;
-  }
-  .product-description{
-    padding: 0;
-  }
-  .side-related .product-item{
-    width: 100%;
-  }
-}
-
-
-/* ELEGIR FORMA DE PAGO */
+/* 10. Forma de pagos */
 .cover_creditcard,
-.cover_transfer{
+.cover_transfer,
+.cover_order{
     margin: 10px 10px 40px;
     padding: 15px;
     background-color: #f3f3f3;
@@ -681,7 +699,8 @@ ul.payment-feat li {
     display: none;
 }
 .cover_creditcard p,
-.cover_transfer p{
+.cover_transfer p,
+.cover_order p{
     padding: 10px 0;
 }
 .info_transfer{
@@ -704,3 +723,28 @@ ul.payment-feat li {
     color:#FF5722;
     text-decoration:underline;
 }
+.payment_method label{
+    display:block;
+    padding: 10px;
+}
+
+/* 0. Vista celular */
+@media screen and (max-width: 500px){
+    .cover-tabs,
+    .side-related{
+      padding: 10px 15px;
+    }
+    .product-description{
+      padding: 0;
+    }
+    .side-related .product-item{
+      width: 100%;
+    }
+}
+
+/* mobile */
+@media (min-width: 320px) and (max-width: 480px) {
+    .btn{
+      width: 100%;
+    }
+  }

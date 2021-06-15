@@ -31,7 +31,7 @@ $(document).ready(function() {
         		alert(data.message);
         		return false;
         	}
-        	window.location.href = base_url + 'shopping-cart/';
+        	//window.location.href = base_url + 'shopping-cart/';
         	/*$('#coupon_detail').html(data.coupon.description);
         	$('#tot_discount').html( data.coin +' ' + data.tot_discount_text );
         	$('#total').html( data.tot_update );*/

@@ -1,9 +1,9 @@
 <?php rb_header(['header-allpages.php'], false) ?>
 <div class="wrap-content">
   <div class="inner-content clear">
-    <!--<div class="product-nav">
+    <div class="product-nav">
       <a href="<?= G_SERVER ?>">Inicio</a> > <a href="<?= $category['url']?>"><?= $category['nombre']?></a> > <?= rb_fragment_letters($product['nombre'], 40) ?>
-    </div>-->
+    </div>
     <div class="cols-container product_page">
       <div class="cols-6-md"> <!-- photo and gallery -->
             <a id="product_image_url" class="fancy" data-fancybox-group="visor" href="<?= $photo['file_url'] ?>">
@@ -197,6 +197,7 @@
               </div>
             </div>
             <button <?php if($have_variants) echo "disabled" ?> class="btnaddcart" type="button"><i class="fas fa-shopping-cart"></i> Añadir al carrito</button>
+            <a href="<?= G_SERVER ?>shopping-cart">Ver carrito de compra</a>
             <?php else: ?>
             <h3>Próximamente</h3>
             <?php endif ?>

@@ -384,7 +384,8 @@ function discount_adjust($coupon_code){
 		'coin' => G_COIN,
 		'tot_discount' => $amount,
 		'tot_discount_text' => number_format(round($amount, 2),2),
-		'tot_update' => number_format(round($tot_update, 2),2),
+		'tot_update_text' => number_format(round($tot_update, 2),2),
+		'tot_update' => round($tot_update, 2),
 		'coupon' => $coupon
 	];
 
